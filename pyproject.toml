@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "compendium"
+version = "0.1.0"
+description = ""
+authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+configparser = "^5.0.0"
+pyyaml = "^5.3.1"
+tomlkit = "^0.6.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+mypy = "^0.770"
+flake8 = "^3.8.2"
+black = "^19.10b0"
+flit = "^2.3.0"
+
+[tool.black]
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+    | \.git
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.vagrant
+    | _build
+    | dist
+  )
+)
+'''
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
