@@ -1,25 +1,29 @@
 # -*- coding: utf-8 -*-
 import json
 import sys
-from lunar.config import ConfigBase
-from lunar.utils import Logger
+from . import ConfigBase
+from ..utils import Logger
 
 
-class JsonConf(ConfigBase):
+class JsonConfig(ConfigBase):
     def __init__(self):
         self.__log = Logger(__name__)
-        self.__log.info("Inializing JsonConf")
+        self.__log.info("Inializing JsonConfig")
 
     # def __update_key_delimter(self, json, old, new)
     #     content = { key.replace(old, new): content[key] for key in file.keys() }
 
-    def load_conf(self, filepath):
-        self.__log.info("JsonConf: loading configuration file")
+    @property
+    def filetypes(self):
+        return ['json']
+
+    def load_config(self, filepath):
+        self.__log.info("JsonConfig: loading configuration file")
         with open(filepath, "r") as json_file:
             self._configuration = json.load(json_file)
         json_file.close()
 
-    def save_conf(self):
+    def save_config(self):
         try:
             with open(self.filepath, "w") as json_path:
                 json.dump(self._configuration, json_path, indent=2, sort_keys=True)
@@ -28,9 +32,9 @@ class JsonConf(ConfigBase):
                 print("Error: You do not have permission to write to this file")
                 sys.exit(1)
 
-    def update_conf(self, content):
+    def update_config(self, content):
         content.pop("func", None)
         self._configuration.update(content)
 
-    def get_conf(self):
+    def get_config(self):
         return self._configuration

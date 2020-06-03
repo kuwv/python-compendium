@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "compendium"
 version = "0.1.0"
-description = ""
+description = "Simple layered configuraion tool"
 authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
 
 [tool.poetry.dependencies]
@@ -16,6 +16,19 @@ mypy = "^0.770"
 flake8 = "^3.8.2"
 black = "^19.10b0"
 flit = "^2.3.0"
+
+[tool.flit.metadata]
+module = "compendium"
+author = "Jesse P. Johnson"
+author-email = "jpj6652@gmail.com"
+home-page = "https://github.com/kuwv/compendium"
+requires = [
+    "tomlkit",
+]
+classifiers = ["License :: OSI Approved :: Apache Software License"]
+
+[tool.flit.scripts]
+compend = "compendium.__main__:main"
 
 [tool.black]
 include = '\.pyi?$'
@@ -32,7 +45,7 @@ exclude = '''
   )
 )
 '''
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
-

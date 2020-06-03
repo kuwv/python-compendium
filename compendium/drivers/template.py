@@ -2,8 +2,8 @@
 import codecs
 from jinja2 import Environment, FileSystemLoader
 import sys
-from lunar.config.config_base import ConfigBase
-from lunar.utils import Logger
+from . import ConfigBase
+from ..utils import Logger
 
 
 class Template(object):

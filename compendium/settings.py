@@ -11,7 +11,7 @@ from .utils import Logger
 
 class Settings(object):
 
-    __conf_file = None
+    __config_file = None
     directory = None
     scenario = None
     provider = None
@@ -25,15 +25,10 @@ class Settings(object):
     def __init__(self, **kwargs):
         '''
         First(lowest) to last(highest)
-        - System configs:
-            /etc/lunar/$SERVICE/$SERVICE.$FILETYPE
-            $LUNA_CONF/$SERVICE/$SERVICE.$FILETYPE
-        - User configs:
-            $HOME/.lunar.d/$SERVICE/$SERVICE.$FILETYPE
-            $PWD/lunar.cfg
-        - Runtime configs:
-            ENV_VAR
-            CLI_VAR
+        - System configs
+        - User configs
+        - Local configs
+        - Runtime configs
         '''
         self.__log = Logger(__name__)
 
@@ -49,10 +44,10 @@ class Settings(object):
         if 'directory' in kwargs:
             self.directory = kwargs.get('directory')
 
-        if 'conf_dir' in kwargs:
-            self.conf_dir = kwargs.get('conf_dir')
+        if 'config_dir' in kwargs:
+            self.config_dir = kwargs.get('config_dir')
         else:
-            self.conf_dir = '/etc/lunar'
+            self.config_dir = '/etc/compendium'
 
         if 'home_dir' in kwargs:
             self.home_dir = kwargs.get('home_dir')
@@ -60,7 +55,7 @@ class Settings(object):
         if 'lib_dir' in kwargs:
             self.lib_dir = kwargs.get('lib_dir')
         else:
-            self.lib_dir = '/var/lib/lunar'
+            self.lib_dir = '/var/lib/compendium'
 
         if 'scenario' in kwargs:
             self.scenario = kwargs.get('scenario')
@@ -71,9 +66,9 @@ class Settings(object):
             subdir = '/' + self.provider + '/'
             self.__log.info("Initiating service {}".format(self.provider))
         else:
-            self.provider = 'lunar'
+            self.provider = 'compendium'
             subdir = '/'
-            self.__log.info("Initiating Lunar CLI")
+            self.__log.info("initiating compendium CLI")
 
         # Figure out the configuration file
         if 'filename' in kwargs:
@@ -98,8 +93,8 @@ class Settings(object):
         self.__log.info("Loading configuration drivers")
         mod = ModuleLoader()
         # TODO: figure out which driver to load from files in paths
-        conf_class = mod.load_classpath(self.discovery_loader(filetype))
-        self.__conf_file = conf_class()
+        config_class = mod.load_classpath(self.discovery_loader(filetype))
+        self.__config_file = config_class()
         self.__log.info("Finished loading drivers")
 
         # Load configurations
@@ -107,36 +102,41 @@ class Settings(object):
         self.load_configs(filename)
 
         # 5. Load from provided path
-        #$LUNA_CONF
+        # <APP>_CONFIG
         if 'config' in kwargs:
-            self.load_config(cfg_path=kwargs.get('config'))
+            self.load_config(config_path=kwargs.get('config'))
 
     # TODO: Implement pathlib
     def __load_configpaths(self, subdir):
         '''Load config paths based on priority
-        1. Load lunar.cfg from module read-only defaults
-          - /usr/lib/python/site-packages/lunar
-          - /usr/lib/python/site-packages/lunar-module
-          - /usr/lib/lunar/conf/
-        2. Load lunar.cfg from /etc/lunar
-          - /etc/lunar/lunar.cfg
+        1. Load settings.<FILETYPE> from module read-only defaults
+          - /usr/lib/<APP>/conf/
+        2. Load settings.<FILETYPE> from /etc/<APP>
+          - /etc/<APP>/settings.<FILETYPE>
+          - /etc/<APP>/<CONFIG>.<FILETYPE>
+          - /etc/<APP>/<SUBDIR>/<CONFIG>.<FILETYPE>
         3. Load user configs
-          - $HOME/.lunar.d/lunar.cfg
-          - $HOME/.lunar.d/$SERVICE/$SERVICE.$FILETYPE
+          - ~/.<APP>.d/settings.<FILETYPE>
+          - ~/.<APP>.d/<CONFIG>.<FILETYPE>
+          - ~/.<APP>.d/<SUBDIR>/<CONFIG>.<FILETYPE>
         4. Load config in PWD
-          - $HOME/.lunar.d/$SERVICE/$SERVICE.$FILETYPE
-          - $PWD/lunar.cfg
+          - ./settings.<FILETYPE>
+          - ./<CONFIG>.<FILETYPE>
+        5. Runtime configs:
+          - /etc/sysconfig/<APP>
+          - .env
+          - <CLI>
         '''
         if self.directory is not None:
             self.pathlist.append(self.directory + '/')
         else:
             # TODO: Use pkg_resources to locate default configs
-            #print("Path: ", pkg_resources.resource_filename('lunar', 'usr/share/lunar' + subdir))
+            # print("Path: ", pkg_resources.resource_filename('compendium', 'usr/share/compendium' + subdir))
             self.pathlist.append(subdir)
 
-            self.pathlist.append('/etc/lunar' + subdir)
+            self.pathlist.append('/etc/compendium' + subdir)
 
-            self.pathlist.append(os.path.expanduser("~") + '/.lunar.d' + subdir)
+            self.pathlist.append(os.path.expanduser("~") + '/.compendium.d' + subdir)
 
             # TODO: Make directory if not exists
 
@@ -146,22 +146,23 @@ class Settings(object):
         for path in self.pathlist:
              self.load_config(path + filename)
 
-    def load_config(self, cfg_path):
-        if (os.path.exists(cfg_path)):
-            self.__log.info("Loading configuration: '{}'".format(cfg_path))
-            self.__conf_file.load_conf(filepath=cfg_path)
-            self.update_settings(self.__conf_file.get_conf())
-            self.__log.info("Finished loading configuration: '{}'".format(cfg_path))
+    def load_config(self, config_path):
+        if (os.path.exists(config_path)):
+            self.__log.info("Loading configuration: '{}'".format(config_path))
+            self.__config_file.load_config(filepath=config_path)
+            self.update_settings(self.__config_file.get_config())
+            self.__log.info("Finished loading configuration: '{}'".format(config_path))
         else:
-            self.__log.info("Skipping: No configuration found at: '{}'".format(cfg_path))
+            self.__log.info("Skipping: No configuration found at: '{}'".format(config_path))
 
+    # TODO: Lookup driver filetypes
     def discovery_loader(self, filetype):
         if filetype == 'yaml' or filetype == 'yml':
-            return 'compendium.drivers.yaml.YamlConf'
+            return 'compendium.drivers.YamlConfig'
         elif filetype == 'json':
-            return 'compendium.drivers.json.JsonConf'
+            return 'compendium.drivers.JsonConfig'
         elif filetype == 'cfg':
-            return 'compendium.drivers.ini.IniConf'
+            return 'compendium.drivers.IniConfig'
 
     def make_directory(self):
         if not os.path.exists(directory):
@@ -177,5 +178,5 @@ class Settings(object):
         self.__log.debug(new_settings)
         self.settings.update(new_settings)
 
-    def get_provider_conf(self, sp):
+    def get_provider_config(self, sp):
         return self.__configuration[sp]

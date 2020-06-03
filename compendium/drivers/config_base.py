@@ -6,20 +6,25 @@ import os
 class ConfigBase(metaclass=ABCMeta):
     _configuration = {}
 
-    @abstractmethod
-    def load_conf(self, filepath):
-        """ Load configuration from file """
+    @abc.abstractproperty
+    def filesystems(self):
+        """Retrieve extensions of filetypes"""
+        return 'Extensions of filetypes'
 
     @abstractmethod
-    def save_conf(self):
-        """ Save confgration to file """
+    def load_config(self, filepath):
+        """Load configuration from file"""
+
+    @abstractmethod
+    def save_config(self):
+        """Save confgration to file"""
 
     @classmethod
-    def update_conf(cls, content):
-        """ Apply update to config """
+    def update_config(cls, content):
+        """Apply update to config"""
         cls._configuration.update(content)
 
     @classmethod
-    def get_conf(cls):
-        """ Get configuration as dictionary """
+    def get_config(cls):
+        """Get configuration as dictionary"""
         return cls._configuration
