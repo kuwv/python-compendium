@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import errno
 import json
 import sys
 from . import ConfigBase
@@ -11,7 +12,9 @@ class JsonConfig(ConfigBase):
         self.__log.info("Inializing JsonConfig")
 
     # def __update_key_delimter(self, json, old, new)
-    #     content = { key.replace(old, new): content[key] for key in file.keys() }
+    #     content = {
+    #         key.replace(old, new): content[key] for key in file.keys()
+    #     }
 
     @property
     def filetypes(self):
@@ -26,10 +29,14 @@ class JsonConfig(ConfigBase):
     def save_config(self):
         try:
             with open(self.filepath, "w") as json_path:
-                json.dump(self._configuration, json_path, indent=2, sort_keys=True)
+                json.dump(
+                    self._configuration, json_path, indent=2, sort_keys=True
+                )
         except IOError as err:
             if err[0] == errno.EPERM:
-                print("Error: You do not have permission to write to this file")
+                print(
+                    "Error: You do not have permission to write to this file"
+                )
                 sys.exit(1)
 
     def update_config(self, content):

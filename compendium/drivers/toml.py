@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import errno
+import os
 import sys
 import tomlkit
 from . import ConfigBase
@@ -12,7 +14,9 @@ class TomlConfig(ConfigBase):
         self.__log.info("Inializing TomlConfig")
 
     # def __update_key_delimter(self, toml, old, new)
-    #     content = { key.replace(old, new): content[key] for key in file.keys() }
+    #     content = {
+    #         key.replace(old, new): content[key] for key in file.keys()
+    #     }
 
     @property
     def filetypes(self):
@@ -27,7 +31,7 @@ class TomlConfig(ConfigBase):
         else:
             # TODO: Load template if configured
             self._configuration = {}
-        return config
+        return self._configuration
 
     def save_config(self):
         self.__log.info("TomlConfig: saving configuration file")

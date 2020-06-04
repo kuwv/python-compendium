@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-from abc import ABCMeta, abstractmethod
-import os
+from abc import ABCMeta, abstractmethod  # , abstractproperty
 
 
 class ConfigBase(metaclass=ABCMeta):
-    _configuration = {}
-
-    @abc.abstractproperty
-    def filesystems(self):
-        """Retrieve extensions of filetypes"""
-        return 'Extensions of filetypes'
+    # @abstractproperty
+    # def filesystems(self):
+    #     """Retrieve extensions of filetypes"""
 
     @abstractmethod
     def load_config(self, filepath):

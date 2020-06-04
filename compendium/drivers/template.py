@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import codecs
-from jinja2 import Environment, FileSystemLoader
+import errno
 import sys
-from . import ConfigBase
+from jinja2 import Environment, FileSystemLoader
 from ..utils import Logger
 
 

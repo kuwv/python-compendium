@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import errno
 import sys
 import yaml
 from . import ConfigBase
@@ -16,7 +17,9 @@ class YamlConfig(ConfigBase):
         return ['yaml', 'yml']
 
     def load_config(self, filepath):
-        self.__log.info("YamlConfig loading configuration file {}".format(filepath))
+        self.__log.info(
+            "YamlConfig loading configuration file {}".format(filepath)
+        )
         with open(filepath, "r") as yaml_file:
             self._configuration = yaml.load(yaml_file)
             self.__log.debug(self._configuration)
@@ -25,7 +28,11 @@ class YamlConfig(ConfigBase):
     def save_config(self):
         try:
             with open(self.filepath, "w") as yaml_file:
-                yaml.dump(self._configuration, yaml_file, default_flow_style=False)
+                yaml.dump(
+                    self._configuration,
+                    yaml_file,
+                    default_flow_style=False
+                )
         except IOError as err:
             if err[0] == errno.EPERM:
                 self.__log.error(

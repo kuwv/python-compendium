@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import errno
 import os
 import sys
 from collections import defaultdict
@@ -17,7 +18,7 @@ class IniConfig(ConfigBase):
         self.__parser = ConfigParser(dict_type=defaultdict)
         self.__parser._interpolation = ExtendedInterpolation()
 
-    @propery
+    @property
     def filetypes(self):
         return ['cfg', 'cnf', 'conf', 'config', 'ini']
 

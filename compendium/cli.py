@@ -1,4 +1,5 @@
 import argparse
 
+
 def cli():
-    return 'define cli'
+    return "define cli"

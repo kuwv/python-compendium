@@ -56,7 +56,10 @@ class Logger(object):
         self.log.info("Lunar file logger setup complete")
 
     def setupEmail(
-        self, loglevel="INFO", logformat=time_log_format, email="root@localhost"
+        self,
+        loglevel="INFO",
+        logformat=time_log_format,
+        email="root@localhost"
     ):
         pass
 
