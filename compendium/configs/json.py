@@ -16,8 +16,8 @@ class JsonConfig(ConfigBase):
     #         key.replace(old, new): content[key] for key in file.keys()
     #     }
 
-    @property
-    def filetypes(self):
+    @staticmethod
+    def filetypes():
         return ['json']
 
     def load_config(self, filepath):

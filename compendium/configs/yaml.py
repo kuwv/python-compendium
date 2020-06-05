@@ -12,8 +12,8 @@ class YamlConfig(ConfigBase):
         self.__log = Logger(__name__)
         self.__log.info("Inializing YamlConfig")
 
-    @property
-    def filetypes(self):
+    @staticmethod
+    def filetypes():
         return ['yaml', 'yml']
 
     def load_config(self, filepath):

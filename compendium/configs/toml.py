@@ -18,8 +18,8 @@ class TomlConfig(ConfigBase):
     #         key.replace(old, new): content[key] for key in file.keys()
     #     }
 
-    @property
-    def filetypes(self):
+    @staticmethod
+    def filetypes():
         return ['toml', 'tml']
 
     def load_config(self, filepath):

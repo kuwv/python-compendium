@@ -18,8 +18,8 @@ class IniConfig(ConfigBase):
         self.__parser = ConfigParser(dict_type=defaultdict)
         self.__parser._interpolation = ExtendedInterpolation()
 
-    @property
-    def filetypes(self):
+    @staticmethod
+    def filetypes():
         return ['cfg', 'cnf', 'conf', 'config', 'ini']
 
     def load_config(self, filepath):
