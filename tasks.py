@@ -67,7 +67,7 @@ def publish(ctx, symlink=False):
 
 @task
 def clean(ctx):
-    patterns = ['dist']
+    patterns = ['dist', 'logs']
     patterns.append('**/__pycache__')
     patterns.append('**/*.pyc')
     patterns.append('compendium.egg-info')
