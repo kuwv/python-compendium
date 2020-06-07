@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-# import codecs
-# import pkg_resources
-# import sys
-# TODO Use pathlib
 from .utils import Logger
 from .filetree import FileTree
 from .configs import Configs
@@ -18,29 +14,19 @@ class Settings(FileTree, Configs):
     def __init__(self, application, **kwargs):
         self.__log = Logger(__name__)
 
-        if "path" in kwargs:
-            self.filepaths = [kwargs.get("path")]
-            path, filename = self.filepaths[0].rsplit("/", 1)
-        else:
-            if "filename" in kwargs:
-                filename = kwargs.get("filename")
-            else:
-                filename = "settings.toml"
-
-        FileTree.__init__(self, application, filename)
+        FileTree.__init__(self, application, **kwargs)
         Configs.__init__(self)
 
         self.__settings = {}
 
-        self.__log.info("Determing settings locations")
         # TODO: Skip all if already loaded unless 'reload' is passed
 
         # Load configurations
         # self.load_module(filetype)
         self.load_configs()
 
-        if "config" in kwargs:
-            self.load_config(config_path=kwargs.get("config"))
+        if 'config' in kwargs:
+            self.load_config(config_path=kwargs.get('config'))
 
         # TODO: writable / readonly
 

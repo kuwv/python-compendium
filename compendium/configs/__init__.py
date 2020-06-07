@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # import codecs
-# import pkg_resources
 import os
-from .config_base import ConfigBase  # noqa
+from .config_base import ConfigBase
 from .ini import IniConfig  # noqa
 from .json import JsonConfig  # noqa
 from .toml import TomlConfig  # noqa
@@ -19,22 +18,22 @@ class Configs:
     def __discovery_loader(self, filetype):
         for module in self.modules:
             if filetype in module.filetypes():
-                return "compendium.configs.{}".format(module.__name__)
+                return (module.__module__ + '.' + module.__name__)
         return None
 
     def __load_module(self, filename):
-        self.__log.info("Loading configuration configs")
+        self.__log.info('Loading configuration configs')
         mod = ModuleLoader()
 
         # TODO: figure out which driver to load from filetypes
-        filetype = filename.split(".")[-1]
+        filetype = filename.split('.')[-1]
         module_path = self.__discovery_loader(filetype)
         if module_path is not None:
             config_class = mod.load_classpath(module_path)
             self._config_file = config_class()
-            self.__log.info("Finished loading configs")
+            self.__log.info('Finished loading configs')
         else:
-            self.__log.info("unable to load configs")
+            self.__log.info('unable to load configs')
 
     def load_config_settings(self, config_path):
         # TODO: Improve error handling

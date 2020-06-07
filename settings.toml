@@ -10,8 +10,6 @@ configparser = "^5.0.0"
 pyyaml = "^5.3.1"
 tomlkit = "^0.6.0"
 jinja2 = "^2.11.2"
-jsonschema = "^3.2.0"
-jmespath = "^0.10.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -19,8 +17,6 @@ mypy = "^0.770"
 flake8 = "^3.8.2"
 black = "^19.10b0"
 flit = "^2.3.0"
-invoke = "^1.4.1"
-pyfakefs = "^4.0.2"
 
 [tool.flit.metadata]
 module = "compendium"

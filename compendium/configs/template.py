@@ -11,7 +11,7 @@ class Template(object):
     def __init__(self, sourceDirectory, templateFile):
         self.__log = Logger(__name__)
         self.sourceDirectory = sourceDirectory
-        self.templateFile = templateFile + ".j2"
+        self.templateFile = templateFile + '.j2'
 
     def generate(self, vars):
         try:
@@ -20,20 +20,20 @@ class Template(object):
             )
             template = environment.get_template(self.templateFile)
             self.__configuration = template.render(vars)
-        except:
-            self.__log.error("Error: Unable to generate template file")
+        except Exception:
+            self.__log.error('Error: Unable to generate template file')
             sys.exit(1)
 
     def save(self, destination, filename):
         if destination is None:
-            destination = "/tmp"
+            destination = '/tmp'
         try:
-            with open(destination + "/" + filename, "w") as f:
+            with open(destination + '/' + filename, 'w') as f:
                 f.write(self.__configuration)
             f.close()
         except IOError as err:
             if err[0] == errno.EPERM:
                 self.__log.error(
-                    "Error: You do not have permission to write to this file"
+                    'Error: You do not have permission to write to this file'
                 )
                 sys.exit(1)

@@ -46,7 +46,7 @@ class ModuleLoader(object):
         if modulePath is not None:
             self.__modulePath = modulePath
 
-    """
+    '''
     def find_loader(self, loaderName):
         self.__loader = importlib.find_loader(loaderName)
 
@@ -61,7 +61,7 @@ class ModuleLoader(object):
         except ImportError:
             self.__log.error("Failed to reload {m}".format(m=moduleName))
         return module
-    """
+    '''
 
     def load_module(self, moduleName):
         try:

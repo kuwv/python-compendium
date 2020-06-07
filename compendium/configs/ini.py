@@ -33,17 +33,17 @@ class IniConfig(ConfigBase):
                     print("  {} = {}".format(name, value))
             self.__configuration = self.__parser._sections
         else:
-            self.__log.error("Error: file not in specified path")
-            sys.exit("Error: file not in specified path")
+            self.__log.error('Error: file not in specified path')
+            sys.exit('Error: file not in specified path')
 
     def save_config(self):
         try:
-            with open(self.filepath, "w") as configfile:
+            with open(self.filepath, 'w') as configfile:
                 self.__parser.write(configfile)
         except IOError as err:
             if err[0] == errno.EPERM:
                 self.__log.error(
-                    "Error: unable to write to file"
+                    'Error: unable to write to file'
                 )
                 sys.exit(1)
 

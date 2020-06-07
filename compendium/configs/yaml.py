@@ -10,7 +10,7 @@ from ..utils import Logger
 class YamlConfig(ConfigBase):
     def __init__(self):
         self.__log = Logger(__name__)
-        self.__log.info("Inializing YamlConfig")
+        self.__log.info('Inializing YamlConfig')
 
     @staticmethod
     def filetypes():
@@ -20,14 +20,14 @@ class YamlConfig(ConfigBase):
         self.__log.info(
             "YamlConfig loading configuration file {}".format(filepath)
         )
-        with open(filepath, "r") as yaml_file:
+        with open(filepath, 'r') as yaml_file:
             self._configuration = yaml.load(yaml_file)
             self.__log.debug(self._configuration)
         yaml_file.close()
 
     def save_config(self):
         try:
-            with open(self.filepath, "w") as yaml_file:
+            with open(self.filepath, 'w') as yaml_file:
                 yaml.dump(
                     self._configuration,
                     yaml_file,
@@ -36,7 +36,7 @@ class YamlConfig(ConfigBase):
         except IOError as err:
             if err[0] == errno.EPERM:
                 self.__log.error(
-                    "Error: unable to write to file"
+                    'Error: unable to write to file'
                 )
                 sys.exit(1)
 
