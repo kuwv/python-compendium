@@ -21,6 +21,7 @@ black = "^19.10b0"
 flit = "^2.3.0"
 invoke = "^1.4.1"
 pyfakefs = "^4.0.2"
+pytest-cov = "^2.9.0"
 
 [tool.flit.metadata]
 module = "compendium"
