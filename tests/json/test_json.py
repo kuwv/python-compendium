@@ -1,4 +1,4 @@
-from compendium.filetree import FileTree
+from compendium.config_manager import ConfigManager
 from compendium.settings import Settings
 from jmespath import search
 import os
@@ -8,14 +8,14 @@ json_path = config_path + '/test.json'
 
 
 def test_empty_filepath():
-    empty_list = FileTree(application='empty', filename='test.json')
+    empty_list = ConfigManager(application='empty', filename='test.json')
     empty_list.load_config_paths()
     assert not empty_list.filepaths
 
 
 def test_json_path(fs):
     fs.add_real_file(json_path)
-    json_config = FileTree(application='json', filename='test.json')
+    json_config = ConfigManager(application='json', filename='test.json')
     json_config.load_config_path(config_path + '/test.json')
     assert "{}/test.json".format(config_path) in json_config.filepaths
 

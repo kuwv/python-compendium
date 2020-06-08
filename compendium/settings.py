@@ -1,45 +1,61 @@
 # -*- coding: utf-8 -*-
+import jmespath
 from .utils import Logger
-from .filetree import FileTree
-from .configs import Configs
+from .config_manager import ConfigManager
 
 
-class Settings(FileTree, Configs):
-    def __getattr__(self, k):
-        try:
-            return self.data[k]
-        except KeyError:
-            raise AttributeError
+class Settings(ConfigManager):
+
+    __defaults = {}
+    __settings = {}
 
     def __init__(self, application, **kwargs):
+        '''
+        merge_sections: []
+        merge_strategy:
+          - overlay
+          - partition
+          - last
+        '''
         self.__log = Logger(__name__)
 
-        FileTree.__init__(self, application, **kwargs)
-        Configs.__init__(self)
+        super().__init__(application, **kwargs)
 
-        self.__settings = {}
+        # Load settings from configs
+        if 'merge_strategy' in kwargs:
+            self.merge_strategy = kwargs.get('merge_strategy')
 
-        # TODO: Skip all if already loaded unless 'reload' is passed
+            if self.merge_strategy == 'overlay':
+                self.__overlay_configs()
 
-        # Load configurations
-        # self.load_module(filetype)
-        self.load_configs()
+            if self.merge_strategy == 'partition':
+                self.__partition_configs(kwargs.get('merge_sections'))
 
-        if 'config' in kwargs:
-            self.load_config(config_path=kwargs.get('config'))
+            if self.merge_strategy == 'last':
+                self.__last_config()
+        else:
+            print('running')
+            self.__last_config()
 
-        # TODO: writable / readonly
+        # TODO: load environment variables
 
     @property
     def settings(self):
         return self.__settings
 
-    def load_configs(self):
+    def __overlay_configs(self):
         for filepath in self.filepaths:
-            self.load_config_settings(filepath)
+            self.update_settings(self.load_config_settings(filepath))
+
+    def __partition_configs(self, sections):
+        pass
+
+    def __last_config(self):
+        print('this is erroring: ' + str(self.filepaths))
+        self.update_settings(self.load_config_settings(self.filepaths[-1]))
 
     def get_section(self, name):
-        return self.__settings[name]
+        return jmespath.compile(name)
 
     def list_sections(self, path=None):
         if path is None:

@@ -31,7 +31,7 @@ def discover_entry_points(self, entry):
     }
 
 
-# TODO: should load scenarios from pkgutil
+# TODO: should load from pkgutil
 # https://packaging.python.org/guides/creating-and-discovering-plugins/
 # pluginbase +1
 # stevedore -1 only 2.7 and 3.5 ?!?
@@ -83,7 +83,3 @@ class ModuleLoader(object):
         except ImportError:
             self.__log.error("Failed to load {c}".format(c=className))
         return getattr(module, className)
-
-
-class ModuleInstaller(object):
-    pass

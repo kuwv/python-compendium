@@ -3,13 +3,13 @@ from invoke import call, task
 
 
 @task
-def lint(ctx):
-    ctx.run('flake8')
+def format(ctx):
+    ctx.run('black -S **/*.py')
 
 
 @task
-def format(ctx):
-    ctx.run('black --diff -S **/*.py')
+def lint(ctx):
+    ctx.run('flake8')
 
 
 @task
@@ -22,9 +22,9 @@ def unit_test(ctx):
     ctx.run('pytest')
 
 
-@task(pre=[lint, format, coverage, unit_test])
+@task(pre=[format, lint, unit_test, coverage])
 def test(ctx):
-    pass
+    ctx.run('compend')
 
 
 @task

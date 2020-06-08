@@ -1,4 +1,4 @@
-from compendium.filetree import FileTree
+from compendium.config_manager import ConfigManager
 from compendium.settings import Settings
 from jmespath import search
 import os
@@ -8,14 +8,14 @@ yaml_path = config_path + '/test.yaml'
 
 
 def test_empty_filepath():
-    empty_list = FileTree(application='empty', filename='test.yaml')
+    empty_list = ConfigManager(application='empty', filename='test.yaml')
     empty_list.load_config_paths()
     assert not empty_list.filepaths
 
 
 def test_yaml_path(fs):
     fs.add_real_file(yaml_path)
-    yaml_config = FileTree(application='yaml', filename='test.yaml')
+    yaml_config = ConfigManager(application='yaml', filename='test.yaml')
     yaml_config.load_config_path(config_path + '/test.yaml')
     assert "{}/test.yaml".format(config_path) in yaml_config.filepaths
 

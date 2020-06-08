@@ -1,4 +1,4 @@
-from compendium.filetree import FileTree
+from compendium.config_manager import ConfigManager
 from compendium.settings import Settings
 from jmespath import search
 import os
@@ -8,14 +8,14 @@ ini_path = config_path + '/test.ini'
 
 
 def test_empty_filepath():
-    empty_list = FileTree(application='empty', filename='test.ini')
+    empty_list = ConfigManager(application='empty', filename='test.ini')
     empty_list.load_config_paths()
     assert not empty_list.filepaths
 
 
 def test_ini_path(fs):
     fs.add_real_file(ini_path)
-    ini_config = FileTree(application='ini', filename='test.ini')
+    ini_config = ConfigManager(application='ini', filename='test.ini')
     ini_config.load_config_path(config_path + '/test.ini')
     assert "{}/test.ini".format(config_path) in ini_config.filepaths
 

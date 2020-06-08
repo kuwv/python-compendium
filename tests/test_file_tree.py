@@ -1,11 +1,11 @@
-from compendium import filetree  # , settings
+from compendium.config_manager import ConfigManager
 import os
 
 
-def test_filetree(fs):
+def test_config_manager(fs):
     user_path = os.path.expanduser('~')
     current_path = os.path.basename(__file__)
-    filetree_list = filetree.FileTree(application='test')
+    config_files = ConfigManager(application='test')
 
     # System path
     fs.create_file('/etc/test/settings.toml')
@@ -18,8 +18,8 @@ def test_filetree(fs):
     fs.create_file(current_path + '/settings.toml')
     fs.create_file(current_path + '/test.toml')
 
-    filetree_list.load_config_paths()
-    filepaths = filetree_list.filepaths
+    config_files.load_config_paths()
+    filepaths = config_files.filepaths
     print('Filepaths: ' + str(filepaths))
 
     assert '/etc/test/settings.toml' in filepaths

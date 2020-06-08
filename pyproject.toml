@@ -37,6 +37,7 @@ classifiers = ["License :: OSI Approved :: Apache Software License"]
 compend = "compendium.__main__:main"
 
 [tool.black]
+line-length = 80
 include = '\.pyi?$'
 exclude = '''
 
@@ -45,8 +46,8 @@ exclude = '''
     | \.git
     | \.mypy_cache
     | \.pytest_cache
-    | \.vagrant
     | _build
+    | build
     | dist
   )
 )

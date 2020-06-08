@@ -1,5 +1,6 @@
-from .filetree import FileTree
+from .config_manager import ConfigManager
 from .settings import Settings
+
 # from .cli import cli
 import os
 import json
@@ -8,9 +9,9 @@ conpend_home = os.environ.get('COMPEND_HOME')
 conpend_conf = os.environ.get('COMPEND_CONF')
 conpend_log = os.environ.get('COMPEND_LOG')
 
-filelist = FileTree('test')
+config_list = ConfigManager('test')
 
-controller = Settings(application='tests', filename='settings.toml')
+config = Settings(application='tests', filename='settings.toml')
 
 
 def print_json(var):
@@ -18,8 +19,8 @@ def print_json(var):
 
 
 def main():
-    print('File paths: ' + str(filelist.filepaths))
-    print(filelist.load_config_paths('nested'))
-    print_json(var=controller.settings)
-    # print_json(controller.get_section('tool'))
-    print(controller.list_sections())
+    print('File paths: ' + str(config_list.filepaths))
+    print(config_list.load_config_paths('nested'))
+    print_json(var=config.settings)
+    # print_json(config.get_section('tool'))
+    print(config.list_sections())

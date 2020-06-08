@@ -26,11 +26,11 @@ class IniConfig(ConfigBase):
         self.__log.debug("INIConf loading file: {}".format(filepath))
         if os.path.isfile(filepath):
             self.__parser.read(filepath)
-            # TODO: need to combine all dicts into one dict
-            print(self.__parser.sections())
-            for section in self.__parser.sections():
-                for name, value in self.__parser.items(section):
-                    print("  {} = {}".format(name, value))
+            # TODO: need to combine all dictionaries into one
+            # print(self.__parser.sections())
+            # for section in self.__parser.sections():
+            #     for name, value in self.__parser.items(section):
+            #         print("  {} = {}".format(name, value))
             self.__configuration = self.__parser._sections
         else:
             self.__log.error('Error: file not in specified path')
