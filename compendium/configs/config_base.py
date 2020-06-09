@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from abc import ABCMeta, abstractmethod  # , abstractproperty
+from abc import ABCMeta, abstractmethod
 
 
 class ConfigBase(metaclass=ABCMeta):
     # @abstractproperty
-    # def filesystems(self):
+    # def filesystems():
     #     '''Retrieve extensions of filetypes'''
 
     @abstractmethod
@@ -15,12 +15,11 @@ class ConfigBase(metaclass=ABCMeta):
     def save_config(self):
         '''Save confgration to file'''
 
-    @classmethod
-    def update_config(cls, content):
+class ConfigMixin:
+    def update_config(self, content):
         '''Apply update to config'''
-        cls._configuration.update(content)
+        self._configuration = content
 
-    @classmethod
-    def get_config(cls):
+    def get_config(self):
         '''Get configuration as dictionary'''
-        return cls._configuration
+        return self._configuration

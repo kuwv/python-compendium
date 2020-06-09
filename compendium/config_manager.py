@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import glob
 import os
-from .utils import Logger
 from .configs import Configs
+from .utils import Logger
 
 
 class ConfigManager(Configs):
@@ -20,37 +20,29 @@ class ConfigManager(Configs):
 
         self.application = application
 
-        if 'load_strategy' in kwargs:
-            self.load_strategy = kwargs.get('load_strategy')
-        else:
-            self.load_strategy = 'hierarchy'
+        self.load_strategy = kwargs.get('load_strategy', 'hierarchy')
+        self.enable_system_paths = kwargs.get('enable_system_paths', False)
+        self.enable_user_paths = kwargs.get('enable_user_paths', False)
+        self.enable_local_paths = kwargs.get('enable_local_paths', True)
 
         # TODO: writable / readonly
         self.filepaths = []
         self.base_path = None
 
-        if 'enable_system_paths' in kwargs:
-            self.enable_system_paths = kwargs.get('enable_system_paths')
-        else:
-            self.enable_system_paths = True
-
-        if 'enable_local_paths' in kwargs:
-            self.enable_local_paths = kwargs.get('enable_local_paths')
-        else:
-            self.enable_local_paths = True
-
         if 'path' in kwargs:
-            self.filepaths = [kwargs.get('path')]
-            # self.load_strategy = 'singleton'
-            path, self.filename = self.split_filepath(self.filepaths[0])
-            # self.load_config_path(kwargs.get('path'))
+            self.load_strategy = 'singleton'
+            self.filepaths.append(kwargs.get('path'))
+            self.base_path, self.filename = self.split_filepath(
+                self.filepaths[0]
+            )
+            self.load_config_path(kwargs.get('path'))
         elif 'filename' in kwargs:
             self.filename = kwargs.get('filename')
             self.filetype = self.get_filetype(self.filename)
             self.load_config_paths()
         else:
             self.filename = 'settings.toml'
-            self.filetype = self.get_filetype(self.filename)
+            self.filetype = 'toml'
             self.load_config_paths()
 
     def __load_filepath(self, path, file):
@@ -60,11 +52,8 @@ class ConfigManager(Configs):
             filepath = self.base_path + filepath
         self.__log.debug("searching for {f}".format(f=filepath))
 
-        if os.path.isfile(filepath):
+        if self._check_path(filepath):
             self.filepaths.append(filepath)
-            self.__log.debug("{f} found".format(f=filepath))
-        else:
-            self.__log.debug("{f} not found".format(f=filepath))
 
     @staticmethod
     def __get_supported_filetypes():
@@ -73,8 +62,7 @@ class ConfigManager(Configs):
     def _load_hierarchy_paths(self):
         self.__load_filepath('/etc/' + self.application, self.filename)
         self.__load_filepath(
-            '/etc/' + self.application,
-            self.application + '.' + self.filetype
+            '/etc/' + self.application, self.application + '.' + self.filetype
         )
 
     def _load_user_paths(self):
@@ -117,8 +105,10 @@ class ConfigManager(Configs):
         if self.enable_system_paths:
             self._load_hierarchy_paths()
 
-        if self.enable_local_paths:
+        if self.enable_user_paths:
             self._load_user_paths()
+
+        if self.enable_local_paths:
             self._load_local_paths()
 
     def _load_nested_filepaths(self, path=None):

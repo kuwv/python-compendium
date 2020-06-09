@@ -28,3 +28,8 @@ def test_json_content(fs):
     assert search('stooges.stooge3', config.settings) == 'Moe'
     assert search('fruit', config.settings) != 'banana'
     assert search('number', config.settings) == 2
+
+def test_json_content():
+    config = Settings(application='tests', path=json_path)
+    config.update_settings({'test': 'test'})
+    config.save_settings()

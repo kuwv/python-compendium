@@ -22,19 +22,15 @@ class Settings(ConfigManager):
         super().__init__(application, **kwargs)
 
         # Load settings from configs
-        if 'merge_strategy' in kwargs:
-            self.merge_strategy = kwargs.get('merge_strategy')
+        self.merge_strategy = kwargs.get('merge_strategy', 'last')
 
-            if self.merge_strategy == 'overlay':
-                self.__overlay_configs()
+        if self.merge_strategy == 'overlay':
+            self.__overlay_configs()
 
-            if self.merge_strategy == 'partition':
-                self.__partition_configs(kwargs.get('merge_sections'))
+        if self.merge_strategy == 'partition' or self.load_strategy == 'nested':
+            self.__partition_configs(kwargs.get('merge_sections'))
 
-            if self.merge_strategy == 'last':
-                self.__last_config()
-        else:
-            print('running')
+        if self.merge_strategy == 'last':
             self.__last_config()
 
         # TODO: load environment variables
@@ -51,7 +47,6 @@ class Settings(ConfigManager):
         pass
 
     def __last_config(self):
-        print('this is erroring: ' + str(self.filepaths))
         self.update_settings(self.load_config_settings(self.filepaths[-1]))
 
     def get_section(self, name):
@@ -66,3 +61,6 @@ class Settings(ConfigManager):
     def update_settings(self, new_settings):
         self.__log.debug(new_settings)
         self.__settings.update(new_settings)
+
+    def save_settings(self):
+        self.save_config_settings(self.filepaths[-1], self.__settings)
