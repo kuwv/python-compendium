@@ -40,11 +40,11 @@ class ConfigManager(Configs):
         elif 'filename' in kwargs:
             self.filename = kwargs.get('filename')
             self.filetype = self.get_filetype(self.filename)
-            self.load_config_paths()
+            self.load()
         else:
             self.filename = 'settings.toml'
             self.filetype = 'toml'
-            self.load_config_paths()
+            self.load()
 
     def __load_filepath(self, path, file):
         filepath = "{p}/{f}".format(p=path, f=file)
@@ -124,15 +124,10 @@ class ConfigManager(Configs):
         path, self.filename = self.split_filepath(filepath)
         self.__load_filepath(path, self.filename)
 
-    def load_config_paths(self, paths=[], load_strategy='hierarchy'):
+    def load(self, paths=[], load_strategy='hierarchy'):
         if load_strategy == 'hierarchy':
             self._load_hierarchy_filepaths()
         elif load_strategy == 'nested':
             self._load_nested_filepaths(paths[0])
         elif load_strategy == 'standalone':
             self.load_config_path(paths[0])
-
-    @staticmethod
-    def __make_directory(directory):
-        if not os.path.exists(directory):
-            os.makedirs(directory)

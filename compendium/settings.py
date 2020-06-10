@@ -40,15 +40,19 @@ class Settings(ConfigManager):
     def settings(self) -> Dict[Any, Any]:
         return self.__settings
 
+    def __update_settings(self, new_settings):
+        self.__log.debug(new_settings)
+        self.__settings.update(new_settings)
+
     def __overlay_configs(self):
         for filepath in self.filepaths:
-            self.update_settings(self.load_config_settings(filepath))
+            self.__update_settings(self.load_config_settings(filepath))
 
     def __partition_configs(self, sections):
         pass
 
     def __last_config(self):
-        self.update_settings(self.load_config_settings(self.filepaths[-1]))
+        self.__update_settings(self.load_config_settings(self.filepaths[-1]))
 
     def get_section(self, name) -> Dict[Any, Any]:
         return jmespath.compile(name)
@@ -59,9 +63,6 @@ class Settings(ConfigManager):
         else:
             return self.__settings[path].keys()
 
-    def update_settings(self, new_settings):
-        self.__log.debug(new_settings)
-        self.__settings.update(new_settings)
-
-    def save_settings(self):
+    def update(self, content):
+        self.__update_settings(content)
         self.save_config_settings(self.filepaths[-1], self.__settings)

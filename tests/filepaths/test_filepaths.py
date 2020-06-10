@@ -20,7 +20,7 @@ def test_hierarchy(fs):
     fs.create_file(current_path + '/settings.toml')
     fs.create_file(current_path + '/test.toml')
 
-    config_files.load_config_paths()
+    config_files.load()
     filepaths = config_files.filepaths
     print('Filepaths: ' + str(filepaths))
 
@@ -38,7 +38,7 @@ def test_hierarchy(fs):
 #     fs.create_file(current_path + '/example1/settings.toml')
 #     fs.create_file(current_path + '/example2/settings.toml')
 #
-#     config_files.load_config_paths()
+#     config_files.load()
 #     filepaths = config_files.filepaths
 #     print('Filepaths: ' + str(filepaths))
 #

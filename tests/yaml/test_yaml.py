@@ -9,7 +9,7 @@ yaml_path = config_path + '/test.yaml'
 
 def test_empty_filepath():
     empty_list = ConfigManager(application='empty', filename='test.yaml')
-    empty_list.load_config_paths()
+    empty_list.load()
     assert not empty_list.filepaths
 
 

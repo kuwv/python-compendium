@@ -3,34 +3,33 @@ from compendium.settings import Settings
 from jmespath import search
 import os
 
-config_path = os.path.dirname(os.path.realpath(__file__))
-json_path = config_path + '/test.json'
+settings_path = os.path.dirname(os.path.realpath(__file__))
+json_path = settings_path + '/test.json'
 
 
 def test_empty_filepath():
     empty_list = ConfigManager(application='empty', filename='test.json')
-    empty_list.load_config_paths()
+    empty_list.load()
     assert not empty_list.filepaths
 
 
 def test_json_path(fs):
     fs.add_real_file(json_path)
-    json_config = ConfigManager(application='json', filename='test.json')
-    json_config.load_config_path(config_path + '/test.json')
-    assert "{}/test.json".format(config_path) in json_config.filepaths
+    json_settings = ConfigManager(application='json', filename='test.json')
+    json_settings.load_config_path(settings_path + '/test.json')
+    assert "{}/test.json".format(settings_path) in json_settings.filepaths
 
 
 def test_json_content(fs):
     fs.add_real_file(json_path)
-    config = Settings(application='tests', path=json_path)
-    assert search('stooges.stooge1', config.settings) == 'Larry'
-    assert search('stooges.stooge2', config.settings) == 'Curly'
-    assert search('stooges.stooge3', config.settings) == 'Moe'
-    assert search('fruit', config.settings) != 'banana'
-    assert search('number', config.settings) == 2
+    settings = Settings(application='tests', path=json_path)
+    assert search('stooges.stooge1', settings.settings) == 'Larry'
+    assert search('stooges.stooge2', settings.settings) == 'Curly'
+    assert search('stooges.stooge3', settings.settings) == 'Moe'
+    assert search('fruit', settings.settings) != 'banana'
+    assert search('number', settings.settings) == 2
 
 
 def test_json_content_save():
-    config = Settings(application='tests', path=json_path)
-    config.update_settings({'test': 'test'})
-    config.save_settings()
+    settings = Settings(application='tests', path=json_path)
+    settings.update({'test': 'test'})

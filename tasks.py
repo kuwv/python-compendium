@@ -26,11 +26,19 @@ def unit_test(ctx):
 
 
 @task
-def coverage(ctx):
-    ctx.run('pytest --cov=compendium ./tests/')
+def safety(ctx):
+    ctx.run('safety check')
 
 
-@task(pre=[format, lint, type_check, unit_test, coverage])
+@task
+def coverage(ctx, report=None):
+    args = ['--cov=compendium']
+    if report:
+        args.append("--cov-report={}".format(report))
+    ctx.run("pytest {} ./tests/".format(' '.join(args)))
+
+
+@task(pre=[format, lint, unit_test, safety, coverage])
 def test(ctx):
     ctx.run('compend')
 

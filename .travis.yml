@@ -21,7 +21,9 @@ script:
   - inv lint
   # - inv type-check
   - inv unit-test
-  - inv coverage
+  - inv safety
+  - inv coverage --report=xml
+  - bash <(curl -s https://codecov.io/bash)
 
 # before_deploy:
 #   - poetry config repositories.mypypi http://mypypi.example.com/simple
@@ -29,8 +31,9 @@ script:
 #   - poetry build -f sdist
 
 # deploy:
-#   provider: script
-#   script: poetry publish -r mypypi
-#   skip_cleanup: true
-#   on:
-#     tags: true
+#   - provider: script
+#     script: poetry publish -r compendium
+#     skip_cleanup: true
+#     on:
+#       branch: master
+#       tags: true

@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/kuwv/python-compendium.svg?branch=master)](https://travis-ci.org/kuwv/python-compendium)
 
-# Python Compendium
+# Compendium
 
 ## Overview
 
-Compendium is a simple confiuration management tool.
+Compendium is a simple configuration management tool.

@@ -9,10 +9,12 @@ conpend_home = os.environ.get('COMPEND_HOME')
 conpend_conf = os.environ.get('COMPEND_CONF')
 conpend_log = os.environ.get('COMPEND_LOG')
 
-# config_list = ConfigManager('test')
-config = Settings(
-    application='tests', filename='settings.toml', load_strategy='nested'
-)
+# content_list = ConfigManager('test')
+# content = Settings(
+#     application='tests', filename='settings.toml', load_strategy='nested'
+# )
+
+content = Settings(application='tests', path='tests/settings.toml')
 
 
 def print_json(var):
@@ -20,8 +22,8 @@ def print_json(var):
 
 
 def main():
-    # print('File paths: ' + str(config_list.filepaths))
-    # print(config_list.load_config_paths('nested'))
-    print_json(var=config.settings)
-    # print_json(config.get_section('tool'))
-    # print(config.list_sections())
+    # print('File paths: ' + str(content_list.filepaths))
+    # print(content_list.load('nested'))
+    print_json(var=content.settings)
+    # print_json(content.get_section('tool'))
+    print(content.list_sections())
