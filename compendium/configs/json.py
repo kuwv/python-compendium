@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import errno
-import json
-import jsonschema
+import json  # type: ignore
+import jsonschema  # type: ignore
+import os
 import sys
-from . import ConfigBase, ConfigMixin
+from . import ConfigBase
 from ..utils import Logger
 
 
-class JsonConfig(ConfigBase, ConfigMixin):
+class JsonConfig(ConfigBase):
     def __init__(self):
         self.__log = Logger(__name__)
         self.__log.info('Inializing JsonConfig')
@@ -18,16 +19,18 @@ class JsonConfig(ConfigBase, ConfigMixin):
 
     def load_config(self, filepath):
         self.__log.info('JsonConfig: loading configuration file')
-        with open(filepath, 'r') as json_file:
-            self._configuration = json.load(json_file)
-        json_file.close()
+        if os.path.isfile(filepath):
+            with open(filepath, 'r') as f:
+                content = json.load(f)
+            f.close()
+        else:
+            content = {}
+        return content
 
-    def save_config(self, filepath):
+    def save_config(self, content, filepath):
         try:
             with open(filepath, 'w') as f:
-                json.dump(
-                    self._configuration, f, indent=2, sort_keys=True
-                )
+                json.dump(content, f, indent=2, sort_keys=True)
             f.close()
         except IOError as err:
             if err[0] == errno.EPERM:

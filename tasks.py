@@ -1,10 +1,13 @@
 # import os
-from invoke import call, task
+from invoke import call, task  # type: ignore
 
 
 @task
-def format(ctx):
-    ctx.run('black -S **/*.py')
+def format(ctx, check=False):
+    args = ['--skip-string-normalization']
+    if check:
+        args.append('--check')
+    ctx.run("black **/*.py {}".format(' '.join(args)))
 
 
 @task
@@ -13,8 +16,8 @@ def lint(ctx):
 
 
 @task
-def coverage(ctx):
-    ctx.run('pytest --cov=compendium ./tests/')
+def type_check(ctx, path='.'):
+    ctx.run("mypy {}".format(path))
 
 
 @task
@@ -22,7 +25,12 @@ def unit_test(ctx):
     ctx.run('pytest')
 
 
-@task(pre=[format, lint, unit_test, coverage])
+@task
+def coverage(ctx):
+    ctx.run('pytest --cov=compendium ./tests/')
+
+
+@task(pre=[format, lint, type_check, unit_test, coverage])
 def test(ctx):
     ctx.run('compend')
 
@@ -67,9 +75,9 @@ def publish(ctx, symlink=False):
 
 @task
 def clean(ctx):
-    patterns = ['dist', 'logs']
-    patterns.append('**/__pycache__')
-    patterns.append('**/*.pyc')
-    patterns.append('compendium.egg-info')
-    for pattern in patterns:
-        ctx.run("rm -rf {}".format(pattern))
+    paths = ['dist', 'logs']
+    paths.append('**/__pycache__')
+    paths.append('**/*.pyc')
+    paths.append('compendium.egg-info')
+    for path in paths:
+        ctx.run("rm -rf {}".format(path))

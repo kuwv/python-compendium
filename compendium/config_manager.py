@@ -3,6 +3,7 @@ import glob
 import os
 from .configs import Configs
 from .utils import Logger
+from typing import List
 
 
 class ConfigManager(Configs):
@@ -18,16 +19,16 @@ class ConfigManager(Configs):
         self.__log = Logger(__name__)
         super().__init__()
 
-        self.application = application
+        self.application: str = application
 
-        self.load_strategy = kwargs.get('load_strategy', 'hierarchy')
-        self.enable_system_paths = kwargs.get('enable_system_paths', False)
-        self.enable_user_paths = kwargs.get('enable_user_paths', False)
-        self.enable_local_paths = kwargs.get('enable_local_paths', True)
+        self.load_strategy: str = kwargs.get('load_strategy', 'hierarchy')
+        self.enable_system_paths: str = kwargs.get('enable_system_paths', False)
+        self.enable_user_paths: str = kwargs.get('enable_user_paths', False)
+        self.enable_local_paths: str = kwargs.get('enable_local_paths', True)
 
         # TODO: writable / readonly
-        self.filepaths = []
-        self.base_path = None
+        self.filepaths: List[str] = []
+        self.base_path: str = None
 
         if 'path' in kwargs:
             self.load_strategy = 'singleton'

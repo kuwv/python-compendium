@@ -12,14 +12,5 @@ class ConfigBase(metaclass=ABCMeta):
         '''Load configuration from file'''
 
     @abstractmethod
-    def save_config(self):
+    def save_config(self, content, filepath):
         '''Save confgration to file'''
-
-class ConfigMixin:
-    def update_config(self, content):
-        '''Apply update to config'''
-        self._configuration = content
-
-    def get_config(self):
-        '''Get configuration as dictionary'''
-        return self._configuration

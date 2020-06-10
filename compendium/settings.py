@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-import jmespath
+import jmespath  # type: ignore
 from .utils import Logger
 from .config_manager import ConfigManager
+from typing import Any, Dict, KeysView
 
 
 class Settings(ConfigManager):
 
-    __defaults = {}
-    __settings = {}
+    __defaults: Dict[Any, Any] = {}
+    __settings: Dict[Any, Any] = {}
 
     def __init__(self, application, **kwargs):
         '''
@@ -22,7 +23,7 @@ class Settings(ConfigManager):
         super().__init__(application, **kwargs)
 
         # Load settings from configs
-        self.merge_strategy = kwargs.get('merge_strategy', 'last')
+        self.merge_strategy: str = kwargs.get('merge_strategy', 'last')
 
         if self.merge_strategy == 'overlay':
             self.__overlay_configs()
@@ -36,7 +37,7 @@ class Settings(ConfigManager):
         # TODO: load environment variables
 
     @property
-    def settings(self):
+    def settings(self) -> Dict[Any, Any]:
         return self.__settings
 
     def __overlay_configs(self):
@@ -49,10 +50,10 @@ class Settings(ConfigManager):
     def __last_config(self):
         self.update_settings(self.load_config_settings(self.filepaths[-1]))
 
-    def get_section(self, name):
+    def get_section(self, name) -> Dict[Any, Any]:
         return jmespath.compile(name)
 
-    def list_sections(self, path=None):
+    def list_sections(self, path=None) -> KeysView[Any]:
         if path is None:
             return self.__settings.keys()
         else:

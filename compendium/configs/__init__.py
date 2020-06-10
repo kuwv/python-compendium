@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # import codecs
 import os
-from .config_base import ConfigBase, ConfigMixin
+from .config_base import ConfigBase
 # TODO: Implement importlib find_module
 from .json import JsonConfig  # noqa
 from .toml import TomlConfig  # noqa
@@ -42,8 +42,7 @@ class Configs:
             )
             filename = self.get_filename(config_path)
             self.__load_module(filename)
-            self.__config_module.load_config(filepath=config_path)
-            return self.__config_module.get_config()
+            return self.__config_module.load_config(config_path)
         else:
             self.__log.info(
                 "Skipping: No configuration found at: '{}'".format(config_path)
@@ -56,8 +55,7 @@ class Configs:
         )
         filename = self.get_filename(config_path)
         self.__load_module(filename)
-        self.__config_module.update_config(settings)
-        self.__config_module.save_config(config_path)
+        self.__config_module.save_config(settings, config_path)
 
     def _check_path(self, filepath):
         if os.path.isfile(filepath):

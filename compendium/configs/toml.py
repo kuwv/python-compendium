@@ -2,12 +2,12 @@
 import errno
 import os
 import sys
-import tomlkit
-from . import ConfigBase, ConfigMixin
+import tomlkit  # type: ignore
+from . import ConfigBase
 from ..utils import Logger
 
 
-class TomlConfig(ConfigBase, ConfigMixin):
+class TomlConfig(ConfigBase):
     def __init__(self):
         self.__log = Logger(__name__)
         self.__log.info('Inializing TomlConfig')
@@ -22,18 +22,17 @@ class TomlConfig(ConfigBase, ConfigMixin):
         self.__log.info('TomlConfig: loading configuration file')
         if os.path.isfile(filepath):
             with open(filepath, encoding='utf-8') as f:
-                self._configuration = tomlkit.loads(f.read())
+                content = tomlkit.loads(f.read())
             f.close()
         else:
-            # TODO: Load template if configured
-            self._configuration = {}
-        return self._configuration
+            content = {}
+        return content
 
-    def save_config(self, filepath):
+    def save_config(self, content, filepath):
         self.__log.info('TomlConfig: saving configuration file')
         try:
             with open(filepath, 'w') as f:
-                f.write(tomlkit.dumps(self._configuration))
+                f.write(tomlkit.dumps(content))
             f.close()
         except IOError as err:
             if err[0] == errno.EPERM:
