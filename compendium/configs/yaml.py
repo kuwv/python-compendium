@@ -22,9 +22,12 @@ class YamlConfig(ConfigBase):
         self.__log.info(
             "YamlConfig loading configuration file {}".format(filepath)
         )
-        with open(filepath, 'r') as f:
-            content = self.yaml.load(f)
-        f.close()
+        if os.path.isfile(filepath):
+            with open(filepath, 'r') as f:
+                content = self.yaml.load(f)
+            f.close()
+        else:
+            content = {}
         return content
 
     def save_config(self, content, filepath):
