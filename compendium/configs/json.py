@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# import datetime
+import datetime
 import errno
 import json  # type: ignore
 # import jsonschema  # type: ignore
@@ -13,6 +13,10 @@ class JsonConfig(ConfigBase):
     def __init__(self):
         self.__log = Logger(__name__)
         self.__log.info('Inializing JsonConfig')
+
+    def default(self, obj):
+        if isinstance(obj, (datetime.date, datetime.datetime)):
+            return obj.isoformat()
 
     @staticmethod
     def filetypes():
@@ -31,7 +35,7 @@ class JsonConfig(ConfigBase):
     def save_config(self, content, filepath):
         try:
             with open(filepath, 'w') as f:
-                json.dump(content, f, indent=2, sort_keys=True)
+                json.dump(content, f, indent=2, sort_keys=True, default=self.default)
             f.close()
         except IOError as err:
             if err.errno == errno.EACCES:
