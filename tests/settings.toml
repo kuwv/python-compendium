@@ -1,13 +1,28 @@
-[[fruit.blah]]
-  name = "apple"
+test = "test"
+title = "TOML Example"
 
-  [fruit.blah.physical]
-    color = "red"
-    shape = "round"
+[clients]
+data = [ ["gamma", "delta"], [1, 2] ]
+hosts = [
+  "alpha",
+  "omega"
+]
 
-[[fruit.blah]]
-  name = "banana"
+[database]
+connection_max = 5000
+enabled = true
+ports = [ 8001, 8001, 8002 ]
+server = "192.168.1.1"
 
-  [fruit.blah.physical]
-    color = "yellow"
-    shape = "bent"
+[owner]
+dob = 1979-05-27T07:32:00-08:00 # First class dates
+name = "Tom Preston-Werner"
+
+[servers]
+[servers.alpha]
+  dc = "eqdc10"
+  ip = "10.0.0.1"
+
+[servers.beta]
+  dc = "eqdc10"
+  ip = "10.0.0.2"

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import collections
 import jmespath  # type: ignore
 from .utils import Logger
 from .config_manager import ConfigManager
@@ -52,17 +53,23 @@ class Settings(ConfigManager):
         pass
 
     def __last_config(self):
-        self.__update_settings(self.load_config_settings(self.filepaths[-1]))
+        self.__update_settings(self.load_config_settings(self.head))
 
-    def get_section(self, name) -> Dict[Any, Any]:
-        return jmespath.compile(name)
+    def compile(self, query) -> Dict[Any, Any]:
+        return jmespath.compile(query)
 
-    def list_sections(self, path=None) -> KeysView[Any]:
-        if path is None:
-            return self.__settings.keys()
-        else:
-            return self.__settings[path].keys()
+    def list_sections(self) -> KeysView[Any]:
+        return jmespath.search('keys(@)', self.__settings)
+
+    def search(self, expression, path=None):
+        return jmespath.search(
+            expression,
+            self.__settings,
+            options=jmespath.Options(dict_cls=collections.OrderedDict),
+        )
 
     def update(self, content):
+        print(self.settings)
         self.__update_settings(content)
-        self.save_config_settings(self.filepaths[-1], self.__settings)
+        print(self.settings)
+        self.save_config_settings(self.head, self.__settings)

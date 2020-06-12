@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+# import datetime
 import errno
 import json  # type: ignore
-import jsonschema  # type: ignore
+# import jsonschema  # type: ignore
 import os
 import sys
 from . import ConfigBase
@@ -33,17 +34,17 @@ class JsonConfig(ConfigBase):
                 json.dump(content, f, indent=2, sort_keys=True)
             f.close()
         except IOError as err:
-            if err[0] == errno.EPERM:
-                print(
+            if err.errno == errno.EACCES:
+                self.__log.error(
                     'Error: You do not have permission to write to this file'
                 )
-                sys.exit(1)
+                raise
 
-    def validate(self, content):
-        try:
-            jsonschema.validate(instance=content, schema=self.schema)
-        except jsonschema.exceptions.ValidationError as err:
-            # TODO handle validation error
-            print(err[0])
-            return False
-        return True
+    # def validate(self, content):
+    #     try:
+    #         jsonschema.validate(instance=content, schema=self.schema)
+    #     except jsonschema.exceptions.ValidationError as err:
+    #         # TODO handle validation error
+    #         print(err[0])
+    #         return False
+    #     return True

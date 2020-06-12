@@ -25,7 +25,6 @@ class YamlConfig(ConfigBase):
         if os.path.isfile(filepath):
             with open(filepath, 'r') as f:
                 content = self.yaml.load(f)
-            f.close()
         else:
             content = {}
         return content
@@ -38,10 +37,9 @@ class YamlConfig(ConfigBase):
                     f,
                     default_flow_style=False
                 )
-            f.close()
         except IOError as err:
-            if err[0] == errno.EPERM:
+            if err.errno == errno.EACCES:
                 self.__log.error(
-                    'Error: unable to write to file'
+                    'Error: You do not have permission to write to this file'
                 )
-                sys.exit(1)
+                raise

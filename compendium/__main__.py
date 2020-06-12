@@ -2,8 +2,9 @@
 from .settings import Settings
 
 # from .cli import cli
-import os
 import json
+import os
+# import sys
 
 conpend_home = os.environ.get('COMPEND_HOME')
 conpend_conf = os.environ.get('COMPEND_CONF')
@@ -14,7 +15,7 @@ conpend_log = os.environ.get('COMPEND_LOG')
 #     application='tests', filename='settings.toml', load_strategy='nested'
 # )
 
-content = Settings(application='tests', path='tests/settings.toml')
+content = Settings(application='tests', path='tests/settings.toml', load_strategy='nested')
 
 
 def print_json(var):
@@ -24,6 +25,15 @@ def print_json(var):
 def main():
     # print('File paths: ' + str(content_list.filepaths))
     # print(content_list.load('nested'))
-    print_json(var=content.settings)
+    # print_json(var=content.settings)
     # print_json(content.get_section('tool'))
-    print(content.list_sections())
+    print('List sections: ' + str(content.list_sections()))
+    print('List IP\'s: ' + str(content.search('servers.*.ip')))
+    content.update({'test': 'test'})
+
+
+# if __name__ == '__main__':
+#     try:
+#         main()
+#     except BrokenPipeError as exc:
+#         sys.exit(exc.errno)

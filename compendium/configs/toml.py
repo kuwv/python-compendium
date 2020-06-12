@@ -23,7 +23,6 @@ class TomlConfig(ConfigBase):
         if os.path.isfile(filepath):
             with open(filepath, encoding='utf-8') as f:
                 content = tomlkit.loads(f.read())
-            f.close()
         else:
             content = {}
         return content
@@ -33,8 +32,9 @@ class TomlConfig(ConfigBase):
         try:
             with open(filepath, 'w') as f:
                 f.write(tomlkit.dumps(content))
-            f.close()
         except IOError as err:
-            if err[0] == errno.EPERM:
-                print('Error: unable to write to file')
-                sys.exit(1)
+            if err.errno == errno.EACCES:
+                self.__log.error(
+                    'Error: You do not have permission to write to this file'
+                )
+                raise

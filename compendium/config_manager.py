@@ -36,7 +36,7 @@ class ConfigManager(Configs):
             self.base_path, self.filename = self.split_filepath(
                 self.filepaths[0]
             )
-            self.load_config_path(kwargs.get('path'))
+            self.load_config(kwargs.get('path'))
         elif 'filename' in kwargs:
             self.filename = kwargs.get('filename')
             self.filetype = self.get_filetype(self.filename)
@@ -46,11 +46,16 @@ class ConfigManager(Configs):
             self.filetype = 'toml'
             self.load()
 
+    @property
+    def head(self):
+        return self.filepaths[-1]
+
     def __load_filepath(self, path, file):
         filepath = "{p}/{f}".format(p=path, f=file)
 
         if self.base_path is not None:
             filepath = self.base_path + filepath
+
         self.__log.debug("searching for {f}".format(f=filepath))
 
         if self._check_path(filepath):
@@ -60,30 +65,8 @@ class ConfigManager(Configs):
     def __get_supported_filetypes():
         pass
 
-    def _load_hierarchy_paths(self):
-        self.__load_filepath('/etc/' + self.application, self.filename)
-        self.__load_filepath(
-            '/etc/' + self.application, self.application + '.' + self.filetype
-        )
-
-    def _load_user_paths(self):
-        self.__load_filepath(
-            os.path.expanduser('~'),
-            '.' + self.application + '.' + self.filetype,
-        )
-        self.__load_filepath(
-            os.path.expanduser('~') + '/.' + self.application + '.d',
-            self.filename,
-        )
-
-    def _load_local_paths(self):
-        self.__load_filepath(os.getcwd(), self.filename)
-        self.__load_filepath(
-            os.getcwd(), self.application + '.' + self.filetype
-        )
-
     # TODO: Implement pathlib
-    def _load_hierarchy_filepaths(self):
+    def load_config_filepaths(self):
         '''Load config paths based on priority
         First(lowest) to last(highest)
         1. Load settings.<FILETYPE> from /etc/<APP>
@@ -104,15 +87,29 @@ class ConfigManager(Configs):
         # TODO: Make directory if not exists
 
         if self.enable_system_paths:
-            self._load_hierarchy_paths()
+            self.__load_filepath('/etc/' + self.application, self.filename)
+            self.__load_filepath(
+                '/etc/' + self.application,
+                self.application + '.' + self.filetype
+            )
 
         if self.enable_user_paths:
-            self._load_user_paths()
+            self.__load_filepath(
+                os.path.expanduser('~'),
+                '.' + self.application + '.' + self.filetype,
+            )
+            self.__load_filepath(
+                os.path.expanduser('~') + '/.' + self.application + '.d',
+                self.filename,
+            )
 
         if self.enable_local_paths:
-            self._load_local_paths()
+            self.__load_filepath(os.getcwd(), self.filename)
+            self.__load_filepath(
+                os.getcwd(), self.application + '.' + self.filetype
+            )
 
-    def _load_nested_filepaths(self, path=None):
+    def load_nested_configs(self, path=None):
         for file in glob.iglob('**/*.toml', recursive=True):
             print(file)
 
@@ -120,14 +117,14 @@ class ConfigManager(Configs):
             os.getcwd(), self.application + '.' + self.filetype
         )
 
-    def load_config_path(self, filepath):
+    def load_config(self, filepath):
         path, self.filename = self.split_filepath(filepath)
         self.__load_filepath(path, self.filename)
 
-    def load(self, paths=[], load_strategy='hierarchy'):
+    def load(self, paths=[], load_strategy='hierarchy', **kwargs):
         if load_strategy == 'hierarchy':
-            self._load_hierarchy_filepaths()
+            self.load_config_filepaths()
         elif load_strategy == 'nested':
-            self._load_nested_filepaths(paths[0])
+            self.load_nested_configs(paths[0])
         elif load_strategy == 'standalone':
-            self.load_config_path(paths[0])
+            self.load_config(paths[0])

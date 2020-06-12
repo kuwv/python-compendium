@@ -16,7 +16,7 @@ def test_empty_filepath():
 def test_toml_path(fs):
     fs.add_real_file(toml_path)
     toml_config = ConfigManager(application='toml', filename='test.toml')
-    toml_config.load_config_path(config_path + '/test.toml')
+    toml_config.load_config(config_path + '/test.toml')
     assert "{}/test.toml".format(config_path) in toml_config.filepaths
 
 

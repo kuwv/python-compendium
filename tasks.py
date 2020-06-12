@@ -21,8 +21,11 @@ def type_check(ctx, path='.'):
 
 
 @task
-def unit_test(ctx):
-    ctx.run('pytest')
+def unit_test(ctx, capture=None):
+    args = []
+    if capture:
+        args.append('--capture=' + capture)
+    ctx.run("pytest {}".format(' '.join(args)))
 
 
 @task
