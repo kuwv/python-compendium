@@ -31,6 +31,7 @@ def test_yaml_content(fs):
     assert search('fruit', config.settings) != 'banana'
     assert search('number', config.settings) == 2
 
+
 def test_yaml_content_save(fs):
     fs.add_real_file(yaml_path, False)
     settings = Settings(application='tests', path=yaml_path)

@@ -29,14 +29,15 @@ class Settings(ConfigLayout):
         # Load settings from configs
         self.merge_strategy: str = kwargs.get("merge_strategy", "last")
 
-        # if self.merge_strategy == 'overlay':
-        #     self.__overlay_configs()
+        # TODO: remove init execution
+        if self.merge_strategy == 'overlay':
+            self.__overlay_configs()
 
-        # if self.merge_strategy == 'partition' or self.load_strategy == 'nested':
-        #     self.__partition_configs(kwargs.get('merge_sections'))
+        if self.merge_strategy == 'partition' or self.load_strategy == 'nested':
+            self.__partition_configs(kwargs.get('merge_sections'))
 
-        # if self.merge_strategy == 'last':
-        #     self.__last_config()
+        if self.merge_strategy == 'last':
+            self.__last_config()
 
         # TODO: load environment variables
 
