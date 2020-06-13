@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import collections
-import jmespath  # type: ignore
-from .utils import Logger
-from .config_manager import ConfigLayout
 from typing import Any, Dict, KeysView
+
+import jmespath  # type: ignore
+
+from .config_manager import ConfigLayout
+from .utils import Logger
 
 
 class Settings(ConfigLayout):
@@ -11,13 +13,13 @@ class Settings(ConfigLayout):
     __defaults: Dict[Any, Any] = {}
 
     def __init__(self, application, **kwargs):
-        '''
+        """
         merge_sections: []
         merge_strategy:
           - overlay
           - partition
           - last
-        '''
+        """
         self.__log = Logger(__name__)
 
         super().__init__(application, **kwargs)
@@ -25,16 +27,16 @@ class Settings(ConfigLayout):
         self.__settings: Dict[Any, Any] = {}
 
         # Load settings from configs
-        self.merge_strategy: str = kwargs.get('merge_strategy', 'last')
+        self.merge_strategy: str = kwargs.get("merge_strategy", "last")
 
-        if self.merge_strategy == 'overlay':
-            self.__overlay_configs()
+        # if self.merge_strategy == 'overlay':
+        #     self.__overlay_configs()
 
-        if self.merge_strategy == 'partition' or self.load_strategy == 'nested':
-            self.__partition_configs(kwargs.get('merge_sections'))
+        # if self.merge_strategy == 'partition' or self.load_strategy == 'nested':
+        #     self.__partition_configs(kwargs.get('merge_sections'))
 
-        if self.merge_strategy == 'last':
-            self.__last_config()
+        # if self.merge_strategy == 'last':
+        #     self.__last_config()
 
         # TODO: load environment variables
 
@@ -64,7 +66,7 @@ class Settings(ConfigLayout):
         return jmespath.compile(query)
 
     def list_sections(self) -> KeysView[Any]:
-        return jmespath.search('keys(@)', self.__settings)
+        return jmespath.search("keys(@)", self.__settings)
 
     def search(self, expression, path=None):
         return jmespath.search(
@@ -74,7 +76,5 @@ class Settings(ConfigLayout):
         )
 
     def update(self, content):
-        print(self.settings)
         self.__update_settings(content)
-        print(self.settings)
         self.save(self.head, self.__settings)

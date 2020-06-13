@@ -1,7 +1,9 @@
+import os
+
+from jmespath import search
+
 from compendium.config_manager import ConfigLayout
 from compendium.settings import Settings
-from jmespath import search
-import os
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 yaml_path = config_path + '/test.yaml'
@@ -32,6 +34,5 @@ def test_yaml_content(fs):
 def test_yaml_content_save(fs):
     fs.add_real_file(yaml_path, False)
     settings = Settings(application='tests', path=yaml_path)
-    print('troubleshooting: ' + str(settings.settings))
     settings.update({'test': 'test'})
     assert settings.settings['test'] == 'test'

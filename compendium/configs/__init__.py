@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # import codecs
 import os
+
+from ..utils import Logger, ModuleLoader
 from .config_base import ConfigBase
 # TODO: Implement importlib find_module
 from .json import JsonConfig  # noqa
 from .toml import TomlConfig  # noqa
 from .yaml import YamlConfig  # noqa
-from ..utils import Logger, ModuleLoader
 
 
 class Configs:

@@ -1,4 +1,3 @@
-# import os
 from invoke import call, task  # type: ignore
 
 
@@ -7,6 +6,7 @@ def format(ctx, check=False):
     args = ['--skip-string-normalization']
     if check:
         args.append('--check')
+    ctx.run('isort --atomic **/*.py')
     ctx.run("black **/*.py {}".format(' '.join(args)))
 
 

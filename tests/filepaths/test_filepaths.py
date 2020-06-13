@@ -1,4 +1,5 @@
 import os
+
 from compendium.config_manager import ConfigLayout
 
 
@@ -22,7 +23,6 @@ def test_hierarchy(fs):
 
     config_files.load_configs()
     filepaths = config_files.filepaths
-    print('Filepaths: ' + str(filepaths))
 
     assert '/etc/test/settings.toml' in filepaths
     assert (user_path + '/.test.toml') in filepaths

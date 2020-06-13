@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import errno
 import os
+
 import tomlkit  # type: ignore
-from . import ConfigBase
+
 from ..utils import Logger
+from . import ConfigBase
 
 
 class TomlConfig(ConfigBase):

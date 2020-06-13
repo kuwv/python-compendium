@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import importlib
 import importlib.machinery
-import pkg_resources
 import pkgutil
+
+import pkg_resources
+
 from .logger import Logger
 
 SUFFIXES = [

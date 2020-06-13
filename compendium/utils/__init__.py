@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
-from .module import ModuleLoader  # noqa
 from .logger import Logger  # noqa
+from .module import ModuleLoader  # noqa

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from pprint import pformat
-import os
 import logging
+import os
 from logging.config import dictConfig
+from pprint import pformat
 
 
 class Logger(object):
