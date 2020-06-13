@@ -2,14 +2,13 @@
 import collections
 import jmespath  # type: ignore
 from .utils import Logger
-from .config_manager import ConfigManager
+from .config_manager import ConfigLayout
 from typing import Any, Dict, KeysView
 
 
-class Settings(ConfigManager):
+class Settings(ConfigLayout):
 
     __defaults: Dict[Any, Any] = {}
-    __settings: Dict[Any, Any] = {}
 
     def __init__(self, application, **kwargs):
         '''
@@ -22,6 +21,8 @@ class Settings(ConfigManager):
         self.__log = Logger(__name__)
 
         super().__init__(application, **kwargs)
+
+        self.__settings: Dict[Any, Any] = {}
 
         # Load settings from configs
         self.merge_strategy: str = kwargs.get('merge_strategy', 'last')
@@ -51,13 +52,13 @@ class Settings(ConfigManager):
 
     def __overlay_configs(self):
         for filepath in self.filepaths:
-            self.__update_settings(self.load_config_settings(filepath))
+            self.__update_settings(self.load(filepath))
 
     def __partition_configs(self, sections):
         pass
 
     def __last_config(self):
-        self.__update_settings(self.load_config_settings(self.head))
+        self.__update_settings(self.load(self.head))
 
     def compile(self, query) -> Dict[Any, Any]:
         return jmespath.compile(query)
@@ -76,4 +77,4 @@ class Settings(ConfigManager):
         print(self.settings)
         self.__update_settings(content)
         print(self.settings)
-        self.save_config_settings(self.head, self.__settings)
+        self.save(self.head, self.__settings)

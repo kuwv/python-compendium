@@ -31,11 +31,7 @@ class YamlConfig(ConfigBase):
     def save_config(self, content, filepath):
         try:
             with open(filepath, 'w') as f:
-                self.yaml.dump(
-                    content,
-                    f,
-                    default_flow_style=False
-                )
+                self.yaml.dump(content, f)
         except IOError as err:
             if err.errno == errno.EACCES:
                 self.__log.error(

@@ -34,7 +34,7 @@ class Configs:
         else:
             self.__log.info('unable to load configs')
 
-    def load_config_settings(self, config_path):
+    def load(self, config_path):
         # TODO: Improve error handling
         if os.path.exists(config_path):
             self.__log.info(
@@ -48,7 +48,7 @@ class Configs:
                 "Skipping: No configuration found at: '{}'".format(config_path)
             )
 
-    def save_config_settings(self, config_path, settings):
+    def save(self, config_path, settings):
         # TODO: Improve error handling
         self.__log.info(
             "Saving configuration: '{}'".format(config_path)

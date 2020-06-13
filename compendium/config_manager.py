@@ -6,7 +6,7 @@ from .utils import Logger
 from typing import List
 
 
-class ConfigManager(Configs):
+class ConfigLayout(Configs):
 
     # TODO: Skip all if already loaded unless 'reload' is passed
     def __init__(self, application, **kwargs):
@@ -51,12 +51,7 @@ class ConfigManager(Configs):
     def __get_supported_filetypes():
         pass
 
-    def __load_filepath(self, path, file):
-        filepath = "{p}/{f}".format(p=path, f=file)
-
-        if self.base_path is not None:
-            filepath = self.base_path + filepath
-
+    def __load_filepath(self, filepath):
         self.__log.debug("searching for {f}".format(f=filepath))
 
         if self._check_path(filepath):
@@ -84,42 +79,48 @@ class ConfigManager(Configs):
         # TODO: Make directory if not exists
 
         if self.enable_system_paths:
-            self.__load_filepath('/etc/' + self.application, self.filename)
             self.__load_filepath(
-                '/etc/' + self.application,
-                self.application + '.' + self.filetype,
+                '/etc/' + self.application + '/' + self.filename
+            )
+            self.__load_filepath(
+                '/etc/'
+                + self.application
+                + '/'
+                + self.application
+                + '.'
+                + self.filetype
             )
 
         if self.enable_user_paths:
             self.__load_filepath(
-                os.path.expanduser('~'),
-                '.' + self.application + '.' + self.filetype,
+                os.path.expanduser('~')
+                + '/.'
+                + self.application
+                + '.'
+                + self.filetype
             )
             self.__load_filepath(
-                os.path.expanduser('~') + '/.' + self.application + '.d',
-                self.filename,
+                os.path.expanduser('~')
+                + '/.'
+                + self.application
+                + '.d/'
+                + self.filename
             )
 
         if self.enable_local_paths:
-            self.__load_filepath(os.getcwd(), self.filename)
+            self.__load_filepath(os.getcwd() + '/' + self.filename)
             self.__load_filepath(
-                os.getcwd(), self.application + '.' + self.filetype
+                os.getcwd() + '/' + self.application + '.' + self.filetype
             )
 
     def load_nested_configs(self, path=None):
         for filepath in glob.iglob('**/' + self.filename, recursive=True):
-            if '/' in filepath:
-                base_path, filename = self.split_filepath(filepath)
-            else:
-                base_path = '.'
-                filename = filepath
-            self.__load_filepath(base_path, filename)
+            self.__load_filepath(filepath)
 
     def load_config(self, filepath):
-        path, self.filename = self.split_filepath(filepath)
-        self.__load_filepath(path, self.filename)
+        self.__load_filepath(filepath)
 
-    def load(self, path=None, paths=[]):
+    def load_configs(self, path=None, paths=[]):
         if path:
             paths = [path]
 

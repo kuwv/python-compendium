@@ -1,4 +1,4 @@
-from compendium.config_manager import ConfigManager
+from compendium.config_manager import ConfigLayout
 from compendium.settings import Settings
 from jmespath import search
 import os
@@ -8,14 +8,14 @@ json_path = settings_path + '/test.json'
 
 
 def test_empty_filepath(fs):
-    empty_content = ConfigManager(application='empty', filename='test.json')
-    empty_content.load()
+    empty_content = ConfigLayout(application='empty', filename='test.json')
+    empty_content.load_configs()
     assert not empty_content.filepaths
 
 
 def test_json_path(fs):
     fs.add_real_file(json_path)
-    json_content = ConfigManager(application='json', filename='test.json')
+    json_content = ConfigLayout(application='json', filename='test.json')
     json_content.load_config(settings_path + '/test.json')
     assert "{}/test.json".format(settings_path) in json_content.filepaths
 
@@ -32,6 +32,7 @@ def test_json_content(fs):
 
 
 def test_json_content_save(fs):
-    fs.add_real_file(json_path)
+    fs.add_real_file(json_path, False)
     settings = Settings(application='tests', path=json_path)
     settings.update({'test': 'test'})
+    assert settings.settings['test'] == 'test'

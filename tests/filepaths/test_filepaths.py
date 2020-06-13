@@ -1,11 +1,11 @@
 import os
-from compendium.config_manager import ConfigManager
+from compendium.config_manager import ConfigLayout
 
 
 def test_hierarchy(fs):
     user_path = os.path.expanduser('~')
     current_path = os.path.basename(__file__)
-    config_files = ConfigManager(
+    config_files = ConfigLayout(
         application='test', enable_system_paths=True, enable_user_paths=True
     )
 
@@ -20,7 +20,7 @@ def test_hierarchy(fs):
     fs.create_file(current_path + '/settings.toml')
     fs.create_file(current_path + '/test.toml')
 
-    config_files.load()
+    config_files.load_configs()
     filepaths = config_files.filepaths
     print('Filepaths: ' + str(filepaths))
 
@@ -31,14 +31,14 @@ def test_hierarchy(fs):
 
 # def test_nested(fs):
 #     current_path = os.path.basename(__file__)
-#     config_files = ConfigManager(application='test')
+#     config_files = ConfigLayout(application='test')
 #
 #     # Current path
 #     fs.create_file(current_path + '/settings.toml')
 #     fs.create_file(current_path + '/example1/settings.toml')
 #     fs.create_file(current_path + '/example2/settings.toml')
 #
-#     config_files.load()
+#     config_files.load_configs()
 #     filepaths = config_files.filepaths
 #     print('Filepaths: ' + str(filepaths))
 #

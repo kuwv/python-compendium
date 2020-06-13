@@ -1,4 +1,4 @@
-from .config_manager import ConfigManager
+from .config_manager import ConfigLayout
 from .settings import Settings
 
 # from .cli import cli
@@ -11,8 +11,8 @@ conpend_home = os.environ.get('COMPEND_HOME')
 conpend_conf = os.environ.get('COMPEND_CONF')
 conpend_log = os.environ.get('COMPEND_LOG')
 
-content_list = ConfigManager(application='test', load_strategy='nested')
-content_list.load('settings.toml')
+content_list = ConfigLayout(application='test', load_strategy='nested')
+content_list.load_configs('settings.toml'
 
 # content = Settings(
 #     application='tests', filename='settings.toml', load_strategy='nested'
@@ -25,9 +25,9 @@ def print_json(var):
 
 
 def main():
-    print('filepaths: ' + str(content_list.filepaths))
+    # print('filepaths: ' + str(content_list.filepaths))
     # print('File paths: ' + str(content_list.filepaths))
-    # print_json(var=content.settings)
+    print_json(var=content.settings)
     # print_json(content.get_section('tool'))
     # print('List sections: ' + str(content.list_sections()))
     # print('List IP\'s: ' + str(content.search('servers.*.ip')))
