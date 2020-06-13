@@ -38,6 +38,10 @@ class Settings(ConfigManager):
         # TODO: load environment variables
 
     @property
+    def defaults(self) -> Dict[Any, Any]:
+        return self.__defaults
+
+    @property
     def settings(self) -> Dict[Any, Any]:
         return self.__settings
 

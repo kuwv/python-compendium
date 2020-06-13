@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import errno
 import os
-import sys
 from ruamel.yaml import YAML  # type: ignore
 from . import ConfigBase
 from ..utils import Logger

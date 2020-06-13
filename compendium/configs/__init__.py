@@ -75,10 +75,6 @@ class Configs:
         return filepath.rsplit('/', 1)[1]
 
     @staticmethod
-    def get_base_path(filepath):
-        return filepath.rsplit('/', 1)[0]
-
-    @staticmethod
     def split_filepath(filepath):
         return filepath.rsplit('/', 1)
 

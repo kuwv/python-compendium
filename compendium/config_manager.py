@@ -36,19 +36,20 @@ class ConfigManager(Configs):
             self.base_path, self.filename = self.split_filepath(
                 self.filepaths[0]
             )
-            self.load_config(kwargs.get('path'))
         elif 'filename' in kwargs:
             self.filename = kwargs.get('filename')
             self.filetype = self.get_filetype(self.filename)
-            self.load()
         else:
             self.filename = 'settings.toml'
             self.filetype = 'toml'
-            self.load()
 
     @property
     def head(self):
         return self.filepaths[-1]
+
+    @staticmethod
+    def __get_supported_filetypes():
+        pass
 
     def __load_filepath(self, path, file):
         filepath = "{p}/{f}".format(p=path, f=file)
@@ -60,10 +61,6 @@ class ConfigManager(Configs):
 
         if self._check_path(filepath):
             self.filepaths.append(filepath)
-
-    @staticmethod
-    def __get_supported_filetypes():
-        pass
 
     # TODO: Implement pathlib
     def load_config_filepaths(self):
@@ -90,7 +87,7 @@ class ConfigManager(Configs):
             self.__load_filepath('/etc/' + self.application, self.filename)
             self.__load_filepath(
                 '/etc/' + self.application,
-                self.application + '.' + self.filetype
+                self.application + '.' + self.filetype,
             )
 
         if self.enable_user_paths:
@@ -110,21 +107,25 @@ class ConfigManager(Configs):
             )
 
     def load_nested_configs(self, path=None):
-        for file in glob.iglob('**/*.toml', recursive=True):
-            print(file)
-
-        self.__load_filepath(
-            os.getcwd(), self.application + '.' + self.filetype
-        )
+        for filepath in glob.iglob('**/' + self.filename, recursive=True):
+            if '/' in filepath:
+                base_path, filename = self.split_filepath(filepath)
+            else:
+                base_path = '.'
+                filename = filepath
+            self.__load_filepath(base_path, filename)
 
     def load_config(self, filepath):
         path, self.filename = self.split_filepath(filepath)
         self.__load_filepath(path, self.filename)
 
-    def load(self, paths=[], load_strategy='hierarchy', **kwargs):
-        if load_strategy == 'hierarchy':
+    def load(self, path=None, paths=[]):
+        if path:
+            paths = [path]
+
+        if self.load_strategy == 'hierarchy':
             self.load_config_filepaths()
-        elif load_strategy == 'nested':
+        elif self.load_strategy == 'nested':
             self.load_nested_configs(paths[0])
-        elif load_strategy == 'standalone':
+        elif self.load_strategy == 'standalone':
             self.load_config(paths[0])
