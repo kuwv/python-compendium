@@ -18,11 +18,12 @@ install:
   - poetry install
 
 script:
+  - pip list
   - inv format --check
   - inv lint
   # - inv type-check
   - inv unit-test
-  - inv safety
+  # - inv safety
   - inv coverage --report=xml
   - bash <(curl -s https://codecov.io/bash)
 
