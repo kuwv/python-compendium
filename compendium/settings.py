@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 # TODO: test ASQ as async
 from dpath import util as dpath
