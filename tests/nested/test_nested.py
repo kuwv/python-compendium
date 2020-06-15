@@ -30,13 +30,13 @@ def test_hierarchy(fs):
 
 
 # def test_nested(fs):
-#     current_path = os.path.basename(__file__) + '/nested'
+#     current_path = os.path.basename(__file__)
 #     config_files = ConfigPaths(application='test')
 #
 #     # Current path
-#     fs.create_file(current_path + '/fruit.toml')
-#     fs.create_file(current_path + '/example1/fruit.toml')
-#     fs.create_file(current_path + '/example2/fruit.toml')
+#     fs.create_file(current_path + '/settings.toml')
+#     fs.create_file(current_path + '/example1/settings.toml')
+#     fs.create_file(current_path + '/example2/settings.toml')
 #
 #     config_files.load_configs()
 #     filepaths = config_files.filepaths

@@ -43,7 +43,7 @@ def coverage(ctx, report=None):
 
 @task(pre=[format, lint, unit_test, safety, coverage])
 def test(ctx):
-    ctx.run('compend')
+    pass
 
 
 @task
