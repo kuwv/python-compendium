@@ -35,9 +35,6 @@ requires = [
 ]
 classifiers = ["License :: OSI Approved :: Apache Software License"]
 
-[tool.flit.scripts]
-compend = "compendium.__main__:main"
-
 [tool.black]
 line-length = 80
 include = '\.pyi?$'
