@@ -10,7 +10,7 @@ from .utils import Logger
 
 class Settings(ConfigPaths):
 
-    __defaults: ClassVar[Dict[Any, Any]] = {}
+    # __defaults: ClassVar[Dict[Any, Any]] = {}
 
     def __init__(self, application, **kwargs):
         '''
@@ -69,7 +69,7 @@ class Settings(ConfigPaths):
         return dpath.values(self.__settings, query, self.separator)
 
     def update(self, key: str, value: Any):
-        dpath.merge(self.__settings, key, value)
+        dpath.set(self.__settings, key, value, self.separator)
         self.save_config(self.head, self.__settings)
 
     def delete(self, key: str):
