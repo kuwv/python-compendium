@@ -9,8 +9,8 @@ python = "^3.6"
 configparser = "^5.0.0"
 tomlkit = "^0.6.0"
 jsonschema = "^3.2.0"
-jmespath = "^0.10.0"
 "ruamel.yaml" = "^0.16.10"
+dpath = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

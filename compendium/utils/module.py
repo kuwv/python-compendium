@@ -16,7 +16,7 @@ SUFFIXES = [
 ]
 
 
-def discover_plugins(self, module_prefix='lunar_'):
+def discover_plugins(self, module_prefix: str = 'lunar_'):
     return {
         name: importlib.import_module(name)
         for finder, name, ispkg
@@ -40,48 +40,48 @@ def discover_entry_points(self, entry):
 # importlib +1
 class ModuleLoader(object):
 
-    __modulePath = None
+    __module_path = None
     __loader = None
 
-    def __init__(self, modulePath=None):
+    def __init__(self, module_path: str = None):
         self.__log = Logger(__name__)
-        if modulePath is not None:
-            self.__modulePath = modulePath
+        if module_path is not None:
+            self.__module_path = module_path
 
     '''
-    def find_loader(self, loaderName):
-        self.__loader = importlib.find_loader(loaderName)
+    def find_loader(self, loader_name: str):
+        self.__loader = importlib.find_loader(loader_name)
 
-    def load_package_module(self, loaderName, moduleName):
-        pkg_loader = self.find_loader(loaderName)
+    def load_package_module(self, loader_name: str, module_name: str):
+        pkg_loader = self.find_loader(loader_name)
         pkg = pkg_loader.load_module()
-        self.__loader = importlib.find_loader(moduleName, pkg.__path__)
+        self.__loader = importlib.find_loader(module_name, pkg.__path__)
 
-    def reload_module(self, moduleName):
+    def reload_module(self, module_name):
         try:
-            module = importlib.reload(moduleName)
+            module = importlib.reload(module_name)
         except ImportError:
-            self.__log.error("Failed to reload {m}".format(m=moduleName))
+            self.__log.error("Failed to reload {}".format(module_name))
         return module
     '''
 
-    def load_module(self, moduleName):
+    def load_module(self, module_name: str):
         try:
-            module = importlib.import_module(moduleName)
+            module = importlib.import_module(module_name)
         except ImportError:
-            self.__log.error("Failed to load {m}".format(m=moduleName))
+            self.__log.error("Failed to load {}".format(module_name))
         return module
 
-    def load_classpath(self, fullClassPath):
-        self.__log.info("Loading class {c}".format(c=fullClassPath))
+    def load_classpath(self, full_class_path: str):
+        self.__log.info("Loading class {}".format(full_class_path))
         try:
-            classData = fullClassPath.split('.')
-            modulePath = '.'.join(classData[:-1])
-            className = classData[-1]
+            class_data = full_class_path.split('.')
+            module_path = '.'.join(class_data[:-1])
+            class_name = class_data[-1]
             self.__log.info(
-                "Module: {m} Class: {c}".format(m=modulePath, c=className)
+                "Module: {m} Class: {c}".format(m=module_path, c=class_name)
             )
-            module = self.load_module(modulePath)
+            module = self.load_module(module_path)
         except ImportError:
-            self.__log.error("Failed to load {c}".format(c=className))
-        return getattr(module, className)
+            self.__log.error("Failed to load {}".format(class_name))
+        return getattr(module, class_name)
