@@ -37,7 +37,7 @@ def safety(ctx):
 def coverage(ctx, report=None):
     args = ['--cov=compendium']
     if report:
-        args.append("--cov-report={}".format(report))
+        args.append('--cov-report={}'.format(report))
     ctx.run("pytest {} ./tests/".format(' '.join(args)))
 
 
@@ -48,8 +48,8 @@ def test(ctx):
 
 @task
 def build(ctx, format=None):
-    if format is not None:
-        ctx.run("flit build --format={f}".format(f=format))
+    if format:
+        ctx.run("flit build --format={}".format(format))
     else:
         ctx.run('flit build')
 
@@ -65,18 +65,23 @@ def install(ctx, symlink=True):
 
 
 @task
-def version(ctx, part='patch', confirm=False):
+def version(ctx, part='patch', tag=False, sign=False, confirm=False):
+    args = [part]
+    if tag:
+        args.append('--tag')
+        if sign:
+            args.append('--sign-tags')
     if confirm:
-        ctx.run("bumpversion {}".format(part))
+        ctx.run("bumpversion {}".format(' '.join(args)))
     else:
         ctx.run(
             """bumpversion \
             --dry-run \
             --allow-dirty \
             --verbose \
-            {}""".format(part)
+            {}""".format(' '.join(args))
         )
-        print('Add "confirm" to actually bump the version.')
+        print('Add "--confirm" to actually bump the version.')
 
 
 @task
