@@ -5,8 +5,8 @@ import json  # type: ignore
 # import jsonschema  # type: ignore
 import os
 
-from ..utils import Logger
-from . import ConfigBase
+from ...utils import Logger
+from .. import ConfigBase
 
 
 class JsonConfig(ConfigBase):

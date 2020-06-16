@@ -4,8 +4,8 @@ import os
 
 from ruamel.yaml import YAML  # type: ignore
 
-from ..utils import Logger
-from . import ConfigBase
+from ...utils import Logger
+from .. import ConfigBase
 
 
 # TODO: Implement ruamel yaml

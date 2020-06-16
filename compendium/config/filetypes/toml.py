@@ -4,8 +4,8 @@ import os
 
 import tomlkit  # type: ignore
 
-from ..utils import Logger
-from . import ConfigBase
+from ...utils import Logger
+from .. import ConfigBase
 
 
 class TomlConfig(ConfigBase):
