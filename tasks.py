@@ -4,7 +4,7 @@ from invoke import call, task  # type: ignore
 from compendium import __version__
 
 
-if 'dev' in __version__:
+if 'dev' in __version__ or 'rc' in __version__:
     part = 'build'
 else:
     part = 'patch'
