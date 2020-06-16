@@ -3,6 +3,7 @@ import logging
 import os
 from logging.config import dictConfig
 from pprint import pformat
+from typing import Optional
 
 
 class Logger(object):
@@ -13,6 +14,8 @@ class Logger(object):
 
     # def __init__(self, module_name: str = None, *sp: str, **svc_args: str):
     def __init__(self, module_name, settings_object=None):
+        self.application = 'compendium'
+
         if settings_object is not None:
             dictConfig(settings_object.get_settings())
 
@@ -21,10 +24,10 @@ class Logger(object):
         # self.setupLogfile(loglevel='DEBUG')
         self.log.info('Lunar logging setup complete')
 
-    def __setFormat(self, logformat: str):
+    def __set_format(self, logformat: str):
         return logging.Formatter(logformat)
 
-    def __setLevel(self, loglevel: str):
+    def __set_level(self, loglevel: str):
         if loglevel == 'DEBUG':
             return logging.DEBUG
         if loglevel == 'INFO':
@@ -36,26 +39,32 @@ class Logger(object):
         if loglevel == 'CRITICAL':
             return logging.CRITICAL
 
-    def __setHandler(self, handler: str, loglevel: str, timeformat: str):
-        handler.setLevel(self.__setLevel(loglevel))
-        handler.setFormatter(self.__setFormat(timeformat))
+    def __set_handler(self, handler: str, loglevel: str, timeformat: str):
+        handler.setLevel(self.__set_level(loglevel))
+        handler.setFormatter(self.__set_format(timeformat))
         self.log.addHandler(handler)
 
     # TODO: Load handlers as modules
-    def setupConsole(self, loglevel: str = 'INFO', logformat: str = log_format):
-        self.__setHandler(logging.StreamHandler(), loglevel, logformat)
+    def setup_console(
+            self,
+            loglevel: str = 'INFO',
+            logformat: str = log_format
+    ):
+        self.__set_handler(logging.StreamHandler(), loglevel, logformat)
         self.log.info('Lunar console logger setup complete')
 
-    def setupLogfile(
+    def setup_logfile(
         self,
         loglevel: str = 'INFO',
         logformat: str = time_log_format,
-        filepath: str = os.getcwd() + '/lunar.log',
+        filepath: Optional[str] = None,
     ):
+        if not filepath:
+            filepath = os.getcwd() + '/' + self.application + '.log'
         self.__setHandler(logging.FileHandler(filepath), loglevel, logformat)
         self.log.info('Lunar file logger setup complete')
 
-    def setupEmail(
+    def setup_email(
         self,
         loglevel: str = 'INFO',
         logformat: str = time_log_format,
@@ -63,14 +72,14 @@ class Logger(object):
     ):
         pass
 
-    def setup_logger(self, *sp: str, **kwargs: str):
+    def _setup_logger(self, *sp: str, **kwargs: str):
         # TODO: Implement validation and/or config splitting
         logging.basicConfig(**kwargs)
-        self.setupConsole(loglevel=kwargs.get('level'))
-        self.setupLogfile(loglevel=kwargs.get('level'))
-        self.log.info('Lunar logging setup complete')
+        self.setup_console(loglevel=kwargs.get('level'))
+        self.setup_logfile(loglevel=kwargs.get('level'))
+        self.log.info('logging setup complete')
 
-    def setupLogger(self, module_name: str, settings_object: str):
+    def setup_logger(self, module_name: str, settings_object: str):
         dictConfig(settings_object.get_settings())
         self.log = logging.getLogger(module_name)
 
