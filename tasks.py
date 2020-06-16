@@ -1,6 +1,15 @@
 from invoke import call, task  # type: ignore
 
 
+from compendium import __version__
+
+
+if 'dev' in __version__:
+    part = 'build'
+else:
+    part = 'patch'
+
+
 @task
 def format(ctx, check=False):
     args = ['--skip-string-normalization']
@@ -65,7 +74,7 @@ def install(ctx, symlink=True):
 
 
 @task
-def version(ctx, part='patch', tag=False, sign=False, confirm=False):
+def version(ctx, part=part, tag=False, sign=False, confirm=False):
     args = [part]
     if tag:
         args.append('--tag')
