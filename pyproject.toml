@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "compendium"
-version = "0.1.0"
+version = "version: "0.1.0"
 description = "Simple layered configuraion tool"
 authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
 
