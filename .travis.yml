@@ -6,11 +6,6 @@ python:
   - 3.8
   - pypy3
 
-# env:
-#   global:
-#     - secure: "<encrypted PYPI_USER=username>"
-#     - secure: "<encrypted PYPI_PASS=password>"
-
 before_install:
   - pip uninstall pipenv -y
   - pip install poetry
