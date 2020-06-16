@@ -4,10 +4,11 @@ python:
   - 3.6
   - 3.7
   - 3.8
-  - pypy3
+  # TODO: codex.h error :(
+  # - pypy3
 
 before_install:
-  - pip uninstall pipenv -y
+  - pip uninstall pipenv numpy -y
   - pip install poetry
 
 install:
@@ -18,6 +19,7 @@ script:
   - inv lint
   # - inv type-check
   - inv unit-test
+  # TODO: Environment already populated :(
   # - inv safety
   - inv coverage --report=xml
   - bash <(curl -s https://codecov.io/bash)
@@ -28,7 +30,7 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: poetry publish -r compendium
+    script: poetry publish
     skip_cleanup: true
     on:
       branch: master
