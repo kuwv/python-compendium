@@ -2,7 +2,7 @@
 from typing import Any, Dict, List, Optional
 
 # TODO: test ASQ as async
-from dpath import util as dpath
+from dpath import util as dpath  # type: ignore
 
 from .config_manager import ConfigPaths
 from .utils import Logger
@@ -33,9 +33,9 @@ class Settings(ConfigPaths):
 
         # TODO: load environment variables
 
-    @property
-    def defaults(self) -> Dict[Any, Any]:
-        return self.__defaults
+    # @property
+    # def defaults(self) -> Dict[Any, Any]:
+    #     return self.__defaults
 
     @property
     def settings(self) -> Dict[Any, Any]:

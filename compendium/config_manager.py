@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import glob
 import os
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from .config import ConfigFile
 from .utils import Logger
@@ -23,11 +23,15 @@ class ConfigPaths(ConfigFile):
         self.application: str = application
 
         self.load_strategy: str = kwargs.get('load_strategy', 'hierarchy')
-        self.enable_system_paths: bool = kwargs.get(
+        self.enable_system_paths: Union[str, bool] = kwargs.get(
             'enable_system_paths', False
         )
-        self.enable_user_paths: bool = kwargs.get('enable_user_paths', False)
-        self.enable_local_paths: bool = kwargs.get('enable_local_paths', True)
+        self.enable_user_paths: Union[str, bool] = kwargs.get(
+            'enable_user_paths', False
+        )
+        self.enable_local_paths: Union[str, bool] = kwargs.get(
+            'enable_local_paths', True
+        )
 
         # TODO: writable / readonly
         self.filepaths: List[str] = []
@@ -46,9 +50,9 @@ class ConfigPaths(ConfigFile):
             self.filename = 'settings.toml'
             self.filetype = 'toml'
 
-    @property
-    def tail(self):
-        return self.filepaths[0]
+    # @property
+    # def tail(self):
+    #     return self.filepaths[0]
 
     @property
     def head(self):
