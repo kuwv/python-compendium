@@ -44,7 +44,11 @@ class Logger(object):
         self.log.addHandler(handler)
 
     # TODO: Load handlers as modules
-    def setup_console(self, loglevel: str = 'INFO', logformat: str = log_format):
+    def setup_console(
+            self,
+            loglevel: str = 'INFO',
+            logformat: str = log_format
+    ):
         self.__set_handler(logging.StreamHandler(), loglevel, logformat)
         self.log.info('Lunar console logger setup complete')
 
@@ -52,8 +56,10 @@ class Logger(object):
         self,
         loglevel: str = 'INFO',
         logformat: str = time_log_format,
-        filepath: str = os.getcwd() + '/' + self.application + '.log',
+        filepath: Optional[str] = None,
     ):
+        if not filepath:
+            filepath = os.getcwd() + '/' + self.application + '.log'
         self.__setHandler(logging.FileHandler(filepath), loglevel, logformat)
         self.log.info('Lunar file logger setup complete')
 
