@@ -12,7 +12,7 @@ python:
 #     - secure: "<encrypted PYPI_PASS=password>"
 
 before_install:
-  - pip uninstall pipenv
+  - pip uninstall pipenv -y
   - pip install poetry
 
 install:
