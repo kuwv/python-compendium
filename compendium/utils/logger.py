@@ -3,6 +3,7 @@ import logging
 import os
 from logging.config import dictConfig
 from pprint import pformat
+from typing import Optional
 
 
 class Logger(object):
