@@ -65,7 +65,7 @@ def install(ctx, symlink=True):
 
 
 @task
-def version(ctx, part, confirm=False):
+def version(ctx, part='patch', confirm=False):
     if confirm:
         ctx.run("bumpversion {}".format(part))
     else:
