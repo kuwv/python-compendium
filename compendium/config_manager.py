@@ -128,14 +128,12 @@ class ConfigPaths(ConfigFile):
         self.__load_filepath(filepath)
 
     def load_configs(self, path: Optional[str] = None):
-        if self.load_strategy == 'hierarchy':
-            self.load_config_filepaths()
-
+        if path:
+            self.load_config_filepath(path)
         elif self.load_strategy == 'nested':
             self.load_nested_configs(path)
-
-        elif self.load_strategy == 'standalone':
-            self.load_config_filepath(path)
+        elif self.load_strategy == 'hierarchy':
+            self.load_config_filepaths()
 
 
 class ConfigManager(ConfigPaths):

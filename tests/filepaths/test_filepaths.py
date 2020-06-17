@@ -3,6 +3,20 @@ import os
 from compendium.config_manager import ConfigPaths
 
 
+def test_singleton(fs):
+    config_files = ConfigPaths(
+        application='test'
+    )
+
+    # Singleton path
+    fs.create_file('/opt/test/settings.toml')
+
+    config_files.load_configs('/opt/test/settings.toml')
+    filepaths = config_files.filepaths
+
+    assert '/opt/test/settings.toml' in filepaths
+
+
 def test_hierarchy(fs):
     user_path = os.path.expanduser('~')
     current_path = os.path.basename(__file__)
