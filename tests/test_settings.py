@@ -6,7 +6,8 @@ config_path = os.path.dirname(os.path.realpath(__file__))
 settings_path = config_path + '/settings.toml'
 
 
-def test_query():
+def test_query(fs):
+    fs.add_real_file(settings_path, False)
     content = Settings(application='tests', path=settings_path)
     content.load()
     query = content.search('.servers.**.ip')

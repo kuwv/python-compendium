@@ -47,6 +47,7 @@ class Settings(ConfigPaths):
 
     # Merge stategy
     def __overlay_configs(self):
+        self.load_configs()
         for filepath in self.filepaths:
             self.__initialize_settings(self.load_config(filepath))
 
