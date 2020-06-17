@@ -121,7 +121,7 @@ class ConfigPaths(ConfigFile):
             )
 
     def load_nested_configs(self, path: Optional[str] = None):
-        for filepath in glob.iglob('**/' + self.filename, recursive=True):
+        for filepath in glob.iglob('/**/' + self.filename, recursive=True):
             self.__load_filepath(filepath)
 
     def load_config_filepath(self, filepath: str):
@@ -134,6 +134,14 @@ class ConfigPaths(ConfigFile):
             self.load_nested_configs(path)
         elif self.load_strategy == 'hierarchy':
             self.load_config_filepaths()
+
+
+class NestedConfigPaths:
+    pass
+
+
+class HiararchyConfigPaths:
+    pass
 
 
 class ConfigManager(ConfigPaths):

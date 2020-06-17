@@ -8,32 +8,32 @@ settings_path = config_path + '/settings.toml'
 
 def test_query(fs):
     fs.add_real_file(settings_path, False)
-    content = Settings(application='tests', path=settings_path)
-    content.load()
-    query = content.search('.servers.**.ip')
+    cfg = Settings(application='tests', path=settings_path)
+    cfg.load()
+    query = cfg.search('.servers.**.ip')
     assert ['10.0.0.1', '10.0.0.2'] == query
 
 
 def test_toml_content_create(fs):
     fs.add_real_file(settings_path, False)
-    settings = Settings(application='tests', path=settings_path)
-    settings.load()
-    settings.create('.test', 'test')
-    assert settings.get('test') == 'test'
+    cfg = Settings(application='tests', path=settings_path)
+    cfg.load()
+    cfg.create('.test', 'test')
+    assert cfg.get('test') == 'test'
 
 
 def test_toml_content_update(fs):
     fs.add_real_file(settings_path, False)
-    settings = Settings(application='tests', path=settings_path)
-    settings.load()
-    settings.update('.owner.name', 'Tom Waits')
-    assert settings.get('.owner.name') == 'Tom Waits'
+    cfg = Settings(application='tests', path=settings_path)
+    cfg.load()
+    cfg.update('.owner.name', 'Tom Waits')
+    assert cfg.get('.owner.name') == 'Tom Waits'
 
 
 def test_toml_delete(fs):
     fs.add_real_file(settings_path, False)
-    content = Settings(application='tests', path=settings_path)
-    content.load()
-    assert content.search('.owner.name') == ['Tom Preston-Werner']
-    content.delete('.owner.name')
-    assert content.search('.owner.name') == []
+    cfg = Settings(application='tests', path=settings_path)
+    cfg.load()
+    assert cfg.search('.owner.name') == ['Tom Preston-Werner']
+    cfg.delete('.owner.name')
+    assert cfg.search('.owner.name') == []

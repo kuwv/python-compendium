@@ -1,0 +1,13 @@
+[[fruit.hesperidium]]
+  name = "orange"
+
+  [fruit.hesperidium.physical]
+    color = "organge"
+    shape = "round"
+
+[[fruit.drupe]]
+  name = "peach"
+
+  [fruit.drupe.physical]
+    color = "peach"
+    shape = "round"

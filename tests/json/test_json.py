@@ -8,32 +8,32 @@ json_path = settings_path + '/test.json'
 
 
 def test_empty_filepath(fs):
-    empty_content = ConfigPaths(application='empty', filename='test.json')
-    empty_content.load_configs()
-    assert not empty_content.filepaths
+    cfg = ConfigPaths(application='empty', filename='test.json')
+    cfg.load_configs()
+    assert not cfg.filepaths
 
 
 def test_json_path(fs):
     fs.add_real_file(json_path)
-    json_content = ConfigPaths(application='json', filename='test.json')
-    json_content.load_config_filepath(settings_path + '/test.json')
-    assert "{}/test.json".format(settings_path) in json_content.filepaths
+    cfg = ConfigPaths(application='json', filename='test.json')
+    cfg.load_config_filepath(settings_path + '/test.json')
+    assert "{}/test.json".format(settings_path) in cfg.filepaths
 
 
-def test_json_content(fs):
+def test_cfg(fs):
     fs.add_real_file(json_path)
-    content = Settings(application='tests', path=json_path)
-    content.load()
-    assert content.get('.stooges.stooge1') == 'Larry'
-    assert content.get('.stooges.stooge2') == 'Curly'
-    assert content.get('.stooges.stooge3') == 'Moe'
-    assert content.get('.fruit') != 'banana'
-    assert content.get('.number') == 2
+    cfg = Settings(application='tests', path=json_path)
+    cfg.load()
+    assert cfg.get('.stooges.stooge1') == 'Larry'
+    assert cfg.get('.stooges.stooge2') == 'Curly'
+    assert cfg.get('.stooges.stooge3') == 'Moe'
+    assert cfg.get('.fruit') != 'banana'
+    assert cfg.get('.number') == 2
 
 
-def test_json_content_save(fs):
+def test_cfg_save(fs):
     fs.add_real_file(json_path, False)
-    settings = Settings(application='tests', path=json_path)
-    settings.load()
-    settings.create('.test', 'test')
-    assert settings.settings['test'] == 'test'
+    cfg = Settings(application='tests', path=json_path)
+    cfg.load()
+    cfg.create('.test', 'test')
+    assert cfg.settings['test'] == 'test'

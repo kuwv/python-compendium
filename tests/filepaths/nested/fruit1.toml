@@ -1,0 +1,13 @@
+[[fruit.pome]]
+  name = "pear"
+
+  [fruit.pear.physical]
+    color = "green"
+    shape = "pear"
+
+[[fruit.hesperidia]]
+  name = "lemon"
+
+  [fruit.hesperidia.physical]
+    color = "yellow"
+    shape = "oval"

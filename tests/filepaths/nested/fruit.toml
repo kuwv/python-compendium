@@ -1,0 +1,13 @@
+[[fruit.pome]]
+  name = "apple"
+
+  [fruit.pome.physical]
+    color = "red"
+    shape = "round"
+
+[[fruit.berry]]
+  name = "banana"
+
+  [fruit.berry.physical]
+    color = "yellow"
+    shape = "bent"
