@@ -1,0 +1,9 @@
+<root>
+  <stooges>
+    <stooge1>Larry</stooge1>
+    <stooge2>Curly</stooge2>
+    <stooge3>Moe</stooge3>
+  </stooges>
+  <fruit>apple</fruit>
+  <number>2</number>
+</root>

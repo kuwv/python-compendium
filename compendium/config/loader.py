@@ -7,6 +7,7 @@ from .config_base import ConfigBase
 # TODO: Implement importlib find_module
 from .filetypes.json import JsonConfig  # noqa
 from .filetypes.toml import TomlConfig  # noqa
+from .filetypes.xml import XmlConfig  # noqa
 from .filetypes.yaml import YamlConfig  # noqa
 
 from typing import Any, Dict

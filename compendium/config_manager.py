@@ -59,7 +59,7 @@ class ConfigPaths(ConfigFile):
         return self.filepaths[-1]
 
     def __load_filepath(self, filepath: str):
-        self.__log.debug("searching for {f}".format(f=filepath))
+        self.__log.debug("searching for {}".format(filepath))
 
         if self._check_path(filepath):
             self.filepaths.append(filepath)
