@@ -27,7 +27,7 @@ class YamlConfig(ConfigBase):
             with open(filepath, 'r') as f:
                 content = self.yaml.load(f)
         else:
-            content = {}
+            content = {}  # noqa
         return content
 
     def save_config(self, content, filepath):

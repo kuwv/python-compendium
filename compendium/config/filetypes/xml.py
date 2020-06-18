@@ -24,7 +24,7 @@ class XmlConfig(ConfigBase):
             with open(filepath, 'r') as f:
                 content = xmltodict.parse(f.read())
         else:
-            content = {}
+            content = {}  # noqa
         return content
 
     def save_config(self, content, filepath):

@@ -25,7 +25,7 @@ class TomlConfig(ConfigBase):
             with open(filepath, encoding='utf-8') as f:
                 content = tomlkit.loads(f.read())
         else:
-            content = {}
+            content = {}  # noqa
         return content
 
     def save_config(self, content, filepath):
