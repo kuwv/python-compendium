@@ -29,7 +29,7 @@ class Settings(ConfigPaths):
         # Load settings from configs
         self.separator: str = kwargs.get('separator', '.')
 
-        self.merge_strategy: str = kwargs.get('merge_strategy', 'last')
+        self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
         self.merge_sections: List[str] = kwargs.get('merge_sections', [])
 
         if self.merge_strategy == 'partition':
@@ -59,9 +59,6 @@ class Settings(ConfigPaths):
         self.load_configs()
         # dpath.merge(sections)
 
-    def __last_config(self):
-        self.__initialize_settings(self.load_config(self.head))
-
     # Query
     def create(self, key: str, value: Any):
         dpath.new(self.__settings, key, value, self.separator)
@@ -84,12 +81,12 @@ class Settings(ConfigPaths):
     def load(self, path: Optional[str] = None, filename: Optional[str] = None):
         if self.merge_strategy == 'overlay':
             self.__overlay_configs()
-
-        if self.merge_strategy == 'partition' or self.load_strategy == 'nested':
+        elif (
+            self.merge_strategy == 'partition' or self.load_strategy == 'nested'
+        ):
             self.__partition_configs()
-
-        if self.merge_strategy == 'last':
-            self.__last_config()
+        else:
+            self.__initialize_settings(self.load_config(self.head))
 
 
 class NestedSettings:
