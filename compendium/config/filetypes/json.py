@@ -25,7 +25,7 @@ class JsonConfig(ConfigBase):
             with open(filepath, 'r') as f:
                 content = json.load(f)
         else:
-            content = {}  # noqa
+            content = {}
         return content
 
     def save_config(self, content, filepath):
