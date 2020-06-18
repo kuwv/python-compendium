@@ -1,4 +1,5 @@
 import os
+import pytest
 
 from compendium.config_manager import ConfigPaths
 from compendium.settings import Settings
@@ -37,3 +38,12 @@ def test_toml_content_save(fs):
     cfg.load()
     cfg.create('.test', 'test')
     assert cfg.settings['test'] == 'test'
+
+
+def test_cfg_save_fail(fs):
+    fs.add_real_file(toml_path)
+    cfg = Settings(application='tests', path=toml_path)
+    cfg.load()
+
+    with pytest.raises(IOError):
+        cfg.create('.test', 'test')
