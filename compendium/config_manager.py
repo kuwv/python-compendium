@@ -64,7 +64,6 @@ class ConfigPaths(ConfigFile):
         if self._check_path(filepath):
             self.filepaths.append(filepath)
 
-
     # TODO: Implement pathlib
     def load_config_filepaths(self):
         '''Load config paths based on priority

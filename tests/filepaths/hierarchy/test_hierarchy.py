@@ -43,5 +43,5 @@ def test_hierarchy(fs):
     assert cfg.get('.table.subtable.key') != 'another value'
 
     # Ensure /etc/tests/settings.toml is blank
-    with pytest.raises(KeyError) as key_error:
+    with pytest.raises(KeyError):
         cfg.get('.table.key')
