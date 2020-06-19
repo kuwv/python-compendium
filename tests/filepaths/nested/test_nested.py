@@ -1,6 +1,7 @@
 import os
 
 from compendium.settings import Settings
+import json
 
 
 def test_nested(fs):
@@ -27,6 +28,7 @@ def test_nested(fs):
     )
     cfg.load('/opt/test/fruit.toml')
     print(cfg.filepaths)
+    print(json.dumps(cfg.settings, indent=2, sort_keys=True))
 
     assert ('/opt/test/fruit.toml') in cfg.filepaths
     assert ('/opt/test/example1/fruit.toml') in cfg.filepaths

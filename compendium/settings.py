@@ -52,12 +52,15 @@ class Settings(ConfigPaths):
     # Merge stategy
     def __overlay_configs(self):
         self.load_configs()
+        settings = {}
         for filepath in self.filepaths:
-            self.__initialize_settings(self.load_config(filepath))
+            dpath.merge(settings, self.load_config(filepath), flags=2)
+        self.__initialize_settings(settings)
 
     def __partition_configs(self):
         self.load_configs()
-        # dpath.merge(sections)
+        for filepath in self.filepaths:
+            self.__initialize_settings({filepath: self.load_config(filepath)})
 
     # Query
     def create(self, key: str, value: Any):

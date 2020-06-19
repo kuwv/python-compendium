@@ -1,0 +1,6 @@
+[table.subtable]
+key = "second"
+second = "retained"
+
+[[list]]
+overwriten2 = "second"

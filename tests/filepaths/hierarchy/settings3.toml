@@ -1,0 +1,6 @@
+[table.subtable]
+key = "third"
+third = "retained"
+
+[[list]]
+last = "third"
