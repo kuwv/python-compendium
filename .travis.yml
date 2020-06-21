@@ -15,7 +15,6 @@ install:
   - poetry install
 
 script:
-  - pip list -v
   - inv format --check
   - inv lint
   # - inv type-check
