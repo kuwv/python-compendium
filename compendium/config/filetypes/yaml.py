@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 import errno
+import logging
 import os
 
 from ruamel.yaml import YAML  # type: ignore
 
-from ...utils import Logger
 from .. import ConfigBase
 
 
 # TODO: Implement ruamel yaml
 class YamlConfig(ConfigBase):
     def __init__(self):
-        self.__log = Logger(__name__)
-        self.__log.info('Inializing YamlConfig')
+        logging.info('Inializing YamlConfig')
         self.yaml = YAML(typ='safe')
 
     @staticmethod
@@ -20,7 +19,7 @@ class YamlConfig(ConfigBase):
         return ['yaml', 'yml']
 
     def load_config(self, filepath):
-        self.__log.info(
+        logging.info(
             "YamlConfig loading configuration file {}".format(filepath)
         )
         if os.path.isfile(filepath):
@@ -36,7 +35,7 @@ class YamlConfig(ConfigBase):
                 self.yaml.dump(content, f)
         except IOError as err:
             if err.errno == errno.EACCES:
-                self.__log.error(
+                logging.error(
                     'Error: You do not have permission to write to this file'
                 )
                 raise

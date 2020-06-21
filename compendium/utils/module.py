@@ -5,7 +5,7 @@ import pkgutil
 
 import pkg_resources
 
-from .logger import Logger
+import logging
 
 SUFFIXES = [
     ('Source:', importlib.machinery.SOURCE_SUFFIXES),
@@ -44,7 +44,6 @@ class ModuleLoader(object):
     __loader = None
 
     def __init__(self, module_path: str = None):
-        self.__log = Logger(__name__)
         if module_path is not None:
             self.__module_path = module_path
 
@@ -61,7 +60,7 @@ class ModuleLoader(object):
         try:
             module = importlib.reload(module_name)
         except ImportError:
-            self.__log.error("Failed to reload {}".format(module_name))
+            logging.error("Failed to reload {}".format(module_name))
         return module
     '''
 
@@ -69,19 +68,19 @@ class ModuleLoader(object):
         try:
             module = importlib.import_module(module_name)
         except ImportError:
-            self.__log.error("Failed to load {}".format(module_name))
+            logging.error("Failed to load {}".format(module_name))
         return module
 
     def load_classpath(self, full_class_path: str):
-        self.__log.info("Loading class {}".format(full_class_path))
+        logging.info("Loading class {}".format(full_class_path))
         try:
             class_data = full_class_path.split('.')
             module_path = '.'.join(class_data[:-1])
             class_name = class_data[-1]
-            self.__log.info(
+            logging.info(
                 "Module: {m} Class: {c}".format(m=module_path, c=class_name)
             )
             module = self.load_module(module_path)
         except ImportError:
-            self.__log.error("Failed to load {}".format(class_name))
+            logging.error("Failed to load {}".format(class_name))
         return getattr(module, class_name)

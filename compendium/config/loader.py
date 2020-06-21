@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # import codecs
+import logging
 import os
 
-from ..utils import Logger, ModuleLoader
+from ..utils import ModuleLoader
 from .config_base import ConfigBase
 # TODO: Implement importlib find_module
 from .filetypes.json import JsonConfig  # noqa
@@ -15,7 +16,6 @@ from typing import Any, Dict
 
 class ConfigFile:
     def __init__(self):
-        self.__log = Logger(__name__)
         self.modules = [m for m in ConfigBase.__subclasses__()]
 
     def __discovery_loader(self, filetype):
@@ -25,7 +25,7 @@ class ConfigFile:
         return None
 
     def __load_module(self, filename: str):
-        self.__log.info('Loading configuration configs')
+        logging.info('Loading configuration configs')
         mod = ModuleLoader()
 
         # TODO: figure out which driver to load from filetypes
@@ -34,27 +34,27 @@ class ConfigFile:
         if module_path is not None:
             config_class = mod.load_classpath(module_path)
             self.__config_module = config_class()
-            self.__log.info('Finished loading configs')
+            logging.info('Finished loading configs')
         else:
-            self.__log.info('unable to load configs')
+            logging.info('unable to load configs')
 
     def load_config(self, config_path: str):
         # TODO: Improve error handling
         if os.path.exists(config_path):
-            self.__log.info(
+            logging.info(
                 "Retrieving configuration: '{}'".format(config_path)
             )
             filename = self.get_filename(config_path)
             self.__load_module(filename)
             return self.__config_module.load_config(config_path)
         else:
-            self.__log.info(
+            logging.info(
                 "Skipping: No configuration found at: '{}'".format(config_path)
             )
 
     def save_config(self, config_path: str, settings: Dict[Any, Any]):
         # TODO: Improve error handling
-        self.__log.info(
+        logging.info(
             "Saving configuration: '{}'".format(config_path)
         )
         filename = self.get_filename(config_path)
@@ -63,10 +63,10 @@ class ConfigFile:
 
     def _check_path(self, filepath: str):
         if os.path.isfile(filepath):
-            self.__log.debug("{} found".format(filepath))
+            logging.debug("{} found".format(filepath))
             return True
         else:
-            self.__log.debug("{} not found".format(filepath))
+            logging.debug("{} not found".format(filepath))
             return False
 
     @staticmethod

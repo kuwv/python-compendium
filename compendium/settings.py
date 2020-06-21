@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+import logging
 from typing import Any, Dict, List, Optional
 
 # TODO: test ASQ as async
 from dpath import util as dpath  # type: ignore
 
 from .config_manager import ConfigPaths
-from .utils import Logger
 
 
 class Settings(ConfigPaths):
@@ -20,8 +20,6 @@ class Settings(ConfigPaths):
           - partition
           - last
         '''
-        self.__log = Logger(__name__)
-
         super().__init__(application, **kwargs)
 
         self.__settings: Dict[Any, Any] = {}
@@ -46,7 +44,7 @@ class Settings(ConfigPaths):
         return self.__settings
 
     def _initialize_settings(self, new_settings: Dict[Any, Any]):
-        self.__log.debug(new_settings)
+        logging.debug(new_settings)
         self.__settings.update(new_settings)
 
     # Merge stategy

@@ -5,14 +5,13 @@ import json  # type: ignore
 # import jsonschema  # type: ignore
 import os
 
-from ...utils import Logger
 from .. import ConfigBase
+import logging
 
 
 class JsonConfig(ConfigBase):
     def __init__(self):
-        self.__log = Logger(__name__)
-        self.__log.info('Inializing JsonConfig')
+        logging.info('Inializing JsonConfig')
         self.encoder = str
 
     @staticmethod
@@ -20,7 +19,7 @@ class JsonConfig(ConfigBase):
         return ['json']
 
     def load_config(self, filepath):
-        self.__log.info('JsonConfig: loading configuration file')
+        logging.info('JsonConfig: loading configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r') as f:
                 content = json.load(f)
@@ -36,7 +35,7 @@ class JsonConfig(ConfigBase):
                 )
         except IOError as err:
             if err.errno == errno.EACCES:
-                self.__log.error(
+                logging.error(
                     'Error: You do not have permission to write to this file'
                 )
                 raise

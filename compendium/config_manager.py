@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import glob
+import logging
 import os
 from typing import List, Optional, Union
 
 from .config import ConfigFile
-from .utils import Logger
 
 
 class ConfigPaths(ConfigFile):
@@ -17,7 +17,6 @@ class ConfigPaths(ConfigFile):
           - hierarchy
           - nested
         '''
-        self.__log = Logger(__name__)
         super().__init__()
 
         self.application: str = application
@@ -59,7 +58,7 @@ class ConfigPaths(ConfigFile):
         return self.filepaths[-1]
 
     def _load_filepath(self, filepath: str):
-        self.__log.debug("searching for {}".format(filepath))
+        logging.debug("searching for {}".format(filepath))
 
         if self._check_path(filepath):
             self.filepaths.append(filepath)
@@ -82,7 +81,7 @@ class ConfigPaths(ConfigFile):
             - .env
             - <CLI>
         '''
-        self.__log.info('populating settings locations')
+        logging.info('populating settings locations')
         # TODO: Make directory if not exists
 
         if self.enable_system_paths:
