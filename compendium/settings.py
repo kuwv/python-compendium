@@ -45,7 +45,7 @@ class Settings(ConfigPaths):
     def settings(self) -> Dict[Any, Any]:
         return self.__settings
 
-    def __initialize_settings(self, new_settings: Dict[Any, Any]):
+    def _initialize_settings(self, new_settings: Dict[Any, Any]):
         self.__log.debug(new_settings)
         self.__settings.update(new_settings)
 
@@ -55,20 +55,26 @@ class Settings(ConfigPaths):
         settings = {}
         for filepath in self.filepaths:
             dpath.merge(settings, self.load_config(filepath), flags=2)
-        self.__initialize_settings(settings)
+        self._initialize_settings(settings)
 
     def __partition_configs(self):
         self.load_configs()
+        settings = []
         for filepath in self.filepaths:
-            self.__initialize_settings({filepath: self.load_config(filepath)})
+            settings.append(
+                {'filepath': filepath, **self.load_config(filepath)}
+            )
+        self._initialize_settings({'settings': settings})
 
     # Query
     def create(self, key: str, value: Any):
         dpath.new(self.__settings, key, value, self.separator)
         self.save_config(self.head, self.__settings)
 
-    def get(self, key: str):
-        return dpath.get(self.__settings, key, self.separator)
+    def get(self, key: str, document: Optional[Dict[Any, Any]] = None):
+        if not document:
+            document = self.__settings
+        return dpath.get(document, key, self.separator)
 
     def search(self, query: str):
         return dpath.values(self.__settings, query, self.separator)
@@ -89,12 +95,36 @@ class Settings(ConfigPaths):
         ):
             self.__partition_configs()
         else:
-            self.__initialize_settings(self.load_config(self.head))
+            self._initialize_settings(self.load_config(self.head))
 
 
-class NestedSettings:
-    pass
+# class NestedSettings(Settings):
+#
+#     def __init__(self, application, **kwargs):
+#         super().__init__(application, **kwargs)
+#
+#     def load(
+#         self, path: Optional[str] = None, filename: Optional[str] = None
+#     ):
+#         self.load_configs()
+#         settings = []
+#         for filepath in self.filepaths:
+#             settings.append({
+#                 'filepath': filepath,
+#                 **self.load_config(filepath)
+#             })
+#         self._initialize_settings({'settings': settings})
 
-
-class HierarchySettings:
-    pass
+# class HierarchySettings(Settings):
+#
+#     def __init__(self, application, **kwargs):
+#         super().__init__(application, **kwargs)
+#
+#     def load(
+#         self, path: Optional[str] = None, filename: Optional[str] = None
+#     ):
+#         self.load_configs()
+#         settings = {}
+#         for filepath in self.filepaths:
+#             dpath.merge(settings, self.load_config(filepath), flags=2)
+#         self._initialize_settings(settings)

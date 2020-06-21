@@ -2,7 +2,7 @@
   name = "orange"
 
   [fruit.hesperidium.physical]
-    color = "organge"
+    color = "orange"
     shape = "round"
 
 [[fruit.drupe]]

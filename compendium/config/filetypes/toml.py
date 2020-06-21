@@ -16,7 +16,7 @@ class TomlConfig(ConfigBase):
     @staticmethod
     def filetypes():
         return [
-            'cfg', 'cnf', 'conf', 'config', 'ini', 'toml', 'tml'
+            'cfg', 'conf', 'config', 'cnf', 'ini', 'toml', 'tml'
         ]
 
     def load_config(self, filepath):

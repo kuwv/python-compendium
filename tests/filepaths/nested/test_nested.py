@@ -1,4 +1,5 @@
 import os
+import pytest
 
 from compendium.settings import Settings
 import json
@@ -33,3 +34,12 @@ def test_nested(fs):
     assert ('/opt/test/fruit.toml') in cfg.filepaths
     assert ('/opt/test/example1/fruit.toml') in cfg.filepaths
     assert ('/opt/test/example2/fruit.toml') in cfg.filepaths
+    assert cfg.get('.settings.[0].filepath') == '/opt/test/fruit.toml'
+    assert cfg.get('.settings.[1].filepath') == '/opt/test/example1/fruit.toml'
+    assert cfg.get('.settings.[2].filepath') == '/opt/test/example2/fruit.toml'
+
+    assert cfg.get('.**.name', cfg.get('.settings.**.fruit.drupe')) == 'peach'
+
+    # Ensure vegatable is not in fruits
+    with pytest.raises(KeyError):
+        cfg.get('.settings.**.vegetable')

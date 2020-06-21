@@ -58,7 +58,7 @@ class ConfigPaths(ConfigFile):
     def head(self):
         return self.filepaths[-1]
 
-    def __load_filepath(self, filepath: str):
+    def _load_filepath(self, filepath: str):
         self.__log.debug("searching for {}".format(filepath))
 
         if self._check_path(filepath):
@@ -86,10 +86,10 @@ class ConfigPaths(ConfigFile):
         # TODO: Make directory if not exists
 
         if self.enable_system_paths:
-            self.__load_filepath(
+            self._load_filepath(
                 '/etc/' + self.application + '/' + self.filename
             )
-            self.__load_filepath(
+            self._load_filepath(
                 '/etc/'
                 + self.application
                 + '/'
@@ -99,14 +99,14 @@ class ConfigPaths(ConfigFile):
             )
 
         if self.enable_user_paths:
-            self.__load_filepath(
+            self._load_filepath(
                 os.path.expanduser('~')
                 + '/.'
                 + self.application
                 + '.'
                 + self.filetype
             )
-            self.__load_filepath(
+            self._load_filepath(
                 os.path.expanduser('~')
                 + '/.'
                 + self.application
@@ -115,17 +115,17 @@ class ConfigPaths(ConfigFile):
             )
 
         if self.enable_local_paths:
-            self.__load_filepath(os.getcwd() + '/' + self.filename)
-            self.__load_filepath(
+            self._load_filepath(os.getcwd() + '/' + self.filename)
+            self._load_filepath(
                 os.getcwd() + '/' + self.application + '.' + self.filetype
             )
 
     def load_nested_configs(self, path: Optional[str] = None):
         for filepath in glob.iglob('/**/' + self.filename, recursive=True):
-            self.__load_filepath(filepath)
+            self._load_filepath(filepath)
 
     def load_config_filepath(self, filepath: str):
-        self.__load_filepath(filepath)
+        self._load_filepath(filepath)
 
     def load_configs(self, path: Optional[str] = None):
         if path:
@@ -136,11 +136,15 @@ class ConfigPaths(ConfigFile):
             self.load_config_filepaths()
 
 
-class NestedConfigPaths:
-    pass
+# class NestedConfigPaths(ConfigPaths):
+#     pass
+#
+#     def load_configs(self, path: Optional[str] = None):
+#         for filepath in glob.iglob('/**/' + self.filename, recursive=True):
+#             self._load_filepath(filepath)
 
 
-class HiararchyConfigPaths:
+class HiararchyConfigPaths(ConfigPaths):
     pass
 
 
