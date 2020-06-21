@@ -10,6 +10,7 @@ python:
 before_install:
   - pip uninstall pipenv numpy -y
   - pip install poetry
+  - pip list -v
 
 install:
   - poetry install
