@@ -85,9 +85,9 @@ class NestedSettings(Settings):
         self.load_configs()
         settings = []
         for filepath in self.filepaths:
-            settings.append({
-                'filepath': filepath, **self.load_config(filepath)
-            })
+            settings.append(
+                {'filepath': filepath, **self.load_config(filepath)}
+            )
         self._initialize_settings({'settings': settings})
 
 
