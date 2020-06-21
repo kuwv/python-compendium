@@ -20,7 +20,6 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-configparser = "^5.0.0"
 tomlkit = "^0.6.0"
 jsonschema = "^3.2.0"
 "ruamel.yaml" = "^0.16.10"
@@ -39,6 +38,8 @@ pytest-cov = "^2.9.0"
 safety = "^1.9.0"
 isort = {extras = ["pyproject"], version = "^4.3.21"}
 bump2version = "^1.0.0"
+mkdocs = "^1.1.2"
+pymdown-extensions = "^7.1"
 
 [tool.flit.metadata]
 module = "compendium"
