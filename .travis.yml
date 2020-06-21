@@ -26,6 +26,7 @@ script:
 
 before_deploy:
   - poetry build
+  - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
 
 deploy:
   - provider: script
