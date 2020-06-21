@@ -74,13 +74,12 @@ def install(ctx, symlink=True):
 
 
 @task
-def version(ctx, part=part, tag=False, sign=False, confirm=False):
+def version(ctx, part=part, tag=False, commit=False):
     args = [part]
     if tag:
         args.append('--tag')
-        if sign:
-            args.append('--sign-tags')
-    if confirm:
+    if commit:
+        args.append('--commit')
         ctx.run("bumpversion {}".format(' '.join(args)))
     else:
         ctx.run(
@@ -90,7 +89,7 @@ def version(ctx, part=part, tag=False, sign=False, confirm=False):
             --verbose \
             {}""".format(' '.join(args))
         )
-        print('Add "--confirm" to actually bump the version.')
+        print('Add "--commit" to actually bump the version.')
 
 
 @task
