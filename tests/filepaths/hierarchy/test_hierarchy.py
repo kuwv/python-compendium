@@ -1,6 +1,6 @@
 import os
 
-from compendium.settings import Settings
+from compendium.settings import HierarchySettings
 
 import pytest
 
@@ -26,27 +26,26 @@ def test_hierarchy(fs):
         target_path=user_path + '/.tests.d/settings.toml'
     )
 
-    cfg = Settings(
+    cfg = HierarchySettings(
         application='tests',
         merge_strategy='overlay',
         enable_system_paths=True,
         enable_user_paths=True
     )
     cfg.load()
-    print(cfg.settings)
 
     assert ('/etc/tests/settings.toml') in cfg.filepaths
     assert (user_path + '/.tests.toml') in cfg.filepaths
     assert (user_path + '/.tests.d/settings.toml') in cfg.filepaths
 
-    assert cfg.get('.table.key') == 'first'
-    assert cfg.get('.table.subtable.key') == 'third'
-    assert cfg.get('.table.subtable.second') == 'retained'
-    assert cfg.get('.table.subtable.third') == 'retained'
-    assert cfg.get('.table.subtable.key') != 'second'
-    assert cfg.get('.list.**.last') == 'third'
+    assert cfg.get('/table/key') == 'first'
+    assert cfg.get('/table/subtable/key') == 'third'
+    assert cfg.get('/table/subtable/second') == 'retained'
+    assert cfg.get('/table/subtable/third') == 'retained'
+    assert cfg.get('/table/subtable/key') != 'second'
+    assert cfg.get('/list/**/last') == 'third'
 
     # Ensure /etc/tests/settings.toml is blank
     with pytest.raises(KeyError):
-        cfg.get('.list.**.overwritten1')
-        cfg.get('.list.**.overwritten2')
+        cfg.get('/list/**/overwritten1')
+        cfg.get('/list/**/overwritten2')
