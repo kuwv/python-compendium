@@ -10,12 +10,12 @@ python:
 before_install:
   - pip uninstall pipenv numpy -y
   - pip install poetry
-  - pip list -v
 
 install:
   - poetry install
 
 script:
+  - pip list -v
   - inv format --check
   - inv lint
   # - inv type-check
