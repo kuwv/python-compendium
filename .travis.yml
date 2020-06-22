@@ -4,8 +4,7 @@ python:
   - 3.6
   # - 3.7
   # - 3.8
-  # TODO: codex.h error :(
-  # - pypy3
+  # - pypy3  # codex.h
 
 before_install:
   - pip uninstall pipenv numpy -y
