@@ -41,7 +41,7 @@ jobs:
 
     - stage: test-deploy
       script:
-        - poetry config reposistories.test-pypi https://test.pypi.org/simple/
+        - poetry config repositories.test-pypi https://test.pypi.org/simple/
         - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
       deploy:
         - provider: script
