@@ -36,7 +36,7 @@ jobs:
         - poetry build
       deploy:
         - provider: script
-          script: poetry publish
+          script: poetry publish --repository test-pypi
           skip_cleanup: true
 
 before_deploy:
