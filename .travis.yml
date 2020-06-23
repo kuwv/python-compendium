@@ -7,11 +7,7 @@ python:
   # - pypy3  # codex.h
 
 stages:
-  - quality
   - test
-  - build
-  - name: test-deploy
-    if: branch = master
   - name: deploy
     if: branch = master
 
@@ -29,36 +25,25 @@ jobs:
         - inv format --check
         - inv lint
         # - inv type-check
-
-    - stage: test
-      script:
         - inv unit-test
         - inv safety
 
-    - stage: build
-      script:
-        - poetry build 
-
-    - stage: test-deploy
-      script:
+    - stage: deploy
+      before_deploy:
+        - poetry build
         - poetry config repositories.test-pypi https://test.pypi.org/simple/
-        - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
-      deploy:
-        - provider: script
-          script: poetry publish
-          skip_cleanup: true
           on:
             tags: false
-
-    - stage: deploy
-      script:
+        - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
+          on:
+            tags: false
         - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
+          on:
+            tags: true
       deploy:
         - provider: script
           script: poetry publish
           skip_cleanup: true
-          on:
-            tags: true
 
 after_success:
   - inv coverage --report=xml
