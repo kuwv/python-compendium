@@ -10,8 +10,6 @@ stages:
   - testing
   - name: test-deploy
     if: branch = master AND tag IS blank
-  - name: deploy
-    if: branch = master AND tag IS present
 
 before_install:
   - pip uninstall pipenv numpy -y
@@ -23,6 +21,7 @@ install:
 jobs:
   include:
     - stage: testing
+      python: 3.6
       script:
         - inv format --check
         - inv lint
@@ -31,22 +30,24 @@ jobs:
 
     - stage: test-deploy
       before_deploy:
-        - poetry build
         - poetry config repositories.test-pypi https://test.pypi.org/simple/
         - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
+        - poetry build
       deploy:
         - provider: script
           script: poetry publish
           skip_cleanup: true
 
-    - stage: deploy
-      before_deploy:
-        - poetry build
-        - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
-      deploy:
-        - provider: script
-          script: poetry publish
-          skip_cleanup: true
+before_deploy:
+  - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
+  - poetry build
+deploy:
+  - provider: script
+    script: poetry publish
+    skip_cleanup: true
+    on:
+      branch: master
+      tags: true
 
 after_success:
   - inv coverage --report=xml
