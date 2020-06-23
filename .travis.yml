@@ -32,8 +32,8 @@ jobs:
     - stage: test-deploy
       script: skip
       before_deploy:
-        - poetry config repositories.test-pypi https://test.pypi.org/legacy/
-        - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
+        - poetry config repositories.test-pypi https://test.pypi.org/simple/
+        - poetry config pypi-token.test-pypi $TEST_PYPI_TOKEN
         - poetry build
       deploy:
         - provider: script
