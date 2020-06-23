@@ -11,6 +11,7 @@ stages:
   - test
   - build
   - test-deploy
+    if: branch = master
   - name: deploy
     if: branch = master
 
@@ -40,14 +41,13 @@ jobs:
 
     - stage: test-deploy
       script:
-        - poetry config reposistory.test-pypi https://test.pypi.org/simple/
+        - poetry config reposistories.test-pypi https://test.pypi.org/simple/
         - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
       deploy:
         - provider: script
           script: poetry publish
           skip_cleanup: true
           on:
-            all_branches: true
             tags: false
 
     - stage: deploy
