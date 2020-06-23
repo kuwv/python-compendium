@@ -29,17 +29,6 @@ jobs:
         - inv unit-test
         - inv safety
 
-    - stage: test-deploy
-      script: skip
-      before_deploy:
-        - poetry config repositories.test-pypi https://test.pypi.org/simple/
-        - poetry config http-basic.test-pypi __token__ $TEST_PYPI_TOKEN
-        - poetry build
-      deploy:
-        - provider: script
-          script: poetry publish --repository test-pypi
-          skip_cleanup: true
-
 before_deploy:
   - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
   - poetry build
