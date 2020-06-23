@@ -7,7 +7,7 @@ python:
   # - pypy3  # codex.h
 
 stages:
-  - test
+  - testing
   - name: test-deploy
     if: branch = master AND tag IS blank
   - name: deploy
@@ -22,11 +22,10 @@ install:
 
 jobs:
   include:
-    - stage: quality
+    - stage: testing
       script:
         - inv format --check
         - inv lint
-        # - inv type-check
         - inv unit-test
         - inv safety
 
