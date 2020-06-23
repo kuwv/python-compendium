@@ -56,7 +56,6 @@ jobs:
           script: poetry publish
           skip_cleanup: true
           on:
-             branch: master
              tags: true
 
 after_success:
