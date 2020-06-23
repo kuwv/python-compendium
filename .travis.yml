@@ -10,8 +10,7 @@ stages:
   - quality
   - test
   - build
-  - name: test-deploy
-    if: branch != master
+  - test-deploy
   - name: deploy
     if: branch = master
 
@@ -47,6 +46,9 @@ jobs:
         - provider: script
           script: poetry publish
           skip_cleanup: true
+          on:
+            all_branches: true
+            tags: false
 
     - stage: deploy
       script:
@@ -56,7 +58,7 @@ jobs:
           script: poetry publish
           skip_cleanup: true
           on:
-             tags: true
+            tags: true
 
 after_success:
   - inv coverage --report=xml
