@@ -19,6 +19,7 @@ install:
   - poetry install
 
 jobs:
+  fast_finish: true
   include:
     - stage: testing
       python: 3.6
@@ -31,7 +32,7 @@ jobs:
     - stage: test-deploy
       script: skip
       before_deploy:
-        - poetry config repositories.test-pypi https://test.pypi.org/simple/
+        - poetry config repositories.test-pypi https://test.pypi.org/legacy/
         - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
         - poetry build
       deploy:
@@ -42,6 +43,7 @@ jobs:
 before_deploy:
   - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
   - poetry build
+
 deploy:
   - provider: script
     script: poetry publish
