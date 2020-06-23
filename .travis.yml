@@ -22,9 +22,9 @@ script:
   # - inv safety
   - inv coverage --report=xml
   - bash <(curl -s https://codecov.io/bash)
+  - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
 
 before_deploy:
-  - "poetry config pypi-token.pypi ${POETRY_PYPI_TOKEN_PYPI}"
   - poetry build
 
 deploy:
