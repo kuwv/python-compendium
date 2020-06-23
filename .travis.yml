@@ -8,8 +8,10 @@ python:
 
 stages:
   - test
+  - name: test-deploy
+    if: branch = master AND tag IS blank
   - name: deploy
-    if: branch = master
+    if: branch = master AND tag IS present
 
 before_install:
   - pip uninstall pipenv numpy -y
@@ -28,18 +30,20 @@ jobs:
         - inv unit-test
         - inv safety
 
-    - stage: deploy
+    - stage: test-deploy
       before_deploy:
         - poetry build
         - poetry config repositories.test-pypi https://test.pypi.org/simple/
-          on:
-            tags: false
         - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
-          on:
-            tags: false
+      deploy:
+        - provider: script
+          script: poetry publish
+          skip_cleanup: true
+
+    - stage: deploy
+      before_deploy:
+        - poetry build
         - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
-          on:
-            tags: true
       deploy:
         - provider: script
           script: poetry publish
