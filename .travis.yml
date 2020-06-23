@@ -6,6 +6,15 @@ python:
   # - 3.8
   # - pypy3  # codex.h
 
+stages:
+  - quality
+  - test
+  - build
+  - name: test-deploy
+    if: branch != master
+  - name: deploy
+    if: branch = master
+
 before_install:
   - pip uninstall pipenv numpy -y
   - pip install poetry
@@ -13,23 +22,43 @@ before_install:
 install:
   - poetry install
 
-script:
-  - inv format --check
-  - inv lint
-  # - inv type-check
-  - inv unit-test
-  - inv safety
+jobs:
+  include:
+    - stage: quality
+      script:
+        - inv format --check
+        - inv lint
+        # - inv type-check
+
+    - stage: test
+      script:
+        - inv unit-test
+        - inv safety
+
+    - stage: build
+      script:
+        - poetry build 
+
+    - stage: test-deploy
+      script:
+        - poetry config reposistory.test-pypi https://test.pypi.org/simple/
+        - poetry config pypi-token.test-pypi $POETRY_PYPI_TOKEN_PYPI
+      deploy:
+        - provider: script
+          script: poetry publish
+          skip_cleanup: true
+
+    - stage: deploy
+      script:
+        - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
+      deploy:
+        - provider: script
+          script: poetry publish
+          skip_cleanup: true
+          on:
+             branch: master
+             tags: true
+
+after_success:
   - inv coverage --report=xml
   - bash <(curl -s https://codecov.io/bash)
-  - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
-
-before_deploy:
-  - poetry build
-
-deploy:
-  - provider: script
-    script: poetry publish
-    skip_cleanup: true
-    on:
-      branch: master
-      tags: true
