@@ -12,43 +12,28 @@ Compendium is a simple configuration management tool. It has the capability to m
 
 `pip install compendium`
 
-## Search settings
+## Manage configuration
 
-```
+``````
 from compendium.settings import Settings
 
 cfg = Settings(application='app', path='afile.toml')
 cfg.load()
-query = cfg.search('/servers/**/ip')
 ```
+
+## Search settings
+
+`query = cfg.search('/servers/**/ip')`
 
 
 ## Create settings
 
-```
-from compendium.settings import Settings
-
-cfg = Settings(application='app', path='afile.toml')
-cfg.load()
-cfg.create('/test', 'test')
-```
+`cfg.create('/test', 'test')`
 
 ## Update settings
 
-```
-from compendium.settings import Settings
-
-cfg = Settings(application='app', path='afile.toml', writable=True)
-cfg.load()
-cfg.update('/owner/name', 'Tom Waits')
-```
+`cfg.update('/owner/name', 'Tom Waits')`
 
 ## Delete settings
 
-```
-from compendium.settings import Settings
-
-cfg = Settings(application='app', path='afile.toml')
-cfg.load()
-cfg.delete('/owner/name')
-```
+`cfg.delete('/owner/name')`
