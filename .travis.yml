@@ -7,9 +7,17 @@ python:
   # - pypy3  # codex.h
 
 stages:
-  - testing
-  - name: test-deploy
-    if: branch = master AND tag IS blank
+  - python-3.6
+  - python-3.7
+  # - name: deploy
+  #   if: branch = master AND tag IS blank
+
+.test_scripts: &test_scripts
+  script:
+    - inv format --check
+    - inv lint
+    - inv unit-test
+    - inv safety
 
 before_install:
   - pip uninstall pipenv numpy -y
@@ -21,13 +29,13 @@ install:
 jobs:
   fast_finish: true
   include:
-    - stage: testing
+    - stage: python-3.6
       python: 3.6
-      script:
-        - inv format --check
-        - inv lint
-        - inv unit-test
-        - inv safety
+      <<: *test_scripts
+
+    - stage: python-3.7
+      python: 3.7
+      <<: *test_scripts
 
 before_deploy:
   - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
