@@ -14,7 +14,7 @@ Compendium is a simple configuration management tool. It has the capability to m
 
 ## Manage configuration
 
-``````
+```
 from compendium.settings import Settings
 
 cfg = Settings(application='app', path='afile.toml')
