@@ -1,16 +1,13 @@
 ---
 language: python
-python:
-  - 3.6
-  # - 3.7
-  # - 3.8
-  # - pypy3  # codex.h
 
 stages:
   - python-3.6
   - python-3.7
-  # - name: deploy
-  #   if: branch = master AND tag IS blank
+  - python-3.8
+  - name: deploy
+    if: branch = master AND tag IS present
+  - coverage
 
 .test_scripts: &test_scripts
   script:
@@ -37,18 +34,25 @@ jobs:
       python: 3.7
       <<: *test_scripts
 
-before_deploy:
-  - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
-  - poetry build
+    - stage: python-3.8
+      python: 3.8
+      <<: *test_scripts
 
-deploy:
-  - provider: script
-    script: poetry publish
-    skip_cleanup: true
-    on:
-      branch: master
-      tags: true
+    - stage: deploy
+      script: skip
+      before_deploy:
+        - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
+        - poetry build
+      
+      deploy:
+        - provider: script
+          script: poetry publish
+          skip_cleanup: true
+          on:
+            branch: master
+            tags: true
 
-after_success:
-  - inv coverage --report=xml
-  - bash <(curl -s https://codecov.io/bash)
+    - stage: coverage
+      script:
+        - inv coverage --report=xml
+        - bash <(curl -s https://codecov.io/bash)
