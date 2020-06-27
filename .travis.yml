@@ -5,7 +5,7 @@ stages:
   - python-3.6
   - python-3.7
   - python-3.8
-  - pypi-deploy
+  - name: pypi-deploy
     # if: (branch = master) AND (tag IS present)
   - coverage
 
