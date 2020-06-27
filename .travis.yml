@@ -5,8 +5,8 @@ stages:
   - python-3.6
   - python-3.7
   - python-3.8
-  - name: deploy
-    if: (branch = master)
+  - name: pypi-deploy
+    if: (branch = master) AND (tag IS present)
   - coverage
 
 .test_scripts: &test_scripts
@@ -38,7 +38,7 @@ jobs:
       python: 3.8
       <<: *test_scripts
 
-    - stage: deploy
+    - stage: pypi-deploy
       script: skip
       before_deploy:
         - poetry config repositories.pypi 'https://pypi.org/simple/'
