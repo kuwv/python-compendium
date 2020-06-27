@@ -41,6 +41,7 @@ jobs:
     - stage: deploy
       script: skip
       before_deploy:
+        - poetry config repositories.pypi 'https://pypi.org/simple/'
         - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
         - poetry build
       
