@@ -53,6 +53,10 @@ class Settings(ConfigPaths):
     def search(self, query: str):
         return dpath.values(self.__settings, query, self.separator)
 
+    def append(self, query: str, value: Any):
+        dpath.merge(self.__settings, value)
+        self.save(self.head)
+
     def update(self, key: str, value: Any):
         dpath.set(self.__settings, key, value, self.separator)
         self.save(self.head)
@@ -85,9 +89,9 @@ class NestedSettings(Settings):
         self.load_configs()
         settings = []
         for filepath in self.filepaths:
-            settings.append(
-                {'filepath': filepath, **self.load_config(filepath)}
-            )
+            settings.append({
+                'filepath': filepath, **self.load_config(filepath)
+            })
         self._initialize_settings({'settings': settings})
 
 
