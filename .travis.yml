@@ -12,7 +12,8 @@ stages:
   - python-3.6
   - python-3.7
   - python-3.8
-  - pypi-deploy
+  - name: pypi-deploy
+    if: branch = master
   - coverage
 
 before_install:
@@ -49,8 +50,6 @@ jobs:
             - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
             - poetry publish
           skip_cleanup: true
-          on:
-            tags: true
 
     - stage: coverage
       script:
