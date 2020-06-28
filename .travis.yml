@@ -1,19 +1,19 @@
 ---
 language: python
 
-stages:
-  - python-3.6
-  - python-3.7
-  - python-3.8
-  - pypi-deploy
-  - coverage
-
 .test_scripts: &test_scripts
   script:
     - inv format --check
     - inv lint
     - inv unit-test
     - inv safety
+
+stages:
+  - python-3.6
+  - python-3.7
+  - python-3.8
+  - pypi-deploy
+  - coverage
 
 before_install:
   - pip uninstall pipenv numpy -y
