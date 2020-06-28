@@ -6,7 +6,7 @@ stages:
   - python-3.7
   - python-3.8
   - name: pypi-deploy
-    if: tag IS present
+    if: branch = master
   - coverage
 
 .test_scripts: &test_scripts
@@ -41,13 +41,14 @@ jobs:
     - stage: pypi-deploy
       script: skip
       before_deploy:
-        - poetry config repositories.pypi 'https://pypi.org/simple/'
-        - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
         - poetry build
       
       deploy:
         - provider: script
-          script: poetry publish
+          script:
+            - poetry config repositories.pypi 'https://pypi.org/simple/'
+            - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
+            - poetry publish
           skip_cleanup: true
           on:
             branch: master
