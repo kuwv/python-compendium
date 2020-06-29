@@ -39,6 +39,8 @@ jobs:
           - poetry publish
         skip_cleanup: true
         skip_existing: true
+      on:
+        branches: master
 
     - stage: coverage
       script:
