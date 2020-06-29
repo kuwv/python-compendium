@@ -10,6 +10,7 @@ stages:
   # - python-3.6
   # - python-3.7
   # - python-3.8
+  - test
   - name: pypi-deploy
     if: tag IS present
   - coverage
@@ -22,15 +23,22 @@ install:
   - poetry install
 
 # .test_scripts: &test_scripts
-script:
-  - inv format --check
-  - inv lint
-  - inv unit-test
-  - inv safety
+# script:
+#   - inv format --check
+#   - inv lint
+#   - inv unit-test
+#   - inv safety
 
 jobs:
   fast_finish: true
   include:
+    - stage: test
+      script:
+        - inv format --check
+        - inv lint
+        - inv unit-test
+        - inv safety
+
     # - stage: python-3.6
     #   python: 3.6
     #   <<: *test_scripts
