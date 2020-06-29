@@ -30,15 +30,13 @@ jobs:
     - stage: pypi-deploy
       script: skip
       before_deploy:
+        - poetry config repositories.pypi 'https://pypi.org/simple/'
+        - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
         - poetry build
       deploy:
         provider: script
-        script:
-          - poetry config repositories.pypi 'https://pypi.org/simple/'
-          - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
-          - poetry publish
+        script: poetry publish
         skip_cleanup: true
-        skip_existing: true
       on:
         branch: master
 
