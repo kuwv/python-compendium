@@ -22,17 +22,15 @@ install:
 jobs:
   include:
     - stage: test
-      script:
-        - inv format --check
-        - inv lint
-        - inv unit-test
-        - inv safety
+      script: inv format --check
+    - script: inv lint
+    - script: inv unit-test
+    - script: inv safety
 
     - stage: pypi-deploy
       script: skip
       before_deploy:
         - poetry build
-      
       deploy:
         provider: script
         script:
