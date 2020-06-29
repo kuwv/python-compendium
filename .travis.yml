@@ -7,9 +7,6 @@ python:
   - 3.8
 
 stages:
-  # - python-3.6
-  # - python-3.7
-  # - python-3.8
   - test
   - name: pypi-deploy
     if: tag IS present
@@ -22,13 +19,6 @@ before_install:
 install:
   - poetry install
 
-# .test_scripts: &test_scripts
-# script:
-#   - inv format --check
-#   - inv lint
-#   - inv unit-test
-#   - inv safety
-
 jobs:
   fast_finish: true
   include:
@@ -38,18 +28,6 @@ jobs:
         - inv lint
         - inv unit-test
         - inv safety
-
-    # - stage: python-3.6
-    #   python: 3.6
-    #   <<: *test_scripts
-
-    # - stage: python-3.7
-    #   python: 3.7
-    #   <<: *test_scripts
-
-    # - stage: python-3.8
-    #   python: 3.8
-    #   <<: *test_scripts
 
     - stage: pypi-deploy
       script: skip
