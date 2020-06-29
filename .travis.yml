@@ -1,5 +1,6 @@
 ---
 language: python
+cache: pip
 
 .test_scripts: &test_scripts
   script:
@@ -12,7 +13,8 @@ stages:
   - python-3.6
   - python-3.7
   - python-3.8
-  - pypi-deploy
+  - name: pypi-deploy
+    if: tag IS present
   - coverage
 
 before_install:
@@ -51,7 +53,6 @@ jobs:
         skip_cleanup: true
         on:
           tags: true
-      if: tag IS present
 
     - stage: coverage
       script:
