@@ -20,7 +20,6 @@ install:
   - poetry install
 
 jobs:
-  fast_finish: true
   include:
     - stage: test
       script:
