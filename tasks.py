@@ -82,13 +82,10 @@ def version(ctx, part=part, tag=False, commit=False):
         args.append('--commit')
         ctx.run("bumpversion {}".format(' '.join(args)))
     else:
-        ctx.run(
-            """bumpversion \
-            --dry-run \
-            --allow-dirty \
-            --verbose \
-            {}""".format(' '.join(args))
-        )
+        args.append('--dry-run')
+        args.append('--allow-dirty')
+        args.append('--verbose')
+        ctx.run("bumpversion {}".format(' '.join(args)))
         print('Add "--commit" to actually bump the version.')
 
 
