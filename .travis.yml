@@ -8,7 +8,7 @@ cache: pip
 
 stages:
   - test
-  - name: pypi-deploy
+  - name: deploy
     if: tag IS present
   - coverage
 
@@ -20,6 +20,7 @@ install:
   - poetry install
 
 jobs:
+  fast_finish: true
   include:
     - stage: test
       script: inv format --check
@@ -27,7 +28,7 @@ jobs:
     - script: inv unit-test
     - script: inv safety
 
-    - stage: pypi-deploy
+    - stage: deploy
       script: skip
       before_deploy:
         - poetry config repositories.pypi 'https://pypi.org/simple/'
