@@ -29,11 +29,8 @@ jobs:
     - script: inv safety
 
     - stage: deploy
-      script:
-        - poetry config repositories.pypi 'https://pypi.org/simple/'
-        - poetry config pypi-token.pypi $PYPI_TOKEN
-      before_deploy:
-        - poetry build
+      script: poetry config pypi-token.pypi $PYPI_TOKEN
+      before_deploy: poetry build
       deploy:
         provider: script
         script: poetry publish
