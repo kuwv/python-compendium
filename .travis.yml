@@ -39,8 +39,6 @@ jobs:
           - poetry config pypi-token.pypi $PYPI_TOKEN
           - poetry publish
         skip_cleanup: true
-      on:
-        branch: master
 
     - stage: coverage
       script:
