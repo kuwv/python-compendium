@@ -35,7 +35,7 @@ jobs:
       deploy:
         provider: script
         script: "poetry config repositories.pypi 'https://pypi.org/simple/' && \
-          poetry config pypi-token.pypi $PYPI_TOKEN && \
+          poetry config pypi-token.pypi ${PYPI_TOKEN} && \
           poetry publish"
         skip_cleanup: true
         on:
