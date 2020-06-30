@@ -31,15 +31,16 @@ jobs:
     - stage: deploy
       script: skip
       before_deploy:
-        - poetry config repositories.pypi 'https://pypi.org/simple/'
-        - poetry config pypi-token.pypi $POETRY_PYPI_TOKEN_PYPI
         - poetry build
       deploy:
-        provider: script
-        script: poetry publish
-        skip_cleanup: true
-      on:
-        branch: master
+        provider: pypi
+        user: __token__
+        password: $PYPI_TOKEN
+        distributions: dist
+        skip_existing: true
+        on:
+          tags: true
+          branch: master
 
     - stage: coverage
       script:
