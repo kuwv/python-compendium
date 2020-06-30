@@ -30,8 +30,7 @@ jobs:
 
     - stage: deploy
       script: skip
-      before_deploy:
-        - poetry build
+      before_deploy: poetry build
       deploy:
         provider: pypi
         user: __token__
