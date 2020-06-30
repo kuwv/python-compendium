@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "compendium"
-version = "0.1.1-dev40"
+version = "0.1.1-dev41"
 description = "Simple layered configuraion tool"
 authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
 license = "Apache-2.0"
