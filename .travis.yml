@@ -28,17 +28,19 @@ jobs:
     - script: inv unit-test
     - script: inv safety
 
+
     - stage: deploy
       script: skip
       before_deploy: poetry build
       deploy:
-        provider: pypi
-        user: __token__
-        distributions: dist
-        skip_existing: true
-        on:
-          tags: true
-          branch: master
+        provider: script
+        script:
+          - poetry config repositories.pypi 'https://pypi.org/simple/'
+          - poetry config pypi-token.pypi $PYPI_TOKEN
+          - poetry publish
+        skip_cleanup: true
+      on:
+        branch: master
 
     - stage: coverage
       script:
