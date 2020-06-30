@@ -34,7 +34,6 @@ jobs:
       deploy:
         provider: pypi
         user: __token__
-        password: $PYPI_TOKEN
         distributions: dist
         skip_existing: true
         on:
