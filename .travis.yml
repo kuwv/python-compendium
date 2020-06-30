@@ -34,10 +34,9 @@ jobs:
       before_deploy: poetry build
       deploy:
         provider: script
-        script:
-          - poetry config repositories.pypi 'https://pypi.org/simple/'
-          - poetry config pypi-token.pypi $PYPI_TOKEN
-          - poetry publish
+        script: "poetry config repositories.pypi 'https://pypi.org/simple/' && \
+          poetry config pypi-token.pypi $PYPI_TOKEN && \
+          poetry publish"
         skip_cleanup: true
         on:
           tags: true
