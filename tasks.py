@@ -91,7 +91,7 @@ def install(ctx, symlink=True):
 @task
 def version(ctx, part=part, tag=False, commit=False, message=None):
     '''Update project version and apply tags
-    
+
     Parameters
     ----------
     tag: bool, optional
