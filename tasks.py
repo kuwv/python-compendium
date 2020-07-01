@@ -12,6 +12,13 @@ else:
 
 @task
 def format(ctx, check=False):
+    '''Format project source code to PEP-8 standard
+
+    Parameters
+    ----------
+    check: bool, optional
+        Check project source code without modification
+    '''
     args = ['--skip-string-normalization']
     if check:
         args.append('--check')
@@ -21,11 +28,19 @@ def format(ctx, check=False):
 
 @task
 def lint(ctx):
+    '''Check project source code for linting errors'''
     ctx.run('flake8')
 
 
 @task
 def type_check(ctx, path='.'):
+    '''Check project source types
+
+    Parameters
+    ----------
+    path: str, optional
+        Include the path to check for type-hints
+    '''
     ctx.run("mypy {}".format(path))
 
 
@@ -74,7 +89,20 @@ def install(ctx, symlink=True):
 
 
 @task
-def version(ctx, part=part, tag=False, commit=False):
+def version(ctx, part=part, tag=False, commit=False, message=None):
+    '''Update project version and apply tags
+    
+    Parameters
+    ----------
+    tag: bool, optional
+        Apply tag to branch using version
+
+    commit: bool, optional
+        Commit version to branch
+
+    message: str, optional
+        Add commit message with annotated tag
+    '''
     args = [part]
     if tag:
         args.append('--tag')
@@ -85,16 +113,20 @@ def version(ctx, part=part, tag=False, commit=False):
         args.append('--allow-dirty')
         args.append('--verbose')
         print('Add "--commit" to actually bump the version.')
+    if message:
+        args.append("--tag-message '{}'".format(message))
     ctx.run("bumpversion {}".format(' '.join(args)))
 
 
 @task
-def publish(ctx, symlink=False):
+def publish(ctx):
+    '''Publish project distribution'''
     ctx.run('flit publish')
 
 
 @task
 def clean(ctx):
+    '''Clean project dependencies and build'''
     paths = ['dist', 'logs']
     paths.append('**/__pycache__')
     paths.append('**/*.pyc')
