@@ -54,7 +54,7 @@ class Settings(ConfigPaths):
         return dpath.values(self.__settings, query, self.separator)
 
     def append(self, query: str, value: Any):
-        dpath.merge(self.__settings, value)
+        dpath.merge(self.__settings, value, _path=query)
         self.save(self.head)
 
     def update(self, key: str, value: Any):
