@@ -40,26 +40,33 @@ class Settings(ConfigPaths):
     def settings(self) -> Dict[Any, Any]:
         return self.__settings
 
-    def _initialize_settings(self, new_settings: Dict[Any, Any]):
+    def _initialize_settings(self, new_settings: Dict[Any, Any]) -> None:
         logging.debug(new_settings)
         self.__settings.update(new_settings)
 
     # Query
-    def get(self, key: str, document: Optional[Dict[Any, Any]] = None):
+    def get(self, query: str, document: Optional[Dict[Any, Any]] = None):
         if not document:
             document = self.__settings
-        return dpath.get(document, key, self.separator)
+        return dpath.get(document, query, self.separator)
 
-    def search(self, query: str):
+    def search(self, query: str) -> Dict[Any, Any]:
         return dpath.values(self.__settings, query, self.separator)
 
-    def append(self, query: str, value: Any):
-        dpath.merge(self.__settings, value, _path=query)
+    def append(self, key: str, value: Any) -> None:
+        store = [value]
+        keypath = key.split(self.separator)[1:]
+        for x in reversed(keypath):
+            store = {x: store}
+        dpath.merge(self.__settings, store)
         self.save(self.head)
 
-    def update(self, key: str, value: Any):
+    def update(self, key: str, value: Any) -> None:
         dpath.set(self.__settings, key, value, self.separator)
         self.save(self.head)
+
+    def add(self, key: str, value: Any) -> None:
+        dpath.new(self.__settings, key, value, self.separator)
 
     def create(self, key: str, value: Any):
         dpath.new(self.__settings, key, value, self.separator)
@@ -73,7 +80,7 @@ class Settings(ConfigPaths):
         self._initialize_settings(self.load_config(self.head))
 
     def view(self):
-        return self.query
+        return self.key
 
     def save(self, path: str):
         self.save_config(self.head, self.__settings)
