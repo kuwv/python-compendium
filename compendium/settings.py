@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Optional
 
 from dpath import util as dpath  # type: ignore
 
-from .config_manager import ConfigPaths
+from .config.paths import ConfigPaths
 
 
 class Settings(ConfigPaths):
@@ -53,36 +53,38 @@ class Settings(ConfigPaths):
     def search(self, query: str) -> Dict[Any, Any]:
         return dpath.values(self.__settings, query, self.separator)
 
-    def append(self, key: str, value: Any) -> None:
+    def append(self, keypath: str, value: Any) -> None:
         store = [value]
-        keypath = key.split(self.separator)[1:]
-        for x in reversed(keypath):
+        keypathpath = keypath.split(self.separator)[1:]
+        for x in reversed(keypathpath):
             store = {x: store}
         dpath.merge(self.__settings, store)
         self.save(self.head)
 
-    def update(self, key: str, value: Any) -> None:
-        dpath.set(self.__settings, key, value, self.separator)
+    def update(self, keypath: str, value: Any) -> None:
+        dpath.set(self.__settings, keypath, value, self.separator)
         self.save(self.head)
 
-    def add(self, key: str, value: Any) -> None:
-        dpath.new(self.__settings, key, value, self.separator)
+    def add(self, keypath: str, value: Any) -> None:
+        dpath.new(self.__settings, keypath, value, self.separator)
 
-    def create(self, key: str, value: Any):
-        dpath.new(self.__settings, key, value, self.separator)
+    def create(self, keypath: str, value: Any) -> None:
+        dpath.new(self.__settings, keypath, value, self.separator)
         self.save(self.head)
 
-    def delete(self, key: str):
-        dpath.delete(self.__settings, key, self.separator)
+    def delete(self, keypath: str) -> None:
+        dpath.delete(self.__settings, keypath, self.separator)
         self.save(self.head)
 
-    def load(self, path: Optional[str] = None, filename: Optional[str] = None):
+    def load(
+        self, path: Optional[str] = None, filename: Optional[str] = None
+    ) -> None:
         self._initialize_settings(self.load_config(self.head))
 
-    def view(self):
-        return self.key
+    def view(self) -> str:
+        return self.keypath
 
-    def save(self, path: str):
+    def save(self, path: str) -> None:
         self.save_config(self.head, self.__settings)
 
 

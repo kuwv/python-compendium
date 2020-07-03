@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from compendium.config_manager import ConfigPaths
+from compendium.config.paths import ConfigPaths
 from compendium.settings import Settings
 
 config_path = os.path.dirname(os.path.realpath(__file__))
