@@ -50,6 +50,12 @@ class Settings(ConfigPaths):
             document = self.__settings
         return dpath.get(document, query, self.separator)
 
+    # def retrieve(self, query: str):
+    #     if not self.document:
+    #         self.document = self.__settings
+    #     self.document = dpath.get(self.document, query, self.separator)
+    #     return self
+
     def search(self, query: str) -> Dict[Any, Any]:
         return dpath.values(self.__settings, query, self.separator)
 
@@ -107,11 +113,17 @@ class NestedSettings(Settings):
 class HierarchySettings(Settings):
     def __init__(self, application, **kwargs):
         '''
-        merge_sections: []
-        merge_strategy:
-          - overlay
-          - partition
-          - last
+
+        Parameters:
+        -----------
+        merge_sections: list, optional
+            Include sections to be merged
+
+        merge_strategy: list, optional
+            Strategy to used when merging: overlay, parition, and last
+              - overlay will replace exsisting entries
+              - partition will keeps each seettings separate
+              - last will only use the last loaded
         '''
         super().__init__(application, **kwargs)
 

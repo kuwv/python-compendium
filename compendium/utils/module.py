@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
+import inspect
 import importlib
-import importlib.machinery
-import pkgutil
-
-import pkg_resources
-
 import logging
+import pkgutil
+import pkg_resources
+import re
+import sys
 
-SUFFIXES = [
+from typing import Optional
+
+# Current OS Platform filetypes
+FILETYPES = [
     ('Source:', importlib.machinery.SOURCE_SUFFIXES),
     ('Debug:', importlib.machinery.DEBUG_BYTECODE_SUFFIXES),
     ('Optimized:', importlib.machinery.OPTIMIZED_BYTECODE_SUFFIXES),
@@ -16,71 +19,89 @@ SUFFIXES = [
 ]
 
 
-def discover_plugins(self, module_prefix: str = 'lunar_'):
-    return {
-        name: importlib.import_module(name)
-        for finder, name, ispkg
-        in pkgutil.iter_modules()
-        if name.startswith(module_prefix)
-    }
-
-
-def discover_entry_points(self, entry):
-    return {
-        entry_point.name: entry_point.load()
-        for entry_point
-        in pkg_resources.iter_entry_points(entry)
-    }
-
-
 # TODO: should load from pkgutil
 # https://packaging.python.org/guides/creating-and-discovering-plugins/
 # pluginbase +1
 # stevedore -1 only 2.7 and 3.5 ?!?
 # importlib +1
-class ModuleLoader(object):
+class ModuleLoader:
 
     __module_path = None
-    __loader = None
+    # __loader = None
 
-    def __init__(self, module_path: str = None):
-        if module_path is not None:
-            self.__module_path = module_path
+    def __init__(self, path: Optional[list] = None, prefix: str = ''):
+        '''Initialize module search paths'''
+        self.__path = path
+        self.__prefix = prefix
 
-    '''
-    def find_loader(self, loader_name: str):
-        self.__loader = importlib.find_loader(loader_name)
+    # @staticmethod
+    # def discover_plugins(module_prefix: str):
+    #     '''Retrieve list of modules matching prefix'''
+    #     return {
+    #         name: importlib.import_module(name)
+    #         for finder, name, ispkg in pkgutil.iter_modules()
+    #         if name.startswith(module_prefix)
+    #     }
 
-    def load_package_module(self, loader_name: str, module_name: str):
-        pkg_loader = self.find_loader(loader_name)
-        pkg = pkg_loader.load_module()
-        self.__loader = importlib.find_loader(module_name, pkg.__path__)
+    # @staticmethod
+    # def discover_entry_points(entry: str):
+    #     '''Retrieve entry points of module'''
+    #     return {
+    #         entry_point.name: entry_point.load()
+    #         for entry_point in pkg_resources.iter_entry_points(entry)
+    #     }
+
+    @staticmethod
+    def __mod_path(path: str, name: str, **kwargs):
+        '''Modify paths'''
+        # TODO: Add exclusions, os.path.relpath
+        module = kwargs.get('module', None)
+        subclass = kwargs.get('subclass', None)
+
+        module_path = path.replace('/', '.') + '.' + name
+        if module and subclass:
+            module_path = self.retrieve_subclass(module, subclass) 
+        return module_path
+
+    def list_modules(self, **kwargs):
+        '''Retrieve list of modules from specified path with matching prefix'''
+        return [
+            self.__mod_path(finder.path, name, **kwargs)
+            for finder, name, _ in pkgutil.iter_modules(
+                 self.__path, self.__prefix
+            )
+        ]
+
+    def discover_module_path(self, module):
+        '''Retrieve module path with matching prefix'''
+        return [x for x in self.list_modules() if (module in x)][0]
+
+    def retrieve_subclass(self, module: str, subclass: object):
+        '''Retrieve subclass from module'''
+        module_import = importlib.import_module(module, __name__)
+        for attribute_name in dir(module_import):
+
+            attribute = getattr(module_import, attribute_name)
+
+            if inspect.isclass(attribute) and issubclass(attribute, subclass):
+                if subclass.__name__ != attribute.__name__:
+                    setattr(sys.modules[__name__], module, attribute)
+                    return attribute
 
     def reload_module(self, module_name):
+        '''Reload imported module'''
         try:
             module = importlib.reload(module_name)
         except ImportError:
             logging.error("Failed to reload {}".format(module_name))
         return module
-    '''
 
-    def load_module(self, module_name: str):
+    def load_classpath(self, class_path: str):
+        '''Load class from module'''
+        logging.info("Loading class {}".format(class_path))
         try:
-            module = importlib.import_module(module_name)
-        except ImportError:
-            logging.error("Failed to load {}".format(module_name))
-        return module
-
-    def load_classpath(self, full_class_path: str):
-        logging.info("Loading class {}".format(full_class_path))
-        try:
-            class_data = full_class_path.split('.')
-            module_path = '.'.join(class_data[:-1])
-            class_name = class_data[-1]
-            logging.info(
-                "Module: {m} Class: {c}".format(m=module_path, c=class_name)
-            )
-            module = self.load_module(module_path)
+            module_path, class_name = class_path.rsplit('.', 1)
+            module = importlib.import_module(module_path)
         except ImportError:
             logging.error("Failed to load {}".format(class_name))
         return getattr(module, class_name)

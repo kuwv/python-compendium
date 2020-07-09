@@ -10,9 +10,10 @@ import logging
 
 
 class JsonConfig(ConfigBase):
-    def __init__(self):
+    def __init__(self, **kwargs):
         logging.info('Inializing JsonConfig')
-        self.encoder = str
+        self.encoding = kwargs.get('encoding', 'utf-8')
+        self.encoder = kwargs.get('encoder', str)
 
     @staticmethod
     def filetypes():
@@ -21,7 +22,7 @@ class JsonConfig(ConfigBase):
     def load_config(self, filepath):
         logging.info('JsonConfig: loading configuration file')
         if os.path.isfile(filepath):
-            with open(filepath, 'r') as f:
+            with open(filepath, 'r', encoding=self.encoding) as f:
                 content = json.load(f)
         else:
             content = {}

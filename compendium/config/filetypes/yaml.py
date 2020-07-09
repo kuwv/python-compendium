@@ -10,8 +10,9 @@ from .. import ConfigBase
 
 # TODO: Implement ruamel yaml
 class YamlConfig(ConfigBase):
-    def __init__(self):
+    def __init__(self, **kwargs):
         logging.info('Inializing YamlConfig')
+        self.encoding = kwargs.get('encoding', 'utf-8')
         self.yaml = YAML(typ='safe')
 
     @staticmethod
@@ -23,7 +24,7 @@ class YamlConfig(ConfigBase):
             "YamlConfig loading configuration file {}".format(filepath)
         )
         if os.path.isfile(filepath):
-            with open(filepath, 'r') as f:
+            with open(filepath, 'r', encoding=self.encoding) as f:
                 content = self.yaml.load(f)
         else:
             content = {}

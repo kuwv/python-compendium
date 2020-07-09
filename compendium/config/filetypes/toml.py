@@ -9,8 +9,9 @@ from .. import ConfigBase
 
 
 class TomlConfig(ConfigBase):
-    def __init__(self):
+    def __init__(self, **kwargs):
         logging.info('Inializing TomlConfig')
+        self.encoding = kwargs.get('encoding', 'utf-8')
 
     @staticmethod
     def filetypes():
@@ -21,8 +22,8 @@ class TomlConfig(ConfigBase):
     def load_config(self, filepath):
         logging.info('TomlConfig: loading configuration file')
         if os.path.isfile(filepath):
-            with open(filepath, encoding='utf-8') as f:
-                content = tomlkit.loads(f.read())
+            with open(filepath, 'r', encoding=self.encoding) as f:
+                content = tomlkit.parse(f.read())
         else:
             content = {}
         return content
