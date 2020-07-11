@@ -65,15 +65,17 @@ class ModuleLoader:
 
     def list_modules(self, **kwargs):
         '''Retrieve list of modules from specified path with matching prefix'''
-        return [
+        result = [
             self.__mod_path(finder.path, name, **kwargs)
             for finder, name, _ in pkgutil.iter_modules(
-                 self.__path, self.__prefix
+                path=self.__path, prefix=self.__prefix
             )
         ]
+        return result
 
     def discover_module_path(self, module):
         '''Retrieve module path with matching prefix'''
+        # TODO: add try / catch
         return [x for x in self.list_modules() if (module in x)][0]
 
     def retrieve_subclass(self, module: str, subclass: object):

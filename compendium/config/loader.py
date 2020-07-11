@@ -18,26 +18,15 @@ class ConfigFile:
     '''Manage configuration files using dynamic module loader'''
 
     def __init__(self):
-        '''Initialize module loader
-
-        Retrieve supported filetypes from each module
-        '''
-        self.modules = [m for m in ConfigBase.__subclasses__()]
-
-    def __discovery_loader(self, filetype):
-        '''Load the module matching the supported filetype'''
-        for module in self.modules:
-            if filetype in module.filetypes():
-                return (module.__module__ + '.' + module.__name__)
-        return None
+        '''Initialize module loader'''
+        pass
 
     def _load_module(self, filetype: str):
         '''Dynamically load the appropriate module'''
         logging.info('Loading configuration configs')
-        mod = ModuleLoader()
+        mod = ModuleLoader(['compendium/config/filetypes'])
+        module_path = mod.discover_module_path(filetype)
 
-        # TODO: figure out which driver to load from filetypes
-        module_path = self.__discovery_loader(filetype)
         if module_path is not None:
             config_class = mod.load_classpath(module_path)
             self.__config_module = config_class()
