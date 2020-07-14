@@ -14,9 +14,7 @@ else:
 def format(ctx, check=False):
     '''Format project source code to PEP-8 standard
 
-    Parameters
-    ----------
-    check: bool, optional
+    :param check: bool, optional
         Check project source code without modification
     '''
     args = ['--skip-string-normalization']
@@ -28,7 +26,7 @@ def format(ctx, check=False):
 
 @task
 def lint(ctx):
-    '''Check project source code for linting errors'''
+    '''Check project source code for linting errors.'''
     ctx.run('flake8')
 
 
@@ -36,9 +34,7 @@ def lint(ctx):
 def type_check(ctx, path='.'):
     '''Check project source types
 
-    Parameters
-    ----------
-    path: str, optional
+    :param path: str, optional
         Include the path to check for type-hints
     '''
     ctx.run("mypy {}".format(path))
@@ -90,17 +86,15 @@ def install(ctx, symlink=True):
 
 @task
 def version(ctx, part=part, tag=False, commit=False, message=None):
-    '''Update project version and apply tags
+    '''Update project version and apply tags.
 
-    Parameters
-    ----------
-    tag: bool, optional
+    :param tag: bool, optional
         Apply tag to branch using version
 
-    commit: bool, optional
+    :param commit: bool, optional
         Commit version to branch
 
-    message: str, optional
+    :param message: str, optional
         Add commit message with annotated tag
     '''
     args = [part]
@@ -120,13 +114,13 @@ def version(ctx, part=part, tag=False, commit=False, message=None):
 
 @task
 def publish(ctx):
-    '''Publish project distribution'''
+    '''Publish project distribution.'''
     ctx.run('flit publish')
 
 
 @task
 def clean(ctx):
-    '''Clean project dependencies and build'''
+    '''Clean project dependencies and build.'''
     paths = ['dist', 'logs']
     paths.append('**/__pycache__')
     paths.append('**/*.pyc')
