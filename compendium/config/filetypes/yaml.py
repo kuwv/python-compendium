@@ -1,3 +1,4 @@
+'''Control YAML configuration module.'''
 # -*- coding: utf-8 -*-
 import errno
 import logging
@@ -10,16 +11,21 @@ from .. import ConfigBase
 
 # TODO: Implement ruamel yaml
 class YamlConfig(ConfigBase):
+    '''Manage YAML configuration files.'''
+
     def __init__(self, **kwargs):
+        '''Initialize YAML configuration module.'''
         logging.info('Inializing YamlConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
         self.yaml = YAML(typ='safe')
 
     @staticmethod
     def filetypes():
+        '''Return support YAML filetypes.'''
         return ['yaml', 'yml']
 
     def load_config(self, filepath):
+        '''Load settings from YAML configuration.'''
         logging.info(
             "YamlConfig loading configuration file {}".format(filepath)
         )
@@ -31,6 +37,7 @@ class YamlConfig(ConfigBase):
         return content
 
     def save_config(self, content, filepath):
+        '''Save settings to YAML configuration.'''
         try:
             with open(filepath, 'w') as f:
                 self.yaml.dump(content, f)

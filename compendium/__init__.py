@@ -1,5 +1,5 @@
+'''Simple configuration management tool.'''
 # -*- coding: utf-8 -*-
-'''Simple configuration management tool'''
 
 __title__ = 'compendium'
 __version__ = '0.1.1-dev54'

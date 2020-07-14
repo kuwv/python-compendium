@@ -1,3 +1,4 @@
+'''Test Task-Runner.'''
 from invoke import call, task  # type: ignore
 
 
@@ -12,7 +13,7 @@ else:
 
 @task
 def format(ctx, check=False):
-    '''Format project source code to PEP-8 standard
+    '''Format project source code to PEP-8 standard.
 
     :param check: bool, optional
         Check project source code without modification
@@ -32,7 +33,7 @@ def lint(ctx):
 
 @task
 def type_check(ctx, path='.'):
-    '''Check project source types
+    '''Check project source types.
 
     :param path: str, optional
         Include the path to check for type-hints
@@ -42,6 +43,7 @@ def type_check(ctx, path='.'):
 
 @task
 def unit_test(ctx, capture=None):
+    '''Perform unit tests.'''
     args = []
     if capture:
         args.append('--capture=' + capture)
@@ -50,11 +52,13 @@ def unit_test(ctx, capture=None):
 
 @task
 def safety(ctx):
+    '''Perform static code analysis on imports.'''
     ctx.run('safety check')
 
 
 @task
 def coverage(ctx, report=None):
+    '''Perform coverage checks for tests.'''
     args = ['--cov=compendium']
     if report:
         args.append('--cov-report={}'.format(report))
@@ -63,11 +67,13 @@ def coverage(ctx, report=None):
 
 @task(pre=[format, lint, unit_test, safety, coverage])
 def test(ctx):
+    '''Run all tests.'''
     pass
 
 
 @task
 def build(ctx, format=None):
+    '''Build wheel package.'''
     if format:
         ctx.run("flit build --format={}".format(format))
     else:
@@ -76,11 +82,13 @@ def build(ctx, format=None):
 
 @task(pre=[call(build, format='wheel')])
 def dev(ctx):
+    '''Perform development runtime environment setup.'''
     ctx.run('flit install --symlink --python python3')
 
 
 @task
 def install(ctx, symlink=True):
+    '''Install in development environment.'''
     ctx.run('flit install -s')
 
 

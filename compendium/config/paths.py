@@ -1,3 +1,4 @@
+'''Provide configuration filepaths.'''
 # -*- coding: utf-8 -*-
 import glob
 import logging
@@ -8,10 +9,12 @@ from . import ConfigFile
 
 
 class ConfigPaths(ConfigFile):
+    '''Manage configuration paths.'''
 
     # TODO: Skip all if already loaded unless 'reload' is passed
     def __init__(self, application: str, **kwargs: str):
-        '''
+        '''Initialize configuration path topology.
+
         load_strategy:
           - singleton
           - hierarchy
@@ -52,13 +55,16 @@ class ConfigPaths(ConfigFile):
 
     # @property
     # def tail(self):
+    #     '''Retrieve beggining filepath.'''
     #     return self.filepaths[0]
 
     @property
     def head(self):
+        '''Retrieve head filepath.'''
         return self.filepaths[-1]
 
     def _load_filepath(self, filepath: str):
+        '''Load settings from configuration in filepath.'''
         logging.debug("searching for {}".format(filepath))
 
         if self._check_path(filepath):
@@ -66,7 +72,8 @@ class ConfigPaths(ConfigFile):
 
     # TODO: Implement pathlib
     def load_config_filepaths(self):
-        '''Load config paths based on priority
+        '''Load config paths based on priority.
+
         First(lowest) to last(highest)
         1. Load settings.<FILETYPE> from /etc/<APP>
             - /etc/<APP>/settings.<FILETYPE>
@@ -121,13 +128,16 @@ class ConfigPaths(ConfigFile):
             )
 
     def load_nested_configs(self, path: Optional[str] = None):
+        '''Load configurations located in nested directory path.'''
         for filepath in glob.iglob('/**/' + self.filename, recursive=True):
             self._load_filepath(filepath)
 
     def load_config_filepath(self, filepath: str):
+        '''Load configuration in filepath.'''
         self._load_filepath(filepath)
 
     def load_configs(self, path: Optional[str] = None):
+        '''Choose configuration filepath topology.'''
         if path:
             self.load_config_filepath(path)
         elif self.load_strategy == 'nested':
@@ -144,5 +154,5 @@ class ConfigPaths(ConfigFile):
 #             self._load_filepath(filepath)
 
 
-class HiararchyConfigPaths(ConfigPaths):
-    pass
+# class HiararchyConfigPaths(ConfigPaths):
+#     pass

@@ -40,6 +40,7 @@ isort = {extras = ["pyproject"], version = "^4.3.21"}
 bump2version = "^1.0.0"
 mkdocs = "^1.1.2"
 pymdown-extensions = "^7.1"
+pydocstyle = "^5.0.2"
 
 [tool.flit.metadata]
 module = "compendium"
