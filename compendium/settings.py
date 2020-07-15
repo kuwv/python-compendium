@@ -46,13 +46,8 @@ class Settings(ConfigPaths):
         '''Return settings.'''
         return self.__settings
 
-    def _initialize_settings(self, new_settings: Dict[Any, Any]) -> None:
-        '''Load settings store.'''
-        logging.debug(new_settings)
-        self.__settings.update(new_settings)
-
     def load_environment(self) -> None:
-        self._initialize_settings(
+        self.__settings.update(
             {
                 'env': [
                     {k.replace(self.prefix, '').lower(): v}
@@ -61,6 +56,12 @@ class Settings(ConfigPaths):
                 ]
             }
         )
+
+    def _initialize_settings(self, new_settings: Dict[Any, Any]) -> None:
+        '''Load settings store.'''
+        logging.debug(new_settings)
+        self.__settings.update(new_settings)
+        self.load_environment()
 
     # Query
     def get(self, query: str, document: Optional[Dict[Any, Any]] = None):
