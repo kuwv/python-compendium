@@ -1,6 +1,7 @@
 '''Provide settings modules.'''
 # -*- coding: utf-8 -*-
 import logging
+import os
 from typing import Any, Dict, List, Optional
 
 from dpath import util as dpath  # type: ignore
@@ -13,7 +14,7 @@ class Settings(ConfigPaths):
 
     # __defaults: ClassVar[Dict[Any, Any]] = {}
 
-    def __init__(self, application, **kwargs):
+    def __init__(self, application, prefix='COMPEND_', **kwargs):
         '''Initialize settings store.
 
         merge_sections: []
@@ -33,7 +34,7 @@ class Settings(ConfigPaths):
         self.merge_sections: List[str] = kwargs.get('merge_sections', [])
 
         self.writable: Optional[bool] = kwargs.get('writable', False)
-        # TODO: load environment variables
+        self.prefix = prefix
 
     # @property
     # def defaults(self) -> Dict[Any, Any]:
@@ -49,6 +50,17 @@ class Settings(ConfigPaths):
         '''Load settings store.'''
         logging.debug(new_settings)
         self.__settings.update(new_settings)
+
+    def load_environment(self) -> None:
+        self._initialize_settings(
+            {
+                'env': [
+                    {k.replace(self.prefix, '').lower(): v}
+                    for k, v in os.environ.items()
+                    if k.startswith(self.prefix)
+                ]
+            }
+        )
 
     # Query
     def get(self, query: str, document: Optional[Dict[Any, Any]] = None):
