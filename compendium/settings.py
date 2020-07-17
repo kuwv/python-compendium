@@ -14,7 +14,7 @@ class Settings(ConfigPaths):
 
     # __defaults: ClassVar[Dict[Any, Any]] = {}
 
-    def __init__(self, application, prefix='COMPEND_', **kwargs):
+    def __init__(self, application, **kwargs):
         '''Initialize settings store.
 
         merge_sections: []
@@ -34,7 +34,7 @@ class Settings(ConfigPaths):
         self.merge_sections: List[str] = kwargs.get('merge_sections', [])
 
         self.writable: Optional[bool] = kwargs.get('writable', False)
-        self.prefix = prefix
+        self.prefix = kwargs.get('prefix', application.upper() + '_')
 
     # @property
     # def defaults(self) -> Dict[Any, Any]:
