@@ -61,7 +61,7 @@ class Settings(ConfigPaths):
         '''Load settings store.'''
         logging.debug(new_settings)
         self.__settings.update(new_settings)
-        self.load_environment()
+        # self.load_environment()
 
     # Query
     def get(self, query: str, document: Optional[Dict[Any, Any]] = None):

@@ -5,7 +5,7 @@ import logging
 import os
 from typing import Any, Dict
 
-from ..utils import ModuleLoader
+from anymod import ModuleLoader
 from .config_base import ConfigBase
 
 # TODO: Implement importlib find_module

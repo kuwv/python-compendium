@@ -51,9 +51,10 @@ def unit_test(ctx, capture=None):
 
 
 @task
-def safety(ctx):
+def static_analysis(ctx):
     '''Perform static code analysis on imports.'''
     ctx.run('safety check')
+    ctx.run('bandit -r compendium')
 
 
 @task
@@ -65,7 +66,7 @@ def coverage(ctx, report=None):
     ctx.run("pytest {} ./tests/".format(' '.join(args)))
 
 
-@task(pre=[format, lint, unit_test, safety, coverage])
+@task(pre=[format, lint, unit_test, static_analysis, coverage])
 def test(ctx):
     '''Run all tests.'''
     pass
