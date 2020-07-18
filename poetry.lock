@@ -1,4 +1,12 @@
 [[package]]
+category = "main"
+description = "AnyMod - Dynamic module loader"
+name = "anymod"
+optional = false
+python-versions = ">=3.6,<4.0"
+version = "0.1.1.dev4"
+
+[[package]]
 category = "dev"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 name = "appdirs"
@@ -849,10 +857,14 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "e33099201ce1dcb0f1e867814ac190b51a3d807fb221bb3e9bc61656f525e163"
+content-hash = "e61c6f33cd324088cae1dcf7cc738bffb2bf7b75dd96023161d9b4b7255668c6"
 python-versions = "^3.6"
 
 [metadata.files]
+anymod = [
+    {file = "anymod-0.1.1.dev4-py3-none-any.whl", hash = "sha256:97f256a23b46d17f16ea47805e628afe7224ac8d33f0f25f894c3f2fcae7039a"},
+    {file = "anymod-0.1.1.dev4.tar.gz", hash = "sha256:11316c24c95d826b8b142d5e5d148f6db5e986dba1771c3ce21f9f0f27a50d46"},
+]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
