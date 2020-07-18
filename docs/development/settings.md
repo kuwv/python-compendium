@@ -1,3 +1,1 @@
 ::: compendium.settings
-    handler: python
-

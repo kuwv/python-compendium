@@ -1,8 +1,14 @@
-site_name: python-compendium
+---
+site_name: Compendium
 
 theme:
-  name: "readthedocs"
+  name: "material"
 
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      default_handler: python
+      # handlers:
+      #   python:
+      #     rendering:
+      #       show_source: false 
