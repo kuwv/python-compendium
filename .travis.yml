@@ -22,7 +22,7 @@ jobs:
       script: inv format --check
     - script: inv lint
     - script: inv unit-test
-    - script: inv safety
+    - script: inv static-analysis
 
     - stage: deploy
       script: poetry config pypi-token.pypi $PYPI_TOKEN

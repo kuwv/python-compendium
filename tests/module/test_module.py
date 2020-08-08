@@ -11,6 +11,7 @@ config_path = os.path.dirname(os.path.realpath(__file__))
 
 class ModuleLoader:
     """django.core.files.locks uses low level OS functions, fake it."""
+
     __module = compendium.utils.ModuleLoader
 
     def __init__(self, fs):
@@ -26,8 +27,12 @@ class ModuleLoader:
     def __getattr__(self, name):
         return getattr(self.__module, name)
 
-@pytest.mark.parametrize('fs', [[None, None,
-  {'compendium.utils.ModuleLoader': ModuleLoader}]], indirect=True)
+
+@pytest.mark.parametrize(
+    'fs',
+    [[None, None, {'compendium.utils.ModuleLoader': ModuleLoader}]],
+    indirect=True,
+)
 def test_module_exec(fs):
     '''Dynamically load the appropriate module'''
     mod = ModuleLoader(['compendium/config/filetypes'])
@@ -35,7 +40,7 @@ def test_module_exec(fs):
         'compendium.config.filetypes.json',
         'compendium.config.filetypes.toml',
         'compendium.config.filetypes.xml',
-        'compendium.config.filetypes.yaml'
+        'compendium.config.filetypes.yaml',
     ]
     module_path = mod.discover_module_path('toml')
     assert module_path == 'compendium.config.filetypes.toml'
