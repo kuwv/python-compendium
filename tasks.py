@@ -1,3 +1,4 @@
+'''Test Task-Runner.'''
 from invoke import call, task  # type: ignore
 
 
@@ -12,11 +13,9 @@ else:
 
 @task
 def format(ctx, check=False):
-    '''Format project source code to PEP-8 standard
+    '''Format project source code to PEP-8 standard.
 
-    Parameters
-    ----------
-    check: bool, optional
+    :param check: bool, optional
         Check project source code without modification
     '''
     args = ['--skip-string-normalization']
@@ -28,17 +27,15 @@ def format(ctx, check=False):
 
 @task
 def lint(ctx):
-    '''Check project source code for linting errors'''
+    '''Check project source code for linting errors.'''
     ctx.run('flake8')
 
 
 @task
 def type_check(ctx, path='.'):
-    '''Check project source types
+    '''Check project source types.
 
-    Parameters
-    ----------
-    path: str, optional
+    :param path: str, optional
         Include the path to check for type-hints
     '''
     ctx.run("mypy {}".format(path))
@@ -46,6 +43,7 @@ def type_check(ctx, path='.'):
 
 @task
 def unit_test(ctx, capture=None):
+    '''Perform unit tests.'''
     args = []
     if capture:
         args.append('--capture=' + capture)
@@ -53,25 +51,30 @@ def unit_test(ctx, capture=None):
 
 
 @task
-def safety(ctx):
+def static_analysis(ctx):
+    '''Perform static code analysis on imports.'''
     ctx.run('safety check')
+    ctx.run('bandit -r compendium')
 
 
 @task
 def coverage(ctx, report=None):
+    '''Perform coverage checks for tests.'''
     args = ['--cov=compendium']
     if report:
         args.append('--cov-report={}'.format(report))
     ctx.run("pytest {} ./tests/".format(' '.join(args)))
 
 
-@task(pre=[format, lint, unit_test, safety, coverage])
+@task(pre=[format, lint, unit_test, static_analysis, coverage])
 def test(ctx):
+    '''Run all tests.'''
     pass
 
 
 @task
 def build(ctx, format=None):
+    '''Build wheel package.'''
     if format:
         ctx.run("flit build --format={}".format(format))
     else:
@@ -80,27 +83,27 @@ def build(ctx, format=None):
 
 @task(pre=[call(build, format='wheel')])
 def dev(ctx):
+    '''Perform development runtime environment setup.'''
     ctx.run('flit install --symlink --python python3')
 
 
 @task
 def install(ctx, symlink=True):
+    '''Install in development environment.'''
     ctx.run('flit install -s')
 
 
 @task
 def version(ctx, part=part, tag=False, commit=False, message=None):
-    '''Update project version and apply tags
+    '''Update project version and apply tags.
 
-    Parameters
-    ----------
-    tag: bool, optional
+    :param tag: bool, optional
         Apply tag to branch using version
 
-    commit: bool, optional
+    :param commit: bool, optional
         Commit version to branch
 
-    message: str, optional
+    :param message: str, optional
         Add commit message with annotated tag
     '''
     args = [part]
@@ -120,13 +123,13 @@ def version(ctx, part=part, tag=False, commit=False, message=None):
 
 @task
 def publish(ctx):
-    '''Publish project distribution'''
+    '''Publish project distribution.'''
     ctx.run('flit publish')
 
 
 @task
 def clean(ctx):
-    '''Clean project dependencies and build'''
+    '''Clean project dependencies and build.'''
     paths = ['dist', 'logs']
     paths.append('**/__pycache__')
     paths.append('**/*.pyc')

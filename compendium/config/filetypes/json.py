@@ -1,3 +1,4 @@
+'''Control JSON module.'''
 # -*- coding: utf-8 -*-
 # import datetime
 import errno
@@ -10,16 +11,21 @@ import logging
 
 
 class JsonConfig(ConfigBase):
+    '''Manage JSON configurations.'''
+
     def __init__(self, **kwargs):
+        '''Initialize JSON configuration module.'''
         logging.info('Inializing JsonConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
         self.encoder = kwargs.get('encoder', str)
 
     @staticmethod
     def filetypes():
+        '''Return support JSON filetypes.'''
         return ['json']
 
     def load_config(self, filepath):
+        '''Load settings from JSON configuration.'''
         logging.info('JsonConfig: loading configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
@@ -29,6 +35,7 @@ class JsonConfig(ConfigBase):
         return content
 
     def save_config(self, content, filepath):
+        '''Save settings to JSON configuration.'''
         try:
             with open(filepath, 'w') as f:
                 json.dump(
@@ -42,6 +49,7 @@ class JsonConfig(ConfigBase):
                 raise
 
     # def validate(self, content):
+    #     '''Validate JSON configuration.'''
     #     try:
     #         jsonschema.validate(instance=content, schema=self.schema)
     #     except jsonschema.exceptions.ValidationError as err:

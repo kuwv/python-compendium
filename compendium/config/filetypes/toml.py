@@ -1,3 +1,4 @@
+'''Control toml module.'''
 # -*- coding: utf-8 -*-
 import errno
 import os
@@ -9,17 +10,22 @@ from .. import ConfigBase
 
 
 class TomlConfig(ConfigBase):
+    '''Manage toml configurations.'''
+
     def __init__(self, **kwargs):
+        '''Initialize toml module.'''
         logging.info('Inializing TomlConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
 
     @staticmethod
     def filetypes():
+        '''Return supported filetypes.'''
         return [
             'cfg', 'conf', 'config', 'cnf', 'ini', 'toml', 'tml'
         ]
 
     def load_config(self, filepath):
+        '''Load settings from toml configuration.'''
         logging.info('TomlConfig: loading configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
@@ -29,6 +35,7 @@ class TomlConfig(ConfigBase):
         return content
 
     def save_config(self, content, filepath):
+        '''Save settings to toml configuration.'''
         logging.info('TomlConfig: saving configuration file')
         try:
             with open(filepath, 'w') as f:

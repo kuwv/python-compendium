@@ -1,0 +1,14 @@
+---
+site_name: Compendium
+
+theme:
+  name: "material"
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      # handlers:
+      #   python:
+      #     rendering:
+      #       show_source: false 

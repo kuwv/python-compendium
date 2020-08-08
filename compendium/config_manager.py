@@ -1,3 +1,4 @@
+'''Provide configuration manager for multiple settings.'''
 # -*- coding: utf-8 -*-
 # import logging
 # import os
@@ -7,6 +8,6 @@
 
 
 class ConfigManager:
-    '''Manage multiple disperate settings groups'''
+    '''Manage multiple disperate settings groups.'''
 
     pass

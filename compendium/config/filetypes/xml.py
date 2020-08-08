@@ -1,3 +1,4 @@
+'''Control XML module.'''
 # -*- coding: utf-8 -*-
 # import datetime
 import errno
@@ -9,7 +10,10 @@ from .. import ConfigBase
 
 
 class XmlConfig(ConfigBase):
+    '''Manage XML configurations.'''
+
     def __init__(self, **kwargs):
+        '''Initialize XML configuration module.'''
         logging.info('Inializing XmlConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
         self.encoder = kwargs.get('encoder', str)
@@ -18,9 +22,11 @@ class XmlConfig(ConfigBase):
 
     @staticmethod
     def filetypes():
+        '''Return supported XML configuration filetypes.'''
         return ['xml']
 
     def load_config(self, filepath):
+        '''Load settings from XML configuration.'''
         logging.info('XmlConfig: loading configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r') as f:
@@ -35,6 +41,7 @@ class XmlConfig(ConfigBase):
         return content
 
     def save_config(self, content, filepath):
+        '''Save settings to XML configuration.'''
         try:
             with open(filepath, 'w') as f:
                 f.write(
