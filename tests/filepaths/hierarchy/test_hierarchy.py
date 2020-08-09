@@ -5,6 +5,7 @@ from compendium.settings import HierarchySettings
 import pytest
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_hierarchy(fs):
     # Setup base paths
     base_path = os.path.dirname(os.path.realpath(__file__))

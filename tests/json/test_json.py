@@ -8,12 +8,14 @@ settings_path = os.path.dirname(os.path.realpath(__file__))
 json_path = settings_path + '/test.json'
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_empty_filepath(fs):
     cfg = ConfigPaths(application='empty', filename='test.json')
     cfg.load_configs()
     assert not cfg.filepaths
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_json_path(fs):
     fs.add_real_file(json_path)
     cfg = ConfigPaths(application='json', filename='test.json')
@@ -21,6 +23,7 @@ def test_json_path(fs):
     assert "{}/test.json".format(settings_path) in cfg.filepaths
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg(fs):
     fs.add_real_file(json_path)
     cfg = Settings(application='tests', path=json_path)
@@ -32,6 +35,7 @@ def test_cfg(fs):
     assert cfg.get('/number') == 2
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save(fs):
     fs.add_real_file(json_path, False)
     cfg = Settings(application='tests', path=json_path, writable=True)
@@ -40,6 +44,7 @@ def test_cfg_save(fs):
     assert cfg.settings['test'] == 'test'
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     fs.add_real_file(json_path)
     cfg = Settings(application='tests', path=json_path)

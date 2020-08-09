@@ -4,6 +4,7 @@ import pytest
 from compendium.settings import NestedSettings
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_nested(fs):
     base_path = os.path.dirname(os.path.realpath(__file__))
 

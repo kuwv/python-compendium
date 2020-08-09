@@ -14,6 +14,7 @@ def test_empty_filepath():
     assert not cfg.filepaths
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_path(fs):
     fs.add_real_file(yaml_path)
     cfg = ConfigPaths(application='yaml', filename='test.yaml')
@@ -21,6 +22,7 @@ def test_yaml_path(fs):
     assert "{}/test.yaml".format(config_path) in cfg.filepaths
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_content(fs):
     fs.add_real_file(yaml_path)
     cfg = Settings(application='tests', path=yaml_path)
@@ -32,6 +34,7 @@ def test_yaml_content(fs):
     assert cfg.get('/number') == 2
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_content_save(fs):
     fs.add_real_file(yaml_path, False)
     cfg = Settings(application='tests', path=yaml_path, writable=True)
@@ -40,6 +43,7 @@ def test_yaml_content_save(fs):
     assert cfg.settings['test'] == 'test'
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     fs.add_real_file(yaml_path)
     cfg = Settings(application='tests', path=yaml_path)

@@ -8,17 +8,16 @@ config_path = os.path.dirname(os.path.realpath(__file__))
 settings_path = config_path + '/settings.toml'
 
 
-@pytest.fixture(params=['fs', [[['pkgutil']]], {'indirect': True}])
-def cfg(fs):
-    fs.add_real_file(settings_path, False)
-    cfg = Settings(application='tests', path=settings_path)
-    cfg.load()
-    return cfg
-
-
-def test_fixture(cfg):
-    result = cfg.search('/servers/**/ip')
-    assert ['10.0.0.1', '10.0.0.2'] == result
+# @pytest.fixture(params=['fs', [[['pkgutil']]]])
+# def cfg(fs):
+#     fs.add_real_file(settings_path, False)
+#     cfg = Settings(application='tests', path=settings_path)
+#     cfg.load()
+#     return cfg
+# 
+# def test_result(cfg):
+#     result = cfg.search('/servers/**/ip')
+#     assert ['10.0.0.1', '10.0.0.2'] == result
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
