@@ -4,7 +4,7 @@ description = "AnyMod - Dynamic module loader"
 name = "anymod"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "0.1.1.dev4"
+version = "0.1.1.dev5"
 
 [[package]]
 category = "dev"
@@ -922,12 +922,13 @@ testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 
 [metadata]
 content-hash = "c3f0b67328487c8b44f9a9040c166105b842aa107e7283379e1452a00cf2d22e"
+lock-version = "1.0"
 python-versions = "^3.6"
 
 [metadata.files]
 anymod = [
-    {file = "anymod-0.1.1.dev4-py3-none-any.whl", hash = "sha256:97f256a23b46d17f16ea47805e628afe7224ac8d33f0f25f894c3f2fcae7039a"},
-    {file = "anymod-0.1.1.dev4.tar.gz", hash = "sha256:11316c24c95d826b8b142d5e5d148f6db5e986dba1771c3ce21f9f0f27a50d46"},
+    {file = "anymod-0.1.1.dev5-py3-none-any.whl", hash = "sha256:4e7437b002f32c835fdcd88476add650c84448291ef846ed57a005b291429d93"},
+    {file = "anymod-0.1.1.dev5.tar.gz", hash = "sha256:a7973faa7eef98c4216897864c92b7e7090875af5297f110de454f700c2c2d1f"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
