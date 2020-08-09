@@ -1,6 +1,7 @@
 import os
-import pytest
+
 import anymod
+import pytest
 
 from compendium.settings import Settings
 
@@ -14,7 +15,7 @@ settings_path = config_path + '/settings.toml'
 #     cfg = Settings(application='tests', path=settings_path)
 #     cfg.load()
 #     return cfg
-# 
+#
 # def test_result(cfg):
 #     result = cfg.search('/servers/**/ip')
 #     assert ['10.0.0.1', '10.0.0.2'] == result

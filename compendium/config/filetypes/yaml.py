@@ -9,7 +9,6 @@ from ruamel.yaml import YAML  # type: ignore
 from .. import ConfigBase
 
 
-# TODO: Implement ruamel yaml
 class YamlConfig(ConfigBase):
     '''Manage YAML configuration files.'''
 
