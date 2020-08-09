@@ -14,6 +14,7 @@ def test_empty_filepath():
     assert not cfg.filepaths
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_path(fs):
     fs.add_real_file(toml_path)
     cfg = ConfigPaths(application='toml', filename='test.toml')
@@ -21,6 +22,7 @@ def test_toml_path(fs):
     assert "{}/test.toml".format(config_path) in cfg.filepaths
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content(fs):
     fs.add_real_file(toml_path)
     cfg = Settings(application='tests', path=toml_path)
@@ -32,6 +34,7 @@ def test_toml_content(fs):
     assert cfg.get('/number') == 2
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_save(fs):
     fs.add_real_file(toml_path, False)
     cfg = Settings(application='tests', path=toml_path, writable=True)
@@ -40,6 +43,7 @@ def test_toml_content_save(fs):
     assert cfg.settings['test'] == 'test'
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     fs.add_real_file(toml_path)
     cfg = Settings(application='tests', path=toml_path)

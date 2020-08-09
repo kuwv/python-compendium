@@ -14,6 +14,7 @@ def test_empty_filepath():
     assert not cfg.filepaths
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_path(fs):
     fs.add_real_file(xml_path)
     cfg = ConfigPaths(application='tests', filename='test.xml')
@@ -21,6 +22,7 @@ def test_xml_path(fs):
     assert "{}/test.xml".format(config_path) in cfg.filepaths
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_content(fs):
     fs.add_real_file(xml_path)
     cfg = Settings(application='tests', path=xml_path)
@@ -32,6 +34,7 @@ def test_xml_content(fs):
     assert cfg.get('/root/number') == '2'
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_content_save(fs):
     fs.add_real_file(xml_path, False)
     cfg = Settings(application='tests', path=xml_path, writable=True)
@@ -40,6 +43,7 @@ def test_xml_content_save(fs):
     assert cfg.get('/root/test') == 'test'
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     fs.add_real_file(xml_path)
     cfg = Settings(application='tests', path=xml_path)

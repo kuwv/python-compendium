@@ -1,11 +1,27 @@
 import os
 
+import anymod
+import pytest
+
 from compendium.settings import Settings
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 settings_path = config_path + '/settings.toml'
 
 
+# @pytest.fixture(params=['fs', [[['pkgutil']]]])
+# def cfg(fs):
+#     fs.add_real_file(settings_path, False)
+#     cfg = Settings(application='tests', path=settings_path)
+#     cfg.load()
+#     return cfg
+#
+# def test_result(cfg):
+#     result = cfg.search('/servers/**/ip')
+#     assert ['10.0.0.1', '10.0.0.2'] == result
+
+
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_result(fs):
     fs.add_real_file(settings_path, False)
     cfg = Settings(application='tests', path=settings_path)
@@ -14,6 +30,7 @@ def test_result(fs):
     assert ['10.0.0.1', '10.0.0.2'] == result
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_create(fs):
     fs.add_real_file(settings_path, False)
     cfg = Settings(application='tests', path=settings_path)
@@ -22,6 +39,7 @@ def test_toml_content_create(fs):
     assert cfg.get('test') == 'test'
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_append(fs):
     fs.add_real_file(settings_path, False)
     cfg = Settings(application='tests', path=settings_path)
@@ -30,6 +48,7 @@ def test_toml_content_append(fs):
     assert 2345 in cfg.get('/database/ports')
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_update(fs):
     fs.add_real_file(settings_path, False)
     cfg = Settings(application='tests', path=settings_path, writable=True)
@@ -38,6 +57,7 @@ def test_toml_content_update(fs):
     assert cfg.get('/owner/name') == 'Tom Waits'
 
 
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_delete(fs):
     fs.add_real_file(settings_path, False)
     cfg = Settings(application='tests', path=settings_path)
