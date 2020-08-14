@@ -5,7 +5,7 @@
 
 __author__ = 'Jesse P. Johnson'
 __title__ = 'compendium'
-__version__ = '0.1.1-dev58'
+__version__ = '0.1.1-dev59'
 __license__ = 'Apache-2.0'
 
 __all__ = ['ConfigPaths', 'ConfigManager', 'Settings']
