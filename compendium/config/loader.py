@@ -14,7 +14,9 @@ from anymod import ModuleLoader
 class ConfigFile:
     '''Manage configuration files using dynamic module loader.'''
 
-    def __init__(self, filetype=None, driver_directories=['compendium/config/filetypes']):
+    def __init__(
+        self, filetype=None, driver_directories=['compendium/config/filetypes']
+    ):
         '''Initialize module loader.'''
         self.filetype = filetype
         self.driver_directories = driver_directories
@@ -52,7 +54,7 @@ class ConfigFile:
         '''Use duscovered module to save configuration.'''
         # TODO: Improve error handling
         logging.info("Saving configuration: '{}'".format(config_path))
-        filename = self.get_filename(config_path)
+        # filename = self.get_filename(config_path)
         self._load_module()
         self.__config_module.save_config(settings, config_path)
 

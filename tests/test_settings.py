@@ -1,6 +1,5 @@
 import os
 
-import anymod
 import pytest
 
 from compendium.settings import Settings
