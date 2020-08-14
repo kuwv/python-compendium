@@ -1,5 +1,7 @@
-'''Control JSON module.'''
 # -*- coding: utf-8 -*-
+# copyright: (c) 2020 by Jesse Johnson.
+# license: Apache 2.0, see LICENSE for more details.
+'''Control JSON module.'''
 # import datetime
 import errno
 import json  # type: ignore
