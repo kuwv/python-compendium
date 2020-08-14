@@ -922,10 +922,7 @@ testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 
 [metadata]
 content-hash = "c3f0b67328487c8b44f9a9040c166105b842aa107e7283379e1452a00cf2d22e"
-<<<<<<< HEAD
-=======
 lock-version = "1.0"
->>>>>>> dynamic-modules
 python-versions = "^3.6"
 
 [metadata.files]
