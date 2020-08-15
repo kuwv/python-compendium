@@ -172,6 +172,14 @@ python-versions = "*"
 version = "2.0.1"
 
 [[package]]
+category = "main"
+description = "XPath 1.0/2.0 parsers and selectors for ElementTree and lxml"
+name = "elementpath"
+optional = false
+python-versions = "*"
+version = "2.0.0"
+
+[[package]]
 category = "dev"
 description = "the modular source code checker: pep8 pyflakes and co"
 name = "flake8"
@@ -709,7 +717,7 @@ python-versions = "*"
 version = "0.1.21"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "YAML parser and emitter for Python"
 name = "pyyaml"
 optional = false
@@ -901,11 +909,33 @@ version = "0.2.2"
 
 [[package]]
 category = "main"
+description = "An XML Schema validator and decoder"
+name = "xmlschema"
+optional = false
+python-versions = "*"
+version = "1.2.3"
+
+[package.dependencies]
+elementpath = ">=2.0.0,<2.1.0"
+
+[[package]]
+category = "main"
 description = "Makes working with XML feel like you are working with JSON"
 name = "xmltodict"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.12.0"
+
+[[package]]
+category = "main"
+description = "A schema and validator for YAML."
+name = "yamale"
+optional = false
+python-versions = ">=3.6"
+version = "3.0.2"
+
+[package.dependencies]
+pyyaml = "*"
 
 [[package]]
 category = "main"
@@ -921,11 +951,8 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "unittest2", "jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "c3f0b67328487c8b44f9a9040c166105b842aa107e7283379e1452a00cf2d22e"
-<<<<<<< HEAD
-=======
+content-hash = "72a8e93d2e9180e1c62edfcca64e20a15297fd46feebcea4500b9c18f2ca5d34"
 lock-version = "1.0"
->>>>>>> dynamic-modules
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1021,6 +1048,10 @@ dparse = [
 ]
 dpath = [
     {file = "dpath-2.0.1.tar.gz", hash = "sha256:bea06b5f4ff620a28dfc9848cf4d6b2bfeed34238edeb8ebe815c433b54eb1fa"},
+]
+elementpath = [
+    {file = "elementpath-2.0.0-py3-none-any.whl", hash = "sha256:6107d2f70aa571ef5b081ed99da354bc066c1834815276b060f7496d2bd80dcf"},
+    {file = "elementpath-2.0.0.tar.gz", hash = "sha256:5bbce8de94551c84eb8371dae8f0c7a3850385b1f9d8e9adf9c801bb7c722ffe"},
 ]
 flake8 = [
     {file = "flake8-3.8.2-py2.py3-none-any.whl", hash = "sha256:ccaa799ef9893cebe69fdfefed76865aeaefbb94cb8545617b2298786a4de9a5"},
@@ -1382,9 +1413,16 @@ wcwidth = [
     {file = "wcwidth-0.2.2-py2.py3-none-any.whl", hash = "sha256:b651b6b081476420e4e9ae61239ac4c1b49d0c5ace42b2e81dc2ff49ed50c566"},
     {file = "wcwidth-0.2.2.tar.gz", hash = "sha256:3de2e41158cb650b91f9654cbf9a3e053cee0719c9df4ddc11e4b568669e9829"},
 ]
+xmlschema = [
+    {file = "xmlschema-1.2.3-py3-none-any.whl", hash = "sha256:aace96e9c0fda70a0156491f9fadc51b7b8fe80d6a532078c661f84910800b94"},
+    {file = "xmlschema-1.2.3.tar.gz", hash = "sha256:c981db622f9f00bffcb61648ab9a6f21d6655cfb66ad994918b079705b9b9a34"},
+]
 xmltodict = [
     {file = "xmltodict-0.12.0-py2.py3-none-any.whl", hash = "sha256:8bbcb45cc982f48b2ca8fe7e7827c5d792f217ecf1792626f808bf41c3b86051"},
     {file = "xmltodict-0.12.0.tar.gz", hash = "sha256:50d8c638ed7ecb88d90561beedbf720c9b4e851a9fa6c47ebd64e99d166d8a21"},
+]
+yamale = [
+    {file = "yamale-3.0.2.tar.gz", hash = "sha256:af12b4c8acbb196515e0b8384debc4736159b75ea1b255daeebf8109ce5a3e14"},
 ]
 zipp = [
     {file = "zipp-1.2.0-py2.py3-none-any.whl", hash = "sha256:e0d9e63797e483a30d27e09fffd308c59a700d365ec34e93cc100844168bf921"},
