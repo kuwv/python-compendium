@@ -2,7 +2,7 @@ import os
 import pytest
 
 from compendium.config.paths import ConfigPaths
-from compendium.settings import Settings
+from compendium.settings import SingletonSettings
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 toml_path = config_path + '/test.toml'
@@ -25,7 +25,7 @@ def test_toml_path(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content(fs):
     fs.add_real_file(toml_path)
-    cfg = Settings(application='tests', path=toml_path)
+    cfg = SingletonSettings(application='tests', path=toml_path)
     cfg.load()
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
@@ -37,7 +37,7 @@ def test_toml_content(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_save(fs):
     fs.add_real_file(toml_path, False)
-    cfg = Settings(application='tests', path=toml_path, writable=True)
+    cfg = SingletonSettings(application='tests', path=toml_path, writable=True)
     cfg.load()
     cfg.create('/test', 'test')
     assert cfg.settings['test'] == 'test'
@@ -46,7 +46,7 @@ def test_toml_content_save(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     fs.add_real_file(toml_path)
-    cfg = Settings(application='tests', path=toml_path)
+    cfg = SingletonSettings(application='tests', path=toml_path)
     cfg.load()
 
     with pytest.raises(IOError):

@@ -2,6 +2,7 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 '''Provide settings modules.'''
+
 import logging
 import os
 from typing import Any, Dict, List, Optional
@@ -11,22 +12,13 @@ from dpath import util as dpath  # type: ignore
 from .config.paths import ConfigPaths
 
 
-class Settings(ConfigPaths):
+class Settings:
     '''Manage settings loaded from confiugrations.'''
 
     # __defaults: ClassVar[Dict[Any, Any]] = {}
 
     def __init__(self, application, **kwargs):
-        '''Initialize settings store.
-
-        merge_sections: []
-        merge_strategy:
-          - overlay
-          - partition
-          - last
-        '''
-        super().__init__(application, **kwargs)
-
+        '''Initialize settings store.'''
         self.__settings: Dict[Any, Any] = {}
 
         # Load settings from configs
@@ -111,22 +103,42 @@ class Settings(ConfigPaths):
         dpath.delete(self.__settings, keypath, self.separator)
         self.save(self.head)
 
-    def load(
-        self, path: Optional[str] = None, filename: Optional[str] = None
-    ) -> None:
-        '''Load settings from configuration file.'''
-        self._initialize_settings(self.load_config(self.head))
-
     def view(self) -> str:
         '''View current keypath location.'''
         return self.keypath
 
+
+class SingletonSettings(Settings, ConfigPaths):
+    def __init__(self, application, **kwargs):
+        '''Initialize single settings management.
+
+        merge_sections: []
+        merge_strategy:
+          - overlay
+          - partition
+          - last
+        '''
+        Settings.__init__(self, application, **kwargs)
+        ConfigPaths.__init__(self, application, **kwargs)
+
+        self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
+        self.merge_sections: List[str] = kwargs.get('merge_sections', [])
+
+        self.writable: Optional[bool] = kwargs.get('writable', False)
+        self.prefix = kwargs.get('prefix', application.upper() + '_')
+
+    def load(
+        self, filename: Optional[str] = None, path: Optional[str] = None
+    ) -> None:
+        '''Load settings from configuration file.'''
+        self._initialize_settings(self.load_config(self.head))
+
     def save(self, path: str) -> None:
         '''Save settings to configuraiton.'''
-        self.save_config(self.head, self.__settings)
+        self.save_config(self.head, self.settings)
 
 
-class NestedSettings(Settings):
+class NestedSettings(SingletonSettings):
     '''Manage settings from nested configurations.'''
 
     def __init__(self, application, **kwargs):
@@ -146,7 +158,7 @@ class NestedSettings(Settings):
         self._initialize_settings({'settings': settings})
 
 
-class HierarchySettings(Settings):
+class HierarchySettings(SingletonSettings):
     '''Manage settings from hierarchy configurations.'''
 
     def __init__(self, application, **kwargs):
