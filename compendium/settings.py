@@ -71,7 +71,7 @@ class Settings:
             try:
                 return dpath.get(doc, query, self.separator)
                 break
-            except:
+            except KeyError:
                 pass
         return default
 

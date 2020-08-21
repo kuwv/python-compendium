@@ -25,8 +25,7 @@ def test_default():
     defaults = cfg.defaults
     assert defaults == {'default': 'result'}
     result = cfg.get('default')
-    # print(result)
-    # assert result == 'result'
+    assert result == 'result'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
