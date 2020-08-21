@@ -2,7 +2,7 @@ import os
 import pytest
 
 from compendium.config.paths import ConfigPaths
-from compendium.settings import SingletonSettings
+from compendium.settings import SettingsManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 yaml_path = config_path + '/test.yaml'
@@ -25,7 +25,7 @@ def test_yaml_path(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_content(fs):
     fs.add_real_file(yaml_path)
-    cfg = SingletonSettings(application='tests', path=yaml_path)
+    cfg = SettingsManager(application='tests', path=yaml_path)
     cfg.load()
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
@@ -37,7 +37,7 @@ def test_yaml_content(fs):
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_yaml_content_save(fs):
 #     fs.add_real_file(yaml_path, False)
-#     cfg = SingletonSettings(
+#     cfg = SettingsManager(
 #         application='tests', path=yaml_path, writable=True
 #     )
 #     cfg.load()
@@ -48,7 +48,7 @@ def test_yaml_content(fs):
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_cfg_save_fail(fs):
 #     fs.add_real_file(yaml_path)
-#     cfg = SingletonSettings(application='tests', path=yaml_path)
+#     cfg = SettingsManager(application='tests', path=yaml_path)
 #     cfg.load()
 #
 #     with pytest.raises(IOError):

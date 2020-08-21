@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from compendium.settings import SingletonSettings
+from compendium.settings import SettingsManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 settings_path = config_path + '/settings.toml'
@@ -11,7 +11,7 @@ settings_path = config_path + '/settings.toml'
 # @pytest.fixture(params=['fs', [[['pkgutil']]]])
 # def cfg(fs):
 #     fs.add_real_file(settings_path, False)
-#     cfg = SingletonSettings(application='tests', path=settings_path)
+#     cfg = SettingsManager(application='tests', path=settings_path)
 #     cfg.load()
 #     return cfg
 #
@@ -20,10 +20,19 @@ settings_path = config_path + '/settings.toml'
 #     assert ['10.0.0.1', '10.0.0.2'] == result
 
 
+def test_default():
+    cfg = SettingsManager(application='tests', defaults={'default': 'result'})
+    defaults = cfg.defaults
+    assert defaults == {'default': 'result'}
+    result = cfg.get('default')
+    # print(result)
+    # assert result == 'result'
+
+
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_result(fs):
     fs.add_real_file(settings_path, False)
-    cfg = SingletonSettings(application='tests', path=settings_path)
+    cfg = SettingsManager(application='tests', path=settings_path)
     cfg.load()
     result = cfg.search('/servers/**/ip')
     assert ['10.0.0.1', '10.0.0.2'] == result
@@ -32,7 +41,7 @@ def test_result(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_create(fs):
     fs.add_real_file(settings_path, False)
-    cfg = SingletonSettings(application='tests', path=settings_path)
+    cfg = SettingsManager(application='tests', path=settings_path)
     cfg.load()
     cfg.create('/test', 'test')
     assert cfg.get('test') == 'test'
@@ -41,7 +50,7 @@ def test_toml_content_create(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_append(fs):
     fs.add_real_file(settings_path, False)
-    cfg = SingletonSettings(application='tests', path=settings_path)
+    cfg = SettingsManager(application='tests', path=settings_path)
     cfg.load()
     cfg.append('/database/ports', 2345)
     assert 2345 in cfg.get('/database/ports')
@@ -50,7 +59,7 @@ def test_toml_content_append(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_update(fs):
     fs.add_real_file(settings_path, False)
-    cfg = SingletonSettings(
+    cfg = SettingsManager(
         application='tests', path=settings_path, writable=True
     )
     cfg.load()
@@ -61,7 +70,7 @@ def test_toml_content_update(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_delete(fs):
     fs.add_real_file(settings_path, False)
-    cfg = SingletonSettings(application='tests', path=settings_path)
+    cfg = SettingsManager(application='tests', path=settings_path)
     cfg.load()
     assert cfg.search('/owner/name') == ['Tom Preston-Werner']
     cfg.delete('/owner/name')
