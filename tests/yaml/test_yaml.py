@@ -43,8 +43,8 @@ def test_yaml_content(fs):
 #     cfg.load()
 #     cfg.create('/test', 'test')
 #     assert cfg.settings['test'] == 'test'
-#
-#
+
+
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_cfg_save_fail(fs):
 #     fs.add_real_file(yaml_path)
