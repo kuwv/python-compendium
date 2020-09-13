@@ -45,6 +45,7 @@ pydocstyle = "^5.0.2"
 mkdocstrings = "^0.12.1"
 mkdocs-material = "^5.4.0"
 bandit = "^1.6.2"
+docstr-coverage = "^1.2.0"
 
 [tool.flit.metadata]
 module = "compendium"

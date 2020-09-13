@@ -16,10 +16,11 @@ class ConfigManager:
     '''Manage multiple disperate settings groups.'''
 
     def __init__(self, *args, **kwargs):
-
+        '''Inialize configuration manager.'''
         for config in kwargs.get('configs'):
             self.add_config(config)
 
     def add_config(self, config: dict):
+        '''Add configuration cache to manage.'''
         self.configs.append({config['application']: Settings(**config)})
         self.configs[config['application']].load()

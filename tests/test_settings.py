@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# :copyright: (c) 2020 by Jesse Johnson.
+# :license: Apache 2.0, see LICENSE for more details.
+'''Test settings management.'''
+
 import os
 
 import pytest
@@ -21,6 +26,7 @@ settings_path = config_path + '/settings.toml'
 
 
 def test_default():
+    '''Test default settings.'''
     cfg = SettingsCache(application='tests', defaults={'default': 'result'})
     defaults = cfg.defaults
     assert defaults == {'default': 'result'}
@@ -30,6 +36,7 @@ def test_default():
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_result(fs):
+    '''Test IP from settings.'''
     fs.add_real_file(settings_path, False)
     cfg = SettingsCache(application='tests', path=settings_path)
     cfg.load()
@@ -39,6 +46,7 @@ def test_result(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_create(fs):
+    '''Test content creation settings.'''
     fs.add_real_file(settings_path, False)
     cfg = SettingsCache(application='tests', path=settings_path)
     cfg.load()
@@ -48,6 +56,7 @@ def test_toml_content_create(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_append(fs):
+    '''Test appending settings to list.'''
     fs.add_real_file(settings_path, False)
     cfg = SettingsCache(application='tests', path=settings_path)
     cfg.load()
@@ -57,6 +66,7 @@ def test_toml_content_append(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_update(fs):
+    '''Test content update.'''
     fs.add_real_file(settings_path, False)
     cfg = SettingsCache(application='tests', path=settings_path, writable=True)
     cfg.load()
@@ -66,6 +76,7 @@ def test_toml_content_update(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_delete(fs):
+    '''Test content deletion.'''
     fs.add_real_file(settings_path, False)
     cfg = SettingsCache(application='tests', path=settings_path)
     cfg.load()

@@ -1,6 +1,8 @@
 ---
 site_name: Compendium
 
+repo_url: https://github.com/kuwv/python-compendium
+
 theme:
   name: "material"
 

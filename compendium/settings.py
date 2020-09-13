@@ -120,6 +120,8 @@ class Settings:
 
 
 class SettingsCache(Settings, ConfigPaths):
+    '''Manage settings from cache.'''
+
     def __init__(self, application, **kwargs):
         '''Initialize single settings management.
 

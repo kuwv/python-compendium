@@ -141,6 +141,21 @@ toml = ["toml"]
 
 [[package]]
 category = "dev"
+description = "Utility for examining python source files to ensure proper documentation. Lists missing docstrings, and calculates overall docstring coverage percentage rating."
+name = "docstr-coverage"
+optional = false
+python-versions = "*"
+version = "1.2.0"
+
+[package.dependencies]
+click = "*"
+
+[package.extras]
+lint = ["flake8 (3.8.2)", "black (19.10b0)"]
+test = ["pytest (5.4.2)", "pytest-mock"]
+
+[[package]]
+category = "dev"
 description = "Docutils -- Python Documentation Utilities"
 name = "docutils"
 optional = false
@@ -955,7 +970,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "72a8e93d2e9180e1c62edfcca64e20a15297fd46feebcea4500b9c18f2ca5d34"
+content-hash = "f6d4a91e703038f68727963adef4045ac62deec07f0e69958016481d6a500f77"
 lock-version = "1.0"
 python-versions = "^3.6"
 
@@ -1044,6 +1059,10 @@ coverage = [
     {file = "coverage-5.2.1-cp39-cp39-win32.whl", hash = "sha256:9e536783a5acee79a9b308be97d3952b662748c4037b6a24cbb339dc7ed8eb89"},
     {file = "coverage-5.2.1-cp39-cp39-win_amd64.whl", hash = "sha256:b8f58c7db64d8f27078cbf2a4391af6aa4e4767cc08b37555c4ae064b8558d9b"},
     {file = "coverage-5.2.1.tar.gz", hash = "sha256:a34cb28e0747ea15e82d13e14de606747e9e484fb28d63c999483f5d5188e89b"},
+]
+docstr-coverage = [
+    {file = "docstr_coverage-1.2.0-py3-none-any.whl", hash = "sha256:3665251bbaf340154de095ec8af05cff02759453d7ebfd7c7a28a87d23be7a3a"},
+    {file = "docstr_coverage-1.2.0.tar.gz", hash = "sha256:850cd492487ca494ea43c16bc68f75594f0cef1e8b699bf053d029064c41fe7f"},
 ]
 docutils = [
     {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},
