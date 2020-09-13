@@ -1,16 +1,37 @@
 ---
 site_name: Compendium
-
+site_author: Jesse P. Johnson
+copyright: copywright (c) 2020 by Jesse Johnson.
 repo_url: https://github.com/kuwv/python-compendium
 
 theme:
-  name: "material"
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+  features:
+    - search.highlight
 
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.critic
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+``
 plugins:
   - search
   - mkdocstrings:
       default_handler: python
-      # handlers:
-      #   python:
-      #     rendering:
-      #       show_source: false 
