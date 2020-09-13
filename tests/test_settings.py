@@ -58,9 +58,7 @@ def test_toml_content_append(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_update(fs):
     fs.add_real_file(settings_path, False)
-    cfg = SettingsCache(
-        application='tests', path=settings_path, writable=True
-    )
+    cfg = SettingsCache(application='tests', path=settings_path, writable=True)
     cfg.load()
     cfg.update('/owner/name', 'Tom Waits')
     assert cfg.get('/owner/name') == 'Tom Waits'
