@@ -2,7 +2,7 @@ import os
 import pytest
 
 from compendium.config.paths import ConfigPaths
-from compendium.settings import SettingsManager
+from compendium.settings import SettingsCache
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 xml_path = config_path + '/test.xml'
@@ -25,7 +25,7 @@ def test_xml_path(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_content(fs):
     fs.add_real_file(xml_path)
-    cfg = SettingsManager(application='tests', path=xml_path)
+    cfg = SettingsCache(application='tests', path=xml_path)
     cfg.load()
     assert cfg.get('/root/stooges/stooge1') == 'Larry'
     assert cfg.get('/root/stooges/stooge2') == 'Curly'
@@ -37,7 +37,7 @@ def test_xml_content(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_content_save(fs):
     fs.add_real_file(xml_path, False)
-    cfg = SettingsManager(application='tests', path=xml_path, writable=True)
+    cfg = SettingsCache(application='tests', path=xml_path, writable=True)
     cfg.load()
     cfg.create('/root/test', 'test')
     assert cfg.get('/root/test') == 'test'
@@ -46,7 +46,7 @@ def test_xml_content_save(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     fs.add_real_file(xml_path)
-    cfg = SettingsManager(application='tests', path=xml_path)
+    cfg = SettingsCache(application='tests', path=xml_path)
     cfg.load()
 
     with pytest.raises(IOError):

@@ -3,9 +3,10 @@ language: python
 cache: pip
 
 stages:
-  - test
+  - quality-assurance
   - name: deploy
     if: tag IS present
+  - documentation
   - coverage
 
 before_install:
@@ -18,11 +19,12 @@ install:
 jobs:
   fast_finish: true
   include:
-    - stage: test
-      script: inv format --check
-    - script: inv lint
-    - script: inv unit-test
-    - script: inv static-analysis
+    - stage: quality-assurance
+      script:
+        - inv qa.autoformat --check
+        - inv qa.lint
+        - inv qa.unit-test
+        - inv qa.static-analysis
 
     - stage: deploy
       script: poetry config pypi-token.pypi $PYPI_TOKEN
@@ -34,7 +36,22 @@ jobs:
         on:
           tags: true
 
+    - stage: documentation
+      script:
+        - inv doc.lint
+        - inv doc.test
+        - inv doc.coverage
+        - inv doc.build
+      deploy:
+        provider: pages
+        github_token: $GITHUB_TOKEN
+        local_dir: site
+        skip_cleanup: true
+        keep_history: true
+        on:
+          branch: master
+
     - stage: coverage
       script:
-        - inv coverage --report=xml
-        - bash <(curl -s https://codecov.io/bash)
+        - inv qa.coverage --report=xml
+       - bash <(curl -s https://codecov.io/bash)

@@ -119,7 +119,7 @@ class Settings:
         return self.keypath
 
 
-class SettingsManager(Settings, ConfigPaths):
+class SettingsCache(Settings, ConfigPaths):
     def __init__(self, application, **kwargs):
         '''Initialize single settings management.
 
@@ -148,7 +148,7 @@ class SettingsManager(Settings, ConfigPaths):
         self.save_config(self.head, self.settings)
 
 
-class NestedSettingsManager(SettingsManager):
+class NestedSettingsCache(SettingsCache):
     '''Manage settings from nested configurations.'''
 
     def __init__(self, application, **kwargs):
@@ -168,7 +168,7 @@ class NestedSettingsManager(SettingsManager):
         self._initialize_settings({'settings': settings})
 
 
-class HierarchySettingsManager(SettingsManager):
+class HierarchySettingsCache(SettingsCache):
     '''Manage settings from hierarchy configurations.'''
 
     def __init__(self, application, **kwargs):

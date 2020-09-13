@@ -2,7 +2,7 @@ import os
 import pytest
 
 from compendium.config.paths import ConfigPaths
-from compendium.settings import SettingsManager
+from compendium.settings import SettingsCache
 
 settings_path = os.path.dirname(os.path.realpath(__file__))
 json_path = settings_path + '/test.json'
@@ -26,7 +26,7 @@ def test_json_path(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg(fs):
     fs.add_real_file(json_path)
-    cfg = SettingsManager(application='tests', path=json_path)
+    cfg = SettingsCache(application='tests', path=json_path)
     cfg.load()
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
@@ -38,7 +38,7 @@ def test_cfg(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save(fs):
     fs.add_real_file(json_path, False)
-    cfg = SettingsManager(application='tests', path=json_path, writable=True)
+    cfg = SettingsCache(application='tests', path=json_path, writable=True)
     cfg.load()
     cfg.create('/test', 'test')
     assert cfg.settings['test'] == 'test'
@@ -47,7 +47,7 @@ def test_cfg_save(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     fs.add_real_file(json_path)
-    cfg = SettingsManager(application='tests', path=json_path)
+    cfg = SettingsCache(application='tests', path=json_path)
     cfg.load()
 
     with pytest.raises(IOError):

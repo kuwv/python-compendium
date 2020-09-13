@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from compendium.settings import NestedSettingsManager
+from compendium.settings import NestedSettingsCache
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -22,7 +22,7 @@ def test_nested(fs):
         target_path='/opt/test/example2/fruit.toml'
     )
 
-    cfg = NestedSettingsManager(
+    cfg = NestedSettingsCache(
         application='test',
         filename='fruit.toml',
         merge_strategy='partition'

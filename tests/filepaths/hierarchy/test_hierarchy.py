@@ -1,6 +1,6 @@
 import os
 
-from compendium.settings import HierarchySettingsManager
+from compendium.settings import HierarchySettingsCache
 
 import pytest
 
@@ -27,7 +27,7 @@ def test_hierarchy(fs):
         target_path=user_path + '/.tests.d/settings.toml'
     )
 
-    cfg = HierarchySettingsManager(
+    cfg = HierarchySettingsCache(
         application='tests',
         merge_strategy='overlay',
         enable_system_paths=True,
