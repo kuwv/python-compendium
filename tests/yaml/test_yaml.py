@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+# copyright: (c) 2020 by Jesse Johnson.
+# license: Apache 2.0, see LICENSE for more details.
+'''Test YAML configuration management.'''
 import os
 import pytest
 
@@ -9,6 +13,7 @@ yaml_path = config_path + '/test.yaml'
 
 
 def test_empty_filepath():
+    '''Test empty file.'''
     cfg = ConfigPaths(application='empty', filename='test.yaml')
     cfg.load_configs()
     assert not cfg.filepaths
@@ -16,6 +21,7 @@ def test_empty_filepath():
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_path(fs):
+    '''Test YAML paths.'''
     fs.add_real_file(yaml_path)
     cfg = ConfigPaths(application='yaml', filename='test.yaml')
     cfg.load_config_filepath(config_path + '/test.yaml')
@@ -24,6 +30,7 @@ def test_yaml_path(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_content(fs):
+    '''Test read YAML content.'''
     fs.add_real_file(yaml_path)
     cfg = SettingsCache(application='tests', path=yaml_path)
     cfg.load()
@@ -36,6 +43,7 @@ def test_yaml_content(fs):
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_yaml_content_save(fs):
+#     '''Test YAML content save.'''
 #     fs.add_real_file(yaml_path, False)
 #     cfg = SettingsCache(
 #         application='tests', path=yaml_path, writable=True
@@ -47,6 +55,7 @@ def test_yaml_content(fs):
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_cfg_save_fail(fs):
+#     '''Test YAML content fail.'''
 #     fs.add_real_file(yaml_path)
 #     cfg = SettingsCache(application='tests', path=yaml_path)
 #     cfg.load()

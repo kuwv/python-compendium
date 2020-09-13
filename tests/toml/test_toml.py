@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# copyright: (c) 2020 by Jesse Johnson.
+# license: Apache 2.0, see LICENSE for more details.
+'''Test TOML configuration management.'''
+
 import os
 import pytest
 
@@ -9,6 +14,7 @@ toml_path = config_path + '/test.toml'
 
 
 def test_empty_filepath():
+    '''Test empty file.'''
     cfg = ConfigPaths(application='empty', filename='test.toml')
     cfg.load_configs()
     assert not cfg.filepaths
@@ -16,6 +22,7 @@ def test_empty_filepath():
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_path(fs):
+    '''Test TOML filepaths.'''
     fs.add_real_file(toml_path)
     cfg = ConfigPaths(application='toml', filename='test.toml')
     cfg.load_config_filepath(config_path + '/test.toml')
@@ -24,6 +31,7 @@ def test_toml_path(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content(fs):
+    '''Test TOML content load.'''
     fs.add_real_file(toml_path)
     cfg = SettingsCache(application='tests', path=toml_path)
     cfg.load()
@@ -36,6 +44,7 @@ def test_toml_content(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_save(fs):
+    '''Test TOML content save.'''
     fs.add_real_file(toml_path, False)
     cfg = SettingsCache(application='tests', path=toml_path, writable=True)
     cfg.load()
@@ -45,6 +54,7 @@ def test_toml_content_save(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
+    '''Test TOML content failure.'''
     fs.add_real_file(toml_path)
     cfg = SettingsCache(application='tests', path=toml_path)
     cfg.load()

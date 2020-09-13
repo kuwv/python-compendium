@@ -176,10 +176,10 @@ class HierarchySettingsCache(SettingsCache):
     def __init__(self, application, **kwargs):
         '''Initialize settings from hirarchy filepaths.
 
-        :param merge_sections: list, optional
+        merge_sections: list, optional
             Include sections to be merged
 
-        :param merge_strategy: list, optional
+        merge_strategy: list, optional
             Strategy to used when merging: overlay, parition, and last
               - overlay will replace exsisting entries
               - partition will keeps each seettings separate

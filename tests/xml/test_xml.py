@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# copyright: (c) 2020 by Jesse Johnson.
+# license: Apache 2.0, see LICENSE for more details.
+'''Test XML content management.'''
+
 import os
 import pytest
 
@@ -9,6 +14,7 @@ xml_path = config_path + '/test.xml'
 
 
 def test_empty_filepath():
+    '''Test XML filepth.'''
     cfg = ConfigPaths(application='empty', filename='test.xml')
     cfg.load_configs()
     assert not cfg.filepaths
@@ -16,6 +22,7 @@ def test_empty_filepath():
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_path(fs):
+    '''Test XML path.'''
     fs.add_real_file(xml_path)
     cfg = ConfigPaths(application='tests', filename='test.xml')
     cfg.load_config_filepath(config_path + '/test.xml')
@@ -24,6 +31,7 @@ def test_xml_path(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_content(fs):
+    '''Test XML content read.'''
     fs.add_real_file(xml_path)
     cfg = SettingsCache(application='tests', path=xml_path)
     cfg.load()
@@ -36,6 +44,7 @@ def test_xml_content(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_content_save(fs):
+    '''Test XML content save.'''
     fs.add_real_file(xml_path, False)
     cfg = SettingsCache(application='tests', path=xml_path, writable=True)
     cfg.load()
@@ -45,6 +54,7 @@ def test_xml_content_save(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
+    '''Test XML failure.'''
     fs.add_real_file(xml_path)
     cfg = SettingsCache(application='tests', path=xml_path)
     cfg.load()
