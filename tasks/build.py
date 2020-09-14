@@ -62,7 +62,7 @@ def publish(ctx):  # type: ignore
 @task
 def clean(ctx):  # type: ignore
     '''Clean project dependencies and build.'''
-    paths = ['dist', 'logs']
+    paths = ['dist', 'logs', 'site']
     paths.append('**/__pycache__')
     paths.append('**/*.pyc')
     paths.append('compendium.egg-info')
