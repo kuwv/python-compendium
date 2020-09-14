@@ -1,0 +1,1295 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="https://kuwv.github.io/python-compendium/development/settings/" rel="canonical"/>
+<meta content="Jesse P. Johnson" name="author"/>
+<link href="../../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.5.6" name="generator"/>
+<title>Settings - Compendium</title>
+<link href="../../assets/stylesheets/main.63b94e9e.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
+<style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+</head>
+<body dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#compendium.settings">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="Header" class="md-header-nav md-grid">
+<a aria-label="Compendium" class="md-header-nav__button md-logo" href="https://kuwv.github.io/python-compendium/" title="Compendium">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
+</a>
+<label class="md-header-nav__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"></path></svg>
+</label>
+<div class="md-header-nav__title" data-md-component="header-title">
+<div class="md-header-nav__ellipsis">
+<span class="md-header-nav__topic md-ellipsis">
+            Compendium
+          </span>
+<span class="md-header-nav__topic md-ellipsis">
+            
+              Settings
+            
+          </span>
+</div>
+</div>
+<label class="md-header-nav__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" data-md-state="active" name="query" placeholder="Search" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</label>
+<button aria-label="Clear" class="md-search__icon md-icon" data-md-component="search-reset" tabindex="-1" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path></svg>
+</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header-nav__source">
+<a class="md-source" href="https://github.com/kuwv/python-compendium/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Compendium" class="md-nav__button md-logo" href="https://kuwv.github.io/python-compendium/" title="Compendium">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"></path></svg>
+</a>
+    Compendium
+  </label>
+<div class="md-nav__source">
+<a class="md-source" href="https://github.com/kuwv/python-compendium/" title="Go to repository">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../.." title="Welcome to Compendium">
+      Welcome to Compendium
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
+<label class="md-nav__link" for="nav-2">
+      Development
+      <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
+</span>
+</label>
+<nav aria-label="Development" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-2">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+        Development
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../config_manager/" title="Config manager">
+      Config manager
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+        Settings
+        <span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"></path></svg>
+</span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./" title="Settings">
+      Settings
+    </a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings">
+    compendium.settings
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.HierarchySettingsCache">
+    HierarchySettingsCache
+  </a>
+<nav aria-label="HierarchySettingsCache" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.HierarchySettingsCache.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.HierarchySettingsCache.load">
+    load()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.NestedSettingsCache">
+    NestedSettingsCache
+  </a>
+<nav aria-label="NestedSettingsCache" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.NestedSettingsCache.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.NestedSettingsCache.load">
+    load()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings">
+    Settings
+  </a>
+<nav aria-label="Settings" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.defaults">
+    defaults
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.settings">
+    settings
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.add">
+    add()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.append">
+    append()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.create">
+    create()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.delete">
+    delete()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.get">
+    get()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.load_environment">
+    load_environment()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.search">
+    search()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.update">
+    update()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.view">
+    view()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.SettingsCache">
+    SettingsCache
+  </a>
+<nav aria-label="SettingsCache" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.SettingsCache.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.SettingsCache.load">
+    load()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.SettingsCache.save">
+    save()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings">
+    compendium.settings
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.HierarchySettingsCache">
+    HierarchySettingsCache
+  </a>
+<nav aria-label="HierarchySettingsCache" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.HierarchySettingsCache.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.HierarchySettingsCache.load">
+    load()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.NestedSettingsCache">
+    NestedSettingsCache
+  </a>
+<nav aria-label="NestedSettingsCache" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.NestedSettingsCache.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.NestedSettingsCache.load">
+    load()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings">
+    Settings
+  </a>
+<nav aria-label="Settings" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.defaults">
+    defaults
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.settings">
+    settings
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.add">
+    add()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.append">
+    append()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.create">
+    create()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.delete">
+    delete()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.get">
+    get()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.load_environment">
+    load_environment()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.search">
+    search()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.update">
+    update()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.Settings.view">
+    view()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.SettingsCache">
+    SettingsCache
+  </a>
+<nav aria-label="SettingsCache" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.SettingsCache.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.SettingsCache.load">
+    load()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.settings.SettingsCache.save">
+    save()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/kuwv/python-compendium/edit/master/docs/development/settings.md" title="Edit this page">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
+</a>
+<h1>Settings</h1>
+<div class="doc doc-object doc-module">
+<h2 class="hidden-toc" href="#compendium.settings" id="compendium.settings" style="visibility: hidden; width: 0; height: 0;">
+</h2>
+<div class="doc doc-contents first">
+<p>Provide settings modules.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="compendium.settings.HierarchySettingsCache">
+<code>HierarchySettingsCache</code>
+</h2>
+<div class="doc doc-contents">
+<p>Manage settings from hierarchy configurations.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.HierarchySettingsCache.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Initialize settings from hirarchy filepaths.</p>
+<div class="admonition merge_sections">
+<p class="admonition-title">list, optional</p>
+<p>Include sections to be merged</p>
+</div>
+<div class="admonition merge_strategy">
+<p class="admonition-title">list, optional</p>
+<p>Strategy to used when merging: overlay, parition, and last
+  - overlay will replace exsisting entries
+  - partition will keeps each seettings separate
+  - last will only use the last loaded</p>
+</div>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">'''Initialize settings from hirarchy filepaths.</span>
+
+<span class="sd">    merge_sections: list, optional</span>
+<span class="sd">        Include sections to be merged</span>
+
+<span class="sd">    merge_strategy: list, optional</span>
+<span class="sd">        Strategy to used when merging: overlay, parition, and last</span>
+<span class="sd">          - overlay will replace exsisting entries</span>
+<span class="sd">          - partition will keeps each seettings separate</span>
+<span class="sd">          - last will only use the last loaded</span>
+<span class="sd">    '''</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">merge_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_strategy'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">merge_sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_sections'</span><span class="p">,</span> <span class="p">[])</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.HierarchySettingsCache.load">
+<code class="highlight language-python">
+load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Load settings from hierarchy filepaths.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>193
+194
+195
+196
+197
+198
+199</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">'''Load settings from hierarchy filepaths.'''</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_configs</span><span class="p">()</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+        <span class="n">dpath</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">),</span> <span class="n">flags</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="compendium.settings.NestedSettingsCache">
+<code>NestedSettingsCache</code>
+</h2>
+<div class="doc doc-contents">
+<p>Manage settings from nested configurations.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.NestedSettingsCache.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Initialize nested settings management.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>156
+157
+158
+159
+160</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">'''Initialize nested settings management.'''</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_strategy</span> <span class="o">=</span> <span class="s1">'nested'</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.NestedSettingsCache.load">
+<code class="highlight language-python">
+load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Load settings from nested configuration.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>162
+163
+164
+165
+166
+167
+168
+169
+170</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">'''Load settings from nested configuration.'''</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_configs</span><span class="p">()</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span><span class="s1">'filepath'</span><span class="p">:</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">)}</span>
+        <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">({</span><span class="s1">'settings'</span><span class="p">:</span> <span class="n">settings</span><span class="p">})</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="compendium.settings.Settings">
+<code>Settings</code>
+</h2>
+<div class="doc doc-contents">
+<p>Manage settings loaded from confiugrations.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.defaults">
+<code class="highlight">
+defaults: <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Return default settings.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.settings">
+<code class="highlight">
+settings: <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Return settings.</p>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Initialize settings store.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">'''Initialize settings store.'''</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="s1">'defaults'</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__defaults</span> <span class="o">==</span> <span class="p">{}:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__defaults</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'defaults'</span><span class="p">)</span>
+
+    <span class="c1"># Load settings from configs</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'separator'</span><span class="p">,</span> <span class="s1">'/'</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'prefix'</span><span class="p">,</span> <span class="n">application</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'_'</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.add">
+<code class="highlight language-python">
+add<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Add key/value pair located at keypath.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>103
+104
+105</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">'''Add key/value pair located at keypath.'''</span>
+    <span class="n">dpath</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">,</span> <span class="n">keypath</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.append">
+<code class="highlight language-python">
+append<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Append to a list located at keypath.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>89
+90
+91
+92
+93
+94
+95
+96</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">'''Append to a list located at keypath.'''</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
+    <span class="n">keypath_dir</span> <span class="o">=</span> <span class="n">keypath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">keypath_dir</span><span class="p">):</span>
+        <span class="n">store</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">store</span><span class="p">}</span>
+    <span class="n">dpath</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">,</span> <span class="n">store</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.create">
+<code class="highlight language-python">
+create<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Create new key/value pair located at path.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>107
+108
+109
+110</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">'''Create new key/value pair located at path.'''</span>
+    <span class="n">dpath</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">,</span> <span class="n">keypath</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.delete">
+<code class="highlight language-python">
+delete<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Delete key/value located at keypath.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>112
+113
+114
+115</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">'''Delete key/value located at keypath.'''</span>
+    <span class="n">dpath</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">,</span> <span class="n">keypath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.get">
+<code class="highlight language-python">
+get<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Get value from settings with key.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">document</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">default</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">'''Get value from settings with key.'''</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">document</span><span class="p">:</span>
+        <span class="n">document</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__settings</span>
+    <span class="n">documents</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__environs</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__defaults</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dpath</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">default</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.load_environment">
+<code class="highlight language-python">
+load_environment<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Load environment variables.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">'''Load environment variables.'''</span>
+    <span class="c1"># TODO: Change env key from '_' to dict path</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span> <span class="n">v</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">env</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__environs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'env'</span><span class="p">:</span> <span class="n">env</span><span class="p">}</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.search">
+<code class="highlight language-python">
+search<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Search settings matching query.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>85
+86
+87</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="sd">'''Search settings matching query.'''</span>
+    <span class="k">return</span> <span class="n">dpath</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.update">
+<code class="highlight language-python">
+update<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Update value located at keypath.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span> 98
+ 99
+100
+101</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keypath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">'''Update value located at keypath.'''</span>
+    <span class="n">dpath</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">,</span> <span class="n">keypath</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.Settings.view">
+<code class="highlight language-python">
+view<span class="p">(</span><span class="bp">self</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>View current keypath location.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>117
+118
+119</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">'''View current keypath location.'''</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">keypath</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="compendium.settings.SettingsCache">
+<code>SettingsCache</code>
+</h2>
+<div class="doc doc-contents">
+<p>Manage settings from cache.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.SettingsCache.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Initialize single settings management.</p>
+<p>merge_sections: []
+merge_strategy:
+  - overlay
+  - partition
+  - last</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">'''Initialize single settings management.</span>
+
+<span class="sd">    merge_sections: []</span>
+<span class="sd">    merge_strategy:</span>
+<span class="sd">      - overlay</span>
+<span class="sd">      - partition</span>
+<span class="sd">      - last</span>
+<span class="sd">    '''</span>
+    <span class="n">Settings</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ConfigPaths</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">merge_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_strategy'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">merge_sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_sections'</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">writable</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'writable'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.SettingsCache.load">
+<code class="highlight language-python">
+load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Load settings from configuration file.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>142
+143
+144
+145
+146</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">'''Load settings from configuration file.'''</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">))</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.settings.SettingsCache.save">
+<code class="highlight language-python">
+save<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Save settings to configuraiton.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/settings.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>148
+149
+150</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">'''Save settings to configuraiton.'''</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav aria-label="Footer" class="md-footer-nav__inner md-grid">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../config_manager/" rel="prev" title="Config manager">
+<div class="md-footer-nav__button md-icon">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
+</div>
+<div class="md-footer-nav__title">
+<div class="md-ellipsis">
+<span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Config manager
+              </div>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+<div class="md-footer-copyright__highlight">
+            copywright (c) 2020 by Jesse Johnson.
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+          Material for MkDocs
+        </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../assets/javascripts/vendor.d1f5a259.min.js"></script>
+<script src="../../assets/javascripts/bundle.d5fec882.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script>
+        app = initialize({
+          base: "../..",
+          features: ["search.highlight"],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.fae956e7.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+</body>
+</html>
