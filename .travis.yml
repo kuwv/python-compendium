@@ -47,7 +47,7 @@ jobs:
         github_token: $GITHUB_TOKEN
         local_dir: site
         skip_cleanup: true
-        keep_history: true
+        keep_history: false
         on:
           branch: master
 
