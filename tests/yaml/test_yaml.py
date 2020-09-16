@@ -6,7 +6,7 @@ import os
 import pytest
 
 from compendium.config.paths import ConfigPaths
-from compendium.settings import SettingsCache
+from compendium.cache import SettingsCache
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 yaml_path = config_path + '/test.yaml'

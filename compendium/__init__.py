@@ -7,4 +7,4 @@ import logging
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
-__all__ = ['ConfigPaths', 'ConfigManager', 'Settings']
+__all__ = ['Cache', 'ConfigPaths', 'ConfigManager', 'Settings']

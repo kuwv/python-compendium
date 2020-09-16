@@ -9,8 +9,6 @@ from typing import Any, ClassVar, Dict, List, Optional
 
 from dpath import util as dpath  # type: ignore
 
-from .config.paths import ConfigPaths
-
 
 class Settings:
     '''Manage settings loaded from confiugrations.'''
@@ -75,12 +73,12 @@ class Settings:
                 pass
         return default
 
-    # def retrieve(self, query: str):
-    #     '''Retrieve value from settings with key.'''
-    #     if not self.document:
-    #         self.document = self.__settings
-    #     self.document = dpath.get(self.document, query, self.separator)
-    #     return self
+    def retrieve(self, query: str):
+        '''Retrieve value from settings with key.'''
+        if not self.__document:
+            self.__document = self.__settings
+        self.__document = dpath.get(self.__document, query, self.separator)
+        return self
 
     def search(self, query: str) -> Dict[Any, Any]:
         '''Search settings matching query.'''
@@ -117,83 +115,3 @@ class Settings:
     def view(self) -> str:
         '''View current keypath location.'''
         return self.keypath
-
-
-class SettingsCache(Settings, ConfigPaths):
-    '''Manage settings from cache.'''
-
-    def __init__(self, application, **kwargs):
-        '''Initialize single settings management.
-
-        merge_sections: []
-        merge_strategy:
-          - overlay
-          - partition
-          - last
-        '''
-        Settings.__init__(self, application, **kwargs)
-        ConfigPaths.__init__(self, application, **kwargs)
-
-        self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
-        self.merge_sections: List[str] = kwargs.get('merge_sections', [])
-
-        self.writable: Optional[bool] = kwargs.get('writable', False)
-
-    def load(
-        self, filename: Optional[str] = None, path: Optional[str] = None
-    ) -> None:
-        '''Load settings from configuration file.'''
-        self._initialize_settings(self.load_config(self.head))
-
-    def save(self, path: str) -> None:
-        '''Save settings to configuraiton.'''
-        self.save_config(self.head, self.settings)
-
-
-class NestedSettingsCache(SettingsCache):
-    '''Manage settings from nested configurations.'''
-
-    def __init__(self, application, **kwargs):
-        '''Initialize nested settings management.'''
-        super().__init__(application, **kwargs)
-
-        self.load_strategy = 'nested'
-
-    def load(self, path: Optional[str] = None, filename: Optional[str] = None):
-        '''Load settings from nested configuration.'''
-        self.load_configs()
-        settings = []
-        for filepath in self.filepaths:
-            settings.append(
-                {'filepath': filepath, **self.load_config(filepath)}
-            )
-        self._initialize_settings({'settings': settings})
-
-
-class HierarchySettingsCache(SettingsCache):
-    '''Manage settings from hierarchy configurations.'''
-
-    def __init__(self, application, **kwargs):
-        '''Initialize settings from hirarchy filepaths.
-
-        merge_sections: list, optional
-            Include sections to be merged
-
-        merge_strategy: list, optional
-            Strategy to used when merging: overlay, parition, and last
-              - overlay will replace exsisting entries
-              - partition will keeps each seettings separate
-              - last will only use the last loaded
-        '''
-        super().__init__(application, **kwargs)
-
-        self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
-        self.merge_sections: List[str] = kwargs.get('merge_sections', [])
-
-    def load(self, path: Optional[str] = None, filename: Optional[str] = None):
-        '''Load settings from hierarchy filepaths.'''
-        self.load_configs()
-        settings = {}
-        for filepath in self.filepaths:
-            dpath.merge(settings, self.load_config(filepath), flags=2)
-        self._initialize_settings(settings)
