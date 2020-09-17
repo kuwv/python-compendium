@@ -59,6 +59,7 @@ def test_yaml_content(fs):
 #     fs.add_real_file(yaml_path)
 #     cfg = SettingsCache(application='tests', path=yaml_path)
 #     cfg.load()
-#
+# 
 #     with pytest.raises(IOError):
 #         cfg.create('/test', 'test')
+#         cfg.save('./test.yaml')

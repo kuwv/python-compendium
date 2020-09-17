@@ -3,7 +3,7 @@
 # license: Apache 2.0, see LICENSE for more details.
 '''Test Task-Runner.'''
 
-from invoke import task
+from invoke import task  # type: ignore
 
 from compendium.__version__ import __version__
 

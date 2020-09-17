@@ -5,7 +5,7 @@
 
 import os
 
-import pytest
+import pytest  # type: ignore
 
 from compendium.cache import SettingsCache
 

@@ -61,3 +61,4 @@ def test_cfg_save_fail(fs):
 
     with pytest.raises(IOError):
         cfg.create('/test', 'test')
+        cfg.save('./test.toml')

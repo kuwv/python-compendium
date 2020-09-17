@@ -91,12 +91,10 @@ class Settings:
         for x in reversed(keypath_dir):
             store = {x: store}
         dpath.merge(self.__settings, store)
-        self.save(self.head)
 
     def update(self, keypath: str, value: Any) -> None:
         '''Update value located at keypath.'''
         dpath.set(self.__settings, keypath, value, self.separator)
-        self.save(self.head)
 
     def add(self, keypath: str, value: Any) -> None:
         '''Add key/value pair located at keypath.'''
@@ -105,12 +103,10 @@ class Settings:
     def create(self, keypath: str, value: Any) -> None:
         '''Create new key/value pair located at path.'''
         dpath.new(self.__settings, keypath, value, self.separator)
-        self.save(self.head)
 
     def delete(self, keypath: str) -> None:
         '''Delete key/value located at keypath.'''
         dpath.delete(self.__settings, keypath, self.separator)
-        self.save(self.head)
 
     def view(self) -> str:
         '''View current keypath location.'''

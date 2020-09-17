@@ -3,7 +3,7 @@
 # license: Apache 2.0, see LICENSE for more details.
 '''Provide documentation tasks.'''
 
-from invoke import task
+from invoke import task  # type: ignore
 
 
 @task
