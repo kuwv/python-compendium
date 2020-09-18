@@ -48,3 +48,6 @@ class TomlConfig(ConfigBase):
                     'Error: You do not have permission to write to this file'
                 )
                 raise
+
+    def validate(self, content):
+        pass

@@ -8,14 +8,14 @@ Compendium is a configuration management tool
 
 ## Features
 
-- Hierarchical configuration:
-- Nested configuration:
-- JSON support:
-- INI support:
-- TOML support:
-- XML support:
-- YAML support:
-- Extensible:
+[ ] Hierarchical config cache
+[ ] Nested config cache
+[ ] Configurations
+    [ ] JSON support
+    [ ] INI support
+    [ ] TOML support
+    [ ] XML support
+    [ ] YAML support
 
 ## Install
 

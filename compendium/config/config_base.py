@@ -13,6 +13,10 @@ class ConfigBase(metaclass=ABCMeta):
     #     '''Retrieve extensions of filetypes.'''
 
     @abstractmethod
+    def validate(self, content):
+        '''Validate configuration content.'''
+
+    @abstractmethod
     def load_config(self, filepath):
         '''Load configuration from file.'''
 

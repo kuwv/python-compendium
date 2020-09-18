@@ -17,6 +17,7 @@ class YamlConfig(ConfigBase):
     def __init__(self, **kwargs):
         '''Initialize YAML configuration module.'''
         logging.info('Inializing YamlConfig')
+        self.schema = kwargs.get('schema', {})
         self.encoding = kwargs.get('encoding', 'utf-8')
         self.yaml = YAML(typ='safe')
 
@@ -48,3 +49,17 @@ class YamlConfig(ConfigBase):
                     'Error: You do not have permission to write to this file'
                 )
                 raise
+
+    def validate(self, filepath):
+        schema = yamale.make_schema(self.schema)
+        data = yamale.make_data(filepath)
+        try:
+            yamale.validate(schema, data)
+            logging.info(
+                'Yaml validation succeeded!'
+            )
+        except ValueError as err:
+            logging.error(
+                "Error: yaml validation failed! '{}'".format(str(err))
+            )
+            raise

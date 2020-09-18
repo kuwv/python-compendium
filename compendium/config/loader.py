@@ -83,5 +83,6 @@ class ConfigFile:
 
         :param filename: str, required
             Filename to retrieve filetype
+
         '''
         return filename.split('.')[-1]

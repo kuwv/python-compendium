@@ -59,3 +59,15 @@ class XmlConfig(ConfigBase):
                     'Error: You do not have permission to write to this file'
                 )
                 raise
+
+    def validate(self, filepath):
+        try:
+            xmlschema.validate(filepath, self.schema)
+            logging.info(
+                'Yaml validation succeeded!'
+            )
+        except ValueError as err:
+            logging.error(
+                "Error: yaml validation failed! '{}'".format(str(err))
+            )
+            raise

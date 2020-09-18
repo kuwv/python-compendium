@@ -2,10 +2,11 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 '''Control JSON module.'''
+
 # import datetime
 import errno
 import json  # type: ignore
-# import jsonschema  # type: ignore
+import jsonschema  # type: ignore
 import os
 
 from .. import ConfigBase
@@ -50,12 +51,12 @@ class JsonConfig(ConfigBase):
                 )
                 raise
 
-    # def validate(self, content):
-    #     '''Validate JSON configuration.'''
-    #     try:
-    #         jsonschema.validate(instance=content, schema=self.schema)
-    #     except jsonschema.exceptions.ValidationError as err:
-    #         # TODO handle validation error
-    #         print(err[0])
-    #         return False
-    #     return True
+    def validate(self, content):
+        '''Validate JSON configuration.'''
+        try:
+            jsonschema.validate(instance=content, schema=self.schema)
+        except jsonschema.exceptions.ValidationError as err:
+            logging.error(
+                'Error: json validation failed!'
+            )
+            raise
