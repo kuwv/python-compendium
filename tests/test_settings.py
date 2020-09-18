@@ -5,9 +5,9 @@
 
 import os
 
-import pytest
+import pytest  # type: ignore
 
-from compendium.settings import SettingsCache
+from compendium.cache import SettingsCache
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 settings_path = config_path + '/settings.toml'

@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from compendium.settings import NestedSettingsCache
+from compendium.cache import NestedSettingsCache
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)

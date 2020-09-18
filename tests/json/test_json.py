@@ -7,7 +7,7 @@ import os
 import pytest
 
 from compendium.config.paths import ConfigPaths
-from compendium.settings import SettingsCache
+from compendium.cache import SettingsCache
 
 settings_path = os.path.dirname(os.path.realpath(__file__))
 json_path = settings_path + '/test.json'
@@ -62,3 +62,4 @@ def test_cfg_save_fail(fs):
 
     with pytest.raises(IOError):
         cfg.create('/test', 'test')
+        cfg.save('./test.json')

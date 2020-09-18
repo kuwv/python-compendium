@@ -1,6 +1,6 @@
 import os
 
-from compendium.settings import HierarchySettingsCache
+from compendium.cache import HierarchySettingsCache
 
 import pytest
 

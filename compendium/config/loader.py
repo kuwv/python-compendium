@@ -8,7 +8,7 @@ import logging
 import os
 from typing import Any, Dict
 
-from anymod import ModuleLoader
+from anymod import ModuleLoader  # type: ignore
 
 
 class ConfigFile:

@@ -6,7 +6,7 @@ import os
 import pytest
 
 from compendium.config.paths import ConfigPaths
-from compendium.settings import SettingsCache
+from compendium.cache import SettingsCache
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 yaml_path = config_path + '/test.yaml'
@@ -59,6 +59,7 @@ def test_yaml_content(fs):
 #     fs.add_real_file(yaml_path)
 #     cfg = SettingsCache(application='tests', path=yaml_path)
 #     cfg.load()
-#
+# 
 #     with pytest.raises(IOError):
 #         cfg.create('/test', 'test')
+#         cfg.save('./test.yaml')

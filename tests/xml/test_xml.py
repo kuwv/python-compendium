@@ -7,7 +7,7 @@ import os
 import pytest
 
 from compendium.config.paths import ConfigPaths
-from compendium.settings import SettingsCache
+from compendium.cache import SettingsCache
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 xml_path = config_path + '/test.xml'
@@ -61,3 +61,4 @@ def test_cfg_save_fail(fs):
 
     with pytest.raises(IOError):
         cfg.create('/test', 'test')
+        cfg.save('./test.xml')
