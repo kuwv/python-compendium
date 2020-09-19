@@ -19,11 +19,10 @@ def test_toml_delete():  # fs):
     # fs.add_real_file(settings_path, False)
     cfg = ConfigManager(
         application='tests',
-        configs=[
-            {'filename': 'settings.toml', 'path': settings_path}
-        ]
+        configs=[{'filename': 'settings.toml', 'path': settings_path}],
     )
     # cfg.load()
     # assert cfg.search('/owner/name') == ['Tom Preston-Werner']
     # cfg.delete('/owner/name')
     # assert cfg.search('/owner/name') == []
+    cfg.stop_all()

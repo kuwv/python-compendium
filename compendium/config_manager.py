@@ -5,17 +5,10 @@
 
 import logging
 import os
+from multiprocessing import Manager, Process
 from typing import List, Optional, Union
 
-import multiprocessing
-
 from .cache import SettingsCache
-
-
-def worker():
-    '''worker function'''
-    print('Worker')
-    return
 
 
 class ConfigManager:
@@ -23,18 +16,27 @@ class ConfigManager:
 
     def __init__(self, *args, **kwargs):
         '''Inialize configuration manager.'''
-        self.caches: list = []
+        self.procs: list = []
 
         self.application = kwargs.get('application')
         configs = kwargs.get('configs')
+
+        manager = Manager()
         for config in configs:
-            p = multiprocessing.Process(target=worker)
-            self.caches.append(p)
-            # self.caches.append({
-            #     config['filename'], self.add_config(config)
-            # })
+            c = manager.dict(config)
+            p = Process(
+                target=self.add_config,
+                args=(c,)
+            )
+            self.procs.append(p)
             p.start()
 
     def add_config(self, config: dict):
         '''Add configuration cache to manage.'''
-        return SettingsCache(self.application, **config).load()
+        print(config)
+        # return SettingsCache(self.application, **config).load()
+
+    def stop_all(self):
+        for proc in self.procs:
+            print(proc)
+            proc.join()
