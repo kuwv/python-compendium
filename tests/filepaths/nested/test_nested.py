@@ -35,9 +35,6 @@ def test_nested(fs):
     assert cfg.get('/settings/[0]/filepath') == '/opt/test/fruit.toml'
     assert cfg.get('/settings/[1]/filepath') == '/opt/test/example1/fruit.toml'
     assert cfg.get('/settings/[2]/filepath') == '/opt/test/example2/fruit.toml'
-
-    print(cfg.get('/settings/**/fruit/drupe'))
-    print(cfg.get('/**/name', cfg.get('/settings/**/fruit/drupe')))
     assert cfg.get('/**/name', cfg.get('/settings/**/fruit/drupe')) == 'peach'
 
     # Ensure vegatable is not in fruits

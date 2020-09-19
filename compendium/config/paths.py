@@ -2,6 +2,7 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 '''Provide configuration filepaths.'''
+
 import glob
 import logging
 import os
@@ -92,41 +93,40 @@ class ConfigPaths(ConfigFile):
             - <CLI>
         '''
         logging.info('populating settings locations')
-        # TODO: Make directory if not exists
 
-        if self.enable_system_paths:
+        if self.enable_system_paths and os.name == 'posix':
             self._load_filepath(
-                '/etc/' + self.application + '/' + self.filename
+                os.path.join(os.sep, 'etc',  self.application, self.filename)
             )
             self._load_filepath(
-                '/etc/'
-                + self.application
-                + '/'
-                + self.application
-                + '.'
-                + self.filetype
+                os.path.join(
+                    os.sep,
+                    'etc',
+                    self.application,
+                    self.application + '.' + self.filetype
+                )
             )
+        # TODO: Add windows/linux compliant service path config option
 
         if self.enable_user_paths:
             self._load_filepath(
-                os.path.expanduser('~')
-                + '/.'
-                + self.application
-                + '.'
-                + self.filetype
+                os.path.join(
+                    os.path.expanduser('~'),
+                    '.' + self.application + '.' + self.filetype
+                )
             )
             self._load_filepath(
-                os.path.expanduser('~')
-                + '/.'
-                + self.application
-                + '.d/'
-                + self.filename
+                os.path.join(
+                    os.path.expanduser('~'),
+                    '.' + self.application + '.d',
+                    self.filename
+                )
             )
 
         if self.enable_local_paths:
-            self._load_filepath(os.getcwd() + '/' + self.filename)
+            self._load_filepath(os.path.join(os.getcwd(), self.filename))
             self._load_filepath(
-                os.getcwd() + '/' + self.application + '.' + self.filetype
+                os.path.join(os.getcwd(), self.application + '.' + self.filetype)
             )
 
     def load_nested_configs(self, path: Optional[str] = None):
