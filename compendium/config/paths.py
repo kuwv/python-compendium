@@ -6,6 +6,7 @@
 import glob
 import logging
 import os
+import platform
 from typing import List, Optional, Union
 
 from . import ConfigFile
@@ -80,13 +81,16 @@ class ConfigPaths(ConfigFile):
         First(lowest) to last(highest)
         1. Load settings.<FILETYPE> from /etc/<APP>
             - /etc/<APP>/settings.<FILETYPE>
-            - /etc/<APP>/<CONFIG>.<FILETYPE>
+            - /etc/<APP>/<FILENAME>
         2. Load user configs
+            - Windows: ~\\AppData\\Local\\<COMPANY>\\<APP>\\<FILENAME>
+            - Darwin: ~/Library/Application Support/<APP>/<FILENAME>
+            - Linux: ~/.config/<APP>/<FILENAME>
             - ~/.<APP>.<FILETYPE>
-            - ~/.<APP>.d/settings.<FILETYPE>
+            - ~/.<APP>.d/<FILENAME>
         3. Load config in PWD
             - ./settings.<FILETYPE>
-            - ./<CONFIG>.<FILETYPE>
+            - ./<FILENAME>
         4. Runtime configs: (environment.py)
             - /etc/sysconfig/<APP>
             - .env
@@ -109,6 +113,24 @@ class ConfigPaths(ConfigFile):
         # TODO: Add windows/linux compliant service path config option
 
         if self.enable_user_paths:
+            if platform.system() == 'Windows':
+                __user_app_path = os.path.join('AppData', 'Local')
+
+            if platform.system() == 'Darwin':
+                __user_app_path = os.path.join('Library', 'Application Support')
+
+            if platform.system() == 'Linux':
+                __user_app_path = '.config'
+
+            self._load_filepath(
+                os.path.join(
+                    os.path.expanduser('~'),
+                    __user_app_path,
+                    self.application,
+                    self.filename
+                )
+            )
+
             self._load_filepath(
                 os.path.join(
                     os.path.expanduser('~'),
