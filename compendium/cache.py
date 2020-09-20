@@ -3,9 +3,7 @@
 # license: Apache 2.0, see LICENSE for more details.
 '''Provide settings modules.'''
 
-import logging
-import os
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import List, Optional
 
 from dpath import util as dpath  # type: ignore
 
@@ -24,6 +22,7 @@ class SettingsCache(Settings, ConfigPaths):
           - overlay
           - partition
           - last
+
         '''
         Settings.__init__(self, application, **kwargs)
         ConfigPaths.__init__(self, application, **kwargs)
@@ -78,6 +77,7 @@ class HierarchySettingsCache(SettingsCache):
               - overlay will replace exsisting entries
               - partition will keeps each seettings separate
               - last will only use the last loaded
+
         '''
         super().__init__(application, **kwargs)
 

@@ -148,7 +148,9 @@ class ConfigPaths(ConfigFile):
         if self.enable_local_paths:
             self._load_filepath(os.path.join(os.getcwd(), self.filename))
             self._load_filepath(
-                os.path.join(os.getcwd(), self.application + '.' + self.filetype)
+                os.path.join(
+                    os.getcwd(), self.application + '.' + self.filetype
+                )
             )
 
     def load_nested_configs(self, path: Optional[str] = None):
