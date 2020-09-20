@@ -14,6 +14,7 @@ from .settings import Settings
 
 class ConfigManager:
     '''Manage multiple disperate settings groups.'''
+
     pass
     # def __init__(self, *args, **kwargs):
     #     '''Inialize configuration manager.'''
