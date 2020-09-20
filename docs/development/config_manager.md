@@ -1,1 +1,0 @@
-::: compendium.config_manager

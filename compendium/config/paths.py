@@ -23,6 +23,7 @@ class ConfigPaths(ConfigFile):
           - singleton
           - hierarchy
           - nested
+
         '''
         super().__init__()
 
@@ -76,25 +77,26 @@ class ConfigPaths(ConfigFile):
 
     # TODO: Implement pathlib
     def load_config_filepaths(self):
-        '''Load config paths based on priority.
+        r'''Load config paths based on priority.
 
         First(lowest) to last(highest)
         1. Load settings.<FILETYPE> from /etc/<APP>
-            - /etc/<APP>/settings.<FILETYPE>
-            - /etc/<APP>/<FILENAME>
+          - /etc/<APP>/settings.<FILETYPE>
+          - /etc/<APP>/<FILENAME>
         2. Load user configs
-            - Windows: ~\\AppData\\Local\\<COMPANY>\\<APP>\\<FILENAME>
-            - Darwin: ~/Library/Application Support/<APP>/<FILENAME>
-            - Linux: ~/.config/<APP>/<FILENAME>
-            - ~/.<APP>.<FILETYPE>
-            - ~/.<APP>.d/<FILENAME>
+          - Windows: ~\\AppData\\Local\\<COMPANY>\\<APP>\\<FILENAME>
+          - Darwin: ~/Library/Application Support/<APP>/<FILENAME>
+          - Linux: ~/.config/<APP>/<FILENAME>
+          - ~/.<APP>.<FILETYPE>
+          - ~/.<APP>.d/<FILENAME>
         3. Load config in PWD
-            - ./settings.<FILETYPE>
-            - ./<FILENAME>
-        4. Runtime configs: (environment.py)
-            - /etc/sysconfig/<APP>
-            - .env
-            - <CLI>
+          - ./settings.<FILETYPE>
+          - ./<FILENAME>
+        4. Runtime configs:
+          - /etc/sysconfig/<APP>
+          - .env
+          - <CLI>
+
         '''
         logging.info('populating settings locations')
 
@@ -107,7 +109,7 @@ class ConfigPaths(ConfigFile):
                     os.sep,
                     'etc',
                     self.application,
-                    self.application + '.' + self.filetype
+                    self.filename
                 )
             )
         # TODO: Add windows/linux compliant service path config option

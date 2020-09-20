@@ -4,6 +4,7 @@
 '''Control configuration files.'''
 
 # import codecs
+import concurrent.futures
 import logging
 import os
 from typing import Any, Dict
@@ -79,9 +80,5 @@ class ConfigFile:
 
     @staticmethod
     def get_filetype(filename: str):
-        '''Get filetype from filename.
-
-        :param filename: str, required
-            Filename to retrieve filetype
-        '''
+        '''Get filetype from filename.'''
         return filename.split('.')[-1]
