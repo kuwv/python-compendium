@@ -36,3 +36,6 @@ plugins:
   - search
   - mkdocstrings:
       default_handler: python
+
+# nav:
+#   - Welcome to Compendium: index.md

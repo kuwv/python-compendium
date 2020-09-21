@@ -10,7 +10,7 @@ class ConfigBase(metaclass=ABCMeta):
 
     # @abstractproperty
     # def filesystems():
-    #     '''Retrieve extensions of filetypes.'''
+    #     '''Retrieve filetypes of filetypes.'''
 
     @abstractmethod
     def load_config(self, filepath):
