@@ -2,6 +2,7 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 '''Control YAML configuration module.'''
+
 import errno
 import logging
 import os

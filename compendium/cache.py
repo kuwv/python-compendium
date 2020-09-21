@@ -3,7 +3,7 @@
 # license: Apache 2.0, see LICENSE for more details.
 '''Provide settings modules.'''
 
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from dpath import util as dpath  # type: ignore
 
@@ -33,7 +33,7 @@ class SettingsCache(Settings, ConfigPaths):
         self.writable: Optional[bool] = kwargs.get('writable', False)
 
     def load(
-        self, filename: Optional[str] = None, path: Optional[str] = None
+        self, path: Optional[str] = None, filename: Optional[str] = None
     ) -> None:
         '''Load settings from configuration file.'''
         self._initialize_settings(self.load_config(self.head))
@@ -87,7 +87,7 @@ class HierarchySettingsCache(SettingsCache):
     def load(self, path: Optional[str] = None, filename: Optional[str] = None):
         '''Load settings from hierarchy filepaths.'''
         self.load_configs()
-        settings = {}
+        settings: Dict[Any, Any] = {}
         for filepath in self.filepaths:
             dpath.merge(settings, self.load_config(filepath), flags=2)
         self._initialize_settings(settings)

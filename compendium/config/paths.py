@@ -46,13 +46,13 @@ class ConfigPaths(ConfigFile):
 
         if 'path' in kwargs:
             self.load_strategy = 'singleton'
-            self.filepaths.append(kwargs.get('path'))
+            self.filepaths.append(kwargs['path'])
             self.base_path, self.filename = self.split_filepath(
                 self.filepaths[0]
             )
             self.filetype = self.get_filetype(self.filename)
         elif 'filename' in kwargs:
-            self.filename = kwargs.get('filename')
+            self.filename = kwargs['filename']
             self.filetype = self.get_filetype(self.filename)
         else:
             self.filename = 'settings.toml'
