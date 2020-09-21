@@ -5,12 +5,12 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<link href="https://kuwv.github.io/python-compendium/development/config_manager/" rel="canonical"/>
+<link href="https://kuwv.github.io/python-compendium/settings/" rel="canonical"/>
 <meta content="Jesse P. Johnson" name="author"/>
-<link href="../../assets/images/favicon.png" rel="shortcut icon"/>
-<meta content="mkdocs-1.1.2, mkdocs-material-5.5.6" name="generator"/>
-<title>Config manager - Compendium</title>
-<link href="../../assets/stylesheets/main.63b94e9e.min.css" rel="stylesheet"/>
+<link href="../assets/images/favicon.png" rel="shortcut icon"/>
+<meta content="mkdocs-1.1.2, mkdocs-material-5.5.12" name="generator"/>
+<title>Settings - Compendium</title>
+<link href="../assets/stylesheets/main.4dd2dd8d.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
 <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
@@ -20,7 +20,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#compendium.config_manager">
+<a class="md-skip" href="#settings">
           Skip to content
         </a>
 </div>
@@ -41,7 +41,7 @@
           </span>
 <span class="md-header-nav__topic md-ellipsis">
             
-              Config manager
+              Settings
             
           </span>
 </div>
@@ -111,76 +111,133 @@
 </div>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../.." title="Welcome to Compendium">
+<a class="md-nav__link" href=".." title="Welcome to Compendium">
       Welcome to Compendium
     </a>
 </li>
-<li class="md-nav__item md-nav__item--active md-nav__item--nested">
-<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-2" id="nav-2" type="checkbox"/>
-<label class="md-nav__link" for="nav-2">
-      Development
-      <span class="md-nav__icon md-icon">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.58L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.42z"></path></svg>
-</span>
-</label>
-<nav aria-label="Development" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="nav-2">
-<span class="md-nav__icon md-icon">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
-</span>
-        Development
-      </label>
-<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../cache/" title="Cache">
+      Cache
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../configuration/" title="Configuration">
+      Configuration
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../schema/" title="Schema">
+      Schema
+    </a>
+</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
-        Config manager
-        <span class="md-nav__icon md-icon">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"></path></svg>
-</span>
+        Settings
+        <span class="md-nav__icon md-icon"></span>
 </label>
-<a class="md-nav__link md-nav__link--active" href="./" title="Config manager">
-      Config manager
+<a class="md-nav__link md-nav__link--active" href="./" title="Settings">
+      Settings
     </a>
 <nav aria-label="Table of contents" class="md-nav md-nav--secondary">
 <label class="md-nav__title" for="__toc">
-<span class="md-nav__icon md-icon">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
-</span>
+<span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.config_manager">
-    compendium.config_manager
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.config_manager.ConfigManager">
-    ConfigManager
-  </a>
-<nav aria-label="ConfigManager" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.__init__">
-    __init__()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.add_config">
-    add_config()
-  </a>
+<a class="md-nav__link" href="#_1">
+</a>
 </li>
 </ul>
 </nav>
 </li>
-</ul>
-</nav>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6">
+      Development
+      <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Development" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="nav-6">
+<span class="md-nav__icon md-icon"></span>
+        Development
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../development/cache/" title="Cache">
+      Cache
+    </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../settings/" title="Settings">
+<a class="md-nav__link" href="../development/settings/" title="Settings">
       Settings
     </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-3" id="nav-6-3" type="checkbox"/>
+<label class="md-nav__link" for="nav-6-3">
+      Config
+      <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Config" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-6-3">
+<span class="md-nav__icon md-icon"></span>
+        Config
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../development/config/config_base/" title="Config base">
+      Config base
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../development/config/loader/" title="Loader">
+      Loader
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../development/config/paths/" title="Paths">
+      Paths
+    </a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-3-4" id="nav-6-3-4" type="checkbox"/>
+<label class="md-nav__link" for="nav-6-3-4">
+      Filetypes
+      <span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-label="Filetypes" class="md-nav" data-md-level="3">
+<label class="md-nav__title" for="nav-6-3-4">
+<span class="md-nav__icon md-icon"></span>
+        Filetypes
+      </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../development/config/filetypes/json/" title="Json">
+      Json
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../development/config/filetypes/toml/" title="Toml">
+      Toml
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../development/config/filetypes/xml/" title="Xml">
+      Xml
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../development/config/filetypes/yaml/" title="Yaml">
+      Yaml
+    </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
 </li>
 </ul>
 </nav>
@@ -195,35 +252,13 @@
 <div class="md-sidebar__inner">
 <nav aria-label="Table of contents" class="md-nav md-nav--secondary">
 <label class="md-nav__title" for="__toc">
-<span class="md-nav__icon md-icon">
-<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
-</span>
+<span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.config_manager">
-    compendium.config_manager
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.config_manager.ConfigManager">
-    ConfigManager
-  </a>
-<nav aria-label="ConfigManager" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.__init__">
-    __init__()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.add_config">
-    add_config()
-  </a>
-</li>
-</ul>
-</nav>
+<a class="md-nav__link" href="#_1">
+</a>
 </li>
 </ul>
 </nav>
@@ -232,98 +267,11 @@
 </div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
-<a class="md-content__button md-icon" href="https://github.com/kuwv/python-compendium/edit/master/docs/development/config_manager.md" title="Edit this page">
+<a class="md-content__button md-icon" href="https://github.com/kuwv/python-compendium/edit/master/docs/settings.md" title="Edit this page">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
 </a>
-<h1>Config manager</h1>
-<div class="doc doc-object doc-module">
-<h2 class="hidden-toc" href="#compendium.config_manager" id="compendium.config_manager" style="visibility: hidden; width: 0; height: 0;">
-</h2>
-<div class="doc doc-contents first">
-<p>Provide configuration manager for multiple settings.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-class">
-<h2 class="doc doc-heading" id="compendium.config_manager.ConfigManager">
-<code>ConfigManager</code>
-</h2>
-<div class="doc doc-contents">
-<p>Manage multiple disperate settings groups.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.config_manager.ConfigManager.__init__">
-<code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-special"><code>special</code></small>
-</span>
-</h3>
-<div class="doc doc-contents">
-<p>Inialize configuration manager.</p>
-<details class="quote">
-<summary>Source code in <code>compendium/config_manager.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>18
-19
-20
-21</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">'''Inialize configuration manager.'''</span>
-    <span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'configs'</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">add_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.config_manager.ConfigManager.add_config">
-<code class="highlight language-python">
-add_config<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span> </code>
-</h3>
-<div class="doc doc-contents">
-<p>Add configuration cache to manage.</p>
-<details class="quote">
-<summary>Source code in <code>compendium/config_manager.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>23
-24
-25
-26</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">add_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">'''Add configuration cache to manage.'''</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">config</span><span class="p">[</span><span class="s1">'application'</span><span class="p">]:</span> <span class="n">Settings</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)})</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="n">config</span><span class="p">[</span><span class="s1">'application'</span><span class="p">]]</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+<h1 id="settings">Settings</h1>
+<h2 id="_1"></h2>
 </article>
 </div>
 </div>
@@ -331,7 +279,7 @@ add_config<span class="p">(</span><span class="bp">self</span><span class="p">,<
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav aria-label="Footer" class="md-footer-nav__inner md-grid">
-<a class="md-footer-nav__link md-footer-nav__link--prev" href="../.." rel="prev" title="Welcome to Compendium">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../schema/" rel="prev" title="Schema">
 <div class="md-footer-nav__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
 </div>
@@ -340,17 +288,17 @@ add_config<span class="p">(</span><span class="bp">self</span><span class="p">,<
 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Welcome to Compendium
+                Schema
               </div>
 </div>
 </a>
-<a class="md-footer-nav__link md-footer-nav__link--next" href="../settings/" rel="next" title="Settings">
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../development/cache/" rel="next" title="Cache">
 <div class="md-footer-nav__title">
 <div class="md-ellipsis">
 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Settings
+                Cache
               </div>
 </div>
 <div class="md-footer-nav__button md-icon">
@@ -375,14 +323,14 @@ add_config<span class="p">(</span><span class="bp">self</span><span class="p">,<
 </div>
 </footer>
 </div>
-<script src="../../assets/javascripts/vendor.d1f5a259.min.js"></script>
-<script src="../../assets/javascripts/bundle.d5fec882.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+<script src="../assets/javascripts/vendor.3636a4ec.min.js"></script>
+<script src="../assets/javascripts/bundle.e9fe3281.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
 <script>
         app = initialize({
-          base: "../..",
+          base: "..",
           features: ["search.highlight"],
           search: Object.assign({
-            worker: "../../assets/javascripts/worker/search.fae956e7.min.js"
+            worker: "../assets/javascripts/worker/search.5eca75d3.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
