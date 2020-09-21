@@ -4,7 +4,6 @@
 '''Control configuration files.'''
 
 # import codecs
-import concurrent.futures
 import logging
 import os
 from typing import Any, Dict
