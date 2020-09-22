@@ -4,7 +4,7 @@
 '''Test XML content management.'''
 
 import os
-import pytest
+import pytest  # type: ignore
 
 from compendium.config.paths import ConfigPaths
 from compendium.cache import SettingsCache

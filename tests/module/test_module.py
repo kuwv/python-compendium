@@ -1,6 +1,6 @@
 import os
 import compendium
-from anymod import ModuleLoader
+from anymod import ModuleLoader  # type: ignore
 from compendium.config.config_base import ConfigBase
 
 package_path = os.path.dirname(compendium.__file__)

@@ -2,8 +2,9 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 '''Test YAML configuration management.'''
+
 import os
-import pytest
+import pytest  # type: ignore
 
 from compendium.config.paths import ConfigPaths
 from compendium.cache import SettingsCache
