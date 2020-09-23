@@ -26,17 +26,6 @@ class ConfigPaths(ConfigFile):
 
         self.application: str = application
 
-        self.load_strategy: str = kwargs.get('load_strategy', 'hierarchy')
-        self.enable_system_paths: Union[str, bool] = kwargs.get(
-            'enable_system_paths', False
-        )
-        self.enable_user_paths: Union[str, bool] = kwargs.get(
-            'enable_user_paths', False
-        )
-        self.enable_local_paths: Union[str, bool] = kwargs.get(
-            'enable_local_paths', True
-        )
-
         # TODO: writable / readonly
         self._filepaths: List[str] = []
         self.base_path: Optional[str] = None
@@ -76,7 +65,3 @@ class ConfigPaths(ConfigFile):
 
         if self._check_path(filepath):
             self._filepaths.append(filepath)
-
-    # def load_filepath(self, filepath: str):
-    #     '''Load configuration in filepath.'''
-    #     self._load_filepath(filepath)

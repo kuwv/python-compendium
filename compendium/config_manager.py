@@ -91,6 +91,16 @@ class HierarchyConfigManager(ConfigManager):
         self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
         self.merge_sections: List[str] = kwargs.get('merge_sections', [])
 
+        self.enable_system_paths: Union[str, bool] = kwargs.get(
+            'enable_system_paths', False
+        )
+        self.enable_user_paths: Union[str, bool] = kwargs.get(
+            'enable_user_paths', False
+        )
+        self.enable_local_paths: Union[str, bool] = kwargs.get(
+            'enable_local_paths', True
+        )
+
     # TODO: Implement pathlib
     def _load_configs(self):
         r'''Load config paths based on priority.
