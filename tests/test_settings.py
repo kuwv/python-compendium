@@ -7,7 +7,7 @@ import os
 
 import pytest  # type: ignore
 
-from compendium.cache import SettingsCache
+from compendium.config_manager import ConfigManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 settings_path = config_path + '/settings.toml'
@@ -16,7 +16,7 @@ settings_path = config_path + '/settings.toml'
 # @pytest.fixture(params=['fs', [[['pkgutil']]]])
 # def cfg(fs):
 #     fs.add_real_file(settings_path, False)
-#     cfg = SettingsCache(application='tests', path=settings_path)
+#     cfg = ConfigManager(application='tests', path=settings_path)
 #     cfg.load()
 #     return cfg
 #
@@ -27,7 +27,7 @@ settings_path = config_path + '/settings.toml'
 
 def test_default():
     '''Test default settings.'''
-    cfg = SettingsCache(application='tests', defaults={'default': 'result'})
+    cfg = ConfigManager(application='tests', defaults={'default': 'result'})
     defaults = cfg.defaults
     assert defaults == {'default': 'result'}
     result = cfg.get('default')
@@ -38,7 +38,7 @@ def test_default():
 def test_result(fs):
     '''Test IP from settings.'''
     fs.add_real_file(settings_path, False)
-    cfg = SettingsCache(application='tests', path=settings_path)
+    cfg = ConfigManager(application='tests', path=settings_path)
     cfg.load()
     result = cfg.search('/servers/**/ip')
     assert ['10.0.0.1', '10.0.0.2'] == result
@@ -48,7 +48,7 @@ def test_result(fs):
 def test_toml_content_create(fs):
     '''Test content creation settings.'''
     fs.add_real_file(settings_path, False)
-    cfg = SettingsCache(application='tests', path=settings_path)
+    cfg = ConfigManager(application='tests', path=settings_path)
     cfg.load()
     cfg.create('/test', 'test')
     assert cfg.get('test') == 'test'
@@ -58,7 +58,7 @@ def test_toml_content_create(fs):
 def test_toml_content_append(fs):
     '''Test appending settings to list.'''
     fs.add_real_file(settings_path, False)
-    cfg = SettingsCache(application='tests', path=settings_path)
+    cfg = ConfigManager(application='tests', path=settings_path)
     cfg.load()
     cfg.append('/database/ports', 2345)
     assert 2345 in cfg.get('/database/ports')
@@ -68,7 +68,7 @@ def test_toml_content_append(fs):
 def test_toml_content_update(fs):
     '''Test content update.'''
     fs.add_real_file(settings_path, False)
-    cfg = SettingsCache(application='tests', path=settings_path, writable=True)
+    cfg = ConfigManager(application='tests', path=settings_path, writable=True)
     cfg.load()
     cfg.update('/owner/name', 'Tom Waits')
     assert cfg.get('/owner/name') == 'Tom Waits'
@@ -78,7 +78,7 @@ def test_toml_content_update(fs):
 def test_toml_delete(fs):
     '''Test content deletion.'''
     fs.add_real_file(settings_path, False)
-    cfg = SettingsCache(application='tests', path=settings_path)
+    cfg = ConfigManager(application='tests', path=settings_path)
     cfg.load()
     assert cfg.search('/owner/name') == ['Tom Preston-Werner']
     cfg.delete('/owner/name')

@@ -7,7 +7,7 @@ import os
 import pytest  # type: ignore
 
 from compendium.config.paths import ConfigPaths
-from compendium.cache import SettingsCache
+from compendium.config_manager import ConfigManager
 
 settings_path = os.path.dirname(os.path.realpath(__file__))
 json_path = settings_path + '/test.json'
@@ -34,7 +34,7 @@ def test_json_path(fs):
 def test_cfg(fs):
     '''Test loading JSON configuration.'''
     fs.add_real_file(json_path)
-    cfg = SettingsCache(application='tests', path=json_path)
+    cfg = ConfigManager(application='tests', path=json_path)
     cfg.load()
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
@@ -47,7 +47,7 @@ def test_cfg(fs):
 def test_cfg_save(fs):
     '''Test saving JSON content.'''
     fs.add_real_file(json_path, False)
-    cfg = SettingsCache(application='tests', path=json_path, writable=True)
+    cfg = ConfigManager(application='tests', path=json_path, writable=True)
     cfg.load()
     cfg.create('/test', 'test')
     assert cfg.settings['test'] == 'test'
@@ -57,7 +57,7 @@ def test_cfg_save(fs):
 def test_cfg_save_fail(fs):
     '''Test JSON failure.'''
     fs.add_real_file(json_path)
-    cfg = SettingsCache(application='tests', path=json_path)
+    cfg = ConfigManager(application='tests', path=json_path)
     cfg.load()
 
     with pytest.raises(IOError):

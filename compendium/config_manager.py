@@ -11,7 +11,7 @@ from .config.paths import ConfigPaths
 from .settings import Settings
 
 
-class SettingsCache(Settings, ConfigPaths):
+class ConfigManager(Settings, ConfigPaths):
     '''Manage settings from cache.'''
 
     def __init__(self, application, **kwargs):
@@ -43,7 +43,7 @@ class SettingsCache(Settings, ConfigPaths):
         self.save_config(self.head, self.settings)
 
 
-class NestedSettingsCache(SettingsCache):
+class NestedConfigManager(ConfigManager):
     '''Manage settings from nested configurations.'''
 
     def __init__(self, application, **kwargs):
@@ -63,7 +63,7 @@ class NestedSettingsCache(SettingsCache):
         self._initialize_settings({'settings': settings})
 
 
-class HierarchySettingsCache(SettingsCache):
+class HierarchyConfigManager(ConfigManager):
     '''Manage settings from hierarchy configurations.'''
 
     def __init__(self, application, **kwargs):

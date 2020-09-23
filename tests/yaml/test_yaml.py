@@ -7,7 +7,7 @@ import os
 import pytest  # type: ignore
 
 from compendium.config.paths import ConfigPaths
-from compendium.cache import SettingsCache
+from compendium.config_manager import ConfigManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 yaml_path = config_path + '/test.yaml'
@@ -33,7 +33,7 @@ def test_yaml_path(fs):
 def test_yaml_content(fs):
     '''Test read YAML content.'''
     fs.add_real_file(yaml_path)
-    cfg = SettingsCache(application='tests', path=yaml_path)
+    cfg = ConfigManager(application='tests', path=yaml_path)
     cfg.load()
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
@@ -46,7 +46,7 @@ def test_yaml_content(fs):
 # def test_yaml_content_save(fs):
 #     '''Test YAML content save.'''
 #     fs.add_real_file(yaml_path, False)
-#     cfg = SettingsCache(
+#     cfg = ConfigManager(
 #         application='tests', path=yaml_path, writable=True
 #     )
 #     cfg.load()
@@ -58,7 +58,7 @@ def test_yaml_content(fs):
 # def test_cfg_save_fail(fs):
 #     '''Test YAML content fail.'''
 #     fs.add_real_file(yaml_path)
-#     cfg = SettingsCache(application='tests', path=yaml_path)
+#     cfg = ConfigManager(application='tests', path=yaml_path)
 #     cfg.load()
 #
 #     with pytest.raises(IOError):

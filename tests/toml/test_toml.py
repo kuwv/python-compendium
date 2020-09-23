@@ -7,7 +7,7 @@ import os
 import pytest  # type: ignore
 
 from compendium.config.paths import ConfigPaths
-from compendium.cache import SettingsCache
+from compendium.config_manager import ConfigManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 toml_path = config_path + '/test.toml'
@@ -33,7 +33,7 @@ def test_toml_path(fs):
 def test_toml_content(fs):
     '''Test TOML content load.'''
     fs.add_real_file(toml_path)
-    cfg = SettingsCache(application='tests', path=toml_path)
+    cfg = ConfigManager(application='tests', path=toml_path)
     cfg.load()
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
@@ -46,7 +46,7 @@ def test_toml_content(fs):
 def test_toml_content_save(fs):
     '''Test TOML content save.'''
     fs.add_real_file(toml_path, False)
-    cfg = SettingsCache(application='tests', path=toml_path, writable=True)
+    cfg = ConfigManager(application='tests', path=toml_path, writable=True)
     cfg.load()
     cfg.create('/test', 'test')
     assert cfg.settings['test'] == 'test'
@@ -56,7 +56,7 @@ def test_toml_content_save(fs):
 def test_cfg_save_fail(fs):
     '''Test TOML content failure.'''
     fs.add_real_file(toml_path)
-    cfg = SettingsCache(application='tests', path=toml_path)
+    cfg = ConfigManager(application='tests', path=toml_path)
     cfg.load()
 
     with pytest.raises(IOError):

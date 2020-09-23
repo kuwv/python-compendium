@@ -7,7 +7,7 @@ import os
 import pytest  # type: ignore
 
 from compendium.config.paths import ConfigPaths
-from compendium.cache import SettingsCache
+from compendium.config_manager import ConfigManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
 xml_path = config_path + '/test.xml'
@@ -33,7 +33,7 @@ def test_xml_path(fs):
 def test_xml_content(fs):
     '''Test XML content read.'''
     fs.add_real_file(xml_path)
-    cfg = SettingsCache(application='tests', path=xml_path)
+    cfg = ConfigManager(application='tests', path=xml_path)
     cfg.load()
     assert cfg.get('/root/stooges/stooge1') == 'Larry'
     assert cfg.get('/root/stooges/stooge2') == 'Curly'
@@ -46,7 +46,7 @@ def test_xml_content(fs):
 def test_xml_content_save(fs):
     '''Test XML content save.'''
     fs.add_real_file(xml_path, False)
-    cfg = SettingsCache(application='tests', path=xml_path, writable=True)
+    cfg = ConfigManager(application='tests', path=xml_path, writable=True)
     cfg.load()
     cfg.create('/root/test', 'test')
     assert cfg.get('/root/test') == 'test'
@@ -56,7 +56,7 @@ def test_xml_content_save(fs):
 def test_cfg_save_fail(fs):
     '''Test XML failure.'''
     fs.add_real_file(xml_path)
-    cfg = SettingsCache(application='tests', path=xml_path)
+    cfg = ConfigManager(application='tests', path=xml_path)
     cfg.load()
 
     with pytest.raises(IOError):
