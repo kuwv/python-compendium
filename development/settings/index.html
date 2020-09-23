@@ -152,6 +152,21 @@
       Cache
     </a>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../config_base/" title="Config base">
+      Config base
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../loader/" title="Loader">
+      Loader
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../paths/" title="Paths">
+      Paths
+    </a>
+</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
@@ -245,66 +260,36 @@
 </nav>
 </li>
 <li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-3" id="nav-6-3" type="checkbox"/>
-<label class="md-nav__link" for="nav-6-3">
-      Config
-      <span class="md-nav__icon md-icon"></span>
-</label>
-<nav aria-label="Config" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="nav-6-3">
-<span class="md-nav__icon md-icon"></span>
-        Config
-      </label>
-<ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../config/config_base/" title="Config base">
-      Config base
-    </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../config/loader/" title="Loader">
-      Loader
-    </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../config/paths/" title="Paths">
-      Paths
-    </a>
-</li>
-<li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-3-4" id="nav-6-3-4" type="checkbox"/>
-<label class="md-nav__link" for="nav-6-3-4">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-6" id="nav-6-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-6-6">
       Filetypes
       <span class="md-nav__icon md-icon"></span>
 </label>
-<nav aria-label="Filetypes" class="md-nav" data-md-level="3">
-<label class="md-nav__title" for="nav-6-3-4">
+<nav aria-label="Filetypes" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="nav-6-6">
 <span class="md-nav__icon md-icon"></span>
         Filetypes
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="../config/filetypes/json/" title="Json">
+<a class="md-nav__link" href="../filetypes/json/" title="Json">
       Json
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../config/filetypes/toml/" title="Toml">
+<a class="md-nav__link" href="../filetypes/toml/" title="Toml">
       Toml
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../config/filetypes/xml/" title="Xml">
+<a class="md-nav__link" href="../filetypes/xml/" title="Xml">
       Xml
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../config/filetypes/yaml/" title="Yaml">
+<a class="md-nav__link" href="../filetypes/yaml/" title="Yaml">
       Yaml
     </a>
-</li>
-</ul>
-</nav>
 </li>
 </ul>
 </nav>
@@ -485,7 +470,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
     <span class="sd">'''Initialize settings store.'''</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">if</span> <span class="s1">'defaults'</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__defaults</span> <span class="o">==</span> <span class="p">{}:</span>
+    <span class="k">if</span> <span class="s1">'defaults'</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">Settings</span><span class="o">.</span><span class="n">__defaults</span> <span class="o">==</span> <span class="p">{}:</span>
         <span class="n">Settings</span><span class="o">.</span><span class="n">__defaults</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">'defaults'</span><span class="p">]</span>
 
     <span class="c1"># Load settings from configs</span>
@@ -848,7 +833,7 @@ update<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav aria-label="Footer" class="md-footer-nav__inner md-grid">
-<a class="md-footer-nav__link md-footer-nav__link--prev" href="../cache/" rel="prev" title="Cache">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../paths/" rel="prev" title="Paths">
 <div class="md-footer-nav__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
 </div>
@@ -857,17 +842,17 @@ update<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Cache
+                Paths
               </div>
 </div>
 </a>
-<a class="md-footer-nav__link md-footer-nav__link--next" href="../config/config_base/" rel="next" title="Config base">
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../filetypes/json/" rel="next" title="Json">
 <div class="md-footer-nav__title">
 <div class="md-ellipsis">
 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Config base
+                Json
               </div>
 </div>
 <div class="md-footer-nav__button md-icon">

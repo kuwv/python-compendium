@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://kuwv.github.io/python-compendium/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/cache/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/configuration/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/schema/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/settings/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/cache/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <lastmod>2020-09-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kuwv.github.io/python-compendium/development/config_base/</loc>
+     <lastmod>2020-09-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kuwv.github.io/python-compendium/development/loader/</loc>
+     <lastmod>2020-09-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kuwv.github.io/python-compendium/development/paths/</loc>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/settings/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config/config_base/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <loc>https://kuwv.github.io/python-compendium/development/filetypes/json/</loc>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config/loader/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <loc>https://kuwv.github.io/python-compendium/development/filetypes/toml/</loc>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config/paths/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <loc>https://kuwv.github.io/python-compendium/development/filetypes/xml/</loc>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config/filetypes/json/</loc>
-     <lastmod>2020-09-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config/filetypes/toml/</loc>
-     <lastmod>2020-09-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config/filetypes/xml/</loc>
-     <lastmod>2020-09-22</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config/filetypes/yaml/</loc>
-     <lastmod>2020-09-22</lastmod>
+     <loc>https://kuwv.github.io/python-compendium/development/filetypes/yaml/</loc>
+     <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
