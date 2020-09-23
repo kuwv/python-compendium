@@ -16,15 +16,7 @@
      <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config_base/</loc>
-     <lastmod>2020-09-23</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/config_manager/</loc>
-     <lastmod>2020-09-23</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/loader/</loc>
      <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -33,6 +25,14 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/settings/</loc>
+     <lastmod>2020-09-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kuwv.github.io/python-compendium/development/loader/</loc>
+     <lastmod>2020-09-23</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://kuwv.github.io/python-compendium/development/config_base/</loc>
      <lastmod>2020-09-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>

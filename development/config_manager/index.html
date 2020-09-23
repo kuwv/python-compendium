@@ -9,7 +9,7 @@
 <meta content="Jesse P. Johnson" name="author"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
 <meta content="mkdocs-1.1.2, mkdocs-material-5.5.12" name="generator"/>
-<title>Config manager - Compendium</title>
+<title>Config Manager - Compendium</title>
 <link href="../../assets/stylesheets/main.4dd2dd8d.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
@@ -41,7 +41,7 @@
           </span>
 <span class="md-header-nav__topic md-ellipsis">
             
-              Config manager
+              Config Manager
             
           </span>
 </div>
@@ -142,19 +142,14 @@
         Development
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
-<li class="md-nav__item">
-<a class="md-nav__link" href="../config_base/" title="Config base">
-      Config base
-    </a>
-</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
-        Config manager
+        Config Manager
         <span class="md-nav__icon md-icon"></span>
 </label>
-<a class="md-nav__link md-nav__link--active" href="./" title="Config manager">
-      Config manager
+<a class="md-nav__link md-nav__link--active" href="./" title="Config Manager">
+      Config Manager
     </a>
 <nav aria-label="Table of contents" class="md-nav md-nav--secondary">
 <label class="md-nav__title" for="__toc">
@@ -233,11 +228,6 @@
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../loader/" title="Loader">
-      Loader
-    </a>
-</li>
-<li class="md-nav__item">
 <a class="md-nav__link" href="../paths/" title="Paths">
       Paths
     </a>
@@ -245,6 +235,16 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="../settings/" title="Settings">
       Settings
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../loader/" title="Loader">
+      Loader
+    </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../config_base/" title="Config Base">
+      Config Base
     </a>
 </li>
 <li class="md-nav__item md-nav__item--nested">
@@ -376,7 +376,7 @@
 <a class="md-content__button md-icon" href="https://github.com/kuwv/python-compendium/edit/master/docs/development/config_manager.md" title="Edit this page">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
 </a>
-<h1>Config manager</h1>
+<h1>Config Manager</h1>
 <div class="doc doc-object doc-module">
 <h2 class="hidden-toc" href="#compendium.config_manager" id="compendium.config_manager" style="visibility: hidden; width: 0; height: 0;">
 </h2>
@@ -495,7 +495,7 @@ load<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config_manager.ConfigManager.save">
 <code class="highlight language-python">
-save<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> </code>
+save<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Save settings to configuraiton.</p>
@@ -512,7 +512,7 @@ save<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filetype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">'''Save settings to configuraiton.'''</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">save_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
 </code></pre>
@@ -749,7 +749,7 @@ load<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav aria-label="Footer" class="md-footer-nav__inner md-grid">
-<a class="md-footer-nav__link md-footer-nav__link--prev" href="../config_base/" rel="prev" title="Config base">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../../settings/" rel="prev" title="Settings">
 <div class="md-footer-nav__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
 </div>
@@ -758,17 +758,17 @@ load<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Config base
+                Settings
               </div>
 </div>
 </a>
-<a class="md-footer-nav__link md-footer-nav__link--next" href="../loader/" rel="next" title="Loader">
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../paths/" rel="next" title="Paths">
 <div class="md-footer-nav__title">
 <div class="md-ellipsis">
 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Loader
+                Paths
               </div>
 </div>
 <div class="md-footer-nav__button md-icon">
