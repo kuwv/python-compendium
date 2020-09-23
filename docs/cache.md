@@ -6,13 +6,16 @@
 ## Module Cache
 
 SettingsCache:
+
   - test
   - test
 
 NestedSettingsCache:
+
   - Maven like nested configurations
   - in
 
 HierarchySettingsCache:
+
   - Hierarchy FileSystem (HFS)
   - in

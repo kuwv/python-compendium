@@ -20,7 +20,7 @@ class Settings:
         '''Initialize settings store.'''
         self.__document: Dict[Any, Any] = {}
         self.__settings: Dict[Any, Any] = {}
-        if 'defaults' in kwargs and self.__defaults == {}:
+        if 'defaults' in kwargs and Settings.__defaults == {}:
             Settings.__defaults = kwargs['defaults']
 
         # Load settings from configs
