@@ -5,11 +5,11 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
-<link href="https://kuwv.github.io/python-compendium/development/cache/" rel="canonical"/>
+<link href="https://kuwv.github.io/python-compendium/development/config_manager/" rel="canonical"/>
 <meta content="Jesse P. Johnson" name="author"/>
 <link href="../../assets/images/favicon.png" rel="shortcut icon"/>
 <meta content="mkdocs-1.1.2, mkdocs-material-5.5.12" name="generator"/>
-<title>Cache - Compendium</title>
+<title>Config manager - Compendium</title>
 <link href="../../assets/stylesheets/main.4dd2dd8d.min.css" rel="stylesheet"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&amp;display=fallback" rel="stylesheet"/>
@@ -20,7 +20,7 @@
 <input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
 <label class="md-overlay" for="__drawer"></label>
 <div data-md-component="skip">
-<a class="md-skip" href="#compendium.cache">
+<a class="md-skip" href="#compendium.config_manager">
           Skip to content
         </a>
 </div>
@@ -41,7 +41,7 @@
           </span>
 <span class="md-header-nav__topic md-ellipsis">
             
-              Cache
+              Config manager
             
           </span>
 </div>
@@ -116,13 +116,8 @@
     </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../../cache/" title="Cache">
-      Cache
-    </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="../../configuration/" title="Configuration">
-      Configuration
+<a class="md-nav__link" href="../../configuration/" title="Configuration Manager">
+      Configuration Manager
     </a>
 </li>
 <li class="md-nav__item">
@@ -136,25 +131,30 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-6" id="nav-6" type="checkbox"/>
-<label class="md-nav__link" for="nav-6">
+<input checked="" class="md-nav__toggle md-toggle" data-md-toggle="nav-5" id="nav-5" type="checkbox"/>
+<label class="md-nav__link" for="nav-5">
       Development
       <span class="md-nav__icon md-icon"></span>
 </label>
 <nav aria-label="Development" class="md-nav" data-md-level="1">
-<label class="md-nav__title" for="nav-6">
+<label class="md-nav__title" for="nav-5">
 <span class="md-nav__icon md-icon"></span>
         Development
       </label>
 <ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../config_base/" title="Config base">
+      Config base
+    </a>
+</li>
 <li class="md-nav__item md-nav__item--active">
 <input class="md-nav__toggle md-toggle" data-md-toggle="toc" id="__toc" type="checkbox"/>
 <label class="md-nav__link md-nav__link--active" for="__toc">
-        Cache
+        Config manager
         <span class="md-nav__icon md-icon"></span>
 </label>
-<a class="md-nav__link md-nav__link--active" href="./" title="Cache">
-      Cache
+<a class="md-nav__link md-nav__link--active" href="./" title="Config manager">
+      Config manager
     </a>
 <nav aria-label="Table of contents" class="md-nav md-nav--secondary">
 <label class="md-nav__title" for="__toc">
@@ -163,79 +163,74 @@
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache">
-    compendium.cache
+<a class="md-nav__link" href="#compendium.config_manager">
+    compendium.config_manager
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.HierarchySettingsCache">
-    HierarchySettingsCache
+<a class="md-nav__link" href="#compendium.config_manager.ConfigManager">
+    ConfigManager
   </a>
-<nav aria-label="HierarchySettingsCache" class="md-nav">
+<nav aria-label="ConfigManager" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.HierarchySettingsCache.__init__">
+<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.__init__">
     __init__()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.HierarchySettingsCache.load">
-    load()
-  </a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.NestedSettingsCache">
-    NestedSettingsCache
-  </a>
-<nav aria-label="NestedSettingsCache" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.NestedSettingsCache.__init__">
-    __init__()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.NestedSettingsCache.load">
-    load()
-  </a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.SettingsCache">
-    SettingsCache
-  </a>
-<nav aria-label="SettingsCache" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.SettingsCache.__init__">
-    __init__()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.SettingsCache.load">
+<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.load">
     load()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.SettingsCache.save">
+<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.save">
     save()
   </a>
 </li>
 </ul>
 </nav>
 </li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.HierarchyConfigManager">
+    HierarchyConfigManager
+  </a>
+<nav aria-label="HierarchyConfigManager" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.HierarchyConfigManager.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.HierarchyConfigManager.load">
+    load()
+  </a>
+</li>
 </ul>
 </nav>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="../config_base/" title="Config base">
-      Config base
-    </a>
+<a class="md-nav__link" href="#compendium.config_manager.NestedConfigManager">
+    NestedConfigManager
+  </a>
+<nav aria-label="NestedConfigManager" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.NestedConfigManager.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.NestedConfigManager.load">
+    load()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
 </li>
 <li class="md-nav__item">
 <a class="md-nav__link" href="../loader/" title="Loader">
@@ -253,13 +248,13 @@
     </a>
 </li>
 <li class="md-nav__item md-nav__item--nested">
-<input class="md-nav__toggle md-toggle" data-md-toggle="nav-6-6" id="nav-6-6" type="checkbox"/>
-<label class="md-nav__link" for="nav-6-6">
+<input class="md-nav__toggle md-toggle" data-md-toggle="nav-5-6" id="nav-5-6" type="checkbox"/>
+<label class="md-nav__link" for="nav-5-6">
       Filetypes
       <span class="md-nav__icon md-icon"></span>
 </label>
 <nav aria-label="Filetypes" class="md-nav" data-md-level="2">
-<label class="md-nav__title" for="nav-6-6">
+<label class="md-nav__title" for="nav-5-6">
 <span class="md-nav__icon md-icon"></span>
         Filetypes
       </label>
@@ -305,67 +300,67 @@
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache">
-    compendium.cache
+<a class="md-nav__link" href="#compendium.config_manager">
+    compendium.config_manager
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.HierarchySettingsCache">
-    HierarchySettingsCache
+<a class="md-nav__link" href="#compendium.config_manager.ConfigManager">
+    ConfigManager
   </a>
-<nav aria-label="HierarchySettingsCache" class="md-nav">
+<nav aria-label="ConfigManager" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.HierarchySettingsCache.__init__">
+<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.__init__">
     __init__()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.HierarchySettingsCache.load">
-    load()
-  </a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.NestedSettingsCache">
-    NestedSettingsCache
-  </a>
-<nav aria-label="NestedSettingsCache" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.NestedSettingsCache.__init__">
-    __init__()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.NestedSettingsCache.load">
-    load()
-  </a>
-</li>
-</ul>
-</nav>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.SettingsCache">
-    SettingsCache
-  </a>
-<nav aria-label="SettingsCache" class="md-nav">
-<ul class="md-nav__list">
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.SettingsCache.__init__">
-    __init__()
-  </a>
-</li>
-<li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.SettingsCache.load">
+<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.load">
     load()
   </a>
 </li>
 <li class="md-nav__item">
-<a class="md-nav__link" href="#compendium.cache.SettingsCache.save">
+<a class="md-nav__link" href="#compendium.config_manager.ConfigManager.save">
     save()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.HierarchyConfigManager">
+    HierarchyConfigManager
+  </a>
+<nav aria-label="HierarchyConfigManager" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.HierarchyConfigManager.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.HierarchyConfigManager.load">
+    load()
+  </a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.NestedConfigManager">
+    NestedConfigManager
+  </a>
+<nav aria-label="NestedConfigManager" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.NestedConfigManager.__init__">
+    __init__()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config_manager.NestedConfigManager.load">
+    load()
   </a>
 </li>
 </ul>
@@ -378,238 +373,25 @@
 </div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
-<a class="md-content__button md-icon" href="https://github.com/kuwv/python-compendium/edit/master/docs/development/cache.md" title="Edit this page">
+<a class="md-content__button md-icon" href="https://github.com/kuwv/python-compendium/edit/master/docs/development/config_manager.md" title="Edit this page">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"></path></svg>
 </a>
-<h1>Cache</h1>
+<h1>Config manager</h1>
 <div class="doc doc-object doc-module">
-<h2 class="hidden-toc" href="#compendium.cache" id="compendium.cache" style="visibility: hidden; width: 0; height: 0;">
+<h2 class="hidden-toc" href="#compendium.config_manager" id="compendium.config_manager" style="visibility: hidden; width: 0; height: 0;">
 </h2>
 <div class="doc doc-contents first">
 <p>Provide settings modules.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-class">
-<h2 class="doc doc-heading" id="compendium.cache.HierarchySettingsCache">
-<code>HierarchySettingsCache</code>
-</h2>
-<div class="doc doc-contents">
-<p>Manage settings from hierarchy configurations.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.cache.HierarchySettingsCache.__init__">
-<code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-special"><code>special</code></small>
-</span>
-</h3>
-<div class="doc doc-contents">
-<p>Initialize settings from hirarchy filepaths.</p>
-<div class="admonition merge_sections">
-<p class="admonition-title">list, optional</p>
-<p>Include sections to be merged</p>
-</div>
-<div class="admonition merge_strategy">
-<p class="admonition-title">list, optional</p>
-<p>Strategy to used when merging: overlay, parition, and last
-  - overlay will replace exsisting entries
-  - partition will keeps each seettings separate
-  - last will only use the last loaded</p>
-</div>
-<details class="quote">
-<summary>Source code in <code>compendium/cache.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">'''Initialize settings from hirarchy filepaths.</span>
-
-<span class="sd">    merge_sections: list, optional</span>
-<span class="sd">        Include sections to be merged</span>
-
-<span class="sd">    merge_strategy: list, optional</span>
-<span class="sd">        Strategy to used when merging: overlay, parition, and last</span>
-<span class="sd">          - overlay will replace exsisting entries</span>
-<span class="sd">          - partition will keeps each seettings separate</span>
-<span class="sd">          - last will only use the last loaded</span>
-
-<span class="sd">    '''</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">merge_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_strategy'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">merge_sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_sections'</span><span class="p">,</span> <span class="p">[])</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.cache.HierarchySettingsCache.load">
-<code class="highlight language-python">
-load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-</h3>
-<div class="doc doc-contents">
-<p>Load settings from hierarchy filepaths.</p>
-<details class="quote">
-<summary>Source code in <code>compendium/cache.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>87
-88
-89
-90
-91
-92
-93</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sd">'''Load settings from hierarchy filepaths.'''</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">load_configs</span><span class="p">()</span>
-    <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
-        <span class="n">dpath</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">),</span> <span class="n">flags</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h2 class="doc doc-heading" id="compendium.cache.NestedSettingsCache">
-<code>NestedSettingsCache</code>
-</h2>
-<div class="doc doc-contents">
-<p>Manage settings from nested configurations.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.cache.NestedSettingsCache.__init__">
-<code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
-<span class="doc doc-properties">
-<small class="doc doc-property doc-property-special"><code>special</code></small>
-</span>
-</h3>
-<div class="doc doc-contents">
-<p>Initialize nested settings management.</p>
-<details class="quote">
-<summary>Source code in <code>compendium/cache.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>49
-50
-51
-52
-53</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">'''Initialize nested settings management.'''</span>
-    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">load_strategy</span> <span class="o">=</span> <span class="s1">'nested'</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.cache.NestedSettingsCache.load">
-<code class="highlight language-python">
-load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
-</h3>
-<div class="doc doc-contents">
-<p>Load settings from nested configuration.</p>
-<details class="quote">
-<summary>Source code in <code>compendium/cache.py</code></summary>
-<table class="highlighttable">
-<tr>
-<td class="linenos">
-<div class="linenodiv">
-<pre><span></span>55
-56
-57
-58
-59
-60
-61
-62
-63</pre>
-</div>
-</td>
-<td class="code">
-<div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sd">'''Load settings from nested configuration.'''</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">load_configs</span><span class="p">()</span>
-    <span class="n">settings</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
-        <span class="n">settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">{</span><span class="s1">'filepath'</span><span class="p">:</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">)}</span>
-        <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">({</span><span class="s1">'settings'</span><span class="p">:</span> <span class="n">settings</span><span class="p">})</span>
-</code></pre>
-</div>
-</td>
-</tr>
-</table>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="doc doc-object doc-class">
-<h2 class="doc doc-heading" id="compendium.cache.SettingsCache">
-<code>SettingsCache</code>
+<h2 class="doc doc-heading" id="compendium.config_manager.ConfigManager">
+<code>ConfigManager</code>
 </h2>
 <div class="doc doc-contents">
 <p>Manage settings from cache.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.cache.SettingsCache.__init__">
+<h3 class="doc doc-heading" id="compendium.config_manager.ConfigManager.__init__">
 <code class="highlight language-python">
 __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
 <span class="doc doc-properties">
@@ -624,7 +406,7 @@ merge_strategy:
   - partition
   - last</p>
 <details class="quote">
-<summary>Source code in <code>compendium/cache.py</code></summary>
+<summary>Source code in <code>compendium/config_manager.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
@@ -676,14 +458,14 @@ merge_strategy:
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.cache.SettingsCache.load">
+<h3 class="doc doc-heading" id="compendium.config_manager.ConfigManager.load">
 <code class="highlight language-python">
 load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Load settings from configuration file.</p>
 <details class="quote">
-<summary>Source code in <code>compendium/cache.py</code></summary>
+<summary>Source code in <code>compendium/config_manager.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
@@ -711,14 +493,14 @@ load<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.cache.SettingsCache.save">
+<h3 class="doc doc-heading" id="compendium.config_manager.ConfigManager.save">
 <code class="highlight language-python">
 save<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Save settings to configuraiton.</p>
 <details class="quote">
-<summary>Source code in <code>compendium/cache.py</code></summary>
+<summary>Source code in <code>compendium/config_manager.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
@@ -744,6 +526,219 @@ save<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 </div>
 </div>
 </div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="compendium.config_manager.HierarchyConfigManager">
+<code>HierarchyConfigManager</code>
+</h2>
+<div class="doc doc-contents">
+<p>Manage settings from hierarchy configurations.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.config_manager.HierarchyConfigManager.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Initialize settings from hirarchy filepaths.</p>
+<div class="admonition merge_sections">
+<p class="admonition-title">list, optional</p>
+<p>Include sections to be merged</p>
+</div>
+<div class="admonition merge_strategy">
+<p class="admonition-title">list, optional</p>
+<p>Strategy to used when merging: overlay, parition, and last
+  - overlay will replace exsisting entries
+  - partition will keeps each seettings separate
+  - last will only use the last loaded</p>
+</div>
+<details class="quote">
+<summary>Source code in <code>compendium/config_manager.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">'''Initialize settings from hirarchy filepaths.</span>
+
+<span class="sd">    merge_sections: list, optional</span>
+<span class="sd">        Include sections to be merged</span>
+
+<span class="sd">    merge_strategy: list, optional</span>
+<span class="sd">        Strategy to used when merging: overlay, parition, and last</span>
+<span class="sd">          - overlay will replace exsisting entries</span>
+<span class="sd">          - partition will keeps each seettings separate</span>
+<span class="sd">          - last will only use the last loaded</span>
+
+<span class="sd">    '''</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">merge_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_strategy'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">merge_sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_sections'</span><span class="p">,</span> <span class="p">[])</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.config_manager.HierarchyConfigManager.load">
+<code class="highlight language-python">
+load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Load settings from hierarchy filepaths.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/config_manager.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>87
+88
+89
+90
+91
+92
+93</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">'''Load settings from hierarchy filepaths.'''</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_configs</span><span class="p">()</span>
+    <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+        <span class="n">dpath</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">),</span> <span class="n">flags</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="doc doc-object doc-class">
+<h2 class="doc doc-heading" id="compendium.config_manager.NestedConfigManager">
+<code>NestedConfigManager</code>
+</h2>
+<div class="doc doc-contents">
+<p>Manage settings from nested configurations.</p>
+<div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.config_manager.NestedConfigManager.__init__">
+<code class="highlight language-python">
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-special"><code>special</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Initialize nested settings management.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/config_manager.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>49
+50
+51
+52
+53</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">'''Initialize nested settings management.'''</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_strategy</span> <span class="o">=</span> <span class="s1">'nested'</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.config_manager.NestedConfigManager.load">
+<code class="highlight language-python">
+load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Load settings from nested configuration.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/config_manager.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>55
+56
+57
+58
+59
+60
+61
+62
+63</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="sd">'''Load settings from nested configuration.'''</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">load_configs</span><span class="p">()</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span><span class="s1">'filepath'</span><span class="p">:</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">)}</span>
+        <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">({</span><span class="s1">'settings'</span><span class="p">:</span> <span class="n">settings</span><span class="p">})</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -754,7 +749,7 @@ save<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav aria-label="Footer" class="md-footer-nav__inner md-grid">
-<a class="md-footer-nav__link md-footer-nav__link--prev" href="../../settings/" rel="prev" title="Settings">
+<a class="md-footer-nav__link md-footer-nav__link--prev" href="../config_base/" rel="prev" title="Config base">
 <div class="md-footer-nav__button md-icon">
 <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"></path></svg>
 </div>
@@ -763,17 +758,17 @@ save<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Settings
+                Config base
               </div>
 </div>
 </a>
-<a class="md-footer-nav__link md-footer-nav__link--next" href="../config_base/" rel="next" title="Config base">
+<a class="md-footer-nav__link md-footer-nav__link--next" href="../loader/" rel="next" title="Loader">
 <div class="md-footer-nav__title">
 <div class="md-ellipsis">
 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Config base
+                Loader
               </div>
 </div>
 <div class="md-footer-nav__button md-icon">
