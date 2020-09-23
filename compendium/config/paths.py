@@ -14,14 +14,7 @@ class ConfigPaths(ConfigFile):
 
     # TODO: Skip all if already loaded unless 'reload' is passed
     def __init__(self, application: str, **kwargs: str):
-        '''Initialize configuration path topology.
-
-        load_strategy:
-          - singleton
-          - hierarchy
-          - nested
-
-        '''
+        '''Initialize configuration path topology.'''
         super().__init__()
 
         self.application: str = application
@@ -31,7 +24,6 @@ class ConfigPaths(ConfigFile):
         self.base_path: Optional[str] = None
 
         if 'path' in kwargs:
-            self.load_strategy = 'singleton'
             self._filepaths.append(kwargs['path'])
             self.base_path, self.filename = self.split_filepath(
                 self._filepaths[0]
