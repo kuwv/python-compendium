@@ -38,7 +38,7 @@ class ConfigManager(Settings, ConfigPaths):
         '''Load settings from configuration file.'''
         self._initialize_settings(self.load_config(self.head))
 
-    def save(self, path: str) -> None:
+    def save(self, path: str, filetype: str = None) -> None:
         '''Save settings to configuraiton.'''
         self.save_config(self.head, self.settings)
 

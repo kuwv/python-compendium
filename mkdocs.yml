@@ -37,5 +37,19 @@ plugins:
   - mkdocstrings:
       default_handler: python
 
-# nav:
-#   - Welcome to Compendium: index.md
+nav:
+  - Welcome to Compendium: index.md
+  - Configuration Manager: configuration.md
+  - Schema: schema.md
+  - Settings: settings.md
+  - Development:
+    - Config Manager: development/config_manager.md
+    - Paths: development/paths.md
+    - Settings: development/settings.md
+    - Loader: development/loader.md
+    - Config Base: development/config_base.md
+    - Filetypes:
+      - Json: development/filetypes/json.md
+      - Toml: development/filetypes/toml.md
+      - Xml: development/filetypes/xml.md
+      - Yaml: development/filetypes/yaml.md

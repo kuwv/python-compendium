@@ -10,6 +10,11 @@
 Compendium is a simple configuration management tool. It has the capability to manage configuration files writen in JSON, TOML, XML and YAML. Settings from these configuration files can then be managed easily with the help of dpath.
 
 
+## Documentation
+
+https://kuwv.github.io/python-compendium/
+
+
 ## Install
 
 `pip install compendium`
