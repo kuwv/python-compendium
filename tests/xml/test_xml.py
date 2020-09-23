@@ -13,11 +13,11 @@ config_path = os.path.dirname(os.path.realpath(__file__))
 xml_path = config_path + '/test.xml'
 
 
-def test_empty_filepath():
-    '''Test XML filepth.'''
-    cfg = ConfigPaths(application='empty', filename='test.xml')
-    cfg.load_configs()
-    assert not cfg.filepaths
+# def test_empty_filepath():
+#     '''Test XML filepth.'''
+#     cfg = ConfigPaths(application='empty', filename='test.xml')
+#     cfg.load_configs()
+#     assert not cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -25,7 +25,7 @@ def test_xml_path(fs):
     '''Test XML path.'''
     fs.add_real_file(xml_path)
     cfg = ConfigPaths(application='tests', filename='test.xml')
-    cfg.load_config_filepath(config_path + '/test.xml')
+    cfg.load_filepath(config_path + '/test.xml')
     assert "{}/test.xml".format(config_path) in cfg.filepaths
 
 

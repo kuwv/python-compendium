@@ -13,11 +13,11 @@ config_path = os.path.dirname(os.path.realpath(__file__))
 toml_path = config_path + '/test.toml'
 
 
-def test_empty_filepath():
-    '''Test empty file.'''
-    cfg = ConfigPaths(application='empty', filename='test.toml')
-    cfg.load_configs()
-    assert not cfg.filepaths
+# def test_empty_filepath():
+#     '''Test empty file.'''
+#     cfg = ConfigPaths(application='empty', filename='test.toml')
+#     cfg.load_configs()
+#     assert not cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -25,7 +25,7 @@ def test_toml_path(fs):
     '''Test TOML filepaths.'''
     fs.add_real_file(toml_path)
     cfg = ConfigPaths(application='toml', filename='test.toml')
-    cfg.load_config_filepath(config_path + '/test.toml')
+    cfg.load_filepath(config_path + '/test.toml')
     assert "{}/test.toml".format(config_path) in cfg.filepaths
 
 

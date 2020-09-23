@@ -13,11 +13,11 @@ config_path = os.path.dirname(os.path.realpath(__file__))
 yaml_path = config_path + '/test.yaml'
 
 
-def test_empty_filepath():
-    '''Test empty file.'''
-    cfg = ConfigPaths(application='empty', filename='test.yaml')
-    cfg.load_configs()
-    assert not cfg.filepaths
+# def test_empty_filepath():
+#     '''Test empty file.'''
+#     cfg = ConfigPaths(application='empty', filename='test.yaml')
+#     cfg.load_configs()
+#     assert not cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -25,7 +25,7 @@ def test_yaml_path(fs):
     '''Test YAML paths.'''
     fs.add_real_file(yaml_path)
     cfg = ConfigPaths(application='yaml', filename='test.yaml')
-    cfg.load_config_filepath(config_path + '/test.yaml')
+    cfg.load_filepath(config_path + '/test.yaml')
     assert "{}/test.yaml".format(config_path) in cfg.filepaths
 
 
