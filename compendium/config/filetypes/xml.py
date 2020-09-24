@@ -29,7 +29,7 @@ class XmlConfig(ConfigBase):
 
     def load_config(self, filepath):
         '''Load settings from XML configuration.'''
-        logging.info('XmlConfig: loading configuration file')
+        logging.info('loading XML configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r') as f:
                 content = xmltodict.parse(
@@ -56,6 +56,6 @@ class XmlConfig(ConfigBase):
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(
-                    'Error: You do not have permission to write to this file'
+                    'You do not have permission to write to this file'
                 )
                 raise

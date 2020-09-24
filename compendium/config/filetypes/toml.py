@@ -29,7 +29,7 @@ class TomlConfig(ConfigBase):
 
     def load_config(self, filepath):
         '''Load settings from toml configuration.'''
-        logging.info('TomlConfig: loading configuration file')
+        logging.info('loading TOML configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
                 content = tomlkit.parse(f.read())
@@ -46,6 +46,6 @@ class TomlConfig(ConfigBase):
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(
-                    'Error: You do not have permission to write to this file'
+                    'You do not have permission to write to this file'
                 )
                 raise

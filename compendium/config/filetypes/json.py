@@ -28,7 +28,7 @@ class JsonConfig(ConfigBase):
 
     def load_config(self, filepath):
         '''Load settings from JSON configuration.'''
-        logging.info('JsonConfig: loading configuration file')
+        logging.info('loading JSON configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
                 content = json.load(f)
@@ -46,7 +46,7 @@ class JsonConfig(ConfigBase):
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(
-                    'Error: You do not have permission to write to this file'
+                    'You do not have permission to write to this file'
                 )
                 raise
 

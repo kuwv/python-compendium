@@ -13,11 +13,9 @@ class ConfigPaths(ConfigFile):
     '''Manage configuration paths.'''
 
     # TODO: Skip all if already loaded unless 'reload' is passed
-    def __init__(self, application: str, **kwargs: str):
+    def __init__(self, **kwargs: str):
         '''Initialize configuration path topology.'''
         super().__init__()
-
-        self.application: str = application
 
         # TODO: writable / readonly
         self._filepaths: List[str] = []

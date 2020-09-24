@@ -29,7 +29,7 @@ class ConfigManager(Settings, ConfigPaths):
 
         '''
         Settings.__init__(self, application, **kwargs)
-        ConfigPaths.__init__(self, application, **kwargs)
+        ConfigPaths.__init__(self, **kwargs)
 
         self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
         self.merge_sections: List[str] = kwargs.get('merge_sections', [])
@@ -128,7 +128,7 @@ class HierarchyConfigManager(ConfigManager):
 
         if self.enable_system_paths and os.name == 'posix':
             self.load_filepath(
-                os.path.join(os.sep, 'etc',  self.application, self.filename)
+                os.path.join(os.sep, 'etc', self.application, self.filename)
             )
             self.load_filepath(
                 os.path.join(

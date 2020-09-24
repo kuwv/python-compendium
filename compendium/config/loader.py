@@ -5,7 +5,7 @@
 
 import logging
 import os
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from anymod import ModuleLoader  # type: ignore
 
@@ -14,7 +14,9 @@ class ConfigFile:
     '''Manage configuration files using dynamic module loader.'''
 
     def __init__(
-        self, filetype=None, driver_directories=['compendium/config/filetypes']
+        self,
+        filetype: str = None,
+        driver_directories: List[str] = ['compendium/config/filetypes']
     ):
         '''Initialize module loader.'''
         self.filetype = filetype

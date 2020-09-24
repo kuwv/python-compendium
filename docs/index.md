@@ -9,8 +9,9 @@ Compendium is a configuration management tool
 ## Features
 
 - [ ] Configurations
-    - [ ] Hierarchical configuration
-    - [ ] Nested configuration
+    - [ ] Configuration Manager
+    - [ ] Hierarchical Configuration Manager
+    - [ ] Nested Configuration Manager
 - [ ] Filetypes:
     - [ ] JSON support
     - [ ] INI support

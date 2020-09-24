@@ -18,6 +18,8 @@ class Settings:
 
     def __init__(self, application: str, **kwargs):
         '''Initialize settings store.'''
+        self.application = application
+
         self.__document: Dict[Any, Any] = {}
         self.__settings: Dict[Any, Any] = {}
         if 'defaults' in kwargs and Settings.__defaults == {}:
@@ -25,7 +27,6 @@ class Settings:
 
         # Load settings from configs
         self.separator: str = kwargs.get('separator', '/')
-
         self.prefix = kwargs.get('prefix', application.upper() + '_')
 
     @property

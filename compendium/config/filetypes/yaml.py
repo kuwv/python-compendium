@@ -29,7 +29,7 @@ class YamlConfig(ConfigBase):
     def load_config(self, filepath):
         '''Load settings from YAML configuration.'''
         logging.info(
-            "YamlConfig loading configuration file {}".format(filepath)
+            "loading YAML configuration file {}".format(filepath)
         )
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
@@ -46,6 +46,6 @@ class YamlConfig(ConfigBase):
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(
-                    'Error: You do not have permission to write to this file'
+                    'You do not have permission to write to this file'
                 )
                 raise
