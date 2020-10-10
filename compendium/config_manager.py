@@ -7,7 +7,7 @@ import glob
 import logging
 import os
 import platform
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from dpath import util as dpath  # type: ignore
 
@@ -131,12 +131,7 @@ class HierarchyConfigManager(ConfigManager):
                 os.path.join(os.sep, 'etc', self.application, self.filename)
             )
             self.load_filepath(
-                os.path.join(
-                    os.sep,
-                    'etc',
-                    self.application,
-                    self.filename
-                )
+                os.path.join(os.sep, 'etc', self.application, self.filename)
             )
         # TODO: Add windows/linux compliant service path config option
 
@@ -155,21 +150,21 @@ class HierarchyConfigManager(ConfigManager):
                     os.path.expanduser('~'),
                     __user_app_path,
                     self.application,
-                    self.filename
+                    self.filename,
                 )
             )
 
             self.load_filepath(
                 os.path.join(
                     os.path.expanduser('~'),
-                    '.' + self.application + '.' + self.filetype
+                    '.' + self.application + '.' + self.filetype,
                 )
             )
             self.load_filepath(
                 os.path.join(
                     os.path.expanduser('~'),
                     '.' + self.application + '.d',
-                    self.filename
+                    self.filename,
                 )
             )
 

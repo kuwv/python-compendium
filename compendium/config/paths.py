@@ -4,7 +4,7 @@
 '''Provide configuration filepaths.'''
 
 import logging
-from typing import List, Optional, Union
+from typing import List, Optional
 
 from . import ConfigFile
 
