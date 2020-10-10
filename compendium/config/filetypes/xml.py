@@ -6,6 +6,7 @@
 import errno
 import logging
 import os
+
 import xmltodict  # type: ignore
 
 from .. import ConfigBase
