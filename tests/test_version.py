@@ -8,4 +8,4 @@ from compendium.__version__ import __version__
 
 def test_version():
     '''Test project version is managed.'''
-    assert __version__ == "0.1.1-dev64"
+    assert __version__ == "0.1.1-dev65"
