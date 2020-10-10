@@ -23,7 +23,7 @@ https://kuwv.github.io/python-compendium/
 ## Manage configuration
 
 ```
-from compendium.settings import Settings
+from compendium.config_manager import ConfigManager
 
 cfg = Settings(application='app', path='afile.toml')
 cfg.load()
