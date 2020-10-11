@@ -27,7 +27,7 @@ class Settings:
 
         # Load settings from configs
         self.separator: str = kwargs.get('separator', '/')
-        self.prefix = kwargs.get('prefix', application.upper() + '_')
+        self.prefix = kwargs.get('prefix', "{a}_".format(a=application.upper()))
 
     @property
     def defaults(self) -> Dict[Any, Any]:

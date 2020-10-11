@@ -16,7 +16,9 @@ class ConfigFile:
     def __init__(
         self,
         filetype: str = None,
-        driver_directories: List[str] = ['compendium/config/filetypes']
+        driver_directories: List[str] = [
+            os.path.join('compendium', 'config', 'filetypes')
+        ]
     ):
         '''Initialize module loader.'''
         self.filetype = filetype
@@ -29,8 +31,10 @@ class ConfigFile:
         module_path = mod.discover_module_path(self.filetype)
 
         if module_path is not None:
-            classname = '.' + self.filetype.capitalize() + 'Config'
-            config_class = mod.load_classpath(module_path + classname)
+            classname = ".{p}Config".format(p=self.filetype.capitalize())
+            config_class = mod.load_classpath(
+                "{m}{c}".format(m=module_path, c=classname)
+            )
             self.__config_module = config_class()
             logging.info('Finished loading configs')
         else:

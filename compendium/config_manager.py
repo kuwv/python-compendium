@@ -56,7 +56,7 @@ class NestedConfigManager(ConfigManager):
 
     def _load_configs(self, path: Optional[str] = None):
         '''Load configurations located in nested directory path.'''
-        for filepath in glob.iglob('/**/' + self.filename, recursive=True):
+        for filepath in glob.iglob("/**/{f}".format(f=self.filename), recursive=True):
             self.load_filepath(filepath)
 
     def load(self, path: Optional[str] = None, filename: Optional[str] = None):
@@ -157,13 +157,13 @@ class HierarchyConfigManager(ConfigManager):
             self.load_filepath(
                 os.path.join(
                     os.path.expanduser('~'),
-                    '.' + self.application + '.' + self.filetype,
+                    ".{a}.{f}".format(a=self.application, f=self.filetype),
                 )
             )
             self.load_filepath(
                 os.path.join(
                     os.path.expanduser('~'),
-                    '.' + self.application + '.d',
+                    ".{a}.d".format(a=self.application),
                     self.filename,
                 )
             )
@@ -172,7 +172,7 @@ class HierarchyConfigManager(ConfigManager):
             self.load_filepath(os.path.join(os.getcwd(), self.filename))
             self.load_filepath(
                 os.path.join(
-                    os.getcwd(), self.application + '.' + self.filetype
+                    os.getcwd(), "{a}.{f}".format(a=self.application, f=self.filetype)
                 )
             )
 
