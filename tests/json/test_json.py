@@ -6,11 +6,10 @@
 import os
 import pytest  # type: ignore
 
-from compendium.config.paths import ConfigPaths
 from compendium.config_manager import ConfigManager
 
 settings_path = os.path.dirname(os.path.realpath(__file__))
-json_path = settings_path + '/test.json'
+json_path = os.path.join(settings_path, 'test.json')
 
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -25,8 +24,8 @@ json_path = settings_path + '/test.json'
 def test_json_path(fs):
     '''Test JSON filepaths.'''
     fs.add_real_file(json_path)
-    cfg = ConfigPaths(application='json', filename='test.json')
-    cfg.load_filepath(settings_path + '/test.json')
+    cfg = ConfigManager(application='json', filename='test.json')
+    cfg.load_filepath(os.path.join(settings_path, 'test.json'))
     assert "{}/test.json".format(settings_path) in cfg.filepaths
 
 

@@ -6,11 +6,10 @@
 import os
 import pytest  # type: ignore
 
-from compendium.config.paths import ConfigPaths
 from compendium.config_manager import ConfigManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
-xml_path = config_path + '/test.xml'
+xml_path = os.path.join(config_path, 'test.xml')
 
 
 # def test_empty_filepath():
@@ -24,8 +23,8 @@ xml_path = config_path + '/test.xml'
 def test_xml_path(fs):
     '''Test XML path.'''
     fs.add_real_file(xml_path)
-    cfg = ConfigPaths(application='tests', filename='test.xml')
-    cfg.load_filepath(config_path + '/test.xml')
+    cfg = ConfigManager(application='tests', filename='test.xml')
+    cfg.load_filepath(os.path.join(config_path, 'test.xml'))
     assert "{}/test.xml".format(config_path) in cfg.filepaths
 
 

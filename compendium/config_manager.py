@@ -11,11 +11,12 @@ from typing import Any, Dict, List, Optional, Union
 
 from dpath import util as dpath  # type: ignore
 
-from .config.paths import ConfigPaths
+from .config import ConfigFile
+from .exceptions import CompendiumConfigManagerError
 from .settings import Settings
 
 
-class ConfigManager(Settings, ConfigPaths):
+class ConfigManager(Settings, ConfigFile):
     '''Manage settings from cache.'''
 
     def __init__(self, application, **kwargs):
@@ -29,7 +30,7 @@ class ConfigManager(Settings, ConfigPaths):
 
         '''
         Settings.__init__(self, application, **kwargs)
-        ConfigPaths.__init__(self, **kwargs)
+        ConfigFile.__init__(self, **kwargs)
 
         self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
         self.merge_sections: List[str] = kwargs.get('merge_sections', [])
@@ -37,7 +38,7 @@ class ConfigManager(Settings, ConfigPaths):
         self.writable: Optional[bool] = kwargs.get('writable', False)
 
     def load(
-        self, path: Optional[str] = None, filename: Optional[str] = None
+        self, path: Optional[str] = None, filetype: Optional[str] = None
     ) -> None:
         '''Load settings from configuration file.'''
         self._initialize_settings(self.load_config(self.head))
@@ -56,10 +57,12 @@ class NestedConfigManager(ConfigManager):
 
     def _load_configs(self, path: Optional[str] = None):
         '''Load configurations located in nested directory path.'''
-        for filepath in glob.iglob("/**/{f}".format(f=self.filename), recursive=True):
+        for filepath in glob.iglob(
+            "/**/{f}".format(f=self.filename), recursive=True
+        ):
             self.load_filepath(filepath)
 
-    def load(self, path: Optional[str] = None, filename: Optional[str] = None):
+    def load(self, path: Optional[str] = None, filetype: Optional[str] = None):
         '''Load settings from nested configuration.'''
         self._load_configs()
         settings = []
@@ -172,11 +175,12 @@ class HierarchyConfigManager(ConfigManager):
             self.load_filepath(os.path.join(os.getcwd(), self.filename))
             self.load_filepath(
                 os.path.join(
-                    os.getcwd(), "{a}.{f}".format(a=self.application, f=self.filetype)
+                    os.getcwd(),
+                    "{a}.{f}".format(a=self.application, f=self.filetype),
                 )
             )
 
-    def load(self, path: Optional[str] = None, filename: Optional[str] = None):
+    def load(self, path: Optional[str] = None, filetype: Optional[str] = None):
         '''Load settings from hierarchy filepaths.'''
         self._load_configs()
         settings: Dict[Any, Any] = {}

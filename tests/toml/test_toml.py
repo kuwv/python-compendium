@@ -6,17 +6,16 @@
 import os
 import pytest  # type: ignore
 
-from compendium.config.paths import ConfigPaths
 from compendium.config_manager import ConfigManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
-toml_path = config_path + '/test.toml'
+toml_path = os.path.join(config_path, 'test.toml')
 
 
 # def test_empty_filepath():
 #     '''Test empty file.'''
-#     cfg = ConfigPaths(application='empty', filename='test.toml')
-#     cfg.load_configs()
+#     cfg = ConfigManager(application='empty', filename='test.toml')
+#     cfg.load()
 #     assert not cfg.filepaths
 
 
@@ -24,8 +23,8 @@ toml_path = config_path + '/test.toml'
 def test_toml_path(fs):
     '''Test TOML filepaths.'''
     fs.add_real_file(toml_path)
-    cfg = ConfigPaths(application='toml', filename='test.toml')
-    cfg.load_filepath(config_path + '/test.toml')
+    cfg = ConfigManager(application='toml', filename='test.toml')
+    cfg.load_filepath(os.path.join(config_path, 'test.toml'))
     assert "{}/test.toml".format(config_path) in cfg.filepaths
 
 

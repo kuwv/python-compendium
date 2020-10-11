@@ -6,11 +6,10 @@
 import os
 import pytest  # type: ignore
 
-from compendium.config.paths import ConfigPaths
 from compendium.config_manager import ConfigManager
 
 config_path = os.path.dirname(os.path.realpath(__file__))
-yaml_path = config_path + '/test.yaml'
+yaml_path = os.path.join(config_path, 'test.yaml')
 
 
 # def test_empty_filepath():
@@ -24,8 +23,8 @@ yaml_path = config_path + '/test.yaml'
 def test_yaml_path(fs):
     '''Test YAML paths.'''
     fs.add_real_file(yaml_path)
-    cfg = ConfigPaths(application='yaml', filename='test.yaml')
-    cfg.load_filepath(config_path + '/test.yaml')
+    cfg = ConfigManager(application='yaml', filename='test.yaml')
+    cfg.load_filepath(os.path.join(config_path, 'test.yaml'))
     assert "{}/test.yaml".format(config_path) in cfg.filepaths
 
 
