@@ -26,8 +26,8 @@ class ConfigFile:
         self.driver_directories = driver_directories
         self._filepaths: List[str] = []
         self.base_path: Optional[str] = None
-        self.filename = 'settings.toml'
         self.filetype = 'toml'
+        self.filename = "settings.{}".format(self.filetype)
 
         def __get_filetype(self, args):
             if 'filetype' in args:
