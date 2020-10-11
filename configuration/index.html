@@ -131,8 +131,18 @@
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#module-cache">
-    Module Cache
+<a class="md-nav__link" href="#configmanager">
+    ConfigManager:
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#nestedconfigmanager">
+    NestedConfigManager:
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hierarchyconfigmanager">
+    HierarchyConfigManager:
   </a>
 </li>
 </ul>
@@ -238,8 +248,18 @@
     </label>
 <ul class="md-nav__list" data-md-scrollfix="">
 <li class="md-nav__item">
-<a class="md-nav__link" href="#module-cache">
-    Module Cache
+<a class="md-nav__link" href="#configmanager">
+    ConfigManager:
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#nestedconfigmanager">
+    NestedConfigManager:
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hierarchyconfigmanager">
+    HierarchyConfigManager:
   </a>
 </li>
 </ul>
@@ -257,22 +277,18 @@
 <li>should optionaly use repo pattern</li>
 <li>should save configs as different types</li>
 </ul>
-<h2 id="module-cache">Module Cache</h2>
-<p>ConfigManager:</p>
-<ul>
-<li>test</li>
-<li>test</li>
-</ul>
-<p>NestedConfigManager:</p>
-<ul>
-<li>Maven like nested configurations</li>
-<li>in</li>
-</ul>
-<p>HierarchyConfigManager:</p>
-<ul>
-<li>Hierarchy FileSystem (HFS)</li>
-<li>in</li>
-</ul>
+<h2 id="configmanager">ConfigManager:</h2>
+<p>The <code>ConfigManager</code> is a simple configuration manager that loads a single configuration at a time.</p>
+<p><code>merge_strategy: None</code></p>
+<p><code>merge_sections: []</code></p>
+<p><code>writable: False</code></p>
+<h2 id="nestedconfigmanager">NestedConfigManager:</h2>
+<p>The <code>NestedConfigManager</code> is a configuration manager for configurations nested within structured directory layout. This can be conceptualized as Maven like nested-pom configurations</p>
+<h2 id="hierarchyconfigmanager">HierarchyConfigManager:</h2>
+<p>The <code>HierarchyConfigManager</code> is a configuration manager that can be used to manager configurations. It is intended for system using Hierarchical File System (HFS).</p>
+<p><code>enable_system_paths: False</code></p>
+<p><code>enable_user_paths: False</code></p>
+<p><code>enable_local_paths: True</code></p>
 </article>
 </div>
 </div>

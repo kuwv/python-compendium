@@ -411,11 +411,7 @@ merge_strategy:
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>17
-18
-19
-20
-21
+<pre><span></span>21
 22
 23
 24
@@ -427,7 +423,11 @@ merge_strategy:
 30
 31
 32
-33</pre>
+33
+34
+35
+36
+37</pre>
 </div>
 </td>
 <td class="code">
@@ -443,7 +443,7 @@ merge_strategy:
 
 <span class="sd">    '''</span>
     <span class="n">Settings</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">ConfigPaths</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ConfigFile</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">merge_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_strategy'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">merge_sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_sections'</span><span class="p">,</span> <span class="p">[])</span>
@@ -460,7 +460,7 @@ merge_strategy:
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config_manager.ConfigManager.load">
 <code class="highlight language-python">
-load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Load settings from configuration file.</p>
@@ -470,17 +470,17 @@ load<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>35
-36
-37
-38
-39</pre>
+<pre><span></span>39
+40
+41
+42
+43</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filetype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">'''Load settings from configuration file.'''</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">))</span>
@@ -505,9 +505,9 @@ save<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>41
-42
-43</pre>
+<pre><span></span>45
+46
+47</pre>
 </div>
 </td>
 <td class="code">
@@ -560,23 +560,33 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85</pre>
+<pre><span></span> 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104</pre>
 </div>
 </td>
 <td class="code">
@@ -598,6 +608,16 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 
     <span class="bp">self</span><span class="o">.</span><span class="n">merge_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_strategy'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">merge_sections</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_sections'</span><span class="p">,</span> <span class="p">[])</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">enable_system_paths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">'enable_system_paths'</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">enable_user_paths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">'enable_user_paths'</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">enable_local_paths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">'enable_local_paths'</span><span class="p">,</span> <span class="kc">True</span>
+    <span class="p">)</span>
 </code></pre>
 </div>
 </td>
@@ -609,7 +629,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config_manager.HierarchyConfigManager.load">
 <code class="highlight language-python">
-load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Load settings from hierarchy filepaths.</p>
@@ -619,22 +639,22 @@ load<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>87
-88
-89
-90
-91
-92
-93</pre>
+<pre><span></span>182
+183
+184
+185
+186
+187
+188</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filetype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''Load settings from hierarchy filepaths.'''</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">load_configs</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_load_configs</span><span class="p">()</span>
     <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filepaths</span><span class="p">:</span>
         <span class="n">dpath</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">),</span> <span class="n">flags</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
 </code></pre>
@@ -671,11 +691,9 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>49
-50
-51
-52
-53</pre>
+<pre><span></span>53
+54
+55</pre>
 </div>
 </td>
 <td class="code">
@@ -683,8 +701,6 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">'''Initialize nested settings management.'''</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">load_strategy</span> <span class="o">=</span> <span class="s1">'nested'</span>
 </code></pre>
 </div>
 </td>
@@ -696,7 +712,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config_manager.NestedConfigManager.load">
 <code class="highlight language-python">
-load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+load<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Load settings from nested configuration.</p>
@@ -706,24 +722,24 @@ load<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>55
-56
-57
-58
-59
-60
-61
-62
-63</pre>
+<pre><span></span>64
+65
+66
+67
+68
+69
+70
+71
+72</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filetype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">'''Load settings from nested configuration.'''</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">load_configs</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_load_configs</span><span class="p">()</span>
     <span class="n">settings</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filepaths</span><span class="p">:</span>
         <span class="n">settings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">{</span><span class="s1">'filepath'</span><span class="p">:</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">)}</span>
         <span class="p">)</span>

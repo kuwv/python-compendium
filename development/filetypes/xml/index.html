@@ -340,13 +340,13 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>17
-18
+<pre><span></span>18
 19
 20
 21
 22
-23</pre>
+23
+24</pre>
 </div>
 </td>
 <td class="code">
@@ -382,10 +382,10 @@ filetypes<span class="p">()</span> </code>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>25
-26
+<pre><span></span>26
 27
-28</pre>
+28
+29</pre>
 </div>
 </td>
 <td class="code">
@@ -415,8 +415,7 @@ load_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>30
-31
+<pre><span></span>31
 32
 33
 34
@@ -428,14 +427,15 @@ load_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 40
 41
 42
-43</pre>
+43
+44</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
     <span class="sd">'''Load settings from XML configuration.'''</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'XmlConfig: loading configuration file'</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'loading XML configuration file'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">content</span> <span class="o">=</span> <span class="n">xmltodict</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
@@ -468,8 +468,7 @@ save_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>45
-46
+<pre><span></span>46
 47
 48
 49
@@ -484,7 +483,8 @@ save_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 58
 59
 60
-61</pre>
+61
+62</pre>
 </div>
 </td>
 <td class="code">
@@ -503,7 +503,7 @@ save_config<span class="p">(</span><span class="bp">self</span><span class="p">,
     <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">err</span><span class="o">.</span><span class="n">errno</span> <span class="o">==</span> <span class="n">errno</span><span class="o">.</span><span class="n">EACCES</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s1">'Error: You do not have permission to write to this file'</span>
+                <span class="s1">'You do not have permission to write to this file'</span>
             <span class="p">)</span>
             <span class="k">raise</span>
 </code></pre>

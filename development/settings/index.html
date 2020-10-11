@@ -456,13 +456,16 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 26
 27
 28
-29</pre>
+29
+30</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">'''Initialize settings store.'''</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">application</span> <span class="o">=</span> <span class="n">application</span>
+
     <span class="bp">self</span><span class="o">.</span><span class="n">__document</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">__settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="s1">'defaults'</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="n">Settings</span><span class="o">.</span><span class="n">__defaults</span> <span class="o">==</span> <span class="p">{}:</span>
@@ -470,8 +473,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 
     <span class="c1"># Load settings from configs</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">separator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'separator'</span><span class="p">,</span> <span class="s1">'/'</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'prefix'</span><span class="p">,</span> <span class="n">application</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'_'</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'prefix'</span><span class="p">,</span> <span class="s2">"</span><span class="si">{a}</span><span class="s2">_"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">application</span><span class="o">.</span><span class="n">upper</span><span class="p">()))</span>
 </code></pre>
 </div>
 </td>
@@ -493,9 +495,9 @@ add<span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>100
-101
-102</pre>
+<pre><span></span>101
+102
+103</pre>
 </div>
 </td>
 <td class="code">
@@ -524,13 +526,13 @@ append<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>88
-89
+<pre><span></span>89
 90
 91
 92
 93
-94</pre>
+94
+95</pre>
 </div>
 </td>
 <td class="code">
@@ -563,9 +565,9 @@ create<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>104
-105
-106</pre>
+<pre><span></span>105
+106
+107</pre>
 </div>
 </td>
 <td class="code">
@@ -594,9 +596,9 @@ delete<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>108
-109
-110</pre>
+<pre><span></span>109
+110
+111</pre>
 </div>
 </td>
 <td class="code">
@@ -625,8 +627,7 @@ get<span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>59
-60
+<pre><span></span>60
 61
 62
 63
@@ -641,7 +642,8 @@ get<span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
 72
 73
 74
-75</pre>
+75
+76</pre>
 </div>
 </td>
 <td class="code">
@@ -684,8 +686,7 @@ load_environment<span class="p">(</span><span class="bp">self</span><span class=
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>41
-42
+<pre><span></span>42
 43
 44
 45
@@ -693,7 +694,8 @@ load_environment<span class="p">(</span><span class="bp">self</span><span class=
 47
 48
 49
-50</pre>
+50
+51</pre>
 </div>
 </td>
 <td class="code">
@@ -729,12 +731,12 @@ retrieve<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>77
-78
+<pre><span></span>78
 79
 80
 81
-82</pre>
+82
+83</pre>
 </div>
 </td>
 <td class="code">
@@ -766,9 +768,9 @@ search<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>84
-85
-86</pre>
+<pre><span></span>85
+86
+87</pre>
 </div>
 </td>
 <td class="code">
@@ -797,9 +799,9 @@ update<span class="p">(</span><span class="bp">self</span><span class="p">,</spa
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>96
-97
-98</pre>
+<pre><span></span>97
+98
+99</pre>
 </div>
 </td>
 <td class="code">

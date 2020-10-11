@@ -184,6 +184,16 @@
 <nav aria-label="ConfigFile" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config.loader.ConfigFile.filepaths">
+    filepaths
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config.loader.ConfigFile.head">
+    head
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#compendium.config.loader.ConfigFile.__init__">
     __init__()
   </a>
@@ -201,6 +211,11 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#compendium.config.loader.ConfigFile.load_config">
     load_config()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config.loader.ConfigFile.load_filepath">
+    load_filepath()
   </a>
 </li>
 <li class="md-nav__item">
@@ -288,6 +303,16 @@
 <nav aria-label="ConfigFile" class="md-nav">
 <ul class="md-nav__list">
 <li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config.loader.ConfigFile.filepaths">
+    filepaths
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config.loader.ConfigFile.head">
+    head
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#compendium.config.loader.ConfigFile.__init__">
     __init__()
   </a>
@@ -305,6 +330,11 @@
 <li class="md-nav__item">
 <a class="md-nav__link" href="#compendium.config.loader.ConfigFile.load_config">
     load_config()
+  </a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config.loader.ConfigFile.load_filepath">
+    load_filepath()
   </a>
 </li>
 <li class="md-nav__item">
@@ -344,10 +374,36 @@
 <div class="doc doc-contents">
 <p>Manage configuration files using dynamic module loader.</p>
 <div class="doc doc-children">
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.filepaths">
+<code class="highlight">
+filepaths        </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Retrieve filepaths.</p>
+</div>
+</div>
+<div class="doc doc-object doc-attribute">
+<h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.head">
+<code class="highlight">
+head        </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-property"><code>property</code></small>
+<small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Retrieve head filepath.</p>
+</div>
+</div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.__init__">
 <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">driver_directories</span><span class="o">=</span><span class="p">[</span><span class="s1">'compendium/config/filetypes'</span><span class="p">])</span> </code>
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">driver_directories</span><span class="o">=</span><span class="p">[</span><span class="s1">'compendium/config/filetypes'</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
 <span class="doc doc-properties">
 <small class="doc doc-property doc-property-special"><code>special</code></small>
 </span>
@@ -365,17 +421,67 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 18
 19
 20
-21</pre>
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">driver_directories</span><span class="o">=</span><span class="p">[</span><span class="s1">'compendium/config/filetypes'</span><span class="p">]</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">filetype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">driver_directories</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">'compendium'</span><span class="p">,</span> <span class="s1">'config'</span><span class="p">,</span> <span class="s1">'filetypes'</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
     <span class="sd">'''Initialize module loader.'''</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">=</span> <span class="n">filetype</span>
+    <span class="c1"># TODO: writable / readonly</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">driver_directories</span> <span class="o">=</span> <span class="n">driver_directories</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_filepaths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">=</span> <span class="s1">'toml'</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s2">"settings.</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filetype</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__get_filetype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">'filetype'</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="s1">'filetype'</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_filetype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">'path'</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filepaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">'path'</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_filepath</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filepaths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">=</span> <span class="n">__get_filetype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s1">'filename'</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">'filename'</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">=</span> <span class="n">__get_filetype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
 </code></pre>
 </div>
 </td>
@@ -400,10 +506,10 @@ get_filename<span class="p">(</span><span class="n">filepath</span><span class="
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>69
-70
-71
-72</pre>
+<pre><span></span>96
+97
+98
+99</pre>
 </div>
 </td>
 <td class="code">
@@ -436,10 +542,10 @@ get_filetype<span class="p">(</span><span class="n">filename</span><span class="
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>79
-80
-81
-82</pre>
+<pre><span></span>106
+107
+108
+109</pre>
 </div>
 </td>
 <td class="code">
@@ -469,20 +575,20 @@ load_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50</pre>
+<pre><span></span>64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77</pre>
 </div>
 </td>
 <td class="code">
@@ -510,31 +616,68 @@ load_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.save_config">
+<h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.load_filepath">
 <code class="highlight language-python">
-save_config<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_path</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span> </code>
+load_filepath<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
-<p>Use duscovered module to save configuration.</p>
+<p>Load settings from configuration in filepath.</p>
 <details class="quote">
 <summary>Source code in <code>compendium/config/loader.py</code></summary>
 <table class="highlighttable">
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>52
-53
-54
-55
-56
-57
-58</pre>
+<pre><span></span>126
+127
+128
+129
+130
+131</pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">load_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">'''Load settings from configuration in filepath.'''</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"searching for </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_path</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filepaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.save_config">
+<code class="highlight language-python">
+save_config<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_path</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span> </code>
+</h3>
+<div class="doc doc-contents">
+<p>Use discovered module to save configuration.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/config/loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span>79
+80
+81
+82
+83
+84
+85</pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-    <span class="sd">'''Use duscovered module to save configuration.'''</span>
+    <span class="sd">'''Use discovered module to save configuration.'''</span>
     <span class="c1"># TODO: Improve error handling</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Saving configuration: '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">config_path</span><span class="p">))</span>
     <span class="c1"># filename = self.get_filename(config_path)</span>
@@ -564,10 +707,10 @@ split_filepath<span class="p">(</span><span class="n">filepath</span><span class
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span>74
-75
-76
-77</pre>
+<pre><span></span>101
+102
+103
+104</pre>
 </div>
 </td>
 <td class="code">
