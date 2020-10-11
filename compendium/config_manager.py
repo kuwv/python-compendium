@@ -12,7 +12,6 @@ from typing import Any, Dict, List, Optional, Union
 from dpath import util as dpath  # type: ignore
 
 from .config import ConfigFile
-from .exceptions import CompendiumConfigManagerError
 from .settings import Settings
 
 

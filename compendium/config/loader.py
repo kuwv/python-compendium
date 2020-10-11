@@ -52,7 +52,7 @@ class ConfigFile:
         module_path = mod.discover_module_path(self.filetype)
 
         if module_path is not None:
-            classname = ".{p}Config".format(p=self.filetype.capitalize())
+            classname = ".{}Config".format(self.filetype.capitalize())
             config_class = mod.load_classpath(
                 "{m}{c}".format(m=module_path, c=classname)
             )
@@ -77,7 +77,7 @@ class ConfigFile:
             )
 
     def save_config(self, config_path: str, settings: Dict[Any, Any]):
-        '''Use duscovered module to save configuration.'''
+        '''Use discovered module to save configuration.'''
         # TODO: Improve error handling
         logging.info("Saving configuration: '{}'".format(config_path))
         # filename = self.get_filename(config_path)
