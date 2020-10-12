@@ -25,7 +25,7 @@ https://kuwv.github.io/python-compendium/
 ```
 from compendium.config_manager import ConfigManager
 
-cfg = Settings(application='app', path='afile.toml')
+cfg = ConfigManager(application='app', path='afile.toml')
 cfg.load()
 ```
 

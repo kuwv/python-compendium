@@ -5,6 +5,7 @@
 
 import logging
 
-logging.getLogger(__name__).addHandler(logging.NullHandler())
-
 __all__ = ['Cache', 'ConfigPaths', 'ConfigManager', 'Settings']
+
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())

@@ -1,0 +1,56 @@
+# -*- coding: utf-8 -*-
+# copyright: (c) 2020 by Jesse Johnson.
+# license: Apache 2.0, see LICENSE for more details.
+'''Test Git Config content management.'''
+
+import os
+import pytest  # type: ignore
+
+from compendium.config_manager import ConfigManager
+
+config_path = os.path.dirname(os.path.realpath(__file__))
+git_path = os.path.join(config_path, 'config')
+
+
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
+def config_path(fs):
+    '''Test Git Config path.'''
+    fs.add_real_file(git_path)
+    cfg = ConfigManager(application='tests', filename='config')
+    cfg.load_filepath(os.path.join(config_path, 'config'))
+    assert "{}/config".format(config_path) in cfg.filepaths
+
+
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
+def config_content(fs):
+    '''Test Git Config content read.'''
+    fs.add_real_file(git_path)
+    cfg = ConfigManager(application='tests', path=git_path)
+    cfg.load()
+    assert cfg.get('/root/stooges/stooge1') == 'Larry'
+    assert cfg.get('/root/stooges/stooge2') == 'Curly'
+    assert cfg.get('/root/stooges/stooge3') == 'Moe'
+    assert cfg.get('/root/fruit') != 'banana'
+    assert cfg.get('/root/number') == '2'
+
+
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
+def config_content_save(fs):
+    '''Test Git Config content save.'''
+    fs.add_real_file(git_path, False)
+    cfg = ConfigManager(application='tests', path=git_path, writable=True)
+    cfg.load()
+    cfg.create('/root/test', 'test')
+    assert cfg.get('/root/test') == 'test'
+
+
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
+def test_cfg_save_fail(fs):
+    '''Test Git Config failure.'''
+    fs.add_real_file(git_path)
+    cfg = ConfigManager(application='tests', path=git_path)
+    cfg.load()
+
+    with pytest.raises(IOError):
+        cfg.create('/test', 'test')
+        cfg.save('./config')

@@ -15,7 +15,7 @@ class ConfigFile:
 
     def __init__(
         self,
-        filetype: str = None,
+        filetype: str = 'toml',
         driver_directories: List[str] = [
             os.path.join('compendium', 'config', 'filetypes')
         ],
@@ -24,26 +24,7 @@ class ConfigFile:
         '''Initialize module loader.'''
         # TODO: writable / readonly
         self.driver_directories = driver_directories
-        self._filepaths: List[str] = []
         self.base_path: Optional[str] = None
-        self.filetype = 'toml'
-        self.filename = "settings.{}".format(self.filetype)
-
-        def __get_filetype(self, args):
-            if 'filetype' in args:
-                return args['filetype']
-            else:
-                return self.get_filetype(self.filename)
-
-        if 'path' in kwargs:
-            self._filepaths.append(kwargs['path'])
-            self.base_path, self.filename = self.split_filepath(
-                self._filepaths[0]
-            )
-            self.filetype = __get_filetype(self, kwargs)
-        elif 'filename' in kwargs:
-            self.filename = kwargs['filename']
-            self.filetype = __get_filetype(self, kwargs)
 
     def _load_module(self):
         '''Dynamically load the appropriate module.'''
@@ -61,37 +42,28 @@ class ConfigFile:
         else:
             logging.info('Unable to load configs')
 
-    def load_config(self, config_path: str):
+    def load_config(self, filepath: str):
         '''Use discovered module to load configuration.'''
         # TODO: Improve error handling
-        if os.path.exists(config_path):
-            logging.info("Retrieving configuration: '{}'".format(config_path))
+        if os.path.exists(filepath):
+            logging.info("Retrieving configuration: '{}'".format(filepath))
             if not self.filetype:
-                filename = self.get_filename(config_path)
+                filename = self.get_filename(filepath)
                 self.filetype = self.get_filetype(filename)
             self._load_module()
-            return self.__config_module.load_config(config_path)
+            return self.__config_module.load_config(filepath)
         else:
             logging.info(
-                "Skipping: No configuration found at: '{}'".format(config_path)
+                "Skipping: No configuration found at: '{}'".format(filepath)
             )
 
-    def save_config(self, config_path: str, settings: Dict[Any, Any]):
+    def save_config(self, filepath: str, settings: Dict[Any, Any]):
         '''Use discovered module to save configuration.'''
         # TODO: Improve error handling
-        logging.info("Saving configuration: '{}'".format(config_path))
-        # filename = self.get_filename(config_path)
+        logging.info("Saving configuration: '{}'".format(filepath))
+        # filename = self.get_filename(filepath)
         self._load_module()
-        self.__config_module.save_config(settings, config_path)
-
-    def _check_path(self, filepath: str):
-        '''Check if configuraion exists at path.'''
-        if os.path.isfile(filepath):
-            logging.debug("{} found".format(filepath))
-            return True
-        else:
-            logging.debug("{} not found".format(filepath))
-            return False
+        self.__config_module.save_config(settings, filepath)
 
     @staticmethod
     def get_filename(filepath: str):
@@ -107,25 +79,3 @@ class ConfigFile:
     def get_filetype(filename: str):
         '''Get filetype from filename.'''
         return filename.split('.')[-1]
-
-    @property
-    def head(self):
-        '''Retrieve head filepath.'''
-        return self._filepaths[-1]
-
-    # @property
-    # def tail(self):
-    #     '''Retrieve beggining filepath.'''
-    #     return self._filepaths[0]
-
-    @property
-    def filepaths(self):
-        '''Retrieve filepaths.'''
-        return self._filepaths
-
-    def load_filepath(self, filepath: str):
-        '''Load settings from configuration in filepath.'''
-        logging.debug("searching for {}".format(filepath))
-
-        if self._check_path(filepath):
-            self._filepaths.append(filepath)

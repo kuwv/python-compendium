@@ -11,6 +11,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from dpath import util as dpath  # type: ignore
 
+from . import logger
 from .config import ConfigFile
 from .settings import Settings
 
@@ -28,18 +29,79 @@ class ConfigManager(Settings, ConfigFile):
           - last
 
         '''
-        Settings.__init__(self, application, **kwargs)
+        if kwargs.get('debug', False):
+            logger.basicConfig()
+            logger.getLogger().setLevel(logging.DEBUG)
+
+        self._filepaths: List[str] = []
+        self._enumerate_paths(
+            filepath=kwargs.get('path', None),
+            filename=kwargs.get('filename', None),
+            filetype=kwargs.get('filetype', None)
+        )
+
         ConfigFile.__init__(self, **kwargs)
+        Settings.__init__(self, application, **kwargs)
 
         self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
         self.merge_sections: List[str] = kwargs.get('merge_sections', [])
 
         self.writable: Optional[bool] = kwargs.get('writable', False)
 
+    @property
+    def head(self):
+        '''Retrieve head filepath.'''
+        return self._filepaths[-1]
+
+    # @property
+    # def tail(self):
+    #     '''Retrieve beggining filepath.'''
+    #     return self._filepaths[0]
+
+    @property
+    def filepaths(self):
+        '''Retrieve filepaths.'''
+        return self._filepaths
+
+    def _enumerate_paths(
+        self,
+        filepath: str = None,
+        filename: str = None,
+        filetype: str = None,
+    ):
+        if self._filepaths == []:
+            if filepath:
+                self._filepaths.append(filepath)
+                self.base_path, self.filename = self.split_filepath(filepath)
+                self.filetype = self.get_filetype(self.filename)
+            elif filename:
+                self.filename = filename
+                self.filetype = self.get_filetype(self.filename)
+            else:
+                self.filename = 'settings.toml'
+                self.filetype = 'toml'
+
+    def _check_path(self, filepath: str):
+        '''Check if configuraion exists at path.'''
+        if os.path.isfile(filepath):
+            logging.debug("{} found".format(filepath))
+            return True
+        else:
+            logging.debug("{} not found".format(filepath))
+            return False
+
+    def load_filepath(self, filepath: str):
+        '''Load settings from configuration in filepath.'''
+        logging.debug("searching for {}".format(filepath))
+
+        if self._check_path(filepath):
+            self._filepaths.append(filepath)
+
     def load(
         self, path: Optional[str] = None, filetype: Optional[str] = None
     ) -> None:
         '''Load settings from configuration file.'''
+        self._enumerate_paths(filepath=path, filetype=filetype)
         self._initialize_settings(self.load_config(self.head))
 
     def save(self, path: str, filetype: str = None) -> None:

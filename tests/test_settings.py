@@ -38,8 +38,8 @@ def test_default():
 def test_result(fs):
     '''Test IP from settings.'''
     fs.add_real_file(settings_path, False)
-    cfg = ConfigManager(application='tests', path=settings_path)
-    cfg.load()
+    cfg = ConfigManager(application='tests')
+    cfg.load(settings_path)
     result = cfg.search('/servers/**/ip')
     assert ['10.0.0.1', '10.0.0.2'] == result
 
