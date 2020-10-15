@@ -8,32 +8,32 @@ import pytest  # type: ignore
 
 from compendium.config_manager import ConfigManager
 
-config_path = os.path.dirname(os.path.realpath(__file__))
-xml_path = os.path.join(config_path, 'test.xml')
+config_filepath = os.path.dirname(os.path.realpath(__file__))
+xml_filepath = os.path.join(config_filepath, 'test.xml')
 
 
 # def test_empty_filepath():
 #     '''Test XML filepth.'''
-#     cfg = ConfigPaths(application='empty', filename='test.xml')
-#     cfg.load_configs()
+#     cfg = ConfigPaths(application='empty')
+#     cfg.load_configs(filename='test.xml')
 #     assert not cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_xml_path(fs):
+def test_xml_filepath(fs):
     '''Test XML path.'''
-    fs.add_real_file(xml_path)
-    cfg = ConfigManager(application='tests', filename='test.xml')
-    cfg.load_filepath(os.path.join(config_path, 'test.xml'))
-    assert "{}/test.xml".format(config_path) in cfg.filepaths
+    fs.add_real_file(xml_filepath)
+    cfg = ConfigManager(application='tests')
+    cfg.load_filepath(os.path.join(config_filepath, 'test.xml'))
+    assert "{}/test.xml".format(config_filepath) in cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_content(fs):
     '''Test XML content read.'''
-    fs.add_real_file(xml_path)
-    cfg = ConfigManager(application='tests', path=xml_path)
-    cfg.load()
+    fs.add_real_file(xml_filepath)
+    cfg = ConfigManager(application='tests')
+    cfg.load(filepath=xml_filepath)
     assert cfg.get('/root/stooges/stooge1') == 'Larry'
     assert cfg.get('/root/stooges/stooge2') == 'Curly'
     assert cfg.get('/root/stooges/stooge3') == 'Moe'
@@ -42,11 +42,11 @@ def test_xml_content(fs):
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_xml_content_save(fs):
+def test_xml_content_dump(fs):
     '''Test XML content save.'''
-    fs.add_real_file(xml_path, False)
-    cfg = ConfigManager(application='tests', path=xml_path, writable=True)
-    cfg.load()
+    fs.add_real_file(xml_filepath, False)
+    cfg = ConfigManager(application='tests', writable=True)
+    cfg.load(filepath=xml_filepath)
     cfg.create('/root/test', 'test')
     assert cfg.get('/root/test') == 'test'
 
@@ -54,10 +54,10 @@ def test_xml_content_save(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     '''Test XML failure.'''
-    fs.add_real_file(xml_path)
-    cfg = ConfigManager(application='tests', path=xml_path)
-    cfg.load()
+    fs.add_real_file(xml_filepath)
+    cfg = ConfigManager(application='tests')
+    cfg.load(filepath=xml_filepath)
 
     with pytest.raises(IOError):
         cfg.create('/test', 'test')
-        cfg.save('./test.xml')
+        cfg.dump('./test.xml')

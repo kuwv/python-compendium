@@ -110,6 +110,9 @@ class Settings:
         '''Delete key/value located at keypath.'''
         dpath.delete(self.__settings, keypath, self.separator)
 
+    def merge(self, document):
+        dpath.merge(self.__settings, document, flags=2)
+
     # def view(self) -> str:
     #     '''View current keypath location.'''
     #     return self.keypath

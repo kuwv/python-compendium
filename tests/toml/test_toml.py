@@ -8,8 +8,8 @@ import pytest  # type: ignore
 
 from compendium.config_manager import ConfigManager
 
-config_path = os.path.dirname(os.path.realpath(__file__))
-toml_path = os.path.join(config_path, 'test.toml')
+config_filepath = os.path.dirname(os.path.realpath(__file__))
+toml_filepath = os.path.join(config_filepath, 'test.toml')
 
 
 # def test_empty_filepath():
@@ -20,20 +20,20 @@ toml_path = os.path.join(config_path, 'test.toml')
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_toml_path(fs):
+def test_toml_filepath(fs):
     '''Test TOML filepaths.'''
-    fs.add_real_file(toml_path)
+    fs.add_real_file(toml_filepath)
     cfg = ConfigManager(application='toml', filename='test.toml')
-    cfg.load_filepath(os.path.join(config_path, 'test.toml'))
-    assert "{}/test.toml".format(config_path) in cfg.filepaths
+    cfg.load_filepath(os.path.join(config_filepath, 'test.toml'))
+    assert "{}/test.toml".format(config_filepath) in cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content(fs):
     '''Test TOML content load.'''
-    fs.add_real_file(toml_path)
-    cfg = ConfigManager(application='tests', path=toml_path)
-    cfg.load()
+    fs.add_real_file(toml_filepath)
+    cfg = ConfigManager(application='tests')
+    cfg.load(filepath=toml_filepath)
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
     assert cfg.get('/stooges/stooge3') == 'Moe'
@@ -42,11 +42,11 @@ def test_toml_content(fs):
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_toml_content_save(fs):
+def test_toml_content_dump(fs):
     '''Test TOML content save.'''
-    fs.add_real_file(toml_path, False)
-    cfg = ConfigManager(application='tests', path=toml_path, writable=True)
-    cfg.load()
+    fs.add_real_file(toml_filepath, False)
+    cfg = ConfigManager(application='tests', writable=True)
+    cfg.load(filepath=toml_filepath)
     cfg.create('/test', 'test')
     assert cfg.settings['test'] == 'test'
 
@@ -54,10 +54,10 @@ def test_toml_content_save(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     '''Test TOML content failure.'''
-    fs.add_real_file(toml_path)
-    cfg = ConfigManager(application='tests', path=toml_path)
-    cfg.load()
+    fs.add_real_file(toml_filepath)
+    cfg = ConfigManager(application='tests')
+    cfg.load(filepath=toml_filepath)
 
     with pytest.raises(IOError):
         cfg.create('/test', 'test')
-        cfg.save('./test.toml')
+        cfg.dump('./test.toml')

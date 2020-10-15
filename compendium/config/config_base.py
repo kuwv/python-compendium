@@ -17,5 +17,5 @@ class ConfigBase(metaclass=ABCMeta):
         '''Load configuration from file.'''
 
     @abstractmethod
-    def save_config(self, content, filepath):
+    def dump_config(self, content, filepath):
         '''Save confgration to file.'''

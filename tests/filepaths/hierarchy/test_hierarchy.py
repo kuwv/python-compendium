@@ -2,42 +2,46 @@ import os
 
 from compendium.config_manager import HierarchyConfigManager
 
-import pytest
+import pytest  # type: ignore
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_hierarchy(fs):
     # Setup base paths
-    base_path = os.path.dirname(os.path.realpath(__file__))
-    user_path = os.path.expanduser('~')
+    base_filepath = os.path.dirname(os.path.realpath(__file__))
+    user_filepath = os.path.expanduser('~')
 
     # System path
     fs.add_real_file(
-        source_path=base_path + '/settings1.toml',
-        target_path='/etc/tests/settings.toml'
+        source_path=os.path.join(base_filepath, 'settings1.toml'),
+        target_path=os.path.join(os.sep, 'etc', 'tests', 'settings.toml')
     )
 
     # User path
     fs.add_real_file(
-        source_path=base_path + '/settings2.toml',
-        target_path=user_path + '/.tests.toml'
+        source_path=os.path.join(base_filepath, 'settings2.toml'),
+        target_path=os.path.join(user_filepath, '.tests.toml')
     )
     fs.add_real_file(
-        source_path=base_path + '/settings3.toml',
-        target_path=user_path + '/.tests.d/settings.toml'
+        source_path=os.path.join(base_filepath, 'settings3.toml'),
+        target_path=os.path.join(user_filepath, '.tests.d', 'settings.toml')
     )
 
     cfg = HierarchyConfigManager(
         application='tests',
         merge_strategy='overlay',
-        enable_system_paths=True,
-        enable_user_paths=True
+        enable_system_filepaths=True,
+        enable_user_filepaths=True
     )
-    cfg.load()
+    cfg.load_configs()
 
-    assert ('/etc/tests/settings.toml') in cfg.filepaths
-    assert (user_path + '/.tests.toml') in cfg.filepaths
-    assert (user_path + '/.tests.d/settings.toml') in cfg.filepaths
+    assert (
+        os.path.join(os.sep, 'etc', 'tests', 'settings.toml')
+    ) in cfg.filepaths
+    assert (os.path.join(user_filepath, '.tests.toml')) in cfg.filepaths
+    assert (
+        os.path.join(user_filepath, '.tests.d', 'settings.toml')
+    ) in cfg.filepaths
 
     assert cfg.get('/table/key') == 'first'
     assert cfg.get('/table/subtable/key') == 'third'

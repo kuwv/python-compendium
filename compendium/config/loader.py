@@ -5,7 +5,7 @@
 
 import logging
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional, Set
 
 from anymod import ModuleLoader  # type: ignore
 
@@ -15,21 +15,24 @@ class ConfigFile:
 
     def __init__(
         self,
-        filetype: str = 'toml',
-        driver_directories: List[str] = [
-            os.path.join('compendium', 'config', 'filetypes')
-        ],
+        filetype: str = None,
+        driver_paths: Set[str] = set(),
         **kwargs
     ):
         '''Initialize module loader.'''
         # TODO: writable / readonly
-        self.driver_directories = driver_directories
-        self.base_path: Optional[str] = None
+        self.filetype = filetype
+        self.basepath: Optional[str] = None
+        self.driver_paths: Set[str] = {
+            os.path.join('compendium', 'config', 'filetypes')
+        }
+        if driver_paths != set():
+            self.driver_paths.update(driver_paths)
 
     def _load_module(self):
         '''Dynamically load the appropriate module.'''
         logging.info('Loading configuration modules')
-        mod = ModuleLoader(self.driver_directories)
+        mod = ModuleLoader(self.driver_paths)
         module_path = mod.discover_module_path(self.filetype)
 
         if module_path is not None:
@@ -57,13 +60,12 @@ class ConfigFile:
                 "Skipping: No configuration found at: '{}'".format(filepath)
             )
 
-    def save_config(self, filepath: str, settings: Dict[Any, Any]):
+    def dump_config(self, filepath: str, settings: Dict[Any, Any]):
         '''Use discovered module to save configuration.'''
         # TODO: Improve error handling
         logging.info("Saving configuration: '{}'".format(filepath))
-        # filename = self.get_filename(filepath)
         self._load_module()
-        self.__config_module.save_config(settings, filepath)
+        self.__config_module.dump_config(settings, filepath)
 
     @staticmethod
     def get_filename(filepath: str):

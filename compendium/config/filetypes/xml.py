@@ -43,7 +43,7 @@ class XmlConfig(ConfigBase):
             content = {}
         return content
 
-    def save_config(self, content, filepath):
+    def dump_config(self, content, filepath):
         '''Save settings to XML configuration.'''
         try:
             with open(filepath, 'w') as f:

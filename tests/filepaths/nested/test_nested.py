@@ -1,5 +1,5 @@
 import os
-import pytest
+import pytest  # type: ignore
 
 from compendium.config_manager import NestedConfigManager
 
@@ -10,28 +10,32 @@ def test_nested(fs):
 
     # Nested paths
     fs.add_real_file(
-        source_path=base_path + '/fruit.toml',
-        target_path='/opt/test/fruit.toml'
+        source_path=os.path.join(base_path, 'fruit.toml'),
+        target_path=os.path.join(os.sep, 'opt', 'test', 'fruit.toml')
     )
     fs.add_real_file(
-        source_path=base_path + '/fruit1.toml',
-        target_path='/opt/test/example1/fruit.toml'
+        source_path=os.path.join(base_path, 'fruit1.toml'),
+        target_path=os.path.join(
+            os.sep, 'opt', 'test', 'example1', 'fruit.toml'
+        )
     )
     fs.add_real_file(
-        source_path=base_path + '/fruit2.toml',
-        target_path='/opt/test/example2/fruit.toml'
+        source_path=os.path.join(base_path, 'fruit2.toml'),
+        target_path=os.path.join(
+            os.sep, 'opt', 'test', 'example2', 'fruit.toml'
+        )
     )
 
-    cfg = NestedConfigManager(
-        application='test',
-        filename='fruit.toml',
-        merge_strategy='partition'
-    )
-    cfg.load('/opt/test/fruit.toml')
+    cfg = NestedConfigManager(application='test', merge_strategy='partition')
+    cfg.load_configs()
 
-    assert ('/opt/test/fruit.toml') in cfg.filepaths
-    assert ('/opt/test/example1/fruit.toml') in cfg.filepaths
-    assert ('/opt/test/example2/fruit.toml') in cfg.filepaths
+    assert (os.path.join(os.sep, 'opt', 'test', 'fruit.toml')) in cfg.filepaths
+    assert (
+        os.path.join(os.sep, 'opt', 'test', 'example1', 'fruit.toml')
+    ) in cfg.filepaths
+    assert (
+        os.path.join(os.sep, 'opt', 'test', 'example2', 'fruit.toml')
+    ) in cfg.filepaths
     assert cfg.get('/settings/[0]/filepath') == '/opt/test/fruit.toml'
     assert cfg.get('/settings/[1]/filepath') == '/opt/test/example1/fruit.toml'
     assert cfg.get('/settings/[2]/filepath') == '/opt/test/example2/fruit.toml'

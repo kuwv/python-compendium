@@ -8,32 +8,32 @@ import pytest  # type: ignore
 
 from compendium.config_manager import ConfigManager
 
-config_path = os.path.dirname(os.path.realpath(__file__))
-yaml_path = os.path.join(config_path, 'test.yaml')
+config_filepath = os.path.dirname(os.path.realpath(__file__))
+yaml_filepath = os.path.join(config_filepath, 'test.yaml')
 
 
 # def test_empty_filepath():
 #     '''Test empty file.'''
-#     cfg = ConfigManager(application='empty', filename='test.yaml')
-#     cfg.load_configs()
+#     cfg = ConfigManager(application='empty')
+#     cfg.load_configs(filepath=yaml_filepath)
 #     assert not cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_yaml_path(fs):
+def test_yaml_filepath(fs):
     '''Test YAML paths.'''
-    fs.add_real_file(yaml_path)
-    cfg = ConfigManager(application='yaml', filename='test.yaml')
-    cfg.load_filepath(os.path.join(config_path, 'test.yaml'))
-    assert "{}/test.yaml".format(config_path) in cfg.filepaths
+    fs.add_real_file(yaml_filepath)
+    cfg = ConfigManager(application='yaml')
+    cfg.load_filepath(os.path.join(config_filepath, 'test.yaml'))
+    assert "{}/test.yaml".format(config_filepath) in cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_content(fs):
     '''Test read YAML content.'''
-    fs.add_real_file(yaml_path)
-    cfg = ConfigManager(application='tests', path=yaml_path)
-    cfg.load()
+    fs.add_real_file(yaml_filepath)
+    cfg = ConfigManager(application='tests')
+    cfg.load(filepath=yaml_filepath)
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
     assert cfg.get('/stooges/stooge3') == 'Moe'
@@ -42,13 +42,11 @@ def test_yaml_content(fs):
 
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-# def test_yaml_content_save(fs):
+# def test_yaml_content_dump(fs):
 #     '''Test YAML content save.'''
-#     fs.add_real_file(yaml_path, False)
-#     cfg = ConfigManager(
-#         application='tests', path=yaml_path, writable=True
-#     )
-#     cfg.load()
+#     fs.add_real_file(yaml_filepath, False)
+#     cfg = ConfigManager(application='tests', writable=True)
+#     cfg.load(filepath=yaml_filepath)
 #     cfg.create('/test', 'test')
 #     assert cfg.settings['test'] == 'test'
 #
@@ -56,10 +54,10 @@ def test_yaml_content(fs):
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_cfg_save_fail(fs):
 #     '''Test YAML content fail.'''
-#     fs.add_real_file(yaml_path)
-#     cfg = ConfigManager(application='tests', path=yaml_path)
-#     cfg.load()
+#     fs.add_real_file(yaml_filepath)
+#     cfg = ConfigManager(application='tests')
+#     cfg.load(filepath=yaml_filepath)
 #
 #     with pytest.raises(IOError):
 #         cfg.create('/test', 'test')
-#         cfg.save('./test.yaml')
+#         cfg.dump('./test.yaml')

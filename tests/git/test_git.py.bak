@@ -35,7 +35,7 @@ def config_content(fs):
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def config_content_save(fs):
+def config_content_dump(fs):
     '''Test Git Config content save.'''
     fs.add_real_file(git_path, False)
     cfg = ConfigManager(application='tests', path=git_path, writable=True)
@@ -53,4 +53,4 @@ def test_cfg_save_fail(fs):
 
     with pytest.raises(IOError):
         cfg.create('/test', 'test')
-        cfg.save('./config')
+        cfg.dump('./config')

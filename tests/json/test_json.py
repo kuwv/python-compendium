@@ -8,33 +8,33 @@ import pytest  # type: ignore
 
 from compendium.config_manager import ConfigManager
 
-settings_path = os.path.dirname(os.path.realpath(__file__))
-json_path = os.path.join(settings_path, 'test.json')
+settings_filepath = os.path.dirname(os.path.realpath(__file__))
+json_filepath = os.path.join(settings_filepath, 'test.json')
 
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_empty_filepath(fs):
 #     '''Test empty file.'''
-#     cfg = ConfigPaths(application='empty', filename='test.json')
-#     cfg.load_configs()
+#     cfg = ConfigPaths(application='empty')
+#     cfg.load_configs(filename='test.json')
 #     assert not cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_json_path(fs):
+def test_json_filepath(fs):
     '''Test JSON filepaths.'''
-    fs.add_real_file(json_path)
+    fs.add_real_file(json_filepath)
     cfg = ConfigManager(application='json', filename='test.json')
-    cfg.load_filepath(os.path.join(settings_path, 'test.json'))
-    assert "{}/test.json".format(settings_path) in cfg.filepaths
+    cfg.load_filepath(os.path.join(settings_filepath, 'test.json'))
+    assert "{}/test.json".format(settings_filepath) in cfg.filepaths
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg(fs):
     '''Test loading JSON configuration.'''
-    fs.add_real_file(json_path)
-    cfg = ConfigManager(application='tests', path=json_path)
-    cfg.load()
+    fs.add_real_file(json_filepath)
+    cfg = ConfigManager(application='tests')
+    cfg.load(filepath=json_filepath)
     assert cfg.get('/stooges/stooge1') == 'Larry'
     assert cfg.get('/stooges/stooge2') == 'Curly'
     assert cfg.get('/stooges/stooge3') == 'Moe'
@@ -43,11 +43,11 @@ def test_cfg(fs):
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_cfg_save(fs):
+def test_cfg_dump(fs):
     '''Test saving JSON content.'''
-    fs.add_real_file(json_path, False)
-    cfg = ConfigManager(application='tests', path=json_path, writable=True)
-    cfg.load()
+    fs.add_real_file(json_filepath, False)
+    cfg = ConfigManager(application='tests', writable=True)
+    cfg.load(filepath=json_filepath)
     cfg.create('/test', 'test')
     assert cfg.settings['test'] == 'test'
 
@@ -55,10 +55,10 @@ def test_cfg_save(fs):
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     '''Test JSON failure.'''
-    fs.add_real_file(json_path)
-    cfg = ConfigManager(application='tests', path=json_path)
-    cfg.load()
+    fs.add_real_file(json_filepath)
+    cfg = ConfigManager(application='tests')
+    cfg.load(filepath=json_filepath)
 
     with pytest.raises(IOError):
         cfg.create('/test', 'test')
-        cfg.save('./test.json')
+        cfg.dump('./test.json')

@@ -37,7 +37,7 @@ class TomlConfig(ConfigBase):
             content = {}
         return content
 
-    def save_config(self, content, filepath):
+    def dump_config(self, content, filepath):
         '''Save settings to toml configuration.'''
         logging.info('TomlConfig: saving configuration file')
         try:
