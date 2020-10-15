@@ -7,7 +7,7 @@ import glob
 import logging
 import os
 import platform
-from typing import Any, Dict, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 from dpath import util as dpath  # type: ignore
 
@@ -32,7 +32,7 @@ class ConfigManager(Settings, ConfigFile):
             logging.basicConfig()
             logging.getLogger().setLevel(logging.DEBUG)
 
-        self._filepaths: Set[str] = set()
+        self._filepaths: List[str] = []
         self.filename = kwargs.get('filename', 'settings.toml')
         self.filetype = kwargs.get('filetype', self.get_filetype(self.filename))
 
@@ -47,6 +47,7 @@ class ConfigManager(Settings, ConfigFile):
     @property
     def head(self):
         '''Retrieve head filepath.'''
+        print(self._filepaths)
         return self._filepaths[-1]
 
     # @property
@@ -74,7 +75,7 @@ class ConfigManager(Settings, ConfigFile):
         print('troubleshooting:', filepath)
 
         if self._check_filepath(filepath):
-            self._filepaths.add(filepath)
+            self._filepaths.append(filepath)
 
     def __get_filepaths(
         self,
@@ -84,7 +85,7 @@ class ConfigManager(Settings, ConfigFile):
     ):
         if self._filepaths == []:
             if filepath:
-                self._filepaths.add(filepath)
+                self._filepaths.append(filepath)
                 self.base_filepath, self.filename = self.split_filepath(
                     filepath
                 )
@@ -97,7 +98,7 @@ class ConfigManager(Settings, ConfigFile):
         self, filepath: Optional[str] = None, filetype: Optional[str] = None
     ) -> None:
         '''Load settings from configuration file.'''
-        # self.__get_filepaths(filepath=filepath, filetype=filetype)
+        self.__get_filepaths(filepath=filepath, filetype=filetype)
         self._initialize_settings(self.load_config(self.head))
 
     def dump(self, filepath: str, filetype: str = None) -> None:
@@ -114,12 +115,18 @@ class NestedConfigManager(ConfigManager):
 
     def __get_filepaths(self, basepath: Optional[str] = None):
         '''Load configurations located in nested directory path.'''
+        print('attempting', self.filename)
         for filepath in glob.iglob(
-            "{s}**{s}{f}".format(s=os.sep, f=self.filename), recursive=True
+            "/**/{f}".format(f=self.filename), recursive=True
         ):
+            print('attempting', self.filename)
             self.load_filepath(filepath)
 
-    def load_configs(self):
+    def load_configs(
+        self,
+        filepath: Optional[str] = None,
+        filetype: Optional[str] = None
+    ):
         '''Load settings from nested configuration.'''
         self.__get_filepaths()
 
