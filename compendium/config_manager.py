@@ -45,22 +45,36 @@ class ConfigManager(Settings, ConfigFile):
         self.writable: Optional[bool] = kwargs.get('writable', False)
 
     @property
-    def head(self):
+    def head(self) -> str:
         '''Retrieve head filepath.'''
-        print(self._filepaths)
-        return self._filepaths[-1]
+        return self._filepaths[-1] if self._filepaths != [] else ''
 
     # @property
-    # def tail(self):
+    # def tail(self) -> str:
     #     '''Retrieve beggining filepath.'''
-    #     return self._filepaths[0]
+    #     return self._filepaths[0] if self._filepaths != [] else ''
 
     @property
-    def filepaths(self):
+    def filepaths(self) -> List[str]:
         '''Retrieve filepaths.'''
         return self._filepaths
 
-    def _check_filepath(self, filepath: str):
+    @staticmethod
+    def split_filepath(filepath: str) -> List[str]:
+        '''Separate filename from filepath.'''
+        return filepath.rsplit('/', 1)
+
+    @staticmethod
+    def get_filename(filepath: str) -> str:
+        '''Get the name of the file.'''
+        return filepath.rsplit('/', 1)[1]
+
+    @staticmethod
+    def get_filetype(filename: str) -> str:
+        '''Get filetype from filename.'''
+        return filename.split('.')[-1]
+
+    def _check_filepath(self, filepath: str) -> bool:
         '''Check if configuraion exists at path.'''
         if os.path.isfile(filepath):
             logging.debug("{} found".format(filepath))
@@ -69,7 +83,7 @@ class ConfigManager(Settings, ConfigFile):
             logging.debug("{} not found".format(filepath))
             return False
 
-    def load_filepath(self, filepath: str):
+    def load_filepath(self, filepath: str) -> None:
         '''Load settings from configuration in filepath.'''
         logging.debug("searching for {}".format(filepath))
         print('troubleshooting:', filepath)
@@ -77,33 +91,20 @@ class ConfigManager(Settings, ConfigFile):
         if self._check_filepath(filepath):
             self._filepaths.append(filepath)
 
-    def __get_filepaths(
-        self,
-        filepath: str = None,
-        filename: str = None,
-        filetype: str = None,
-    ):
-        if self._filepaths == []:
-            if filepath:
-                self._filepaths.append(filepath)
-                self.base_filepath, self.filename = self.split_filepath(
-                    filepath
-                )
-                self.filetype = self.get_filetype(self.filename)
-            elif filename:
-                self.filename = filename
-                self.filetype = self.get_filetype(self.filename)
+    def __get_filepaths(self, filepath: str) -> None:
+        self._filepaths.append(filepath)
+        self.basepath, self.filename = self.split_filepath(filepath)
+        if '.' in self.filename:
+            self.filetype = self.get_filetype(self.filename)
 
-    def load(
-        self, filepath: Optional[str] = None, filetype: Optional[str] = None
-    ) -> None:
+    def load(self, filepath: str, filetype: Optional[str] = None) -> None:
         '''Load settings from configuration file.'''
-        self.__get_filepaths(filepath=filepath, filetype=filetype)
-        self._initialize_settings(self.load_config(self.head))
+        self.__get_filepaths(filepath=filepath)
+        self._initialize_settings(self.load_config(self.head, filetype))
 
-    def dump(self, filepath: str, filetype: str = None) -> None:
+    def dump(self, filepath: str, filetype: Optional[str] = None) -> None:
         '''Save settings to configuraiton.'''
-        self.dump_config(self.head, self.settings)
+        self.dump_config(self.head, filetype, self.settings)
 
 
 class NestedConfigManager(ConfigManager):
@@ -129,7 +130,6 @@ class NestedConfigManager(ConfigManager):
     ):
         '''Load settings from nested configuration.'''
         self.__get_filepaths()
-
         settings = []
         for filepath in self._filepaths:
             settings.append(

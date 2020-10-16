@@ -15,7 +15,7 @@ class ConfigFile:
 
     def __init__(
         self,
-        filetype: str = None,
+        filetype: str = 'toml',
         driver_paths: Set[str] = set(),
         **kwargs
     ):
@@ -29,14 +29,20 @@ class ConfigFile:
         if driver_paths != set():
             self.driver_paths.update(driver_paths)
 
-    def _load_module(self):
+    def _load_module(
+        self,
+        filepath: Optional[str] = None,
+        filetype: Optional[str] = None
+    ):
         '''Dynamically load the appropriate module.'''
         logging.info('Loading configuration modules')
+        __filetype = filetype if filetype else self.filetype
         mod = ModuleLoader(self.driver_paths)
-        module_path = mod.discover_module_path(self.filetype)
+        module_path = mod.discover_module_path(__filetype)
 
+        # TODO: Check if module is already loaded
         if module_path is not None:
-            classname = ".{}Config".format(self.filetype.capitalize())
+            classname = ".{}Config".format(__filetype.capitalize())
             config_class = mod.load_classpath(
                 "{m}{c}".format(m=module_path, c=classname)
             )
@@ -45,39 +51,26 @@ class ConfigFile:
         else:
             logging.info('Unable to load configs')
 
-    def load_config(self, filepath: str):
+    def load_config(self, filepath: str, filetype: str = None):
         '''Use discovered module to load configuration.'''
         # TODO: Improve error handling
         if os.path.exists(filepath):
             logging.info("Retrieving configuration: '{}'".format(filepath))
-            if not self.filetype:
-                filename = self.get_filename(filepath)
-                self.filetype = self.get_filetype(filename)
-            self._load_module()
+            self._load_module(filetype if not filetype else self.filetype)
             return self.__config_module.load_config(filepath)
         else:
             logging.info(
                 "Skipping: No configuration found at: '{}'".format(filepath)
             )
 
-    def dump_config(self, filepath: str, settings: Dict[Any, Any]):
+    def dump_config(
+        self,
+        filepath: str,
+        filetype: Optional[str] = None,
+        settings: Dict[Any, Any] = {},
+    ):
         '''Use discovered module to save configuration.'''
         # TODO: Improve error handling
         logging.info("Saving configuration: '{}'".format(filepath))
-        self._load_module()
+        self._load_module(filetype)
         self.__config_module.dump_config(settings, filepath)
-
-    @staticmethod
-    def get_filename(filepath: str):
-        '''Get the name of the file.'''
-        return filepath.rsplit('/', 1)[1]
-
-    @staticmethod
-    def split_filepath(filepath: str):
-        '''Separate filename from filepath.'''
-        return filepath.rsplit('/', 1)
-
-    @staticmethod
-    def get_filetype(filename: str):
-        '''Get filetype from filename.'''
-        return filename.split('.')[-1]
