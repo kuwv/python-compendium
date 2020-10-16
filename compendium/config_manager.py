@@ -9,8 +9,6 @@ import os
 import platform
 from typing import Any, Dict, List, Optional, Set, Union
 
-from dpath import util as dpath  # type: ignore
-
 from .config import ConfigFile
 from .settings import Settings
 
@@ -124,9 +122,7 @@ class NestedConfigManager(ConfigManager):
             self.load_filepath(filepath)
 
     def load_configs(
-        self,
-        filepath: Optional[str] = None,
-        filetype: Optional[str] = None
+        self, filepath: Optional[str] = None, filetype: Optional[str] = None
     ):
         '''Load settings from nested configuration.'''
         self.__get_filepaths()
@@ -206,8 +202,7 @@ class HierarchyConfigManager(ConfigManager):
 
             if platform.system() == 'Darwin':
                 __user_app_filepath = os.path.join(
-                    'Library',
-                    'Application Support'
+                    'Library', 'Application Support'
                 )
 
             if platform.system() == 'Linux':
@@ -250,6 +245,5 @@ class HierarchyConfigManager(ConfigManager):
         self.__get_filepaths()
         settings: Dict[Any, Any] = {}
         for filepath in self._filepaths:
-            # TODO: replace with settings method
-            dpath.merge(settings, self.load_config(filepath), flags=2)
+            self.merge(self.load_config(filepath))
         self._initialize_settings(settings)
