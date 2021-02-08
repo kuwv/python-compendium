@@ -34,11 +34,11 @@ def test_toml_content(fs):
     fs.add_real_file(toml_filepath)
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=toml_filepath)
-    assert cfg.get('/stooges/stooge1') == 'Larry'
-    assert cfg.get('/stooges/stooge2') == 'Curly'
-    assert cfg.get('/stooges/stooge3') == 'Moe'
-    assert cfg.get('/fruit') != 'banana'
-    assert cfg.get('/number') == 2
+    assert cfg.settings.get('/stooges/stooge1') == 'Larry'
+    assert cfg.settings.get('/stooges/stooge2') == 'Curly'
+    assert cfg.settings.get('/stooges/stooge3') == 'Moe'
+    assert cfg.settings.get('/fruit') != 'banana'
+    assert cfg.settings.get('/number') == 2
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -47,8 +47,8 @@ def test_toml_content_dump(fs):
     fs.add_real_file(toml_filepath, False)
     cfg = ConfigManager(application='tests', writable=True)
     cfg.load(filepath=toml_filepath)
-    cfg.create('/test', 'test')
-    assert cfg.settings['test'] == 'test'
+    cfg.settings.create('/test', 'test')
+    assert cfg.settings.get('test') == 'test'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -59,5 +59,5 @@ def test_cfg_save_fail(fs):
     cfg.load(filepath=toml_filepath)
 
     with pytest.raises(IOError):
-        cfg.create('/test', 'test')
+        cfg.settings.create('/test', 'test')
         cfg.dump('./test.toml')

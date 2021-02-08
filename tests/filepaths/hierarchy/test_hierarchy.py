@@ -43,15 +43,15 @@ def test_hierarchy(fs):
         os.path.join(user_filepath, '.tests.d', 'settings.toml')
     ) in cfg.filepaths
 
-    assert cfg.get('/table/key') == 'first'
-    assert cfg.get('/table/subtable/key') == 'third'
-    assert cfg.get('/table/subtable/second') == 'retained'
-    assert cfg.get('/table/subtable/third') == 'retained'
-    assert cfg.get('/table/subtable/key') != 'second'
-    assert cfg.get('/list/**/last') == 'third'
+    assert cfg.settings.get('/table/key') == 'first'
+    assert cfg.settings.get('/table/subtable/key') == 'third'
+    assert cfg.settings.get('/table/subtable/second') == 'retained'
+    assert cfg.settings.get('/table/subtable/third') == 'retained'
+    assert cfg.settings.get('/table/subtable/key') != 'second'
+    assert cfg.settings.get('/list/**/last') == 'third'
 
     # Ensure /etc/tests/settings.toml is blank
     # NOTE: Added default
     # with pytest.raises(KeyError):
-    #     cfg.get('/list/**/overwritten1')
-    #     cfg.get('/list/**/overwritten2')
+    #     cfg.settings.get('/list/**/overwritten1')
+    #     cfg.settings.get('/list/**/overwritten2')

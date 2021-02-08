@@ -8,8 +8,16 @@ class CompendiumException(Exception):
     '''Provide base errors in Compendium.'''
 
 
-class CompendiumConfigManagerError(CompendiumException):
-    '''Provide exceptions for ConfigManager errors.'''
+class CompendiumDriverError(CompendiumException):
+    '''Provide exceptions for driver errors.'''
+
+
+class CompendiumConfigFileError(CompendiumException):
+    '''Provide exceptions for ConfigFile errors.'''
+
+
+class CompendiumConfigError(CompendiumException):
+    '''Provide exceptions for Config errors.'''
 
 
 class CompendiumSettingsError(CompendiumException):

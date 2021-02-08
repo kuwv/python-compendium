@@ -21,16 +21,15 @@ settings_filepath = os.path.join(config_filepath, 'settings.toml')
 #     return cfg
 #
 # def test_result(cfg):
-#     result = cfg.search('/servers/**/ip')
+#     result = cfg.settings.search('/servers/**/ip')
 #     assert ['10.0.0.1', '10.0.0.2'] == result
 
 
 def test_default():
     '''Test default settings.'''
     cfg = ConfigManager(application='tests', defaults={'default': 'result'})
-    defaults = cfg.defaults
-    assert defaults == {'default': 'result'}
-    result = cfg.get('default')
+    assert cfg.defaults == {'default': 'result'}
+    result = cfg.settings.get('default')
     assert result == 'result'
 
 
@@ -40,7 +39,7 @@ def test_result(fs):
     fs.add_real_file(settings_filepath, False)
     cfg = ConfigManager(application='tests')
     cfg.load(settings_filepath)
-    result = cfg.search('/servers/**/ip')
+    result = cfg.settings.search('/servers/**/ip')
     assert ['10.0.0.1', '10.0.0.2'] == result
 
 
@@ -50,8 +49,8 @@ def test_toml_content_create(fs):
     fs.add_real_file(settings_filepath, False)
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=settings_filepath)
-    cfg.create('/test', 'test')
-    assert cfg.get('test') == 'test'
+    cfg.settings.create('/test', 'test')
+    assert cfg.settings.get('test') == 'test'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -60,8 +59,8 @@ def test_toml_content_append(fs):
     fs.add_real_file(settings_filepath, False)
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=settings_filepath)
-    cfg.append('/database/ports', 2345)
-    assert 2345 in cfg.get('/database/ports')
+    cfg.settings.append('/database/ports', 2345)
+    assert 2345 in cfg.settings.get('/database/ports')
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -70,8 +69,8 @@ def test_toml_content_update(fs):
     fs.add_real_file(settings_filepath, False)
     cfg = ConfigManager(application='tests', writable=True)
     cfg.load(filepath=settings_filepath)
-    cfg.update('/owner/name', 'Tom Waits')
-    assert cfg.get('/owner/name') == 'Tom Waits'
+    cfg.settings.set('/owner/name', 'Tom Waits')
+    assert cfg.settings.get('/owner/name') == 'Tom Waits'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -80,6 +79,6 @@ def test_toml_delete(fs):
     fs.add_real_file(settings_filepath, False)
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=settings_filepath)
-    assert cfg.search('/owner/name') == ['Tom Preston-Werner']
-    cfg.delete('/owner/name')
-    assert cfg.search('/owner/name') == []
+    assert cfg.settings.search('/owner/name') == ['Tom Preston-Werner']
+    cfg.settings.delete('/owner/name')
+    assert cfg.settings.search('/owner/name') == []

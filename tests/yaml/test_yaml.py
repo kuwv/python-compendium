@@ -34,11 +34,11 @@ def test_yaml_content(fs):
     fs.add_real_file(yaml_filepath)
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=yaml_filepath)
-    assert cfg.get('/stooges/stooge1') == 'Larry'
-    assert cfg.get('/stooges/stooge2') == 'Curly'
-    assert cfg.get('/stooges/stooge3') == 'Moe'
-    assert cfg.get('/fruit') != 'banana'
-    assert cfg.get('/number') == 2
+    assert cfg.settings.get('/stooges/stooge1') == 'Larry'
+    assert cfg.settings.get('/stooges/stooge2') == 'Curly'
+    assert cfg.settings.get('/stooges/stooge3') == 'Moe'
+    assert cfg.settings.get('/fruit') != 'banana'
+    assert cfg.settings.get('/number') == 2
 
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)

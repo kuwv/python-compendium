@@ -5,12 +5,13 @@
 
 import logging
 import os
+from collections import UserDict
 from typing import Any, ClassVar, Dict, Optional
 
 from dpath import util as dpath  # type: ignore
 
 
-class Settings:
+class Settings(UserDict):
     '''Manage settings loaded from confiugrations.'''
 
     __defaults: ClassVar[Dict[Any, Any]] = {}
@@ -21,13 +22,26 @@ class Settings:
         self.application = application
 
         self.__document: Dict[Any, Any] = {}
-        self.__settings: Dict[Any, Any] = {}
+
         if 'defaults' in kwargs and Settings.__defaults == {}:
             Settings.__defaults = kwargs['defaults']
 
         # Load settings from configs
-        self.separator: str = kwargs.get('separator', '/')
         self.prefix = kwargs.get('prefix', "{a}_".format(a=application.upper()))
+        self.__separator: str = kwargs.pop('separator', '/')
+
+        super().__init__(**kwargs)
+        print('data', self.data)
+
+    def __repr__(self) -> str:
+        return f"{self.data}"
+
+    # def __getattr__(self, k: str) -> str:
+    #     print('this is the args', k)
+    #     return self.data[k]
+
+    # def __setattr__(self, k: str, v: Any) -> None:
+    #     self.data[k] = v
 
     @property
     def defaults(self) -> Dict[Any, Any]:
@@ -37,7 +51,7 @@ class Settings:
     @property
     def settings(self) -> Dict[Any, Any]:
         '''Return settings.'''
-        return self.__settings
+        return self.data
 
     def load_environment(self) -> None:
         '''Load environment variables.'''
@@ -53,23 +67,23 @@ class Settings:
     def _initialize_settings(self, new_settings: Dict[Any, Any]) -> None:
         '''Load settings store.'''
         logging.debug(new_settings)
-        self.__settings.update(new_settings)
+        self.data.update(new_settings)
         self.load_environment()
 
     # Query
     def get(
         self,
         query: str,
-        document: Optional[Dict[Any, Any]] = None,
         default: Optional[Any] = None,
+        document: Optional[Dict[Any, Any]] = None,
     ):
         '''Get value from settings with key.'''
         if not document:
-            document = self.__settings
+            document = self.data
         documents = [self.__environs, document, self.__defaults]
         for doc in documents:
             try:
-                return dpath.get(doc, query, self.separator)
+                return dpath.get(doc, query, self.__separator)
                 break
             except KeyError:
                 pass
@@ -78,41 +92,51 @@ class Settings:
     def retrieve(self, query: str):
         '''Retrieve value from settings with key.'''
         if not self.__document:
-            self.__document = self.__settings
-        self.__document = dpath.get(self.__document, query, self.separator)
+            self.__document = self.data
+        self.__document = dpath.get(self.__document, query, self.__separator)
         return self
 
     def search(self, query: str) -> Dict[Any, Any]:
         '''Search settings matching query.'''
-        return dpath.values(self.__settings, query, self.separator)
+        return dpath.values(self.data, query, self.__separator)
 
     def append(self, keypath: str, value: Any) -> None:
         '''Append to a list located at keypath.'''
         store = [value]
-        keypath_dir = keypath.split(self.separator)[1:]
+        keypath_dir = keypath.split(self.__separator)[1:]
         for x in reversed(keypath_dir):
             store = {x: store}  # type: ignore
-        dpath.merge(self.__settings, store)
+        dpath.merge(self.data, store)
 
-    def update(self, keypath: str, value: Any) -> None:
+    def set(self, keypath: str, value: Any) -> None:
         '''Update value located at keypath.'''
-        dpath.set(self.__settings, keypath, value, self.separator)
+        dpath.set(self.data, keypath, value, self.__separator)
 
     def add(self, keypath: str, value: Any) -> None:
         '''Add key/value pair located at keypath.'''
-        dpath.new(self.__settings, keypath, value, self.separator)
+        dpath.new(self.data, keypath, value, self.__separator)
 
     def create(self, keypath: str, value: Any) -> None:
         '''Create new key/value pair located at path.'''
-        dpath.new(self.__settings, keypath, value, self.separator)
+        dpath.new(self.data, keypath, value, self.__separator)
 
     def delete(self, keypath: str) -> None:
         '''Delete key/value located at keypath.'''
-        dpath.delete(self.__settings, keypath, self.separator)
+        dpath.delete(self.data, keypath, self.__separator)
 
     def merge(self, document: Optional[Dict[Any, Any]] = None):
-        dpath.merge(self.__settings, document, flags=2)
+        dpath.merge(self.data, document, flags=2)
 
     # def view(self) -> str:
     #     '''View current keypath location.'''
     #     return self.keypath
+
+    # print
+    # map
+    # readlines
+    # filter
+    # find
+    # findall
+    # each
+    # len
+    # all

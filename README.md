@@ -42,7 +42,7 @@ cfg.load()
 
 ## Update settings
 
-`cfg.update('/owner/name', 'Tom Waits')`
+`cfg.set('/owner/name', 'Tom Waits')`
 
 
 ## Delete settings

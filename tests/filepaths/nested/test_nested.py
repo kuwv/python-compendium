@@ -36,12 +36,14 @@ def test_nested(fs):
     assert cfg1_path in cfg.filepaths
     assert cfg2_path in cfg.filepaths
     assert cfg3_path in cfg.filepaths
-    assert cfg.get('/settings/[0]/filepath') == cfg1_path
-    assert cfg.get('/settings/[1]/filepath') == cfg2_path
-    assert cfg.get('/settings/[2]/filepath') == cfg3_path
-    assert cfg.get('/**/name', cfg.get('/settings/**/fruit/drupe')) == 'peach'
+    assert cfg.settings.get('/settings/[0]/filepath') == cfg1_path
+    assert cfg.settings.get('/settings/[1]/filepath') == cfg2_path
+    assert cfg.settings.get('/settings/[2]/filepath') == cfg3_path
+    assert cfg.settings.get(
+        '/**/name', document=cfg.settings.get('/settings/**/fruit/drupe')
+    ) == 'peach'
 
     # Ensure vegatable is not in fruits
     # NOTE: Added defaults
     # with pytest.raises(KeyError):
-    #     cfg.get('/settings/**/vegetable')
+    #     cfg.settings.get('/settings/**/vegetable')

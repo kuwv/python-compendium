@@ -12,8 +12,10 @@ from typing import Any, Dict, List, Optional, Set, Union
 from .config import ConfigFile
 from .settings import Settings
 
+log = logging.getLogger(__name__)
 
-class ConfigManager(Settings, ConfigFile):
+
+class ConfigManager(ConfigFile):
     '''Manage settings from cache.'''
 
     def __init__(self, application: str, **kwargs):
@@ -26,21 +28,43 @@ class ConfigManager(Settings, ConfigFile):
           - last
 
         '''
-        if kwargs.get('debug', False):
-            logging.basicConfig()
-            logging.getLogger().setLevel(logging.DEBUG)
+        if 'log_level' in kwargs:
+            log.setLevel(getattr(logging, kwargs.pop('log_level').upper()))
+        if 'log_handler' in kwargs:
+            log_handler = kwargs.pop('log_handler')
+            log.addHandler(logging.StreamHandler(log_handler))  # type: ignore
 
         self._filepaths: List[str] = []
         self.filename = kwargs.get('filename', 'settings.toml')
         self.filetype = kwargs.get('filetype', self.get_filetype(self.filename))
 
         ConfigFile.__init__(self, self.filetype, **kwargs)
-        Settings.__init__(self, application, **kwargs)
+        self.settings = Settings(application, **kwargs)
 
         self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
         self.merge_sections: Set[str] = kwargs.get('merge_sections', set())
 
         self.writable: Optional[bool] = kwargs.get('writable', False)
+
+    # def __getattr__(self, k: str) -> Optional[str]:
+    #     if hasattr(self.settings, k):
+    #         print('It does')
+    #     try:
+    #         return self.settings.get(k)
+    #     except Exception as err:
+    #         print(err)
+    #         return None
+
+    # def __setattr__(self, k: str, v: Any) -> None:
+    #     self.__settings[k] = v
+
+    @property
+    def application(self) -> str:
+        return self.settings.application
+
+    @property
+    def defaults(self) -> Dict[Any, Any]:
+        return self.settings.defaults
 
     @property
     def head(self) -> str:
@@ -71,6 +95,10 @@ class ConfigManager(Settings, ConfigFile):
     def get_filetype(filename: str) -> str:
         '''Get filetype from filename.'''
         return filename.split('.')[-1]
+
+    def _initialize_settings(self, settings: Dict[Any, Any]) -> None:
+        self.settings._initialize_settings(settings)
+        print('initial settings', self.settings.__dict__)
 
     def _check_filepath(self, filepath: str) -> bool:
         '''Check if configuraion exists at path.'''
@@ -103,6 +131,15 @@ class ConfigManager(Settings, ConfigFile):
     def dump(self, filepath: str, filetype: Optional[str] = None) -> None:
         '''Save settings to configuraiton.'''
         self.dump_config(self.head, filetype, self.settings)
+
+    def _set_env(self):
+        '''Load environs from .env file.'''
+        env_file = os.path.join(os.getcwd(), '.env')
+        if self._check_filepath(env_file):
+            with open(env_file) as env:
+                for line in env:
+                    k, v = line.partition("=")[::2]
+                    os.environ[k.strip().upper()] = str(v)
 
 
 class NestedConfigManager(ConfigManager):
@@ -140,14 +177,21 @@ class HierarchyConfigManager(ConfigManager):
     def __init__(self, application: str, **kwargs):
         '''Initialize settings from hirarchy filepaths.
 
+        Parameters
+        ----------
         merge_sections: list, optional
             Include sections to be merged
-
         merge_strategy: list, optional
             Strategy to used when merging: overlay, parition, and last
               - overlay will replace exsisting entries
               - partition will keeps each seettings separate
               - last will only use the last loaded
+        enable_system_filepaths: bool, optional
+            Enable system filepath lookup for configurations.
+        enable_user_filepaths: bool, optional
+            Enable user filepath lookup for configurations.
+        enable_local_filepaths: bool, optional
+            Enable local filepath lookup for configurations.
 
         '''
         super().__init__(application, **kwargs)
@@ -169,23 +213,23 @@ class HierarchyConfigManager(ConfigManager):
     def __get_filepaths(self):
         r'''Load config paths based on priority.
 
-        First(lowest) to last(highest)
-        1. Load settings.<FILETYPE> from /etc/<APP>
-          - /etc/<APP>/settings.<FILETYPE>
-          - /etc/<APP>/<FILENAME>
-        2. Load user configs
-          - Windows: ~\\AppData\\Local\\<COMPANY>\\<APP>\\<FILENAME>
-          - Darwin: ~/Library/Application Support/<APP>/<FILENAME>
-          - Linux: ~/.config/<APP>/<FILENAME>
-          - ~/.<APP>.<FILETYPE>
-          - ~/.<APP>.d/<FILENAME>
-        3. Load config in PWD
-          - ./settings.<FILETYPE>
-          - ./<FILENAME>
-        4. Runtime configs:
-          - /etc/sysconfig/<APP>
-          - .env
-          - <CLI>
+        First(lowest) to last(highest):
+          1. Load settings.<FILETYPE> from /etc/<APP>
+            - /etc/<APP>/settings.<FILETYPE>
+            - /etc/<APP>/<FILENAME>
+          2. Load user configs
+            - Windows: ~\\AppData\\Local\\<COMPANY>\\<APP>\\<FILENAME>
+            - Darwin: ~/Library/Application Support/<APP>/<FILENAME>
+            - Linux: ~/.config/<APP>/<FILENAME>
+            - ~/.<APP>.<FILETYPE>
+            - ~/.<APP>.d/<FILENAME>
+          3. Load config in PWD
+            - ./settings.<FILETYPE>
+            - ./<FILENAME>
+          4. Runtime configs:
+            - /etc/sysconfig/<APP>
+            - .env
+            - <CLI>
 
         '''
         logging.info('populating settings locations')
@@ -245,5 +289,5 @@ class HierarchyConfigManager(ConfigManager):
         self.__get_filepaths()
         settings: Dict[Any, Any] = {}
         for filepath in self._filepaths:
-            self.merge(self.load_config(filepath))
+            self.settings.merge(self.load_config(filepath))
         self._initialize_settings(settings)

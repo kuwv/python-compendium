@@ -34,11 +34,11 @@ def test_xml_content(fs):
     fs.add_real_file(xml_filepath)
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=xml_filepath)
-    assert cfg.get('/root/stooges/stooge1') == 'Larry'
-    assert cfg.get('/root/stooges/stooge2') == 'Curly'
-    assert cfg.get('/root/stooges/stooge3') == 'Moe'
-    assert cfg.get('/root/fruit') != 'banana'
-    assert cfg.get('/root/number') == '2'
+    assert cfg.settings.get('/root/stooges/stooge1') == 'Larry'
+    assert cfg.settings.get('/root/stooges/stooge2') == 'Curly'
+    assert cfg.settings.get('/root/stooges/stooge3') == 'Moe'
+    assert cfg.settings.get('/root/fruit') != 'banana'
+    assert cfg.settings.get('/root/number') == '2'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -47,8 +47,8 @@ def test_xml_content_dump(fs):
     fs.add_real_file(xml_filepath, False)
     cfg = ConfigManager(application='tests', writable=True)
     cfg.load(filepath=xml_filepath)
-    cfg.create('/root/test', 'test')
-    assert cfg.get('/root/test') == 'test'
+    cfg.settings.create('/root/test', 'test')
+    assert cfg.settings.get('/root/test') == 'test'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -59,5 +59,5 @@ def test_cfg_save_fail(fs):
     cfg.load(filepath=xml_filepath)
 
     with pytest.raises(IOError):
-        cfg.create('/test', 'test')
+        cfg.settings.create('/test', 'test')
         cfg.dump('./test.xml')

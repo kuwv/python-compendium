@@ -5,9 +5,12 @@
 
 import logging
 import os
-from typing import Any, Dict, Optional, Set
+from typing import Optional, Set
 
 from anymod import ModuleLoader  # type: ignore
+
+from compendium import exceptions
+from compendium.settings import Settings
 
 
 class ConfigFile:
@@ -49,7 +52,9 @@ class ConfigFile:
             self.__config_module = config_class()
             logging.info('Finished loading configs')
         else:
-            logging.info('Unable to load configs')
+            raise exceptions.CompendiumDriverError(
+                'driver not found'
+            )
 
     def load_config(self, filepath: str, filetype: str = None):
         '''Use discovered module to load configuration.'''
@@ -59,7 +64,7 @@ class ConfigFile:
             self._load_module(filetype if not filetype else self.filetype)
             return self.__config_module.load_config(filepath)
         else:
-            logging.info(
+            raise exceptions.CompendiumConfigFileError(
                 "Skipping: No configuration found at: '{}'".format(filepath)
             )
 
@@ -67,7 +72,7 @@ class ConfigFile:
         self,
         filepath: str,
         filetype: Optional[str] = None,
-        settings: Dict[Any, Any] = {},
+        settings: Settings = None,
     ):
         '''Use discovered module to save configuration.'''
         # TODO: Improve error handling
