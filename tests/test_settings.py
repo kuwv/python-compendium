@@ -10,7 +10,7 @@ import pytest  # type: ignore
 from compendium.config_manager import ConfigManager
 
 config_filepath = os.path.dirname(os.path.realpath(__file__))
-settings_filepath = os.path.join(config_filepath, 'settings.toml')
+settings_filepath = os.path.join(config_filepath, 'config.toml')
 
 
 # @pytest.fixture(params=['fs', [[['pkgutil']]]])

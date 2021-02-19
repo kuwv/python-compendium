@@ -35,7 +35,7 @@ class ConfigManager(ConfigFile):
             log.addHandler(logging.StreamHandler(log_handler))  # type: ignore
 
         self._filepaths: List[str] = []
-        self.filename = kwargs.get('filename', 'settings.toml')
+        self.filename = kwargs.get('filename', 'config.toml')
         self.filetype = kwargs.get('filetype', self.get_filetype(self.filename))
 
         ConfigFile.__init__(self, self.filetype, **kwargs)
@@ -214,8 +214,8 @@ class HierarchyConfigManager(ConfigManager):
         r'''Load config paths based on priority.
 
         First(lowest) to last(highest):
-          1. Load settings.<FILETYPE> from /etc/<APP>
-            - /etc/<APP>/settings.<FILETYPE>
+          1. Load config.<FILETYPE> from /etc/<APP>
+            - /etc/<APP>/config.<FILETYPE>
             - /etc/<APP>/<FILENAME>
           2. Load user configs
             - Windows: ~\\AppData\\Local\\<COMPANY>\\<APP>\\<FILENAME>
@@ -224,7 +224,7 @@ class HierarchyConfigManager(ConfigManager):
             - ~/.<APP>.<FILETYPE>
             - ~/.<APP>.d/<FILENAME>
           3. Load config in PWD
-            - ./settings.<FILETYPE>
+            - ./config.<FILETYPE>
             - ./<FILENAME>
           4. Runtime configs:
             - /etc/sysconfig/<APP>
@@ -246,7 +246,8 @@ class HierarchyConfigManager(ConfigManager):
 
             if platform.system() == 'Darwin':
                 __user_app_filepath = os.path.join(
-                    'Library', 'Application Support'
+                    'Library',
+                    'Application Support',
                 )
 
             if platform.system() == 'Linux':

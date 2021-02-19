@@ -5,7 +5,7 @@ from compendium.config.config_base import ConfigBase
 
 package_path = os.path.dirname(compendium.__file__)
 config_path = os.path.dirname(os.path.realpath(__file__))
-toml_path = config_path + '/settings.toml'
+toml_path = config_path + '/config.toml'
 
 
 def test_module_exec():
@@ -22,5 +22,5 @@ def test_module_exec():
     module = mod.retrieve_subclass(module_path, ConfigBase)
     cfg_class = mod.load_classpath(module.__module__ + '.' + module.__name__)
     cfg = cfg_class()
-    settings = cfg.load_config(config_path + '/settings.toml')
+    settings = cfg.load_config(config_path + '/config.toml')
     assert settings['title'] == 'TOML Example'

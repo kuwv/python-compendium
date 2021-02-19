@@ -44,7 +44,7 @@ class ConfigFile:
         module_path = mod.discover_module_path(__filetype)
 
         # TODO: Check if module is already loaded
-        if module_path is not None:
+        if module_path is not None and module_path != []:
             classname = ".{}Config".format(__filetype.capitalize())
             config_class = mod.load_classpath(
                 "{m}{c}".format(m=module_path, c=classname)

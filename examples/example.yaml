@@ -1,0 +1,21 @@
+---
+allowed_roles:
+  - sre
+  - devops
+  - cloudops
+dag:
+  dag_name: hello-world
+  schedule_interval: '@once'
+  default_args:
+    owner: admin
+  apps:
+    - name: app1
+      rules:
+        before: app2
+    - name: app2
+      rules:
+        before: app3
+        after: app1
+    - name: app3
+      rules:
+        after: app2

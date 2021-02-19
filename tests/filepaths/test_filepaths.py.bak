@@ -5,13 +5,13 @@ from compendium.config.paths import ConfigPaths
 
 def test_singleton(fs):
     # Setup Singleton path
-    fs.create_file('/opt/test/settings.toml')
+    fs.create_file('/opt/test/config.toml')
 
     # Test Singleton
     cfg = ConfigPaths(application='test')
-    cfg.load_configs('/opt/test/settings.toml')
+    cfg.load_configs('/opt/test/config.toml')
 
-    assert '/opt/test/settings.toml' in cfg.filepaths
+    assert '/opt/test/config.toml' in cfg.filepaths
 
 
 def test_hierarchy(fs):
@@ -20,15 +20,15 @@ def test_hierarchy(fs):
     base_path = os.path.basename(__file__)
 
     # System path
-    fs.create_file('/etc/test/settings.toml')
+    fs.create_file(os.path.join('etc', 'test', 'config.toml'))
 
     # User path
-    fs.create_file(user_path + '/.test.toml')
-    fs.create_file(user_path + '/.test.d/settings.toml')
+    fs.create_file(os.path.join(user_path, '.test.toml'))
+    fs.create_file(os.path.join(user_path, '.test.d', 'config.toml'))
 
     # Current path
-    fs.create_file(base_path + '/settings.toml')
-    fs.create_file(base_path + '/test.toml')
+    fs.create_file(os.path.join(base_path, 'config.toml'))
+    fs.create_file(os.path.join(base_path, 'test.toml'))
 
     # Test hierarchy
     cfg = ConfigPaths(
@@ -39,9 +39,9 @@ def test_hierarchy(fs):
     )
     cfg.load_configs()
 
-    assert '/etc/test/settings.toml' in cfg.filepaths
+    assert '/etc/test/config.toml' in cfg.filepaths
     assert (user_path + '/.test.toml') in cfg.filepaths
-    assert (user_path + '/.test.d/settings.toml') in cfg.filepaths
+    assert (user_path + '/.test.d/config.toml') in cfg.filepaths
 
 
 def test_nested(fs):
@@ -49,14 +49,14 @@ def test_nested(fs):
     base_path = os.path.dirname(os.path.realpath(__file__))
 
     # Current path
-    fs.create_file(base_path + '/settings.toml')
-    fs.create_file(base_path + '/example1/settings.toml')
-    fs.create_file(base_path + '/example2/settings.toml')
+    fs.create_file(base_path + '/config.toml')
+    fs.create_file(base_path + '/example1/config.toml')
+    fs.create_file(base_path + '/example2/config.toml')
 
     # Test nested
     cfg = ConfigPaths(application='test', load_strategy='nested')
     cfg.load_configs()
 
-    assert (base_path + '/settings.toml') in cfg.filepaths
-    assert (base_path + '/example1/settings.toml') in cfg.filepaths
-    assert (base_path + '/example2/settings.toml') in cfg.filepaths
+    assert (base_path + '/config.toml') in cfg.filepaths
+    assert (base_path + '/example1/config.toml') in cfg.filepaths
+    assert (base_path + '/example2/config.toml') in cfg.filepaths
