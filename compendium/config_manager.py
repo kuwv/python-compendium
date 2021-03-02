@@ -246,8 +246,7 @@ class HierarchyConfigManager(ConfigManager):
 
             if platform.system() == 'Darwin':
                 __user_app_filepath = os.path.join(
-                    'Library',
-                    'Application Support',
+                    'Library', 'Application Support',
                 )
 
             if platform.system() == 'Linux':

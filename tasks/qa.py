@@ -1,3 +1,4 @@
+# type: ignore
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
@@ -7,7 +8,7 @@ from invoke import task  # type: ignore
 
 
 @task
-def autoformat(ctx, check=True):  # type: ignore
+def style(ctx, check=True):  # type: ignore
     '''Format project source code to PEP-8 standard.'''
     args = ['--skip-string-normalization']
     if check:
@@ -40,7 +41,15 @@ def unit_test(ctx, capture=None):  # type: ignore
 @task
 def static_analysis(ctx):  # type: ignore
     '''Perform static code analysis on imports.'''
-    ctx.run('safety check --ignore=39462 --ignore=39252 --ignore=38932')
+    safety_args = []
+    safety_ignore = [
+        '39606',
+        '39252',
+        '38932',
+    ]
+    for x in safety_ignore:
+        safety_args.append("--ignore={}".format(x))
+    ctx.run("safety check {}".format(' '.join(safety_args)))
     ctx.run('bandit -r compendium')
 
 
@@ -53,7 +62,7 @@ def coverage(ctx, report=None):  # type: ignore
     ctx.run("pytest {} ./tests/".format(' '.join(args)))
 
 
-@task(pre=[autoformat, lint, unit_test, static_analysis, coverage])
+@task(pre=[style, lint, unit_test, static_analysis, coverage])
 def test(ctx):  # type: ignore
     '''Run all tests.'''
     pass

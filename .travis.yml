@@ -21,7 +21,7 @@ jobs:
   include:
     - stage: quality-assurance
       script:
-        - inv qa.autoformat --check
+        - inv qa.style --check
         - inv qa.lint
         - inv qa.unit-test
         - inv qa.static-analysis

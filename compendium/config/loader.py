@@ -7,7 +7,7 @@ import logging
 import os
 from typing import Optional, Set
 
-from anymod import ModuleLoader  # type: ignore
+from anymod import PluginLoader  # type: ignore
 
 from compendium import exceptions
 from compendium.settings import Settings
@@ -20,7 +20,7 @@ class ConfigFile:
         self,
         filetype: str = 'toml',
         driver_paths: Set[str] = set(),
-        **kwargs
+        **kwargs,
     ):
         '''Initialize module loader.'''
         # TODO: writable / readonly
@@ -39,15 +39,21 @@ class ConfigFile:
     ):
         '''Dynamically load the appropriate module.'''
         logging.info('Loading configuration modules')
-        __filetype = filetype if filetype else self.filetype
-        mod = ModuleLoader(self.driver_paths)
-        module_path = mod.discover_module_path(__filetype)
+        __filetype = filetype or self.filetype
+        loader = PluginLoader(
+            # paths=os.path.join(os.path.dirname(__file__), 'filetypes'),
+            # prefix_include=__filetype,
+        )  # self.driver_paths)
+        __plugin_dir = loader.find_packages(name='compendium')[0]
+        module_path = loader.get_import_path(
+            __filetype, __plugin_dir['module_finder'].path
+        )
 
         # TODO: Check if module is already loaded
         if module_path is not None and module_path != []:
-            classname = ".{}Config".format(__filetype.capitalize())
-            config_class = mod.load_classpath(
-                "{m}{c}".format(m=module_path, c=classname)
+            classname = "{}Config".format(__filetype.capitalize())
+            config_class = loader.load_classpath(
+                "{m}.{c}".format(m=module_path, c=classname)
             )
             self.__config_module = config_class()
             logging.info('Finished loading configs')
@@ -61,7 +67,7 @@ class ConfigFile:
         # TODO: Improve error handling
         if os.path.exists(filepath):
             logging.info("Retrieving configuration: '{}'".format(filepath))
-            self._load_module(filetype if not filetype else self.filetype)
+            self._load_module(filetype or self.filetype)
             return self.__config_module.load_config(filepath)
         else:
             raise exceptions.CompendiumConfigFileError(
