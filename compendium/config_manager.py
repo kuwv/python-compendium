@@ -47,6 +47,7 @@ class ConfigManager(ConfigFile):
         self.writable: Optional[bool] = kwargs.get('writable', False)
 
     # def __getattr__(self, k: str) -> Optional[str]:
+    #     '''Get attribute.'''
     #     if hasattr(self.settings, k):
     #         print('It does')
     #     try:
@@ -56,14 +57,17 @@ class ConfigManager(ConfigFile):
     #         return None
 
     # def __setattr__(self, k: str, v: Any) -> None:
+    #     '''Set attribute.'''
     #     self.__settings[k] = v
 
     @property
     def application(self) -> str:
+        '''Get application name.'''
         return self.settings.application
 
     @property
     def defaults(self) -> Dict[Any, Any]:
+        '''Get defaults.'''
         return self.settings.defaults
 
     @property
@@ -97,6 +101,7 @@ class ConfigManager(ConfigFile):
         return filename.split('.')[-1]
 
     def _initialize_settings(self, settings: Dict[Any, Any]) -> None:
+        '''Initialize settings.'''
         self.settings._initialize_settings(settings)
         print('initial settings', self.settings.__dict__)
 
@@ -118,6 +123,7 @@ class ConfigManager(ConfigFile):
             self._filepaths.append(filepath)
 
     def __get_filepaths(self, filepath: str) -> None:
+        '''Get filepaths.'''
         self._filepaths.append(filepath)
         self.basepath, self.filename = self.split_filepath(filepath)
         if '.' in self.filename:
@@ -179,6 +185,8 @@ class HierarchyConfigManager(ConfigManager):
 
         Parameters
         ----------
+        application: str
+            Name of application.
         merge_sections: list, optional
             Include sections to be merged
         merge_strategy: list, optional

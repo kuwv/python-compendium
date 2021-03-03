@@ -34,6 +34,7 @@ class Settings(UserDict):
         print('data', self.data)
 
     def __repr__(self) -> str:
+        '''Get string representaion.'''
         return f"{self.data}"
 
     # def __getattr__(self, k: str) -> str:
@@ -125,6 +126,7 @@ class Settings(UserDict):
         dpath.delete(self.data, keypath, self.__separator)
 
     def merge(self, document: Optional[Dict[Any, Any]] = None):
+        '''Merge document.'''
         dpath.merge(self.data, document, flags=2)
 
     # def view(self) -> str:
