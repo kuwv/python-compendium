@@ -1,6 +1,6 @@
 [[package]]
 name = "anymod"
-version = "0.1.1.dev10"
+version = "0.1.1.dev11"
 description = "AnyMod - Dynamic module loader"
 category = "main"
 optional = false
@@ -904,12 +904,12 @@ xml = ["xmltodict"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "6152499491cbaea6c4b9a7de2d3b1c5c393ca563a031d3baa3934e59ac5c68d7"
+content-hash = "6951bbdf5aa6158be5cd912b645978f24caa5eb4b5d86ad6704a23ced4e5ea5e"
 
 [metadata.files]
 anymod = [
-    {file = "anymod-0.1.1.dev10-py3-none-any.whl", hash = "sha256:07cd7df2aee13e956a316e60b0a8d4fe16a6ceab0e3096b53c6d2019eb135bc1"},
-    {file = "anymod-0.1.1.dev10.tar.gz", hash = "sha256:111712ca4266ab8c5c7d973019ce1833651368aa66c09b6cd86d1f1638b26a3f"},
+    {file = "anymod-0.1.1.dev11-py3-none-any.whl", hash = "sha256:0f43326e8b88f8398d7dd33c36da316425c63f8bef5988e5c294685bba504088"},
+    {file = "anymod-0.1.1.dev11.tar.gz", hash = "sha256:06aaacadcca2d7cc604a7447b6a0ae3d93cd6f76c902057a2aa58c4ad0c8e471"},
 ]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},

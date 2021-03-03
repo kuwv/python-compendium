@@ -5,10 +5,11 @@
 
 import logging
 import os
-from typing import Optional, Set
+from typing import List, Optional
 
 from anymod import PluginLoader  # type: ignore
 
+import compendium
 from compendium import exceptions
 from compendium.settings import Settings
 
@@ -19,18 +20,18 @@ class ConfigFile:
     def __init__(
         self,
         filetype: str = 'toml',
-        driver_paths: Set[str] = set(),
+        driver_paths: Optional[List[str]] = None,
         **kwargs,
     ):
         '''Initialize module loader.'''
         # TODO: writable / readonly
         self.filetype = filetype
         self.basepath: Optional[str] = None
-        self.driver_paths: Set[str] = {
-            os.path.join('compendium', 'config', 'filetypes')
-        }
-        if driver_paths != set():
-            self.driver_paths.update(driver_paths)
+        self.driver_paths: List[str] = [
+            compendium.__path__[0].rsplit(os.sep, 1)[0]  # type: ignore
+        ]
+        if driver_paths:
+            self.driver_paths += driver_paths
 
     def _load_module(
         self,
@@ -40,8 +41,9 @@ class ConfigFile:
         '''Dynamically load the appropriate module.'''
         logging.info('Loading configuration modules')
         __filetype = filetype or self.filetype
-        loader = PluginLoader()  # self.driver_paths)
+        loader = PluginLoader(self.driver_paths)
         __plugin_dir = loader.find_packages(name='compendium')[0]
+        print(__plugin_dir)
         module_path = loader.get_import_path(
             __filetype, __plugin_dir['module_finder'].path
         )
