@@ -319,7 +319,7 @@
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.__init__">
 <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">'toml'</span><span class="p">,</span> <span class="n">driver_paths</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">'toml'</span><span class="p">,</span> <span class="n">driver_paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
 <span class="doc doc-properties">
 <small class="doc doc-property doc-property-special"><code>special</code></small>
 </span>
@@ -332,8 +332,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">19</span>
-<span class="normal">20</span>
+<pre><span></span><span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
 <span class="normal">23</span>
@@ -346,7 +345,8 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span></pre>
+<span class="normal">33</span>
+<span class="normal">34</span></pre>
 </div>
 </td>
 <td class="code">
@@ -354,18 +354,18 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">filetype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'toml'</span><span class="p">,</span>
-    <span class="n">driver_paths</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(),</span>
+    <span class="n">driver_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">'''Initialize module loader.'''</span>
     <span class="c1"># TODO: writable / readonly</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">=</span> <span class="n">filetype</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">basepath</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">driver_paths</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">'compendium'</span><span class="p">,</span> <span class="s1">'config'</span><span class="p">,</span> <span class="s1">'filetypes'</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="n">driver_paths</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">():</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver_paths</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">driver_paths</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">driver_paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">compendium</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">driver_paths</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver_paths</span> <span class="o">+=</span> <span class="n">driver_paths</span>
 </code></pre>
 </div>
 </td>
@@ -387,9 +387,7 @@ dump_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">74</span>
-<span class="normal">75</span>
-<span class="normal">76</span>
+<pre><span></span><span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span>
 <span class="normal">79</span>
@@ -397,7 +395,9 @@ dump_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span>
-<span class="normal">84</span></pre>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span></pre>
 </div>
 </td>
 <td class="code">
@@ -434,9 +434,7 @@ load_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
+<pre><span></span><span class="normal">64</span>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
@@ -444,7 +442,9 @@ load_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 <span class="normal">69</span>
 <span class="normal">70</span>
 <span class="normal">71</span>
-<span class="normal">72</span></pre>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span></pre>
 </div>
 </td>
 <td class="code">
