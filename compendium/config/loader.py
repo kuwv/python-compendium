@@ -40,10 +40,7 @@ class ConfigFile:
         '''Dynamically load the appropriate module.'''
         logging.info('Loading configuration modules')
         __filetype = filetype or self.filetype
-        loader = PluginLoader(
-            # paths=os.path.join(os.path.dirname(__file__), 'filetypes'),
-            # prefix_include=__filetype,
-        )  # self.driver_paths)
+        loader = PluginLoader()  # self.driver_paths)
         __plugin_dir = loader.find_packages(name='compendium')[0]
         module_path = loader.get_import_path(
             __filetype, __plugin_dir['module_finder'].path

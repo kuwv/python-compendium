@@ -15,6 +15,7 @@ before_install:
 
 install:
   - poetry install
+  - pip install tomlkit xmltodict
 
 jobs:
   fast_finish: true
