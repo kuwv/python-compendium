@@ -792,7 +792,7 @@ load_filepath<span class="p">(</span><span class="bp">self</span><span class="p"
 <pre><span></span><code><span class="k">def</span> <span class="nf">load_filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">'''Load settings from configuration in filepath.'''</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"searching for </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'troubleshooting:'</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+    <span class="c1"># print('troubleshooting:', filepath)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_filepath</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filepaths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
