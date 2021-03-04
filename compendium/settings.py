@@ -31,7 +31,7 @@ class Settings(UserDict):
         self.__separator: str = kwargs.pop('separator', '/')
 
         super().__init__(**kwargs)
-        print('data', self.data)
+        # print('data', self.data)
 
     def __repr__(self) -> str:
         '''Get string representaion.'''

@@ -103,7 +103,7 @@ class ConfigManager(ConfigFile):
     def _initialize_settings(self, settings: Dict[Any, Any]) -> None:
         '''Initialize settings.'''
         self.settings._initialize_settings(settings)
-        print('initial settings', self.settings.__dict__)
+        # print('initial settings', self.settings.__dict__)
 
     def _check_filepath(self, filepath: str) -> bool:
         '''Check if configuraion exists at path.'''
@@ -117,7 +117,7 @@ class ConfigManager(ConfigFile):
     def load_filepath(self, filepath: str) -> None:
         '''Load settings from configuration in filepath.'''
         logging.debug("searching for {}".format(filepath))
-        print('troubleshooting:', filepath)
+        # print('troubleshooting:', filepath)
 
         if self._check_filepath(filepath):
             self._filepaths.append(filepath)
@@ -157,11 +157,11 @@ class NestedConfigManager(ConfigManager):
 
     def __get_filepaths(self, basepath: Optional[str] = None):
         '''Load configurations located in nested directory path.'''
-        print('attempting', self.filename)
+        # print('attempting', self.filename)
         for filepath in glob.iglob(
             "/**/{f}".format(f=self.filename), recursive=True
         ):
-            print('attempting', self.filename)
+            # print('attempting', self.filename)
             self.load_filepath(filepath)
 
     def load_configs(

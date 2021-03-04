@@ -43,7 +43,6 @@ class ConfigFile:
         __filetype = filetype or self.filetype
         loader = PluginLoader(self.driver_paths)
         __plugin_dir = loader.find_packages(name='compendium')[0]
-        print(__plugin_dir)
         module_path = loader.get_import_path(
             __filetype, __plugin_dir['module_finder'].path
         )
