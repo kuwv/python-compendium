@@ -35,8 +35,8 @@ class ConfigFile:
 
     def _load_module(
         self,
-        filepath: Optional[str] = None,
-        filetype: Optional[str] = None
+        # filepath: Optional[str] = None,
+        filetype: Optional[str] = None,
     ):
         '''Dynamically load the appropriate module.'''
         logging.info('Loading configuration modules')
@@ -65,8 +65,8 @@ class ConfigFile:
         # TODO: Improve error handling
         if os.path.exists(filepath):
             logging.info("Retrieving configuration: '{}'".format(filepath))
-            self._load_module(filetype or self.filetype)
-            return self.__config_module.load_config(filepath)
+            self._load_module(filetype=filetype or self.filetype)
+            return self.__config_module.load_config(filepath=filepath)
         else:
             raise exceptions.CompendiumConfigFileError(
                 "Skipping: No configuration found at: '{}'".format(filepath)
