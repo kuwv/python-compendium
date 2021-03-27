@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 @dataclass
-class ConfigFilepaths:
+class ConfigPaths:
     r'''Load config paths based on priority.
 
     First(lowest) to last(highest):

@@ -1,6 +1,6 @@
 import os
 
-from compendium.config.paths import ConfigPaths
+from compendium.paths import ConfigPaths
 
 
 def test_singleton(fs):

@@ -141,6 +141,14 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 toml = ["toml"]
 
 [[package]]
+name = "dataclasses"
+version = "0.8"
+description = "A backport of the dataclasses module for Python 3.6"
+category = "main"
+optional = false
+python-versions = ">=3.6, <3.7"
+
+[[package]]
 name = "docstr-coverage"
 version = "1.4.0"
 description = "Utility for examining python source files to ensure proper documentation. Lists missing docstrings, and calculates overall docstring coverage percentage rating."
@@ -904,7 +912,7 @@ xml = ["xmltodict"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "6951bbdf5aa6158be5cd912b645978f24caa5eb4b5d86ad6704a23ced4e5ea5e"
+content-hash = "69da4008903e253489545da7ec5fbfdbc817537f574f9e9b9227368284dae419"
 
 [metadata.files]
 anymod = [
@@ -1006,6 +1014,10 @@ coverage = [
     {file = "coverage-5.5-pp36-none-any.whl", hash = "sha256:f030f8873312a16414c0d8e1a1ddff2d3235655a2174e3648b4fa66b3f2f1079"},
     {file = "coverage-5.5-pp37-none-any.whl", hash = "sha256:2a3859cb82dcbda1cfd3e6f71c27081d18aa251d20a17d87d26d4cd216fb0af4"},
     {file = "coverage-5.5.tar.gz", hash = "sha256:ebe78fe9a0e874362175b02371bdfbee64d8edc42a044253ddf4ee7d3c15212c"},
+]
+dataclasses = [
+    {file = "dataclasses-0.8-py3-none-any.whl", hash = "sha256:0201d89fa866f68c8ebd9d08ee6ff50c0b255f8ec63a71c16fda7af82bb887bf"},
+    {file = "dataclasses-0.8.tar.gz", hash = "sha256:8479067f342acf957dc82ec415d355ab5edb7e7646b90dc6e2fd1d96ad084c97"},
 ]
 docstr-coverage = [
     {file = "docstr_coverage-1.4.0-py3-none-any.whl", hash = "sha256:2592429b0332f3d89aa83f5dae120b1e170f2cf73aba60339be4b806b334a5ba"},

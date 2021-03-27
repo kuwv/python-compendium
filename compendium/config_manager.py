@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional, Set
 
 from . import exceptions
 from .config import ConfigFile
-from .paths import ConfigFilepaths
+from .paths import ConfigPaths
 from .settings import Settings
 
 log = logging.getLogger(__name__)
@@ -212,7 +212,7 @@ class HierarchyConfigManager(ConfigManager):
         self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
         self.merge_sections: Set[str] = kwargs.get('merge_sections', set())
 
-        config_filepaths = ConfigFilepaths(
+        config_filepaths = ConfigPaths(
             application=application,
             filename=self.filename,
             enable_system_filepaths=bool(
