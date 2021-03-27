@@ -7,6 +7,7 @@ import os
 import pytest  # type: ignore
 
 from compendium.config_manager import ConfigManager
+# from compendium.exceptions import CompendiumConfigFileError
 
 config_filepath = os.path.dirname(os.path.realpath(__file__))
 yaml_filepath = os.path.join(config_filepath, 'test.yaml')
@@ -58,6 +59,6 @@ def test_yaml_content(fs):
 #     cfg = ConfigManager(application='tests')
 #     cfg.load(filepath=yaml_filepath)
 #
-#     with pytest.raises(IOError):
+#     with pytest.raises(CompendiumConfigFileError):
 #         cfg.create('/test', 'test')
 #         cfg.dump('./test.yaml')

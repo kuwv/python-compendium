@@ -2,11 +2,13 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 '''Control JSON module.'''
+
 # import datetime
 import errno
 import json  # type: ignore
 # import jsonschema  # type: ignore
 import os
+from typing import Any, Dict
 
 from .. import ConfigBase
 import logging
@@ -15,7 +17,7 @@ import logging
 class JsonConfig(ConfigBase):
     '''Manage JSON configurations.'''
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: str) -> None:
         '''Initialize JSON configuration module.'''
         logging.info('Inializing JsonConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
@@ -26,7 +28,7 @@ class JsonConfig(ConfigBase):
         '''Return support JSON filetypes.'''
         return ['json']
 
-    def load_config(self, filepath):
+    def load_config(self, filepath: str) -> Dict[str, Any]:
         '''Load settings from JSON configuration.'''
         logging.info('loading JSON configuration file')
         if os.path.isfile(filepath):
@@ -36,7 +38,7 @@ class JsonConfig(ConfigBase):
             content = {}
         return content
 
-    def dump_config(self, content, filepath):
+    def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
         '''Save settings to JSON configuration.'''
         try:
             with open(filepath, 'w') as f:
@@ -50,7 +52,7 @@ class JsonConfig(ConfigBase):
                 )
                 raise
 
-    # def validate(self, content):
+    # def validate(self, content: Dict[str, Any]) -> bool:
     #     '''Validate JSON configuration.'''
     #     try:
     #         jsonschema.validate(instance=content, schema=self.schema)

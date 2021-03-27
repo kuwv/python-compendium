@@ -5,13 +5,15 @@
 
 import logging
 import os
-from typing import List, Optional
+from typing import Any, Dict, Optional, Type
+# from weakref import ref
 
-from anymod import PluginLoader  # type: ignore
-
-import compendium
 from compendium import exceptions
-from compendium.settings import Settings
+from compendium.config import ConfigBase
+from compendium.config.filetypes.json import JsonConfig  # noqa
+from compendium.config.filetypes.toml import TomlConfig  # noqa
+from compendium.config.filetypes.xml import XmlConfig  # noqa
+from compendium.config.filetypes.yaml import YamlConfig  # noqa
 
 
 class ConfigFile:
@@ -20,66 +22,61 @@ class ConfigFile:
     def __init__(
         self,
         filetype: str = 'toml',
-        driver_paths: Optional[List[str]] = None,
         **kwargs,
-    ):
+    ) -> None:
         '''Initialize module loader.'''
         # TODO: writable / readonly
         self.filetype = filetype
-        self.basepath: Optional[str] = None
-        self.driver_paths: List[str] = [
-            compendium.__path__[0].rsplit(os.sep, 1)[0]  # type: ignore
-        ]
-        if driver_paths:
-            self.driver_paths += driver_paths
+        self.modules = [m for m in ConfigBase.__subclasses__()]
 
-    def _load_module(
-        self,
-        # filepath: Optional[str] = None,
-        filetype: Optional[str] = None,
-    ):
-        '''Dynamically load the appropriate module.'''
-        logging.info('Loading configuration modules')
-        __filetype = filetype or self.filetype
-        loader = PluginLoader(self.driver_paths)
-        __plugin_dir = loader.find_packages(name='compendium')[0]
-        module_path = loader.get_import_path(
-            __filetype, __plugin_dir['module_finder'].path
-        )
-
-        # TODO: Check if module is already loaded
-        if module_path is not None and module_path != []:
-            classname = "{}Config".format(__filetype.capitalize())
-            config_class = loader.load_classpath(
-                "{m}.{c}".format(m=module_path, c=classname)
-            )
-            self.__config_module = config_class()
-            logging.info('Finished loading configs')
+    @staticmethod
+    def get_filetype(filepath: str) -> Optional[str]:
+        '''Get filetype from filepath.'''
+        if '.' in filepath:
+            return os.path.splitext(filepath)[1].strip('.')
         else:
-            raise exceptions.CompendiumDriverError(
-                'driver not found'
-            )
+            return None
 
-    def load_config(self, filepath: str, filetype: str = None):
+    def _get_class(
+        self,
+        filetype: Optional[str] = None
+    ) -> Optional[Type[ConfigBase]]:
+        '''Get class object from filetype module.'''
+        filetype = filetype or self.filetype
+        for module in self.modules:
+            if filetype in module.filetypes():  # type: ignore
+                return module
+        return None
+
+    def load_config(
+        self,
+        filepath: str,
+        filetype: str = None
+    ) -> Dict[str, Any]:
         '''Use discovered module to load configuration.'''
-        # TODO: Improve error handling
         if os.path.exists(filepath):
             logging.info("Retrieving configuration: '{}'".format(filepath))
-            self._load_module(filetype=filetype or self.filetype)
-            return self.__config_module.load_config(filepath=filepath)
+            Class = self._get_class(filetype)
+            if Class:
+                cls = Class()
+                return cls.load_config(filepath=filepath)
+            else:
+                raise exceptions.CompendiumDriverError(
+                    "Error: No class found for: '{}'".format(filepath)
+                )
         else:
             raise exceptions.CompendiumConfigFileError(
                 "Skipping: No configuration found at: '{}'".format(filepath)
             )
 
-    def dump_config(
-        self,
-        filepath: str,
-        filetype: Optional[str] = None,
-        settings: Settings = None,
-    ):
+    def dump_config(self, filepath: str, settings: Dict[str, Any]) -> None:
         '''Use discovered module to save configuration.'''
-        # TODO: Improve error handling
         logging.info("Saving configuration: '{}'".format(filepath))
-        self._load_module(filetype)
-        self.__config_module.dump_config(settings, filepath)
+        Class = self._get_class(self.get_filetype(filepath))
+        if Class:
+            cls = Class()
+            cls.dump_config(settings, filepath)
+        else:
+            raise exceptions.CompendiumDriverError(
+                "Skipping: No class found for: '{}'".format(filepath)
+            )

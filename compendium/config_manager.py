@@ -6,10 +6,11 @@
 import glob
 import logging
 import os
-import platform
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set
 
+from . import exceptions
 from .config import ConfigFile
+from .paths import ConfigFilepaths
 from .settings import Settings
 
 log = logging.getLogger(__name__)
@@ -134,9 +135,13 @@ class ConfigManager(ConfigFile):
         self.__get_filepaths(filepath=filepath)
         self._initialize_settings(self.load_config(self.head, filetype))
 
-    def dump(self, filepath: str, filetype: Optional[str] = None) -> None:
+    def dump(self, filepath: Optional[str] = None) -> None:
         '''Save settings to configuraiton.'''
-        self.dump_config(self.head, filetype, self.settings)
+        if self.writable:
+            path = filepath or self.head
+            self.dump_config(path, self.settings.data)
+        else:
+            raise exceptions.CompendiumConfigFileError('file is not writable')
 
     def _set_env(self):
         '''Load environs from .env file.'''
@@ -144,7 +149,7 @@ class ConfigManager(ConfigFile):
         if self._check_filepath(env_file):
             with open(env_file) as env:
                 for line in env:
-                    k, v = line.partition("=")[::2]
+                    k, v = line.partition('=')[::2]
                     os.environ[k.strip().upper()] = str(v)
 
 
@@ -207,94 +212,24 @@ class HierarchyConfigManager(ConfigManager):
         self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
         self.merge_sections: Set[str] = kwargs.get('merge_sections', set())
 
-        self.enable_system_filepaths: Union[str, bool] = kwargs.get(
-            'enable_system_filepaths', False
+        config_filepaths = ConfigFilepaths(
+            application=application,
+            filename=self.filename,
+            enable_system_filepaths=bool(
+                kwargs.get('enable_system_filepaths', False)
+            ),
+            enable_user_filepaths=bool(
+                kwargs.get('enable_user_filepaths', False)
+            ),
+            enable_local_filepaths=bool(
+                kwargs.get('enable_local_filepaths', True)
+            ),
         )
-        self.enable_user_filepaths: Union[str, bool] = kwargs.get(
-            'enable_user_filepaths', False
-        )
-        self.enable_local_filepaths: Union[str, bool] = kwargs.get(
-            'enable_local_filepaths', True
-        )
-
-    # TODO: Implement pathlib
-    def __get_filepaths(self):
-        r'''Load config paths based on priority.
-
-        First(lowest) to last(highest):
-          1. Load config.<FILETYPE> from /etc/<APP>
-            - /etc/<APP>/config.<FILETYPE>
-            - /etc/<APP>/<FILENAME>
-          2. Load user configs
-            - Windows: ~\\AppData\\Local\\<COMPANY>\\<APP>\\<FILENAME>
-            - Darwin: ~/Library/Application Support/<APP>/<FILENAME>
-            - Linux: ~/.config/<APP>/<FILENAME>
-            - ~/.<APP>.<FILETYPE>
-            - ~/.<APP>.d/<FILENAME>
-          3. Load config in PWD
-            - ./config.<FILETYPE>
-            - ./<FILENAME>
-          4. Runtime configs:
-            - /etc/sysconfig/<APP>
-            - .env
-            - <CLI>
-
-        '''
-        logging.info('populating settings locations')
-
-        if self.enable_system_filepaths and os.name == 'posix':
-            self.load_filepath(
-                os.path.join(os.sep, 'etc', self.application, self.filename)
-            )
-        # TODO: Add windows/linux compliant service path config option
-
-        if self.enable_user_filepaths:
-            if platform.system() == 'Windows':
-                __user_app_filepath = os.path.join('AppData', 'Local')
-
-            if platform.system() == 'Darwin':
-                __user_app_filepath = os.path.join(
-                    'Library', 'Application Support',
-                )
-
-            if platform.system() == 'Linux':
-                __user_app_filepath = '.config'
-
-            self.load_filepath(
-                os.path.join(
-                    os.path.expanduser('~'),
-                    __user_app_filepath,
-                    self.application,
-                    self.filename,
-                )
-            )
-
-            self.load_filepath(
-                os.path.join(
-                    os.path.expanduser('~'),
-                    ".{a}.{f}".format(a=self.application, f=self.filetype),
-                )
-            )
-            self.load_filepath(
-                os.path.join(
-                    os.path.expanduser('~'),
-                    ".{a}.d".format(a=self.application),
-                    self.filename,
-                )
-            )
-
-        if self.enable_local_filepaths:
-            self.load_filepath(os.path.join(os.getcwd(), self.filename))
-            self.load_filepath(
-                os.path.join(
-                    os.getcwd(),
-                    "{a}.{f}".format(a=self.application, f=self.filetype),
-                )
-            )
+        for x in config_filepaths.filepaths:
+            self.load_filepath(x)
 
     def load_configs(self):
         '''Load settings from hierarchy filepaths.'''
-        self.__get_filepaths()
         settings: Dict[Any, Any] = {}
         for filepath in self._filepaths:
             self.settings.merge(self.load_config(filepath))

@@ -14,21 +14,21 @@ def test_hierarchy(fs):
     # System path
     fs.add_real_file(
         source_path=os.path.join(base_filepath, 'settings1.toml'),
-        target_path=os.path.join(os.sep, 'etc', 'tests', 'config.toml')
+        target_path=os.path.join(os.sep, 'etc', 'hierarchy', 'config.toml')
     )
 
     # User path
     fs.add_real_file(
         source_path=os.path.join(base_filepath, 'settings2.toml'),
-        target_path=os.path.join(user_filepath, '.tests.toml')
+        target_path=os.path.join(user_filepath, '.hierarchy.toml')
     )
     fs.add_real_file(
         source_path=os.path.join(base_filepath, 'settings3.toml'),
-        target_path=os.path.join(user_filepath, '.tests.d', 'config.toml')
+        target_path=os.path.join(user_filepath, '.hierarchy.d', 'config.toml')
     )
 
     cfg = HierarchyConfigManager(
-        application='tests',
+        application='hierarchy',
         merge_strategy='overlay',
         enable_system_filepaths=True,
         enable_user_filepaths=True
@@ -36,11 +36,11 @@ def test_hierarchy(fs):
     cfg.load_configs()
 
     assert (
-        os.path.join(os.sep, 'etc', 'tests', 'config.toml')
+        os.path.join(os.sep, 'etc', 'hierarchy', 'config.toml')
     ) in cfg.filepaths
-    assert (os.path.join(user_filepath, '.tests.toml')) in cfg.filepaths
+    assert (os.path.join(user_filepath, '.hierarchy.toml')) in cfg.filepaths
     assert (
-        os.path.join(user_filepath, '.tests.d', 'config.toml')
+        os.path.join(user_filepath, '.hierarchy.d', 'config.toml')
     ) in cfg.filepaths
 
     assert cfg.settings.get('/table/key') == 'first'
@@ -50,7 +50,7 @@ def test_hierarchy(fs):
     assert cfg.settings.get('/table/subtable/key') != 'second'
     assert cfg.settings.get('/list/**/last') == 'third'
 
-    # Ensure /etc/tests/config.toml is blank
+    # Ensure /etc/hierarchy/config.toml is blank
     # NOTE: Added default
     # with pytest.raises(KeyError):
     #     cfg.settings.get('/list/**/overwritten1')

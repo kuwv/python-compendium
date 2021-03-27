@@ -20,7 +20,6 @@ class Settings(UserDict):
     def __init__(self, application: str, **kwargs):
         '''Initialize settings store.'''
         self.application = application
-
         self.__document: Dict[Any, Any] = {}
 
         if 'defaults' in kwargs and Settings.__defaults == {}:

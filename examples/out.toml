@@ -1,0 +1,7 @@
+fruit = "apple"
+number = 2
+
+[stooges]
+stooge1 = "Larry"
+stooge2 = "Curly"
+stooge3 = "Moe"

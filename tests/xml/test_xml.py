@@ -7,6 +7,7 @@ import os
 import pytest  # type: ignore
 
 from compendium.config_manager import ConfigManager
+from compendium.exceptions import CompendiumConfigFileError
 
 config_filepath = os.path.dirname(os.path.realpath(__file__))
 xml_filepath = os.path.join(config_filepath, 'test.xml')
@@ -58,6 +59,6 @@ def test_cfg_save_fail(fs):
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=xml_filepath)
 
-    with pytest.raises(IOError):
+    with pytest.raises(CompendiumConfigFileError):
         cfg.settings.create('/test', 'test')
         cfg.dump('./test.xml')

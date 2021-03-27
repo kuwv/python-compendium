@@ -16,8 +16,8 @@ class CompendiumConfigFileError(CompendiumException):
     '''Provide exceptions for ConfigFile errors.'''
 
 
-class CompendiumConfigError(CompendiumException):
-    '''Provide exceptions for Config errors.'''
+class CompendiumConfigManagerError(CompendiumException):
+    '''Provide exceptions for Config Manager errors.'''
 
 
 class CompendiumSettingsError(CompendiumException):

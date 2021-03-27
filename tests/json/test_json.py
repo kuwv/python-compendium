@@ -7,6 +7,7 @@ import os
 import pytest  # type: ignore
 
 from compendium.config_manager import ConfigManager
+from compendium.exceptions import CompendiumConfigFileError
 
 settings_filepath = os.path.dirname(os.path.realpath(__file__))
 json_filepath = os.path.join(settings_filepath, 'test.json')
@@ -59,6 +60,6 @@ def test_cfg_save_fail(fs):
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=json_filepath)
 
-    with pytest.raises(IOError):
+    with pytest.raises(CompendiumConfigFileError):
         cfg.settings.create('/test', 'test')
         cfg.dump('./test.json')

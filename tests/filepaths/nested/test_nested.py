@@ -32,7 +32,6 @@ def test_nested(fs):
     )
     cfg.load_configs()
 
-    print(cfg.filepaths)
     assert cfg1_path in cfg.filepaths
     assert cfg2_path in cfg.filepaths
     assert cfg3_path in cfg.filepaths

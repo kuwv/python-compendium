@@ -7,6 +7,7 @@ import os
 import pytest  # type: ignore
 
 from compendium.config_manager import ConfigManager
+from compendium.exceptions import CompendiumConfigFileError
 
 config_filepath = os.path.dirname(os.path.realpath(__file__))
 toml_filepath = os.path.join(config_filepath, 'test.toml')
@@ -48,6 +49,7 @@ def test_toml_content_dump(fs):
     cfg = ConfigManager(application='tests', writable=True)
     cfg.load(filepath=toml_filepath)
     cfg.settings.create('/test', 'test')
+    # TODO where is save happening :/
     assert cfg.settings.get('test') == 'test'
 
 
@@ -58,6 +60,6 @@ def test_cfg_save_fail(fs):
     cfg = ConfigManager(application='tests')
     cfg.load(filepath=toml_filepath)
 
-    with pytest.raises(IOError):
+    with pytest.raises(CompendiumConfigFileError):
         cfg.settings.create('/test', 'test')
         cfg.dump('./test.toml')
