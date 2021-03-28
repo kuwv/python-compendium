@@ -1,15 +1,4 @@
 [[package]]
-name = "anymod"
-version = "0.1.1.dev11"
-description = "AnyMod - Dynamic module loader"
-category = "main"
-optional = false
-python-versions = ">=3.6,<4.0"
-
-[package.dependencies]
-hashin = ">=0.15.0,<0.16.0"
-
-[[package]]
 name = "appdirs"
 version = "1.4.4"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
@@ -270,21 +259,6 @@ python-versions = ">=3.4"
 gitdb = ">=4.0.1,<5"
 
 [[package]]
-name = "hashin"
-version = "0.15.0"
-description = "Edits your requirements.txt by hashing them in"
-category = "main"
-optional = false
-python-versions = ">=2.7,!=3.0,!=3.1,!=3.2,!=3.3"
-
-[package.dependencies]
-packaging = "*"
-pip-api = "*"
-
-[package.extras]
-dev = ["tox", "twine"]
-
-[[package]]
 name = "idna"
 version = "2.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -528,7 +502,7 @@ twitter = ["twython"]
 name = "packaging"
 version = "20.9"
 description = "Core utilities for Python packages"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -550,14 +524,6 @@ description = "Python Build Reasonableness"
 category = "dev"
 optional = false
 python-versions = ">=2.6"
-
-[[package]]
-name = "pip-api"
-version = "0.0.19"
-description = "An unofficial, importable pip API"
-category = "main"
-optional = false
-python-versions = ">=3.5"
 
 [[package]]
 name = "pluggy"
@@ -639,7 +605,7 @@ Markdown = ">=3.2"
 name = "pyparsing"
 version = "2.4.7"
 description = "Python parsing module"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -912,13 +878,9 @@ xml = ["xmltodict"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "69da4008903e253489545da7ec5fbfdbc817537f574f9e9b9227368284dae419"
+content-hash = "22fdfbc0adbb0244f12a89d121dc3234106e2546befa5cf4c386238f22c33aa0"
 
 [metadata.files]
-anymod = [
-    {file = "anymod-0.1.1.dev11-py3-none-any.whl", hash = "sha256:0f43326e8b88f8398d7dd33c36da316425c63f8bef5988e5c294685bba504088"},
-    {file = "anymod-0.1.1.dev11.tar.gz", hash = "sha256:06aaacadcca2d7cc604a7447b6a0ae3d93cd6f76c902057a2aa58c4ad0c8e471"},
-]
 appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
@@ -1057,10 +1019,6 @@ gitpython = [
     {file = "GitPython-3.1.14-py3-none-any.whl", hash = "sha256:3283ae2fba31c913d857e12e5ba5f9a7772bbc064ae2bb09efafa71b0dd4939b"},
     {file = "GitPython-3.1.14.tar.gz", hash = "sha256:be27633e7509e58391f10207cd32b2a6cf5b908f92d9cd30da2e514e1137af61"},
 ]
-hashin = [
-    {file = "hashin-0.15.0-py2.py3-none-any.whl", hash = "sha256:0ca4ce1507216b1fdeffb8cc009eb0561e81449668ffe436484f156ec27e6c22"},
-    {file = "hashin-0.15.0.tar.gz", hash = "sha256:316dff5c5f0bf98560682e92386fa4386a8ae402592f647d07bf7e450ea8f053"},
-]
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
     {file = "idna-2.10.tar.gz", hash = "sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"},
@@ -1190,10 +1148,6 @@ pathspec = [
 pbr = [
     {file = "pbr-5.5.1-py2.py3-none-any.whl", hash = "sha256:b236cde0ac9a6aedd5e3c34517b423cd4fd97ef723849da6b0d2231142d89c00"},
     {file = "pbr-5.5.1.tar.gz", hash = "sha256:5fad80b613c402d5b7df7bd84812548b2a61e9977387a80a5fc5c396492b13c9"},
-]
-pip-api = [
-    {file = "pip-api-0.0.19.tar.gz", hash = "sha256:c346925edc5b323e5da26362150ac2ce4c8f754bb8e7fe3e91db6af97cb2d9f0"},
-    {file = "pip_api-0.0.19-py3-none-any.whl", hash = "sha256:a8fd4bc9bb11d3cb1117ec001ecd8c21e9177bda8ae270b046e1d7aa31098f27"},
 ]
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},

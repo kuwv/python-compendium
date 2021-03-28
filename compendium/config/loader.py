@@ -5,6 +5,7 @@
 
 import logging
 import os
+import pkg_resources
 from typing import Any, Dict, Optional, Type
 # from weakref import ref
 
@@ -12,8 +13,10 @@ from compendium import exceptions
 from compendium.config import ConfigBase
 from compendium.config.filetypes.json import JsonConfig  # noqa
 from compendium.config.filetypes.toml import TomlConfig  # noqa
-from compendium.config.filetypes.xml import XmlConfig  # noqa
 from compendium.config.filetypes.yaml import YamlConfig  # noqa
+
+if 'xmltodict' in {pkg.key for pkg in pkg_resources.working_set}:
+    from compendium.config.filetypes.xml import XmlConfig  # noqa
 
 
 class ConfigFile:
