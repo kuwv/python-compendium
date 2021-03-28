@@ -36,6 +36,7 @@ class ConfigPaths:
         - <CLI>
 
     '''
+
     # TODO: Implement pathlib
 
     application: str
@@ -148,6 +149,7 @@ class ConfigPaths:
 
     @property
     def filepaths(self):
+        '''Return combined list of all paths.'''
         return (
             self.system_filepaths + self.user_filepaths + self.local_filepaths
         )
