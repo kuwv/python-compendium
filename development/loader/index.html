@@ -196,6 +196,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config.loader.ConfigFile.get_filetype">
+    get_filetype()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#compendium.config.loader.ConfigFile.load_config">
     load_config()
   </a>
@@ -285,6 +290,11 @@
   </a>
 </li>
 <li class="md-nav__item">
+<a class="md-nav__link" href="#compendium.config.loader.ConfigFile.get_filetype">
+    get_filetype()
+  </a>
+</li>
+<li class="md-nav__item">
 <a class="md-nav__link" href="#compendium.config.loader.ConfigFile.load_config">
     load_config()
   </a>
@@ -319,7 +329,7 @@
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.__init__">
 <code class="highlight language-python">
-__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">'toml'</span><span class="p">,</span> <span class="n">driver_paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
+__init__<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s1">'toml'</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> </code>
 <span class="doc doc-properties">
 <small class="doc doc-property doc-property-special"><code>special</code></small>
 </span>
@@ -332,12 +342,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
+<pre><span></span><span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
@@ -345,8 +350,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span></pre>
+<span class="normal">33</span></pre>
 </div>
 </td>
 <td class="code">
@@ -354,18 +358,12 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">filetype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">'toml'</span><span class="p">,</span>
-    <span class="n">driver_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">'''Initialize module loader.'''</span>
     <span class="c1"># TODO: writable / readonly</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span> <span class="o">=</span> <span class="n">filetype</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">basepath</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">driver_paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">compendium</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
-    <span class="p">]</span>
-    <span class="k">if</span> <span class="n">driver_paths</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver_paths</span> <span class="o">+=</span> <span class="n">driver_paths</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ConfigBase</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()]</span>
 </code></pre>
 </div>
 </td>
@@ -377,7 +375,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.dump_config">
 <code class="highlight language-python">
-dump_config<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+dump_config<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Use discovered module to save configuration.</p>
@@ -402,17 +400,59 @@ dump_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">dump_config</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">filetype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">settings</span><span class="p">:</span> <span class="n">Settings</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">dump_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">'''Use discovered module to save configuration.'''</span>
-    <span class="c1"># TODO: Improve error handling</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Saving configuration: '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_load_module</span><span class="p">(</span><span class="n">filetype</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__config_module</span><span class="o">.</span><span class="n">dump_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+    <span class="n">Class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_filetype</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">Class</span><span class="p">:</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="n">Class</span><span class="p">()</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">dump_config</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">CompendiumDriverError</span><span class="p">(</span>
+            <span class="s2">"Skipping: No class found for: '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="p">)</span>
+</code></pre>
+</div>
+</td>
+</tr>
+</table>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="compendium.config.loader.ConfigFile.get_filetype">
+<code class="highlight language-python">
+get_filetype<span class="p">(</span><span class="n">filepath</span><span class="p">)</span> </code>
+<span class="doc doc-properties">
+<small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+</span>
+</h3>
+<div class="doc doc-contents">
+<p>Get filetype from filepath.</p>
+<details class="quote">
+<summary>Source code in <code>compendium/config/loader.py</code></summary>
+<table class="highlighttable">
+<tr>
+<td class="linenos">
+<div class="linenodiv">
+<pre><span></span><span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre>
+</div>
+</td>
+<td class="code">
+<div class="highlight">
+<pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">get_filetype</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">'''Get filetype from filepath.'''</span>
+    <span class="k">if</span> <span class="s1">'.'</span> <span class="ow">in</span> <span class="n">filepath</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filepath</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
 </code></pre>
 </div>
 </td>
@@ -434,7 +474,16 @@ load_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">63</span>
+<pre><span></span><span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
 <span class="normal">64</span>
 <span class="normal">65</span>
 <span class="normal">66</span>
@@ -449,13 +498,22 @@ load_config<span class="p">(</span><span class="bp">self</span><span class="p">,
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filetype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">filetype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="sd">'''Use discovered module to load configuration.'''</span>
-    <span class="c1"># TODO: Improve error handling</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Retrieving configuration: '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_load_module</span><span class="p">(</span><span class="n">filetype</span><span class="o">=</span><span class="n">filetype</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">filetype</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__config_module</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">Class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_class</span><span class="p">(</span><span class="n">filetype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Class</span><span class="p">:</span>
+            <span class="bp">cls</span> <span class="o">=</span> <span class="n">Class</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">CompendiumDriverError</span><span class="p">(</span>
+                <span class="s2">"Error: No class found for: '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+            <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">CompendiumConfigFileError</span><span class="p">(</span>
             <span class="s2">"Skipping: No configuration found at: '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>

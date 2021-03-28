@@ -563,8 +563,7 @@ merge_strategy:
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">21</span>
-<span class="normal">22</span>
+<pre><span></span><span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
@@ -589,7 +588,8 @@ merge_strategy:
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
-<span class="normal">47</span></pre>
+<span class="normal">47</span>
+<span class="normal">48</span></pre>
 </div>
 </td>
 <td class="code">
@@ -632,7 +632,7 @@ merge_strategy:
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="compendium.config_manager.ConfigManager.dump">
 <code class="highlight language-python">
-dump<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
+dump<span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> </code>
 </h3>
 <div class="doc doc-contents">
 <p>Save settings to configuraiton.</p>
@@ -642,16 +642,24 @@ dump<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span></pre>
+<pre><span></span><span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span></pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filetype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">'''Save settings to configuraiton.'''</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">dump_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">head</span><span class="p">,</span> <span class="n">filetype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">writable</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">filepath</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">head</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dump_config</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">CompendiumConfigFileError</span><span class="p">(</span><span class="s1">'file is not writable'</span><span class="p">)</span>
 </code></pre>
 </div>
 </td>
@@ -676,10 +684,10 @@ get_filename<span class="p">(</span><span class="n">filepath</span><span class="
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">93</span>
-<span class="normal">94</span>
+<pre><span></span><span class="normal">94</span>
 <span class="normal">95</span>
-<span class="normal">96</span></pre>
+<span class="normal">96</span>
+<span class="normal">97</span></pre>
 </div>
 </td>
 <td class="code">
@@ -712,10 +720,10 @@ get_filetype<span class="p">(</span><span class="n">filename</span><span class="
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal"> 98</span>
-<span class="normal"> 99</span>
+<pre><span></span><span class="normal"> 99</span>
 <span class="normal">100</span>
-<span class="normal">101</span></pre>
+<span class="normal">101</span>
+<span class="normal">102</span></pre>
 </div>
 </td>
 <td class="code">
@@ -745,10 +753,10 @@ load<span class="p">(</span><span class="bp">self</span><span class="p">,</span>
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">132</span>
-<span class="normal">133</span>
+<pre><span></span><span class="normal">133</span>
 <span class="normal">134</span>
-<span class="normal">135</span></pre>
+<span class="normal">135</span>
+<span class="normal">136</span></pre>
 </div>
 </td>
 <td class="code">
@@ -778,13 +786,13 @@ load_filepath<span class="p">(</span><span class="bp">self</span><span class="p"
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">117</span>
-<span class="normal">118</span>
+<pre><span></span><span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre>
+<span class="normal">123</span>
+<span class="normal">124</span></pre>
 </div>
 </td>
 <td class="code">
@@ -820,10 +828,10 @@ split_filepath<span class="p">(</span><span class="n">filepath</span><span class
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">88</span>
-<span class="normal">89</span>
+<pre><span></span><span class="normal">89</span>
 <span class="normal">90</span>
-<span class="normal">91</span></pre>
+<span class="normal">91</span>
+<span class="normal">92</span></pre>
 </div>
 </td>
 <td class="code">
@@ -894,12 +902,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
+<pre><span></span><span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
@@ -929,7 +932,18 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
-<span class="normal">218</span></pre>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span></pre>
 </div>
 </td>
 <td class="code">
@@ -961,15 +975,21 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
     <span class="bp">self</span><span class="o">.</span><span class="n">merge_strategy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_strategy'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">merge_sections</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'merge_sections'</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">enable_system_filepaths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="s1">'enable_system_filepaths'</span><span class="p">,</span> <span class="kc">False</span>
+    <span class="n">config_filepaths</span> <span class="o">=</span> <span class="n">ConfigPaths</span><span class="p">(</span>
+        <span class="n">application</span><span class="o">=</span><span class="n">application</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+        <span class="n">enable_system_filepaths</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'enable_system_filepaths'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">enable_user_filepaths</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'enable_user_filepaths'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">enable_local_filepaths</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'enable_local_filepaths'</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="p">),</span>
     <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">enable_user_filepaths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="s1">'enable_user_filepaths'</span><span class="p">,</span> <span class="kc">False</span>
-    <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">enable_local_filepaths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-        <span class="s1">'enable_local_filepaths'</span><span class="p">,</span> <span class="kc">True</span>
-    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">config_filepaths</span><span class="o">.</span><span class="n">filepaths</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_filepath</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </code></pre>
 </div>
 </td>
@@ -991,20 +1011,18 @@ load_configs<span class="p">(</span><span class="bp">self</span><span class="p">
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span></pre>
+<pre><span></span><span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span></pre>
 </div>
 </td>
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">load_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">'''Load settings from hierarchy filepaths.'''</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__get_filepaths</span><span class="p">()</span>
     <span class="n">settings</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filepaths</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_config</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
@@ -1043,9 +1061,9 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span></pre>
+<pre><span></span><span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span></pre>
 </div>
 </td>
 <td class="code">
@@ -1074,17 +1092,17 @@ load_configs<span class="p">(</span><span class="bp">self</span><span class="p">
 <tr>
 <td class="linenos">
 <div class="linenodiv">
-<pre><span></span><span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
+<pre><span></span><span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
 <span class="normal">176</span>
-<span class="normal">177</span></pre>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span></pre>
 </div>
 </td>
 <td class="code">
