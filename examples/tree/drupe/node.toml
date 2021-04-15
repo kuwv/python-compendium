@@ -1,0 +1,6 @@
+[[fruit.drupe]]
+  name = "peach"
+
+  [fruit.drupe.physical]
+    color = "peach"
+    shape = "round"

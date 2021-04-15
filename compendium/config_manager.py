@@ -6,20 +6,21 @@
 import glob
 import logging
 import os
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Callable, Dict, List, Union
+from mypy_extensions import KwArg, VarArg
 
-from . import exceptions
-from .config import ConfigFile
-from .paths import ConfigPaths
-from .settings import Settings
+from anytree import NodeMixin  # type: ignore
+
+from compendium.loader import ConfigFile
+from compendium.filepaths import ConfigPaths
+# from compendium.query import DpathMixin
+from compendium.settings import EnvironsMixin, SettingsMap
 
 log = logging.getLogger(__name__)
 
 
-class ConfigManager(ConfigFile):
-    '''Manage settings from cache.'''
-
-    def __init__(self, application: str, **kwargs):
+class ConfigManager(EnvironsMixin):
+    def __init__(self, *args: str, **kwargs: Any) -> None:
         '''Initialize single settings management.
 
         merge_sections: []
@@ -29,169 +30,104 @@ class ConfigManager(ConfigFile):
           - last
 
         '''
+        # Setup logging
         if 'log_level' in kwargs:
             log.setLevel(getattr(logging, kwargs.pop('log_level').upper()))
         if 'log_handler' in kwargs:
             log_handler = kwargs.pop('log_handler')
             log.addHandler(logging.StreamHandler(log_handler))  # type: ignore
 
-        self._filepaths: List[str] = []
-        self.filename = kwargs.get('filename', 'config.toml')
-        self.filetype = kwargs.get('filetype', self.get_filetype(self.filename))
+        # Setup filepaths
+        # TODO: args should be filepaths
+        self._filepaths: List[str] = list(args)
+        self.config_files: List[Dict[str, Union[str, ConfigFile]]] = []
 
-        ConfigFile.__init__(self, self.filetype, **kwargs)
-        self.settings = Settings(application, **kwargs)
+        # Load environs
+        if 'prefix' in kwargs:
+            self.prefix = kwargs.pop('prefix')
+        if 'separator' in kwargs:
+            self.separator = kwargs.pop('separator')
+        if kwargs.pop('load_dotenv', False):
+            self.load_dotenv()
+        if kwargs.pop('load_environs', True):
+            self.environs = self.load_environs()
+        # if kwargs.pop('load_startup_args', True):
+        #     self.environs.update(kwargs.pop('load_startup_args', {}))
 
-        self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
-        self.merge_sections: Set[str] = kwargs.get('merge_sections', set())
+        # Load defaults
+        defaults = kwargs.pop('defaults', {})
 
-        self.writable: Optional[bool] = kwargs.get('writable', False)
+        # Populate settings
+        if 'data' in kwargs:
+            self.data = SettingsMap(*kwargs.pop('data'))
+            if defaults != {}:
+                self.defaults.update(defaults)
+        else:
+            self.data = SettingsMap(defaults)
 
-    # def __getattr__(self, k: str) -> Optional[str]:
-    #     '''Get attribute.'''
-    #     if hasattr(self.settings, k):
-    #         print('It does')
-    #     try:
-    #         return self.settings.get(k)
-    #     except Exception as err:
-    #         print(err)
-    #         return None
+    def __getattr__(
+        self, attr: str
+    ) -> Callable[[VarArg(Any), KwArg(Any)], Any]:
+        '''Proxy calls to settings store.'''
+        if hasattr(self.__dict__.get('data'), attr):
+            def wrapper(*args, **kwargs):
+                return getattr(self.data, attr)(*args, **kwargs)
+            return wrapper
+        raise AttributeError(attr)
 
-    # def __setattr__(self, k: str, v: Any) -> None:
-    #     '''Set attribute.'''
-    #     self.__settings[k] = v
-
-    @property
-    def application(self) -> str:
-        '''Get application name.'''
-        return self.settings.application
-
-    @property
-    def defaults(self) -> Dict[Any, Any]:
-        '''Get defaults.'''
-        return self.settings.defaults
-
-    @property
-    def head(self) -> str:
-        '''Retrieve head filepath.'''
-        return self._filepaths[-1] if self._filepaths != [] else ''
-
-    # @property
-    # def tail(self) -> str:
-    #     '''Retrieve beggining filepath.'''
-    #     return self._filepaths[0] if self._filepaths != [] else ''
+    def __repr__(self) -> str:
+        '''Get string representation of data.'''
+        return repr(self.data)
 
     @property
-    def filepaths(self) -> List[str]:
+    def defaults(self):  # type: ignore
+        '''Get configuration defaults.'''
+        return self.data.maps[0]
+
+    @property
+    def settings(self) -> SettingsMap:
+        '''Create settings to prototype idea.'''
+        # TODO: maybe returing maps would be better
+        if self.environs != {}:
+            return SettingsMap(self.environs, *self.data.maps)
+        else:
+            return self.data
+
+    @property
+    def filepaths(self) -> List[str]:  # remove
         '''Retrieve filepaths.'''
         return self._filepaths
 
-    @staticmethod
-    def split_filepath(filepath: str) -> List[str]:
-        '''Separate filename from filepath.'''
-        return filepath.rsplit('/', 1)
-
-    @staticmethod
-    def get_filename(filepath: str) -> str:
-        '''Get the name of the file.'''
-        return filepath.rsplit('/', 1)[1]
-
-    @staticmethod
-    def get_filetype(filename: str) -> str:
-        '''Get filetype from filename.'''
-        return filename.split('.')[-1]
-
-    def _initialize_settings(self, settings: Dict[Any, Any]) -> None:
-        '''Initialize settings.'''
-        self.settings._initialize_settings(settings)
-        # print('initial settings', self.settings.__dict__)
-
-    def _check_filepath(self, filepath: str) -> bool:
-        '''Check if configuraion exists at path.'''
-        if os.path.isfile(filepath):
-            logging.debug("{} found".format(filepath))
-            return True
-        else:
-            logging.debug("{} not found".format(filepath))
-            return False
-
-    def load_filepath(self, filepath: str) -> None:
+    def add_filepath(self, filepath: str) -> None:
         '''Load settings from configuration in filepath.'''
         logging.debug("searching for {}".format(filepath))
-        # print('troubleshooting:', filepath)
-
-        if self._check_filepath(filepath):
-            self._filepaths.append(filepath)
-
-    def __get_filepaths(self, filepath: str) -> None:
-        '''Get filepaths.'''
         self._filepaths.append(filepath)
-        self.basepath, self.filename = self.split_filepath(filepath)
-        if '.' in self.filename:
-            self.filetype = self.get_filetype(self.filename)
 
-    def load(self, filepath: str, filetype: Optional[str] = None) -> None:
-        '''Load settings from configuration file.'''
-        self.__get_filepaths(filepath=filepath)
-        self._initialize_settings(self.load_config(self.head, filetype))
-
-    def dump(self, filepath: Optional[str] = None) -> None:
-        '''Save settings to configuraiton.'''
-        if self.writable:
-            path = filepath or self.head
-            self.dump_config(path, self.settings.data)
-        else:
-            raise exceptions.CompendiumConfigFileError('file is not writable')
-
-    def _set_env(self):
-        '''Load environs from .env file.'''
-        env_file = os.path.join(os.getcwd(), '.env')
-        if self._check_filepath(env_file):
-            with open(env_file) as env:
-                for line in env:
-                    k, v = line.partition('=')[::2]
-                    os.environ[k.strip().upper()] = str(v)
-
-
-class NestedConfigManager(ConfigManager):
-    '''Manage settings from nested configurations.'''
-
-    def __init__(self, application: str, **kwargs):
-        '''Initialize nested settings management.'''
-        super().__init__(application, **kwargs)
-
-    def __get_filepaths(self, basepath: Optional[str] = None):
-        '''Load configurations located in nested directory path.'''
-        # print('attempting', self.filename)
-        for filepath in glob.iglob(
-            "/**/{f}".format(f=self.filename), recursive=True
-        ):
-            # print('attempting', self.filename)
-            self.load_filepath(filepath)
-
-    def load_configs(
-        self, filepath: Optional[str] = None, filetype: Optional[str] = None
-    ):
+    def load_config(self, filepath: str) -> None:
         '''Load settings from nested configuration.'''
-        self.__get_filepaths()
-        settings = []
+        if os.path.exists(filepath):
+            config_file = ConfigFile(filepath=filepath)
+            config_file.load()
+            self.data.push(config_file)
+
+    def load_configs(self) -> None:
+        '''Load configuration files from filepaths.'''
         for filepath in self._filepaths:
-            settings.append(
-                {'filepath': filepath, **self.load_config(filepath)}
-            )
-        self._initialize_settings({'settings': settings})
+            self.load_config(filepath)
 
 
+# TODO: refactor to consume multiple configfile objects
+# TODO: refactor for lazyloading
 class HierarchyConfigManager(ConfigManager):
-    '''Manage settings from hierarchy configurations.'''
+    '''Manage settings from hierarchy config_files.'''
 
-    def __init__(self, application: str, **kwargs):
+    def __init__(self, name: str, *args: str, **kwargs: Any) -> None:
         '''Initialize settings from hirarchy filepaths.
 
         Parameters
         ----------
-        application: str
-            Name of application.
+        name: str
+            Name of name.
         merge_sections: list, optional
             Include sections to be merged
         merge_strategy: list, optional
@@ -200,37 +136,133 @@ class HierarchyConfigManager(ConfigManager):
               - partition will keeps each seettings separate
               - last will only use the last loaded
         enable_system_filepaths: bool, optional
-            Enable system filepath lookup for configurations.
-        enable_user_filepaths: bool, optional
-            Enable user filepath lookup for configurations.
+            Enable system filepath lookup for config_files.
+        enable_global_filepaths: bool, optional
+            Enable user filepath lookup for config_files.
         enable_local_filepaths: bool, optional
-            Enable local filepath lookup for configurations.
+            Enable local filepath lookup for config_files.
 
         '''
-        super().__init__(application, **kwargs)
-
-        self.merge_strategy: Optional[str] = kwargs.get('merge_strategy', None)
-        self.merge_sections: Set[str] = kwargs.get('merge_sections', set())
-
-        config_filepaths = ConfigPaths(
-            application=application,
-            filename=self.filename,
-            enable_system_filepaths=bool(
-                kwargs.get('enable_system_filepaths', False)
-            ),
-            enable_user_filepaths=bool(
-                kwargs.get('enable_user_filepaths', False)
-            ),
-            enable_local_filepaths=bool(
-                kwargs.get('enable_local_filepaths', True)
-            ),
+        self.basedir = kwargs.pop('basedir', os.sep)
+        self.filename = kwargs.pop('filename', 'config.toml')
+        self.enable_system_filepaths = bool(
+            kwargs.get('enable_system_filepaths', False)
         )
-        for x in config_filepaths.filepaths:
-            self.load_filepath(x)
+        self.enable_global_filepaths = bool(
+            kwargs.get('enable_global_filepaths', False)
+        )
+        self.enable_local_filepaths = bool(
+            kwargs.get('enable_local_filepaths', True)
+        )
+        super().__init__(*args, **kwargs)
+        self.name = name
+        self._prep_filepaths()
 
-    def load_configs(self):
-        '''Load settings from hierarchy filepaths.'''
-        settings: Dict[Any, Any] = {}
-        for filepath in self._filepaths:
-            self.settings.merge(self.load_config(filepath))
-        self._initialize_settings(settings)
+    def _prep_filepaths(self) -> None:
+        '''Load config_files located in nested directory path.'''
+        config_filepaths = ConfigPaths(
+            name=self.name,
+            filename=self.filename,
+            basedir=self.basedir,
+            enable_system_filepaths=self.enable_system_filepaths,
+            enable_global_filepaths=self.enable_global_filepaths,
+            enable_local_filepaths=self.enable_local_filepaths,
+        )
+        for filepath in config_filepaths.filepaths:
+            self.add_filepath(filepath)
+
+
+# TODO: refactor to consume multiple configfile objects
+class TreeConfigManager(ConfigManager, NodeMixin):
+    '''Manage settings from nested tree config_files.'''
+
+    def __init__(self, name: str, *args: str, **kwargs: Any) -> None:
+        '''Initialize nested settings management.'''
+        self.basedir = kwargs.pop('basedir', os.getcwd())
+        self.filename = kwargs.pop('filename', 'config.toml')
+
+        self.parent = kwargs.pop('parent', None)
+        if 'children' in kwargs:
+            self.children = kwargs.pop('children')
+
+        load_root = kwargs.pop('load_root', False)
+        load_all = kwargs.pop('load_all', False)
+
+        super().__init__(*args, **kwargs)
+        self.name = name
+
+        self._prep_filepaths()
+        if load_root:
+            self.load_config(self.filepaths[0])
+        if load_all:
+            self.load_configs()
+
+    def __iter__(self) -> 'TreeConfigManager':
+        '''Return hand itself as iterator.'''
+        self.__count = 0
+        return self
+
+    def __next__(self) -> ConfigFile:
+        '''Get next card instance.'''
+        print('maps', self.data == {})
+        if self.__count < len(self._filepaths):
+            filepath = self._filepaths[self.__count]
+            if os.path.exists(filepath):
+                config_file = ConfigFile(filepath=filepath)
+                config_file.load()
+                if config_file.filepath:
+                    print(self.get_name(config_file.filepath))
+                    print('filepath', config_file.filepath)
+            else:
+                config_file = ConfigFile(filepath)
+            self.__count += 1
+            return self.new_child(
+                self.get_name(filepath),
+                data=config_file,
+            )
+        else:
+            raise StopIteration()
+
+    def new_child(
+        self,
+        name: str,
+        *args: str,
+        **kwargs: Any
+    ) -> 'TreeConfigManager':
+        '''Create config file tree node.'''
+        # TODO: get relative filepaths as *args
+        if 'data' in kwargs and kwargs['data'] not in self.data.maps:
+            new_data = kwargs.pop('data')
+            data = [new_data] + self.data.maps
+        else:
+            data = self.data.maps
+        kwargs['data'] = data
+        return self.__class__(name, *args, parent=self, **kwargs)
+
+    def get_name(self, filepath: str) -> str:
+        '''Get name from tree path.'''
+        return os.path.dirname(
+            os.path.relpath(filepath, self.basedir)
+        ).replace(os.sep, self.separator)
+
+    # @property
+    # def settings(self) -> SettingsMap:
+    #     '''Create settings to prototype idea.'''
+    #     settings = SettingsMap()
+    #     for cfg in self.config_files:
+    #         # TODO: if config_file has name else
+    #         name = self.get_name(cfg['filepath'])
+    #         if name == '':
+    #             # TODO: should create list for child configs
+    #             settings.push(cfg['config_file'])
+    #         else:
+    #             # TODO: should append to list
+    #             settings.create(name, cfg['config_file'])
+    #     return settings
+
+    def _prep_filepaths(self) -> None:
+        '''Load config_files located in nested directory path.'''
+        for filepath in glob.iglob(
+            os.path.join(self.basedir, '**', self.filename), recursive=True
+        ):
+            self.add_filepath(filepath)

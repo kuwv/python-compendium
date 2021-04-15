@@ -5,7 +5,7 @@
 
 from invoke import task  # type: ignore
 
-from compendium.__version__ import __version__
+from compendium import __version__
 
 if 'dev' in __version__ or 'rc' in __version__:
     part = 'build'
@@ -65,6 +65,7 @@ def clean(ctx):  # type: ignore
     paths = ['dist', 'logs', 'site']
     paths.append('**/__pycache__')
     paths.append('**/*.pyc')
+    paths.append('.mypy_cache')
     paths.append('compendium.egg-info')
     for path in paths:
         ctx.run("rm -rf {}".format(path))

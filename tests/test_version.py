@@ -3,7 +3,7 @@
 # :license: Apache 2.0, see LICENSE for more details.
 '''Test version management.'''
 
-from compendium.__version__ import __version__
+from compendium import __version__
 
 
 def test_version():

@@ -1,0 +1,6 @@
+[[fruit.hesperidium]]
+  name = "lemon"
+
+  [fruit.hesperidium.physical]
+    color = "yellow"
+    shape = "oval"

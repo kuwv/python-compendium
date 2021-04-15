@@ -1,0 +1,6 @@
+[[fruit.berry]]
+  name = "banana"
+
+  [fruit.berry.physical]
+    color = "yellow"
+    shape = "bent"

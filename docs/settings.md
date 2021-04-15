@@ -23,7 +23,7 @@ Defaults are settings loaded from a selected configuration file. This configurat
 
 ## Configuring Settings Manager
 
-`application` - Name of the application instance.
+`name` - Name of the name instance.
 
 `path` - Path to the configuration files.
 
@@ -36,7 +36,7 @@ Defaults are settings loaded from a selected configuration file. This configurat
 ```
 from compendium.settings import Settings
 
-cfg = Settings(application='app', path='afile.toml')
+cfg = Settings(name='app', path='afile.toml')
 cfg.load()
 ```
 

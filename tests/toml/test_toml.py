@@ -6,7 +6,7 @@
 import os
 import pytest  # type: ignore
 
-from compendium.config_manager import ConfigManager
+from compendium.loader import ConfigFile
 from compendium.exceptions import CompendiumConfigFileError
 
 config_filepath = os.path.dirname(os.path.realpath(__file__))
@@ -15,51 +15,53 @@ toml_filepath = os.path.join(config_filepath, 'test.toml')
 
 # def test_empty_filepath():
 #     '''Test empty file.'''
-#     cfg = ConfigManager(application='empty', filename='test.toml')
+#     cfg = ConfigFile(name='empty', filename='test.toml')
 #     cfg.load()
-#     assert not cfg.filepaths
+#     assert not cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_filepath(fs):
     '''Test TOML filepaths.'''
     fs.add_real_file(toml_filepath)
-    cfg = ConfigManager(application='toml', filename='test.toml')
-    cfg.load_filepath(os.path.join(config_filepath, 'test.toml'))
-    assert "{}/test.toml".format(config_filepath) in cfg.filepaths
+    cfg = ConfigFile(
+        name='toml',
+        filepath=os.path.join(config_filepath, 'test.toml')
+    )
+    assert "{}/test.toml".format(config_filepath) == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content(fs):
     '''Test TOML content load.'''
     fs.add_real_file(toml_filepath)
-    cfg = ConfigManager(application='tests')
+    cfg = ConfigFile(name='tests')
     cfg.load(filepath=toml_filepath)
-    assert cfg.settings.get('/stooges/stooge1') == 'Larry'
-    assert cfg.settings.get('/stooges/stooge2') == 'Curly'
-    assert cfg.settings.get('/stooges/stooge3') == 'Moe'
-    assert cfg.settings.get('/fruit') != 'banana'
-    assert cfg.settings.get('/number') == 2
+    assert cfg.retrieve('/stooges/stooge1') == 'Larry'
+    assert cfg.retrieve('/stooges/stooge2') == 'Curly'
+    assert cfg.retrieve('/stooges/stooge3') == 'Moe'
+    assert cfg.retrieve('/fruit') != 'banana'
+    assert cfg.retrieve('/number') == 2
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content_dump(fs):
     '''Test TOML content save.'''
     fs.add_real_file(toml_filepath, False)
-    cfg = ConfigManager(application='tests', writable=True)
+    cfg = ConfigFile(name='tests', writable=True)
     cfg.load(filepath=toml_filepath)
-    cfg.settings.create('/test', 'test')
+    cfg.create('/test', 'test')
     # TODO where is save happening :/
-    assert cfg.settings.get('test') == 'test'
+    assert cfg.retrieve('test') == 'test'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     '''Test TOML content failure.'''
     fs.add_real_file(toml_filepath)
-    cfg = ConfigManager(application='tests')
+    cfg = ConfigFile(name='tests')
     cfg.load(filepath=toml_filepath)
 
     with pytest.raises(CompendiumConfigFileError):
-        cfg.settings.create('/test', 'test')
+        cfg.create('/test', 'test')
         cfg.dump('./test.toml')

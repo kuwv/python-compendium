@@ -9,10 +9,10 @@ import logging
 
 import tomlkit  # type: ignore
 
-from .. import ConfigBase
+from compendium.filetypes_base import FiletypesBase
 
 
-class TomlConfig(ConfigBase):
+class TomlConfig(FiletypesBase):
     '''Manage toml configurations.'''
 
     def __init__(self, **kwargs):
@@ -27,12 +27,42 @@ class TomlConfig(ConfigBase):
             'cfg', 'conf', 'config', 'cnf', 'ini', 'toml', 'tml'
         ]
 
+    @staticmethod
+    def _convert(content):
+        '''Recursively convert tomlkit to dict.
+
+        See: https://github.com/sdispater/tomlkit/issues/43
+
+        '''
+        # convert associative array
+        if isinstance(content, dict):
+            content = {
+                str(k): TomlConfig._convert(v)
+                for k, v in content.items()
+            }
+
+        # convert list
+        elif isinstance(content, list):
+            content = [TomlConfig._convert(x) for x in content]
+
+        # convert scalars
+        elif isinstance(content, tomlkit.items.Integer):
+            content = int(content)
+        elif isinstance(content, tomlkit.items.Float):
+            content = float(content)
+        elif isinstance(content, tomlkit.items.String):
+            content = str(content)
+        elif isinstance(content, tomlkit.items.Bool):
+            content = bool(content)
+
+        return content
+
     def load_config(self, filepath):
         '''Load settings from toml configuration.'''
         logging.info('loading TOML configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
-                content = tomlkit.parse(f.read())
+                content = self._convert(tomlkit.parse(f.read()))
         else:
             content = {}
         return content

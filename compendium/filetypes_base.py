@@ -5,7 +5,7 @@
 from abc import ABCMeta, abstractmethod
 
 
-class ConfigBase(metaclass=ABCMeta):
+class FiletypesBase(metaclass=ABCMeta):
     '''Define required configuration module methods.'''
 
     # @abstractproperty

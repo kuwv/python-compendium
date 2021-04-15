@@ -7,14 +7,14 @@
 import errno
 import json  # type: ignore
 # import jsonschema  # type: ignore
+import logging
 import os
 from typing import Any, Dict
 
-from .. import ConfigBase
-import logging
+from compendium.filetypes_base import FiletypesBase
 
 
-class JsonConfig(ConfigBase):
+class JsonConfig(FiletypesBase):
     '''Manage JSON configurations.'''
 
     def __init__(self, **kwargs: str) -> None:

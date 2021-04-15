@@ -8,7 +8,7 @@ def test_singleton(fs):
     fs.create_file('/opt/test/config.toml')
 
     # Test Singleton
-    cfg = ConfigPaths(application='test')
+    cfg = ConfigPaths(name='test')
     cfg.load_configs('/opt/test/config.toml')
 
     assert '/opt/test/config.toml' in cfg.filepaths
@@ -16,15 +16,15 @@ def test_singleton(fs):
 
 def test_hierarchy(fs):
     # Setup base paths
-    user_path = os.path.expanduser('~')
+    global_path = os.path.expanduser('~')
     base_path = os.path.basename(__file__)
 
     # System path
     fs.create_file(os.path.join('etc', 'test', 'config.toml'))
 
     # User path
-    fs.create_file(os.path.join(user_path, '.test.toml'))
-    fs.create_file(os.path.join(user_path, '.test.d', 'config.toml'))
+    fs.create_file(os.path.join(global_path, '.test.toml'))
+    fs.create_file(os.path.join(global_path, '.test.d', 'config.toml'))
 
     # Current path
     fs.create_file(os.path.join(base_path, 'config.toml'))
@@ -32,19 +32,19 @@ def test_hierarchy(fs):
 
     # Test hierarchy
     cfg = ConfigPaths(
-        application='test',
+        name='test',
         load_strategy='hierarchy',
         enable_system_paths=True,
-        enable_user_paths=True
+        enable_global_paths=True
     )
     cfg.load_configs()
 
     assert '/etc/test/config.toml' in cfg.filepaths
-    assert (user_path + '/.test.toml') in cfg.filepaths
-    assert (user_path + '/.test.d/config.toml') in cfg.filepaths
+    assert (global_path + '/.test.toml') in cfg.filepaths
+    assert (global_path + '/.test.d/config.toml') in cfg.filepaths
 
 
-def test_nested(fs):
+def test_tree(fs):
     # Setup base paths
     base_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -53,8 +53,8 @@ def test_nested(fs):
     fs.create_file(base_path + '/example1/config.toml')
     fs.create_file(base_path + '/example2/config.toml')
 
-    # Test nested
-    cfg = ConfigPaths(application='test', load_strategy='nested')
+    # Test tree
+    cfg = ConfigPaths(name='test', load_strategy='tree')
     cfg.load_configs()
 
     assert (base_path + '/config.toml') in cfg.filepaths

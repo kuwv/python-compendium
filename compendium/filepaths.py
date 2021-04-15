@@ -12,6 +12,43 @@ from typing import List, Optional
 log = logging.getLogger(__name__)
 
 
+class FilepathMixin:
+    @staticmethod
+    def split_filepath(filepath: str) -> List[str]:
+        '''Separate filename from filepath.'''
+        return filepath.rsplit('/', 1)
+
+    @staticmethod
+    def get_filename(filepath: str) -> str:
+        '''Get the name of the file.'''
+        return filepath.rsplit('/', 1)[1]
+
+    @staticmethod
+    def get_filetype(filepath: str) -> Optional[str]:
+        '''Get filetype from filepath.'''
+        if '.' in filepath:
+            return os.path.splitext(filepath)[1].strip('.')
+        else:
+            return None
+
+    @staticmethod
+    def _check_filepath(filepath: str) -> bool:
+        '''Check if configuraion exists at path.'''
+        if os.path.isfile(filepath):
+            logging.debug("{} found".format(filepath))
+            return True
+        else:
+            logging.debug("{} not found".format(filepath))
+            return False
+
+    # def _find_filepaths(self, filepath: str) -> None:  # remove
+    #     '''Get filepaths.'''
+    #     self._filepaths.append(filepath)
+    #     self.basedir, self.filename = self.split_filepath(filepath)
+    #     if '.' in self.filename:
+    #         self.filetype = self.get_filetype(self.filename)
+
+
 @dataclass
 class ConfigPaths:
     r'''Load config paths based on priority.
@@ -39,18 +76,18 @@ class ConfigPaths:
 
     # TODO: Implement pathlib
 
-    application: str
+    name: str
     filename: str
     filetype: Optional[str] = field(init=False)
-    root_dir: str = os.sep
+    basedir: str = os.sep
 
     enable_system_filepaths: bool = False
-    enable_user_filepaths: bool = False
+    enable_global_filepaths: bool = False
     enable_local_filepaths: bool = True
     # enable_runtime_filepaths: bool = True
 
     system_filepaths: List[str] = field(init=False)
-    user_filepaths: List[str] = field(init=False)
+    global_filepaths: List[str] = field(init=False)
     local_filepaths: List[str] = field(init=False)
     # runtime_filepaths: List[str] = field(init=False)
 
@@ -61,65 +98,65 @@ class ConfigPaths:
         else:
             self.filetype = None
         self.system_filepaths = []
-        self.user_filepaths = []
+        self.global_filepaths = []
         self.local_filepaths = []
         # self.runtime_filepaths = []
 
         if self.enable_system_filepaths and os.name == 'posix':
             # TODO: Add windows/linux compliant service path config option
             # self.system_filepaths.append(
-            #     os.path.join(self.root_dir, 'etc', self.filename)
+            #     os.path.join(self.basedir, 'etc', self.filename)
             # )
 
             if self.filetype:
                 self.system_filepaths.append(
                     os.path.join(
-                        self.root_dir,
+                        self.basedir,
                         'etc',
-                        self.application,
+                        self.name,
                         "config.{}".format(self.filetype),
                     )
                 )
 
             self.system_filepaths.append(
                 os.path.join(
-                    self.root_dir, 'etc', self.application, self.filename
+                    self.basedir, 'etc', self.name, self.filename
                 )
             )
 
-        if self.enable_user_filepaths:
+        if self.enable_global_filepaths:
             if platform.system() == 'Windows':
-                __user_app_filepath = os.path.join('AppData', 'Local')
+                __global_app_filepath = os.path.join('AppData', 'Local')
 
             if platform.system() == 'Darwin':
-                __user_app_filepath = os.path.join(
+                __global_app_filepath = os.path.join(
                     'Library', 'Application Support',
                 )
 
             if platform.system() == 'Linux':
-                __user_app_filepath = '.config'
+                __global_app_filepath = '.config'
 
-            self.user_filepaths.append(
+            self.global_filepaths.append(
                 os.path.join(
                     os.path.expanduser('~'),
-                    __user_app_filepath,
-                    self.application,
+                    __global_app_filepath,
+                    self.name,
                     self.filename,
                 )
             )
 
             if self.filetype:
-                self.user_filepaths.append(
+                self.global_filepaths.append(
                     os.path.join(
                         os.path.expanduser('~'),
-                        ".{a}.{f}".format(a=self.application, f=self.filetype),
+                        ".{a}.{f}".format(a=self.name, f=self.filetype),
                     )
                 )
 
-            self.user_filepaths.append(
+            self.global_filepaths.append(
                 os.path.join(
                     os.path.expanduser('~'),
-                    ".{a}.d".format(a=self.application),
+                    ".{a}.d".format(a=self.name),
                     self.filename,
                 )
             )
@@ -132,7 +169,7 @@ class ConfigPaths:
                 self.local_filepaths.append(
                     os.path.join(
                         os.getcwd(),
-                        "{a}.{f}".format(a=self.application, f=self.filetype),
+                        "{a}.{f}".format(a=self.name, f=self.filetype),
                     )
                 )
 
@@ -140,7 +177,7 @@ class ConfigPaths:
         #     if self.enable_system_filepaths:
         #         self.runtime_filepaths.append(
         #             os.path.join(
-        #                 self.root_dir, 'etc', 'sysconfig', self.filename
+        #                 self.basedir, 'etc', 'sysconfig', self.filename
         #             )
         #         )
         #     self.runtime_filepaths.append(
@@ -151,5 +188,5 @@ class ConfigPaths:
     def filepaths(self):
         '''Return combined list of all paths.'''
         return (
-            self.system_filepaths + self.user_filepaths + self.local_filepaths
+            self.system_filepaths + self.global_filepaths + self.local_filepaths
         )

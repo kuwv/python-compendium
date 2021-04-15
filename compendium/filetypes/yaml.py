@@ -6,20 +6,34 @@
 import errno
 import logging
 import os
+# import textwrap
 
 from ruamel.yaml import YAML  # type: ignore
+# from ruamel.yaml.scalarstring import LiteralScalarString
 
-from .. import ConfigBase
+from compendium.filetypes_base import FiletypesBase
+
+# TODO consider strictyaml or poyo
+# def literal_scalar_string(content):
+#     '''Prepare multiline string as yaml scalar.'''
+#     return LiteralScalarString(textwrap.dedent(content))
 
 
-class YamlConfig(ConfigBase):
+class YamlConfig(FiletypesBase):
     '''Manage YAML configuration files.'''
 
     def __init__(self, **kwargs):
         '''Initialize YAML configuration module.'''
         logging.info('Inializing YamlConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
-        self.yaml = YAML(typ='safe')
+        self.kind = kwargs.get('kind', None)
+
+    def __yaml_parser(self, kind: str):
+        '''get yaml parser.'''
+        yaml = YAML(typ=kind)
+        yaml.explicit_start = True  # type: ignore
+        yaml.preserve_quotes = True  # type: ignore
+        return yaml
 
     @staticmethod
     def filetypes():
@@ -33,7 +47,8 @@ class YamlConfig(ConfigBase):
         )
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
-                content = self.yaml.load(f)
+                yaml = self.__yaml_parser(self.kind or 'safe')
+                content = yaml.load(f)
         else:
             content = {}
         return content
@@ -42,7 +57,8 @@ class YamlConfig(ConfigBase):
         '''Save settings to YAML configuration.'''
         try:
             with open(filepath, 'w') as f:
-                self.yaml.dump(content, f)
+                yaml = self.__yaml_parser(self.kind or 'rt')
+                yaml.dump(content, f)
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(

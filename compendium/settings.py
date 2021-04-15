@@ -5,139 +5,90 @@
 
 import logging
 import os
-from collections import UserDict
-from typing import Any, ClassVar, Dict, Optional
+from collections import ChainMap
+from collections.abc import Mapping
+from typing import Any, Dict
 
-from dpath import util as dpath  # type: ignore
+from .query import DpathMixin
 
 
-class Settings(UserDict):
-    '''Manage settings loaded from confiugrations.'''
+class MergeMixin:
+    '''Merge dictionaries.'''
 
-    __defaults: ClassVar[Dict[Any, Any]] = {}
-    __environs: ClassVar[Dict[Any, Any]] = {}
+    @classmethod
+    def merge(self, source, update):
+        '''Perform recursive merge.'''
+        for k, v in update.items():
+            if isinstance(v, Mapping):
+                source[k] = self.merge(source.get(k, {}), v)
+            else:
+                source[k] = v
+        return source
 
-    def __init__(self, application: str, **kwargs):
-        '''Initialize settings store.'''
-        self.application = application
-        self.__document: Dict[Any, Any] = {}
 
-        if 'defaults' in kwargs and Settings.__defaults == {}:
-            Settings.__defaults = kwargs['defaults']
-
-        # Load settings from configs
-        self.prefix = kwargs.get('prefix', "{a}_".format(a=application.upper()))
-        self.__separator: str = kwargs.pop('separator', '/')
-
-        super().__init__(**kwargs)
-        # print('data', self.data)
-
-    def __repr__(self) -> str:
-        '''Get string representaion.'''
-        return f"{self.data}"
-
-    # def __getattr__(self, k: str) -> str:
-    #     print('this is the args', k)
-    #     return self.data[k]
-
-    # def __setattr__(self, k: str, v: Any) -> None:
-    #     self.data[k] = v
+class EnvironsMixin(MergeMixin):
+    '''Manage environment variables.'''
 
     @property
-    def defaults(self) -> Dict[Any, Any]:
-        '''Return default settings.'''
-        return self.__defaults
+    def prefix(self) -> str:
+        '''Get environment prefix.'''
+        if hasattr(self, '_prefix'):
+            return self._prefix.upper()
+        else:
+            return 'COMPEND'
 
-    @property
-    def settings(self) -> Dict[Any, Any]:
-        '''Return settings.'''
-        return self.data
+    @prefix.setter
+    def prefix(self, prefix) -> None:
+        '''Set environment prefix.'''
+        self._prefix = prefix
 
-    def load_environment(self) -> None:
+    @staticmethod
+    def to_dict(key: str, value: Any) -> Dict[str, Any]:
+        '''Convert environment key to dictionary.'''
+        def expand(x):
+            '''Convert key part to dictionary key.'''
+            if '_' not in x:
+                return {x: value}
+            k, v = x.split('_', 1)
+            return {k: expand(v)}
+        return expand(key.lower())
+
+    @staticmethod
+    def load_dotenv() -> None:
+        '''Load environs from .env file.'''
+        env_file = os.path.join(os.getcwd(), '.env')
+        # if self._check_filepath(env_file):
+        if os.path.exists(env_file):
+            with open(env_file) as env:
+                for line in env:
+                    k, v = line.partition('=')[::2]
+                    os.environ[k.strip().upper()] = str(v)
+
+    def load_environs(self, force: bool = False) -> Dict[str, Any]:
         '''Load environment variables.'''
-        # TODO: Change env key from '_' to dict path
-        env = [
-            {k.replace(self.prefix, '').lower(): v}
-            for k, v in os.environ.items()
-            if k.startswith(self.prefix)
-        ]
-        if env != []:
-            Settings.__environs = {'env': env}
+        prefix = str(f"{self.prefix}_" if self.prefix != '' else self.prefix)
+        env: Dict[str, Any] = {}
+        for k, v in os.environ.items():
+            if k.startswith(prefix):
+                env = self.merge(
+                    env,
+                    self.to_dict(k.replace(prefix, ''), v),
+                )
+        return env
 
-    def _initialize_settings(self, new_settings: Dict[Any, Any]) -> None:
-        '''Load settings store.'''
-        logging.debug(new_settings)
-        self.data.update(new_settings)
-        self.load_environment()
 
-    # Query
-    def get(
-        self,
-        query: str,
-        default: Optional[Any] = None,
-        document: Optional[Dict[Any, Any]] = None,
-    ):
-        '''Get value from settings with key.'''
-        if not document:
-            document = self.data
-        documents = [self.__environs, document, self.__defaults]
-        for doc in documents:
-            try:
-                return dpath.get(doc, query, self.__separator)
-                break
-            except KeyError:
-                pass
-        return default
+class SettingsMap(ChainMap, DpathMixin, MergeMixin):
+    '''Manage settings loaded from confiugrations using dpath.'''
 
-    def retrieve(self, query: str):
-        '''Retrieve value from settings with key.'''
-        if not self.__document:
-            self.__document = self.data
-        self.__document = dpath.get(self.__document, query, self.__separator)
-        return self
+    def __init__(self, *args, **kwargs):
+        '''Initialize settings store.'''
+        if 'separator' in kwargs:
+            self.separator: str = kwargs.pop('separator')
+        super().__init__(*args)
 
-    def search(self, query: str) -> Dict[Any, Any]:
-        '''Search settings matching query.'''
-        return dpath.values(self.data, query, self.__separator)
+    def push(self, settings) -> None:
+        '''Push settings untop store.'''
+        logging.debug(settings)
+        self.maps.insert(0, settings)
 
-    def append(self, keypath: str, value: Any) -> None:
-        '''Append to a list located at keypath.'''
-        store = [value]
-        keypath_dir = keypath.split(self.__separator)[1:]
-        for x in reversed(keypath_dir):
-            store = {x: store}  # type: ignore
-        dpath.merge(self.data, store)
-
-    def set(self, keypath: str, value: Any) -> None:
-        '''Update value located at keypath.'''
-        dpath.set(self.data, keypath, value, self.__separator)
-
-    def add(self, keypath: str, value: Any) -> None:
-        '''Add key/value pair located at keypath.'''
-        dpath.new(self.data, keypath, value, self.__separator)
-
-    def create(self, keypath: str, value: Any) -> None:
-        '''Create new key/value pair located at path.'''
-        dpath.new(self.data, keypath, value, self.__separator)
-
-    def delete(self, keypath: str) -> None:
-        '''Delete key/value located at keypath.'''
-        dpath.delete(self.data, keypath, self.__separator)
-
-    def merge(self, document: Optional[Dict[Any, Any]] = None):
-        '''Merge document.'''
-        dpath.merge(self.data, document, flags=2)
-
-    # def view(self) -> str:
-    #     '''View current keypath location.'''
-    #     return self.keypath
-
-    # print
-    # map
-    # readlines
-    # filter
-    # find
-    # findall
-    # each
-    # len
-    # all
+    # TODO: add capability to recursive search settings

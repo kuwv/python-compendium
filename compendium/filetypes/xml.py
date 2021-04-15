@@ -9,10 +9,10 @@ import os
 
 import xmltodict  # type: ignore
 
-from .. import ConfigBase
+from compendium.filetypes_base import FiletypesBase
 
 
-class XmlConfig(ConfigBase):
+class XmlConfig(FiletypesBase):
     '''Manage XML configurations.'''
 
     def __init__(self, **kwargs):
