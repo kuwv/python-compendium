@@ -1,3 +1,4 @@
+'''Provide example tree usage.'''
 import os
 
 from anytree import RenderTree  # type: ignore

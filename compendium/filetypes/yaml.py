@@ -29,7 +29,7 @@ class YamlConfig(FiletypesBase):
         self.kind = kwargs.get('kind', None)
 
     def __yaml_parser(self, kind: str):
-        '''get yaml parser.'''
+        '''Get yaml parser.'''
         yaml = YAML(typ=kind)
         yaml.explicit_start = True  # type: ignore
         yaml.preserve_quotes = True  # type: ignore

@@ -1,1 +1,1 @@
-::: compendium.config.filetypes.toml
+::: compendium.filetypes.toml

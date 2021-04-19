@@ -1,1 +1,1 @@
-::: compendium.config.filetypes.yaml
+::: compendium.filetypes.yaml

@@ -9,6 +9,8 @@ from dpath import util as dpath  # type: ignore
 
 
 class DpathMixin:
+    '''Provide XPath like query capability.'''
+
     separator: str = '/'
 
     def retrieve(

@@ -19,6 +19,8 @@ log = logging.getLogger(__name__)
 
 
 class ConfigManager(EnvironsMixin):
+    '''Provide config management representation.'''
+
     def __init__(self, name: str, *args: str, **kwargs: Any) -> None:
         '''Initialize single settings management.
 
@@ -73,6 +75,7 @@ class ConfigManager(EnvironsMixin):
         if hasattr(self.__dict__.get('data'), attr):
 
             def wrapper(*args, **kwargs):
+                '''Call query for data store.'''
                 return getattr(self.data, attr)(*args, **kwargs)
 
             return wrapper
@@ -209,6 +212,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     @property
     def namepaths(self) -> List[str]:
+        '''Return list of namepaths.'''
         return [self.get_namepath(x) for x in self.filepaths]
 
     # def __iter__(self) -> 'TreeConfigManager':

@@ -12,6 +12,7 @@ settings_filepath = os.path.join(config_filepath, 'config.toml')
 
 
 def test_filepath():
+    '''Test filepath loader.'''
     cfg = ConfigManager('filepath', settings_filepath)
     cfg.load_configs()
     assert cfg.settings['title'] == 'TOML Example'

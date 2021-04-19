@@ -1,1 +1,1 @@
-::: compendium.config.filetypes.xml
+::: compendium.filetypes.xml

@@ -1,1 +1,1 @@
-::: compendium.config.filetypes.json
+::: compendium.filetypes.json

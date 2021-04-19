@@ -13,6 +13,8 @@ log = logging.getLogger(__name__)
 
 
 class FilepathMixin:
+    '''Provide common filepath methods.'''
+
     @staticmethod
     def split_filepath(filepath: str) -> List[str]:
         '''Separate filename from filepath.'''

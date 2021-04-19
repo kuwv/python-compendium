@@ -1,1 +1,1 @@
-::: compendium.config.loader
+::: compendium.loader
