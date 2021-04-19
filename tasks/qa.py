@@ -42,11 +42,7 @@ def unit_test(ctx, capture=None):  # type: ignore
 def static_analysis(ctx):  # type: ignore
     '''Perform static code analysis on imports.'''
     safety_args = []
-    safety_ignore = [
-        '39606',
-        '39252',
-        '38932',
-    ]
+    safety_ignore = []
     for x in safety_ignore:
         safety_args.append("--ignore={}".format(x))
     ctx.run("safety check {}".format(' '.join(safety_args)))
