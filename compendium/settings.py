@@ -45,12 +45,14 @@ class EnvironsMixin(MergeMixin):
     @staticmethod
     def to_dict(key: str, value: Any) -> Dict[str, Any]:
         '''Convert environment key to dictionary.'''
+
         def expand(x):
             '''Convert key part to dictionary key.'''
             if '_' not in x:
                 return {x: value}
             k, v = x.split('_', 1)
             return {k: expand(v)}
+
         return expand(key.lower())
 
     @staticmethod
@@ -70,10 +72,7 @@ class EnvironsMixin(MergeMixin):
         env: Dict[str, Any] = {}
         for k, v in os.environ.items():
             if k.startswith(prefix):
-                env = self.merge(
-                    env,
-                    self.to_dict(k.replace(prefix, ''), v),
-                )
+                env = self.merge(env, self.to_dict(k.replace(prefix, ''), v),)
         return env
 
 

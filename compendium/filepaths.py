@@ -119,9 +119,7 @@ class ConfigPaths:
                 )
 
             self.system_filepaths.append(
-                os.path.join(
-                    self.basedir, 'etc', self.name, self.filename
-                )
+                os.path.join(self.basedir, 'etc', self.name, self.filename)
             )
 
         if self.enable_global_filepaths:

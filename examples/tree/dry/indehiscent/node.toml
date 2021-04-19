@@ -1,0 +1,6 @@
+[[fruit.indehiscent]]
+  name = "dandelion"
+
+  [fruit.indehiscent.physical]
+    color = "yellow"
+    shape = "oval"

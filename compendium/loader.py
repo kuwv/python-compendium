@@ -6,19 +6,21 @@
 # from weakref import ref
 import logging
 import os
-import pkg_resources
 from collections import UserDict
 from typing import Optional, Type
 
+import pkg_resources
+
 from compendium import exceptions
-from compendium.filetypes_base import FiletypesBase
 from compendium.filepaths import FilepathMixin
 from compendium.filetypes.json import JsonConfig  # noqa
 from compendium.filetypes.toml import TomlConfig  # noqa
 from compendium.filetypes.yaml import YamlConfig  # noqa
+from compendium.filetypes_base import FiletypesBase
+from compendium.query import DpathMixin
+
 if 'xmltodict' in {pkg.key for pkg in pkg_resources.working_set}:
     from compendium.filetypes.xml import XmlConfig  # noqa
-from compendium.query import DpathMixin
 
 log = logging.getLogger(__name__)
 
@@ -26,6 +28,7 @@ log = logging.getLogger(__name__)
 class ConfigFile(UserDict, DpathMixin, FilepathMixin):
     '''Manage settings loaded from confiugrations using dpath.'''
 
+    # TODO: switch to dependency injection for filetypes
     def __init__(self, filepath: str = None, **kwargs):
         '''Initialize single configuration file.'''
         self.filepath: Optional[str] = filepath

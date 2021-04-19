@@ -1,7 +1,5 @@
 [fruit]
 children = [
-  "berry",
-  "drupe",
-  "hesperidium",
-  "pome"
+  "dry",
+  "succulant"
 ]

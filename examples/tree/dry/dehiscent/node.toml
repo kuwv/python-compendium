@@ -1,0 +1,6 @@
+[[fruit.dehiscent]]
+  name = "pea"
+
+  [fruit.deschiscent.physical]
+    color = "green"
+    shape = "round"

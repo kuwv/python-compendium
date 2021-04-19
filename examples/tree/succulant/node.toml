@@ -1,0 +1,7 @@
+[fruit.succulant]
+children = [
+  "berry",
+  "drupe",
+  "hesperidium",
+  "pome"
+]
