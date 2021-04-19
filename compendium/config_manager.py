@@ -13,8 +13,6 @@ from mypy_extensions import KwArg, VarArg
 
 from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
-
-# from compendium.query import DpathMixin
 from compendium.settings import EnvironsMixin, SettingsMap
 
 log = logging.getLogger(__name__)
@@ -191,6 +189,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         self.parent = kwargs.pop('parent', None)
         if 'children' in kwargs:
             self.children = kwargs.pop('children')
+        load_root = kwargs.pop('load_root', False)
         load_children = kwargs.pop('load_children', False)
 
         self.filename = kwargs.pop('filename', 'config.toml')
@@ -203,7 +202,8 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         else:
             self._filepaths == list(args)
 
-        super().load_config(self.filepaths[0])
+        if load_root:
+            super().load_config(self.filepaths[0])
         if load_children:
             self.load_configs()
 

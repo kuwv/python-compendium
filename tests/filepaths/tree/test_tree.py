@@ -29,7 +29,9 @@ def test_tree(fs):
     cfg = TreeConfigManager(
         name='test',
         merge_strategy='partition',
-        filename='fruit*.toml',
+        filename='fruit.toml',
+        load_root=True,
+        load_children=True,
         basedir=basedir,
     )
     cfg.load_configs()
@@ -44,9 +46,10 @@ def test_tree(fs):
     # assert cfg.settings.retrieve('/settings/[2]/filepath') == cfg3_path
 
     # TODO add additional depth tests
-    assert cfg.retrieve(
-        '/**/name', document=cfg.settings.retrieve('/**/fruit/drupe')
-    ) == 'peach'
+    assert cfg.settings.retrieve('/fruit/pome/**/name') == 'apple'
+    # assert cfg.retrieve(
+    #     '/**/name', document=cfg.settings.retrieve('/**/fruit/drupe')
+    # ) == 'peach'
 
     # Ensure vegatable is not in fruits
     # NOTE: Added defaults
