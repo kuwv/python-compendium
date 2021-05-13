@@ -10,6 +10,7 @@ stages:
   - coverage
 
 before_install:
+  - pip install --upgrade pip
   - pip uninstall pipenv numpy -y
   - pip install poetry
 
