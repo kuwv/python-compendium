@@ -1,3 +1,4 @@
+'''Provide example for loading dot config file.'''
 import os
 from compendium.loader import ConfigFile
 
