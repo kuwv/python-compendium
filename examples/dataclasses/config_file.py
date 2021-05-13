@@ -4,8 +4,7 @@
 '''Example YAML config.'''
 
 import os
-from dataclasses import dataclass, field
-from typing import Any, Dict
+from dataclasses import dataclass
 
 from compendium.loader import ConfigFile
 
