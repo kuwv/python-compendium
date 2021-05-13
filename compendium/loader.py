@@ -7,7 +7,7 @@
 import logging
 import os
 from collections import UserDict
-from typing import Optional, Type
+from typing import Any, List, Optional, Type
 
 import pkg_resources
 
@@ -29,7 +29,7 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
     '''Manage settings loaded from confiugrations using dpath.'''
 
     # TODO: switch to dependency injection for filetypes
-    def __init__(self, filepath: str = None, **kwargs):
+    def __init__(self, filepath: str = None, **kwargs: Any) -> None:
         '''Initialize single configuration file.'''
         self.filepath: Optional[str] = filepath
         self.filename: str = kwargs.pop('filename', 'config.toml')
@@ -47,7 +47,7 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
         super().__init__(**kwargs)
 
     @staticmethod
-    def modules():
+    def modules() -> List[Any]:
         '''Lookup modules inheriting FiletypesBase.'''
         return [m for m in FiletypesBase.__subclasses__()]
 
@@ -56,7 +56,7 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
     ) -> Optional[Type[FiletypesBase]]:
         '''Get class object from filetype module.'''
         for module in self.modules():
-            if filetype in module.filetypes():  # type: ignore
+            if filetype in module.filetypes():
                 return module
         return None
 
@@ -64,10 +64,11 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
         '''Load settings from configuration file.'''
         filepath = filepath or self.filepath
         if filepath:
-            '''Use discovered module to load configuration.'''
+            # Use discovered module to load configuration.
             if os.path.exists(filepath):
+                filetype = self.get_filetype(filepath) or self.filetype
                 logging.info("Retrieving configuration: '{}'".format(filepath))
-                Class = self.__get_class(self.get_filetype(filepath))
+                Class = self.__get_class(filetype)
                 if Class:
                     c = Class()
                     self.update(c.load_config(filepath=filepath))
@@ -84,16 +85,15 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
                 'Error: no config file provided'
             )
 
-    def dump(
-        self, filepath: Optional[str] = None, writable: bool = False,
-    ) -> None:
+    def dump(self, filepath: Optional[str] = None) -> None:
         '''Save settings to configuraiton.'''
-        if writable or self.writable:
+        if self.writable:
             filepath = filepath or self.filepath
             if filepath:
                 # Use discovered module to save configuration
                 logging.info("Saving configuration: '{}'".format(filepath))
-                Class = self.__get_class(self.get_filetype(filepath))
+                filetype = self.get_filetype(filepath) or self.filetype
+                Class = self.__get_class(filetype)
                 if Class:
                     # TODO: refactor to use respective dict from chainmap
                     c = Class()

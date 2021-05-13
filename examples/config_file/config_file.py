@@ -27,17 +27,17 @@ basepath = os.path.dirname(os.path.realpath(__file__))
 filepath = os.path.join(basepath, 'example.yaml')
 outpath = os.path.join(basepath, 'example-out.yaml')
 
-cfg = ConfigFile(name='tests')
+cfg = ConfigFile()
 cfg.load(filepath=filepath)
 
-print('settings', cfg.settings.__dict__)
-# print('allowed_roles', cfg.settings.allowed_roles[0])
-# print('default_args', cfg.settings.dag.default_args)
-# assert 'sre' in cfg.settings.get('/allowed_roles')
-# assert 'devops' in cfg.settings.get('/allowed_roles')
-# assert 'cloudops' in cfg.settings.get('/allowed_roles')
+print('settings', cfg)
+# print('allowed_roles', cfg.allowed_roles[0])
+# print('default_args', cfg.dag.default_args)
+# assert 'sre' in cfg.get('/allowed_roles')
+# assert 'devops' in cfg.get('/allowed_roles')
+# assert 'cloudops' in cfg.get('/allowed_roles')
 
-print('post settings', cfg.settings.data)
+print('post settings', cfg.data)
 cfg.dump(filepath=outpath, writable=True)
 
 # JSON
@@ -73,12 +73,12 @@ toml_cfg.dump(filepath=toml_out, writable=True)
 toml_cfg.dump(filepath=json_out, writable=True)
 toml_cfg.dump(filepath=yaml_out, writable=True)
 
-print(show_types(json_cfg.settings.data))
+print(show_types(json_cfg.data))
 
-print(show_types(toml_cfg.settings.data))
+print(show_types(toml_cfg.data))
 
-print(show_types(yaml_cfg.settings.data))
+print(show_types(yaml_cfg.data))
 
-print('compare toml to yaml', toml_cfg.settings.data == yaml_cfg.settings.data)
-print('compare json to toml', json_cfg.settings.data == toml_cfg.settings.data)
-print('compare yaml to json', yaml_cfg.settings.data == json_cfg.settings.data)
+print('compare toml to yaml', toml_cfg.data == yaml_cfg.data)
+print('compare json to toml', json_cfg.data == toml_cfg.data)
+print('compare yaml to json', yaml_cfg.data == json_cfg.data)

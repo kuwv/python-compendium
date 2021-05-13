@@ -17,11 +17,11 @@ class Environs(UserDict, EnvironsMixin):
 
     def __repr__(self):
         '''Provide string representation of environs.'''
-        return repr(Environs.environs)
+        return repr(Environs)
 
 
 environs = Environs()
 environs.load_dotenv()
 environs.load_environs()
-print('environs', environs.environs)  # type: ignore
+print('environs', environs)  # type: ignore
 print('example to_dict', environs.to_dict(key, value))

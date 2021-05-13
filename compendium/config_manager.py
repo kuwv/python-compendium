@@ -109,8 +109,16 @@ class ConfigManager(EnvironsMixin):
         logging.debug("searching for {}".format(filepath))
         self._filepaths.append(filepath)
 
+    # def dump_config(self, filepath: str, *args: str) -> None:
+    #     '''Dump settings to configuration.'''
+    #     if os.path.exists(filepath):
+    #         config_file = ConfigFile(filepath=filepath)
+    #         config_file.dump()
+    #         if update:
+    #             self.data.push(config_file)
+
     def load_config(
-        self, filepath: str, update: bool = True, *args: str
+        self, filepath: str, update: bool = True
     ) -> Optional[ConfigFile]:
         '''Load settings from configuration.'''
         if os.path.exists(filepath):

@@ -1,5 +1,6 @@
 {
   "fruit": "apple",
+  "name": "toml",
   "number": 2,
   "stooges": {
     "stooge1": "Larry",
