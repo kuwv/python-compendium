@@ -66,8 +66,8 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
         if filepath:
             # Use discovered module to load configuration.
             if os.path.exists(filepath):
-                filetype = self.get_filetype(filepath) or self.filetype
                 logging.info("Retrieving configuration: '{}'".format(filepath))
+                filetype = self.get_filetype(filepath) or self.filetype
                 Class = self.__get_class(filetype)
                 if Class:
                     c = Class()
