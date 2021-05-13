@@ -67,8 +67,9 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
             # Use discovered module to load configuration.
             if os.path.exists(filepath):
                 logging.info("Retrieving configuration: '{}'".format(filepath))
-                filetype = self.get_filetype(filepath) or self.filetype
-                Class = self.__get_class(filetype)
+                Class = self.__get_class(
+                    self.get_filetype(filepath) or self.filetype
+                )
                 if Class:
                     c = Class()
                     self.update(c.load_config(filepath=filepath))
@@ -92,8 +93,9 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
             if filepath:
                 # Use discovered module to save configuration
                 logging.info("Saving configuration: '{}'".format(filepath))
-                filetype = self.get_filetype(filepath) or self.filetype
-                Class = self.__get_class(filetype)
+                Class = self.__get_class(
+                    self.get_filetype(filepath) or self.filetype
+                )
                 if Class:
                     # TODO: refactor to use respective dict from chainmap
                     c = Class()
