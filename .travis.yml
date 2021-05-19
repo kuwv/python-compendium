@@ -13,8 +13,6 @@ before_install:
   - pip install --upgrade pip
   - pip uninstall pipenv numpy -y
   - pip install poetry
-  # XXX: yeah this VVV
-  - pip install --upgrade pip
 
 install:
   - poetry install

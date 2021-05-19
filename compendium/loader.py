@@ -13,6 +13,7 @@ import pkg_resources
 
 from compendium import exceptions
 from compendium.filepaths import FilepathMixin
+from compendium.filetypes.ini import IniConfig # noqa
 from compendium.filetypes.json import JsonConfig  # noqa
 from compendium.filetypes.toml import TomlConfig  # noqa
 from compendium.filetypes.yaml import YamlConfig  # noqa
@@ -29,7 +30,7 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
     '''Manage settings loaded from confiugrations using dpath.'''
 
     # TODO: switch to dependency injection for filetypes
-    def __init__(self, filepath: str = None, **kwargs: Any) -> None:
+    def __init__(self, filepath: Optional[str] = None, **kwargs: Any) -> None:
         '''Initialize single configuration file.'''
         self.filepath: Optional[str] = filepath
         self.filename: str = kwargs.pop('filename', 'config.toml')

@@ -6,6 +6,7 @@
 import errno
 import os
 import logging
+from typing import Any, Dict, List
 
 import tomlkit  # type: ignore
 
@@ -15,20 +16,18 @@ from compendium.filetypes_base import FiletypesBase
 class TomlConfig(FiletypesBase):
     '''Manage toml configurations.'''
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         '''Initialize toml module.'''
         logging.info('Inializing TomlConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
 
     @staticmethod
-    def filetypes():
+    def filetypes() -> List[str]:
         '''Return supported filetypes.'''
-        return [
-            'cfg', 'conf', 'config', 'cnf', 'ini', 'toml', 'tml'
-        ]
+        return ['toml', 'tml']
 
     @staticmethod
-    def _convert(content):
+    def _convert(content: Any) -> Any:
         '''Recursively convert tomlkit to dict.
 
         See: https://github.com/sdispater/tomlkit/issues/43
@@ -57,7 +56,7 @@ class TomlConfig(FiletypesBase):
 
         return content
 
-    def load_config(self, filepath):
+    def load_config(self, filepath: str) -> Dict[str, Any]:
         '''Load settings from toml configuration.'''
         logging.info('loading TOML configuration file')
         if os.path.isfile(filepath):
@@ -67,7 +66,7 @@ class TomlConfig(FiletypesBase):
             content = {}
         return content
 
-    def dump_config(self, content, filepath):
+    def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
         '''Save settings to toml configuration.'''
         logging.info('TomlConfig: saving configuration file')
         try:

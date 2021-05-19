@@ -21,7 +21,7 @@ class JsonConfig(FiletypesBase):
         '''Initialize JSON configuration module.'''
         logging.info('Inializing JsonConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
-        self.encoder = kwargs.get('encoder', str)
+        # self.encoder = kwargs.get('encoder', None)
 
     @staticmethod
     def filetypes():
@@ -43,7 +43,8 @@ class JsonConfig(FiletypesBase):
         try:
             with open(filepath, 'w') as f:
                 json.dump(
-                    content, f, indent=2, sort_keys=True, default=self.encoder
+                    content, f, indent=2, sort_keys=True
+                    # , default=self.encoder
                 )
         except IOError as err:
             if err.errno == errno.EACCES:

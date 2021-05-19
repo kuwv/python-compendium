@@ -215,7 +215,7 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "flit"
-version = "2.3.0"
+version = "3.2.0"
 description = "A simple packaging tool for simple packages."
 category = "dev"
 optional = false
@@ -223,13 +223,12 @@ python-versions = ">=3.5"
 
 [package.dependencies]
 docutils = "*"
-flit_core = ">=2.3.0"
-pytoml = "*"
+flit_core = ">=3.2.0"
 requests = "*"
+toml = "*"
 
 [package.extras]
 doc = ["sphinx", "sphinxcontrib-github-alt", "pygments-github-lexers"]
-installfrom = ["requests-download"]
 test = ["testpath", "responses", "pytest (>=2.7.3)", "pytest-cov"]
 
 [[package]]
@@ -671,14 +670,6 @@ optional = false
 python-versions = ">=3.6,<4.0"
 
 [[package]]
-name = "pytoml"
-version = "0.1.21"
-description = "A parser for TOML-0.4.0"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "pyyaml"
 version = "5.4.1"
 description = "YAML parser and emitter for Python"
@@ -893,7 +884,7 @@ xml = ["xmltodict"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "39fa4fe2834c515b150d1ce861945d59216edcff8c0b0ce796a1c093aab2b48a"
+content-hash = "92c9e9834b8863144dc4b29f64327cb82b842006881f452bb2cdfbd5a3c68507"
 
 [metadata.files]
 anytree = [
@@ -1020,8 +1011,8 @@ flake8 = [
     {file = "flake8-3.9.1.tar.gz", hash = "sha256:1aa8990be1e689d96c745c5682b687ea49f2e05a443aff1f8251092b0014e378"},
 ]
 flit = [
-    {file = "flit-2.3.0-py3-none-any.whl", hash = "sha256:25d184c59cb6f2a83bc3f3651f01007aed12db379b4dc59a4e5765b7aff4730f"},
-    {file = "flit-2.3.0.tar.gz", hash = "sha256:017012b809ec489918afd68af7a70bd7c8c770c87b60159d875c126866e97a4b"},
+    {file = "flit-3.2.0-py3-none-any.whl", hash = "sha256:721ac36ed1317d22e8b35da80b4fb4a50e09765787ff9649d01a4b05cc9f8a38"},
+    {file = "flit-3.2.0.tar.gz", hash = "sha256:592464c9268bbacec9bc67b5a3ae62e6e090aeec1563e69501df338a1728e551"},
 ]
 flit-core = [
     {file = "flit_core-3.2.0-py3-none-any.whl", hash = "sha256:6f25843e908dfc3e907b6b9ee71e3d185bcb5aebab8c3431e4e34c261e5ff1b5"},
@@ -1216,10 +1207,6 @@ pytest-cov = [
 pytkdocs = [
     {file = "pytkdocs-0.7.0-py3-none-any.whl", hash = "sha256:96c494143e70ccbb657bc4c0a93a97da0209f839f0236c08f227faedc51c1745"},
     {file = "pytkdocs-0.7.0.tar.gz", hash = "sha256:88c79290525f7658e8271ce19dd343c01c53bbe6c2801d1bfcc6792cad0636d5"},
-]
-pytoml = [
-    {file = "pytoml-0.1.21-py2.py3-none-any.whl", hash = "sha256:57a21e6347049f73bfb62011ff34cd72774c031b9828cb628a752225136dfc33"},
-    {file = "pytoml-0.1.21.tar.gz", hash = "sha256:8eecf7c8d0adcff3b375b09fe403407aa9b645c499e5ab8cac670ac4a35f61e7"},
 ]
 pyyaml = [
     {file = "PyYAML-5.4.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:3b2b1824fe7112845700f815ff6a489360226a5609b96ec2190a45e62a9fc922"},
