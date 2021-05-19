@@ -1,0 +1,11 @@
+[tool]
+[tool.proman]
+authors = ["Jesse P. Johnson"]
+description = "A mock project for development."
+name = "mock-project"
+version = "0.1.0"
+
+[tool.proman.dependencies]
+idna = "3.1"
+
+[tool.proman.dev-dependencies]

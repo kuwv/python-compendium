@@ -1,7 +1,8 @@
 '''Provide example for loading dot config file.'''
 import os
-from compendium.loader import ConfigFile
+# from compendium.loader import ConfigFile
 from compendium.filetypes.ini import IniConfig
+from pprint import pprint
 
 # basepath = os.path.dirname(os.path.realpath(__file__))
 # filepath = os.path.join(basepath, '.example')
@@ -28,4 +29,4 @@ assert os.path.isfile(pypirc_filepath) is True
 
 pypirc = IniConfig()
 p = pypirc.load_config(pypirc_filepath)
-print(p)
+pprint(p)

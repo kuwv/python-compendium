@@ -1,0 +1,16 @@
+{
+  "dependencies": [
+    {
+      "digests": [
+        "sha256:c5b02147e01ea9920e6b0a3f1f7bb833612d507592c837a6c49552768f4054e1",
+        "sha256:5205d03e7bcbb919cc9c19885f9920d622ca52448306f2377daede5cf3faac16"
+      ],
+      "name": "idna",
+      "version": "3.1"
+    }
+  ],
+  "dev-dependencies": [],
+  "name": "",
+  "python_versions": "",
+  "version": "0.1.0"
+}

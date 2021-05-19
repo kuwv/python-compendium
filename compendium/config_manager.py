@@ -258,9 +258,9 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def get_name(self, filepath: str) -> str:
         '''Get name from tree path.'''
-        name = os.path.dirname(os.path.relpath(filepath, self.basedir)).split(
-            os.sep
-        )[-1]
+        name = os.path.dirname(
+            os.path.relpath(filepath, self.basedir),
+        ).split(os.sep)[-1]
         if name != '':
             return name
         else:
@@ -268,9 +268,9 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def get_namepath(self, filepath: str) -> str:
         '''Get name from tree path.'''
-        name = os.path.dirname(os.path.relpath(filepath, self.basedir)).replace(
-            os.sep, self.separator
-        )
+        name = os.path.dirname(
+            os.path.relpath(filepath, self.basedir),
+        ).replace(os.sep, self.separator)
         if name != '':
             return f"{self.separator}{self.name}{self.separator}{name}"
         else:
