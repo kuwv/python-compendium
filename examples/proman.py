@@ -6,7 +6,7 @@ from anytree import RenderTree  # type: ignore
 from compendium.config_manager import TreeConfigManager
 
 pyproject_cfg = TreeConfigManager(
-    name='lockfile_tree',
+    name='source_tree',
     filename='pyproject.toml',
     basedir=os.path.join(os.path.dirname(__file__), 'proman'),
     load_root=True,
@@ -14,14 +14,13 @@ pyproject_cfg = TreeConfigManager(
     log_level='debug',
 )
 # print('namespaces', pyproject_cfg.namespaces)
-print(pyproject_cfg)
+print('root', pyproject_cfg)
 # pyproject_cfg.load_configs()
-# child = pyproject_cfg.new_child('dry')
-# print('children', pyproject_cfg.children)
-print(RenderTree(pyproject_cfg))
+print('children', pyproject_cfg.children)
+# print(RenderTree(pyproject_cfg))
 
 lockfile_cfg = TreeConfigManager(
-    name='lockfile_tree',
+    name='lockfile',
     filename='proman-lock.json',
     basedir=os.path.join(os.path.dirname(__file__), 'proman'),
     load_root=True,

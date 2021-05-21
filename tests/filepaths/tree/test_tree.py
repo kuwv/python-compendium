@@ -1,6 +1,7 @@
 import os
 import pytest  # type: ignore
 
+from compendium.exceptions import CompendiumConfigManagerError
 from compendium.config_manager import TreeConfigManager
 
 
@@ -34,7 +35,10 @@ def test_tree(fs):
         load_children=True,
         basedir=basedir,
     )
-    cfg.load_configs()
+
+    with pytest.raises(CompendiumConfigManagerError):
+        # NOTE: either set load_chilren true or call this but not both
+        cfg.load_configs()
 
     assert cfg1_path in cfg.filepaths
     assert cfg2_path in cfg.filepaths

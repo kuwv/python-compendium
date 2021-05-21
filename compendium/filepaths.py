@@ -7,7 +7,7 @@ import logging
 import os
 import platform
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 log = logging.getLogger(__name__)
 
@@ -16,9 +16,9 @@ class FilepathMixin:
     '''Provide common filepath methods.'''
 
     @staticmethod
-    def split_filepath(filepath: str) -> List[str]:
+    def split_filepath(filepath: str) -> Tuple[str, ...]:
         '''Separate filename from filepath.'''
-        return filepath.rsplit('/', 1)
+        return tuple(filepath.rsplit('/', 1))
 
     @staticmethod
     def get_filename(filepath: str) -> str:
@@ -185,8 +185,10 @@ class ConfigPaths:
         #     )
 
     @property
-    def filepaths(self):
+    def filepaths(self) -> Tuple[str, ...]:
         '''Return combined list of all paths.'''
-        return (
-            self.system_filepaths + self.global_filepaths + self.local_filepaths
+        return tuple(
+            self.system_filepaths
+            + self.global_filepaths
+            + self.local_filepaths
         )

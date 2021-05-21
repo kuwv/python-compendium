@@ -6,11 +6,12 @@
 import glob
 import logging
 import os
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Optional, Tuple
 
 from anytree import NodeMixin, Resolver  # type: ignore
 from mypy_extensions import KwArg, VarArg
 
+from compendium import exceptions
 from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
 from compendium.settings import EnvironsMixin, SettingsMap
@@ -100,9 +101,10 @@ class ConfigManager(EnvironsMixin):
             return self.data
 
     @property
-    def filepaths(self) -> List[str]:  # remove
+    def filepaths(self) -> Tuple[str, ...]:
         '''Retrieve filepaths.'''
-        return self._filepaths
+        # TODO: should this be removed
+        return tuple(self._filepaths)
 
     def add_filepath(self, filepath: str) -> None:
         '''Load settings from configuration in filepath.'''
@@ -208,7 +210,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
         super().__init__(name, *args, **kwargs)
 
-        if args == ():
+        if not self.parent and args == ():
             self._prep_filepaths()
         else:
             self._filepaths == list(args)
@@ -219,42 +221,9 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             self.load_configs()
 
     @property
-    def namepaths(self) -> List[str]:
+    def namepaths(self) -> Tuple[str, ...]:
         '''Return list of namepaths.'''
-        return [self.get_namepath(x) for x in self.filepaths]
-
-    # def __iter__(self) -> 'TreeConfigManager':
-    #     '''Return hand itself as iterator.'''
-    #     self.__count = 0
-    #     return self
-    #
-    # def __next__(self) -> ConfigFile:
-    #     '''Get next card instance.'''
-    #     if self.__count < len(self._filepaths):
-    #         filepath = self._filepaths[self.__count]
-    #         name = self.get_name(filepath)
-    #         print(
-    #             '--- parent_name',
-    #             name.rsplit(self.separator, 1)[0],
-    #             'child_name',
-    #             name
-    #         )
-    #         # Check if already loaded in data store
-    #         parent_file = self.get_config(name.rsplit(self.separator, 1)[0])
-    #         config_file = self.get_config(filepath)
-    #         print('--- parent', parent_file, 'child', config_file)
-    #         # Load the file if not loaded
-    #         if config_file is None:
-    #             config_file = ConfigFile(filepath=filepath)
-    #             config_file.load()
-    #         self.__count += 1
-    #         return self.new_child(
-    #             self.get_name(filepath),
-    #             parent=parent_file or self,
-    #             data=config_file,
-    #         )
-    #     else:
-    #         raise StopIteration()
+        return tuple([self.get_namepath(x) for x in self.filepaths])
 
     def get_name(self, filepath: str) -> str:
         '''Get name from tree path.'''
@@ -326,7 +295,10 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         for filepath in glob.iglob(
             os.path.join(self.basedir, '**', self.filename), recursive=True
         ):
-            self.add_filepath(filepath)
+            if filepath not in self.filepaths:
+                self.add_filepath(filepath)
+            else:
+                print('already there')
 
     def load_config(
         self, filepath: str, update: bool = False, *args: str, **kwargs: Any
@@ -339,25 +311,30 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def load_configs(self) -> None:
         '''Load configuration files from filepaths.'''
-        for x in self.filepaths[1:]:
-            namepath = os.path.dirname(os.path.relpath(x, self.basedir))
-            # print('---', self.name, namepath, self.parent)
-            if len(namepath.split(os.sep)) == 1:
-                child_paths = []
-                for c in self.filepaths[1:]:
-                    child_path = os.path.dirname(
-                        os.path.relpath(c, self.basedir)
+        if self.children == ():
+            for x in self.filepaths[1:]:
+                namepath = os.path.dirname(os.path.relpath(x, self.basedir))
+                # print('---', self.name, namepath, self.parent)
+                if len(namepath.split(os.sep)) == 1:
+                    child_paths = []
+                    for c in self.filepaths[1:]:
+                        child_path = os.path.dirname(
+                            os.path.relpath(c, self.basedir)
+                        )
+                        # print('child_path', child_path)
+                        if namepath != child_path and namepath in child_path:
+                            child_paths.append(c)
+                    children = list(self.children)
+                    children.append(
+                        self.load_config(
+                            x,
+                            False,
+                            *child_paths,
+                            basedir=f"{self.basedir}{os.sep}{namepath}",
+                        )
                     )
-                    # print('child_path', child_path)
-                    if namepath != child_path and namepath in child_path:
-                        child_paths.append(c)
-                children = list(self.children)
-                children.append(
-                    self.load_config(
-                        x,
-                        False,
-                        *child_paths,
-                        basedir=f"{self.basedir}{os.sep}{namepath}",
-                    )
-                )
-                self.children = children
+                    self.children = children
+        else:
+            raise exceptions.CompendiumConfigManagerError(
+                'children configurations already loaded'
+            )
