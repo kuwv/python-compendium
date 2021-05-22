@@ -24,7 +24,9 @@ def test_hierarchy(fs):
     )
     fs.add_real_file(
         source_path=os.path.join(base_filepath, 'settings3.toml'),
-        target_path=os.path.join(global_filepath, '.hierarchy.d', 'config.toml')
+        target_path=os.path.join(
+            global_filepath, '.hierarchy.d', 'config.toml'
+        )
     )
 
     cfg = HierarchyConfigManager(
