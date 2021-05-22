@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://kuwv.github.io/python-compendium/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/configuration/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/schema/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/settings/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/config_manager/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/paths/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/settings/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/loader/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://kuwv.github.io/python-compendium/development/config_base/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <loc>https://kuwv.github.io/python-compendium/development/filetypes_base/</loc>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/filetypes/json/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/filetypes/toml/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/filetypes/xml/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kuwv.github.io/python-compendium/development/filetypes/yaml/</loc>
-     <lastmod>2021-03-28</lastmod>
+     <lastmod>2021-05-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
