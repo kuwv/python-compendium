@@ -227,9 +227,9 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def get_name(self, filepath: str) -> str:
         '''Get name from tree path.'''
-        name = os.path.dirname(
-            os.path.relpath(filepath, self.basedir),
-        ).split(os.sep)[-1]
+        name = os.path.dirname(os.path.relpath(filepath, self.basedir),).split(
+            os.sep
+        )[-1]
         if name != '':
             return name
         else:
@@ -311,19 +311,31 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def load_configs(self) -> None:
         '''Load configuration files from filepaths.'''
+
+        def get_child_paths(namepath: str):
+            '''Get relative child paths of namepath.'''
+            child_paths = []
+            for path in self.filepaths[1:]:
+                child_path = os.path.dirname(
+                    os.path.relpath(path, self.basedir)
+                )
+                if len(child_path.split(os.sep)) > 1 and child_path.startswith(
+                    namepath
+                ):
+                    child_paths.append(path)
+                else:
+                    pass
+                    # print('-- namepath skipped', namepath)
+            return child_paths
+
         if self.children == ():
-            for x in self.filepaths[1:]:
+            # get children filepaths for parent
+            filepaths = self.filepaths if self.parent else self.filepaths[1:]
+            for x in filepaths:
                 namepath = os.path.dirname(os.path.relpath(x, self.basedir))
                 # print('---', self.name, namepath, self.parent)
                 if len(namepath.split(os.sep)) == 1:
-                    child_paths = []
-                    for c in self.filepaths[1:]:
-                        child_path = os.path.dirname(
-                            os.path.relpath(c, self.basedir)
-                        )
-                        # print('child_path', child_path)
-                        if namepath != child_path and namepath in child_path:
-                            child_paths.append(c)
+                    child_paths = get_child_paths(namepath)
                     children = list(self.children)
                     children.append(
                         self.load_config(

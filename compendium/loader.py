@@ -13,7 +13,7 @@ import pkg_resources
 
 from compendium import exceptions
 from compendium.filepaths import FilepathMixin
-from compendium.filetypes.ini import IniConfig # noqa
+from compendium.filetypes.ini import IniConfig  # noqa
 from compendium.filetypes.json import JsonConfig  # noqa
 from compendium.filetypes.toml import TomlConfig  # noqa
 from compendium.filetypes.yaml import YamlConfig  # noqa
@@ -80,7 +80,9 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
                     )
             else:
                 raise exceptions.CompendiumConfigFileError(
-                    "Skipping: No configuration found at: '{}'".format(filepath)
+                    "Skipping: No configuration found at: '{}'".format(
+                        filepath
+                    )
                 )
         else:
             raise exceptions.CompendiumConfigFileError(
