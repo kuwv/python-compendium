@@ -365,7 +365,7 @@ __init__<span class="p">(</span><span class="bp">self</span><span class="p">,</s
 </td>
 <td class="code">
 <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">'''Initialize JSON configuration module.'''</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Inializing JsonConfig'</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'encoding'</span><span class="p">,</span> <span class="s1">'utf-8'</span><span class="p">)</span>
@@ -455,9 +455,9 @@ filetypes<span class="p">()</span> </code>
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">filetypes</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">filetypes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
     <span class="sd">'''Return support JSON filetypes.'''</span>
-    <span class="k">return</span> <span class="p">[</span><span class="s1">'json'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s1">'json'</span><span class="p">,)</span>
 </code></pre>
 </div>
 </td>

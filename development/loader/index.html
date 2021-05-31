@@ -582,9 +582,9 @@ modules<span class="p">()</span> </code>
 <td class="code">
 <div class="highlight">
 <pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">modules</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">modules</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
     <span class="sd">'''Lookup modules inheriting FiletypesBase.'''</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">FiletypesBase</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">FiletypesBase</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()])</span>
 </code></pre>
 </div>
 </td>
