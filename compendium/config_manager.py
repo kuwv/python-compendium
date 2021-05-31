@@ -323,9 +323,6 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                     namepath
                 ):
                     child_paths.append(path)
-                else:
-                    pass
-                    # print('-- namepath skipped', namepath)
             return child_paths
 
         if self.children == ():

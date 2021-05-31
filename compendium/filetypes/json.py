@@ -9,7 +9,7 @@ import json  # type: ignore
 # import jsonschema  # type: ignore
 import logging
 import os
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 from compendium.filetypes_base import FiletypesBase
 
@@ -17,16 +17,16 @@ from compendium.filetypes_base import FiletypesBase
 class JsonConfig(FiletypesBase):
     '''Manage JSON configurations.'''
 
-    def __init__(self, **kwargs: str) -> None:
+    def __init__(self, **kwargs: Any) -> None:
         '''Initialize JSON configuration module.'''
         logging.info('Inializing JsonConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
         # self.encoder = kwargs.get('encoder', None)
 
     @staticmethod
-    def filetypes():
+    def filetypes() -> Tuple[str, ...]:
         '''Return support JSON filetypes.'''
-        return ['json']
+        return ('json',)
 
     def load_config(self, filepath: str) -> Dict[str, Any]:
         '''Load settings from JSON configuration.'''

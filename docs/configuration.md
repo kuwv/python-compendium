@@ -13,9 +13,9 @@ The `ConfigManager` is a simple configuration manager that loads a single config
 
 `writable: False`
 
-## NestedConfigManager:
+## TreeConfigManager:
 
-The `NestedConfigManager` is a configuration manager for configurations nested within structured directory layout. This can be conceptualized as Maven like nested-pom configurations
+The `TreeConfigManager` is a configuration manager for configurations nested within structured directory layout. This can be conceptualized as Maven like nested-pom configurations
 
 ## HierarchyConfigManager:
 

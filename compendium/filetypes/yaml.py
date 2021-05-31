@@ -7,6 +7,7 @@ import errno
 import logging
 import os
 # import textwrap
+from typing import Any, Dict, Tuple
 
 from ruamel.yaml import YAML  # type: ignore
 # from ruamel.yaml.scalarstring import LiteralScalarString
@@ -22,13 +23,13 @@ from compendium.filetypes_base import FiletypesBase
 class YamlConfig(FiletypesBase):
     '''Manage YAML configuration files.'''
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         '''Initialize YAML configuration module.'''
         logging.info('Inializing YamlConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
         self.kind = kwargs.get('kind', None)
 
-    def __yaml_parser(self, kind: str):
+    def __yaml_parser(self, kind: str) -> YAML:
         '''Get yaml parser.'''
         yaml = YAML(typ=kind)
         yaml.explicit_start = True  # type: ignore
@@ -36,11 +37,11 @@ class YamlConfig(FiletypesBase):
         return yaml
 
     @staticmethod
-    def filetypes():
+    def filetypes() -> Tuple[str, ...]:
         '''Return support YAML filetypes.'''
-        return ['yaml', 'yml']
+        return ('yaml', 'yml')
 
-    def load_config(self, filepath):
+    def load_config(self, filepath: str) -> Dict[str, Any]:
         '''Load settings from YAML configuration.'''
         logging.info(
             "loading YAML configuration file {}".format(filepath)
@@ -53,7 +54,7 @@ class YamlConfig(FiletypesBase):
             content = {}
         return content
 
-    def dump_config(self, content, filepath):
+    def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
         '''Save settings to YAML configuration.'''
         try:
             with open(filepath, 'w') as f:

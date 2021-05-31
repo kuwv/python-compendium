@@ -6,7 +6,7 @@
 import errno
 import os
 import logging
-from typing import Any, Dict, List
+from typing import Any, Dict, Tuple
 
 import tomlkit  # type: ignore
 
@@ -22,9 +22,9 @@ class TomlConfig(FiletypesBase):
         self.encoding = kwargs.get('encoding', 'utf-8')
 
     @staticmethod
-    def filetypes() -> List[str]:
+    def filetypes() -> Tuple[str, ...]:
         '''Return supported filetypes.'''
-        return ['toml', 'tml']
+        return ('toml', 'tml')
 
     @staticmethod
     def _convert(content: Any) -> Any:

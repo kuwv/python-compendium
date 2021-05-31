@@ -7,7 +7,7 @@ import errno
 import logging
 from collections import defaultdict
 from configparser import ConfigParser  # ExtendedInterpolation
-from typing import Any, Dict, List
+from typing import Any, Dict, Tuple
 
 from compendium.filetypes_base import FiletypesBase
 
@@ -23,9 +23,9 @@ class IniConfig(FiletypesBase):
         # self.__config_parser._interpolation = ExtendedInterpolation()
 
     @staticmethod
-    def filetypes() -> List[str]:
+    def filetypes() -> Tuple[str, ...]:
         '''Return supported filetypes.'''
-        return ['cfg', 'conf', 'config', 'cnf', 'ini']
+        return ('cfg', 'conf', 'config', 'cnf', 'ini')
 
     def load_config(self, filepath: str) -> Dict[str, Any]:
         '''Load settings from toml configuration.'''

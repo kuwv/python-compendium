@@ -6,6 +6,7 @@
 import errno
 import logging
 import os
+from typing import Any, Dict, Tuple
 
 import xmltodict  # type: ignore
 
@@ -15,7 +16,7 @@ from compendium.filetypes_base import FiletypesBase
 class XmlConfig(FiletypesBase):
     '''Manage XML configurations.'''
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         '''Initialize XML configuration module.'''
         logging.info('Inializing XmlConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
@@ -24,11 +25,11 @@ class XmlConfig(FiletypesBase):
         self.namespaces = kwargs.get('namespaces', None)
 
     @staticmethod
-    def filetypes():
+    def filetypes() -> Tuple[str, ...]:
         '''Return supported XML configuration filetypes.'''
-        return ['xml']
+        return ('xml',)
 
-    def load_config(self, filepath):
+    def load_config(self, filepath: str) -> Dict[str, Any]:
         '''Load settings from XML configuration.'''
         logging.info('loading XML configuration file')
         if os.path.isfile(filepath):
@@ -43,7 +44,7 @@ class XmlConfig(FiletypesBase):
             content = {}
         return content
 
-    def dump_config(self, content, filepath):
+    def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
         '''Save settings to XML configuration.'''
         try:
             with open(filepath, 'w') as f:

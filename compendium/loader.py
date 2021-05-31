@@ -7,7 +7,7 @@
 import logging
 import os
 from collections import UserDict
-from typing import Any, List, Optional, Type
+from typing import Any, Optional, Tuple, Type
 
 import pkg_resources
 
@@ -48,9 +48,9 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
         super().__init__(**kwargs)
 
     @staticmethod
-    def modules() -> List[Any]:
+    def modules() -> Tuple[Any, ...]:
         '''Lookup modules inheriting FiletypesBase.'''
-        return [m for m in FiletypesBase.__subclasses__()]
+        return tuple([m for m in FiletypesBase.__subclasses__()])
 
     def __get_class(
         self, filetype: Optional[str] = 'toml'

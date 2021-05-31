@@ -4,20 +4,20 @@ This website provides the project documentation for Python Compendium.
 
 ## Overview
 
-Compendium is a configuration management tool
+Compendium is a configuration management tool.
 
 ## Features
 
-- [ ] Configurations
-    - [ ] Configuration Manager
-    - [ ] Hierarchical Configuration Manager
-    - [ ] Nested Configuration Manager
-- [ ] Filetypes:
-    - [ ] JSON support
-    - [ ] INI support
-    - [ ] TOML support
-    - [ ] XML support
-    - [ ] YAML support
+- [x] Configurations
+    - [X] Configuration Manager
+    - [X] Hierarchical Configuration Manager
+    - [X] Tree Configuration Manager
+- [x] Filetypes:
+    - [X] JSON support
+    - [X] INI support
+    - [X] TOML support
+    - [X] XML support
+    - [X] YAML support
 - [ ] Extensible
 
 ## Install
