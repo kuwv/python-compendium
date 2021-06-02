@@ -9,16 +9,16 @@ data1 = {'key1': 'value1'}
 data2 = {'key2': 'value2'}
 data3 = {'key3': 'value3'}
 
-n1 = TreeConfigManager('n1', defaults=data1)
+n1 = TreeConfigManager(name='n1', defaults=data1)
 assert isinstance(n1, ConfigManager) is True
 print('n1', n1)
 
-n2 = TreeConfigManager('n2', defaults=data2, parent=n1)
+n2 = TreeConfigManager(name='n2', defaults=data2, parent=n1)
 print('ns', n2)
 assert n2.retrieve('/key1') is None
 assert n2.retrieve('/key2') == 'value2'
 
-n3 = n2.new_child('n3', data=data3)
+n3 = n2.new_child(name='n3', data=data3)
 print('n3', n3)
 print('settings', n3.settings.maps)
 assert n3.settings.maps == [{'key3': 'value3'}, {'key2': 'value2'}]

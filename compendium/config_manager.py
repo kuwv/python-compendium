@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 class ConfigManager(EnvironsMixin):
     '''Provide config management representation.'''
 
-    def __init__(self, name: str, *args: str, **kwargs: Any) -> None:
+    def __init__(self, *args: str, **kwargs: Any) -> None:
         '''Initialize single settings management.
 
         merge_sections: []
@@ -40,8 +40,7 @@ class ConfigManager(EnvironsMixin):
             log.addHandler(logging.StreamHandler(log_handler))  # type: ignore
 
         # Setup filepaths
-        self.name = name
-        # TODO: args should be filepaths
+        self.name = kwargs.pop('name', 'compendium')
         self._filepaths: List[str] = list(args)
         # self.config_files: List[Dict[str, Union[str, ConfigFile]]] = []
 
@@ -54,8 +53,6 @@ class ConfigManager(EnvironsMixin):
             self.load_dotenv()
         if kwargs.pop('load_environs', True):
             self.environs = self.load_environs()
-        # if kwargs.pop('load_startup_args', True):
-        #     self.environs.update(kwargs.pop('load_startup_args', {}))
 
         # Load defaults
         defaults = kwargs.pop('defaults', {})
@@ -65,6 +62,8 @@ class ConfigManager(EnvironsMixin):
             self.data = SettingsMap(*kwargs.pop('data'))
             if defaults != {}:
                 self.defaults.update(defaults)
+        elif 'settings' in kwargs:
+            self.data = kwargs.pop('settings')
         else:
             self.data = SettingsMap(defaults)
         # print('- data', self.data)
@@ -142,7 +141,7 @@ class ConfigManager(EnvironsMixin):
 class HierarchyConfigManager(ConfigManager):
     '''Manage settings from hierarchy config_files.'''
 
-    def __init__(self, name: str, *args: str, **kwargs: Any) -> None:
+    def __init__(self, *args: str, **kwargs: Any) -> None:
         '''Initialize settings from hirarchy filepaths.
 
         Parameters
@@ -175,9 +174,8 @@ class HierarchyConfigManager(ConfigManager):
         self.enable_local_filepaths = bool(
             kwargs.get('enable_local_filepaths', True)
         )
-        super().__init__(name, *args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._prep_filepaths()
-        # self.children: List[Dict[str, Union[str, ConfigFile]]] = []
 
     def _prep_filepaths(self) -> None:
         '''Load config_files located in nested directory path.'''
@@ -197,7 +195,7 @@ class HierarchyConfigManager(ConfigManager):
 class TreeConfigManager(ConfigManager, NodeMixin):
     '''Manage settings from nested tree config_files.'''
 
-    def __init__(self, name: str, *args: str, **kwargs: Any) -> None:
+    def __init__(self, *args: str, **kwargs: Any) -> None:
         '''Initialize nested settings management.'''
         self.parent = kwargs.pop('parent', None)
         if 'children' in kwargs:
@@ -208,7 +206,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         self.filename = kwargs.pop('filename', 'config.toml')
         self.basedir = kwargs.pop('basedir', os.getcwd())
 
-        super().__init__(name, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         if not self.parent and args == ():
             self._prep_filepaths()
@@ -259,21 +257,18 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         return results
 
     def new_child(
-        self, name: str, *args: str, **kwargs: Any
+        self, *args: str, **kwargs: Any
     ) -> 'TreeConfigManager':
         '''Get child config node.'''
+        if 'name' not in kwargs:
+            kwargs['name'] = self.name
         if 'basedir' not in kwargs:
             kwargs['basedir'] = self.basedir
         if 'filename' not in kwargs:
             kwargs['filename'] = self.filename
         kwargs['parent'] = self
-        # (
-        #     self.get_config(
-        #         self.get_namepath(filepath).rsplit(self.separator, 1)[0]
-        #     )
-        # )
-
         data = self.data.maps
+        # NOTE: need to determine if any of this has value
         # filepath = (
         #     kwargs.pop('filepath', None)
         #     or self.get_filepath(
@@ -281,6 +276,12 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         #     )
         # )
         # if filepath is not None:
+        #     # NOTE: not sure if this
+        #     kwargs['parent'] = self.get_config(
+        #             self.get_namepath(filepath).rsplit(self.separator, 1)[0]
+        #         )
+        #     )
+        #     # or this
         #     config_file = self.load_config(filepath)
         #     if config_file is not None:
         #         data = [config_file] + data  # type: ignore
@@ -288,7 +289,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             data = [kwargs.pop('data')] + data
         kwargs['data'] = data
         kwargs['load_children'] = True
-        return self.__class__(name, *args, **kwargs)
+        return self.__class__(*args, **kwargs)
 
     def _prep_filepaths(self) -> None:
         '''Load config_files located in nested directory path.'''
@@ -304,9 +305,10 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         self, filepath: str, update: bool = False, *args: str, **kwargs: Any
     ) -> Optional[ConfigFile]:
         '''Load config.'''
+        # TODO: need to separate chainmap of defaults from namespace config
         config_file = super().load_config(filepath, update)
         return self.new_child(
-            self.get_name(filepath), data=config_file, *args, **kwargs
+            name=self.get_name(filepath), data=config_file, *args, **kwargs
         )
 
     def load_configs(self) -> None:
@@ -326,11 +328,13 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             return child_paths
 
         if self.children == ():
-            # get children filepaths for parent
+            # get children filepaths of parent
             filepaths = self.filepaths if self.parent else self.filepaths[1:]
             for x in filepaths:
+                # get child namepath from filepath
                 namepath = os.path.dirname(os.path.relpath(x, self.basedir))
                 # print('---', self.name, namepath, self.parent)
+                # populate only direct children
                 if len(namepath.split(os.sep)) == 1:
                     child_paths = get_child_paths(namepath)
                     children = list(self.children)

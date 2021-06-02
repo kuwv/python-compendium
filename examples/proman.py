@@ -14,17 +14,17 @@ pyproject_cfg = TreeConfigManager(
     log_level='debug',
 )
 # print('namespaces', pyproject_cfg.namespaces)
-print('root', pyproject_cfg)
+# print('root', pyproject_cfg)
 # pyproject_cfg.load_configs()
-print('children', pyproject_cfg.children)
-# print(RenderTree(pyproject_cfg))
+# print('children', pyproject_cfg.children)
+print(RenderTree(pyproject_cfg))
 
-lockfile_cfg = TreeConfigManager(
-    name='lockfile',
-    filename='proman-lock.json',
-    basedir=os.path.join(os.path.dirname(__file__), 'proman'),
-    load_root=True,
-    load_children=True,
-    log_level='debug',
-)
-print(RenderTree(lockfile_cfg))
+# lockfile_cfg = TreeConfigManager(
+#     name='lockfile',
+#     filename='proman-lock.json',
+#     basedir=os.path.join(os.path.dirname(__file__), 'proman'),
+#     load_root=True,
+#     load_children=True,
+#     log_level='debug',
+# )
+# print(RenderTree(lockfile_cfg))

@@ -81,9 +81,9 @@ class SettingsMap(ChainMap, DpathMixin, MergeMixin):
 
     def __init__(self, *args, **kwargs):
         '''Initialize settings store.'''
+        super().__init__(*args)
         if 'separator' in kwargs:
             self.separator: str = kwargs.pop('separator')
-        super().__init__(*args)
 
     def push(self, settings) -> None:
         '''Push settings untop store.'''

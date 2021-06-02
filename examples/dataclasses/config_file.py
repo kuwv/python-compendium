@@ -18,7 +18,7 @@ class Config(ConfigFile):
 
     def __post_init__(self) -> None:
         '''Initialize settings from configuration.'''
-        super().__init__(self.filepath)
+        super().__init__(self.filepath, writable=self.writable)
         self.load()
 
 
@@ -26,7 +26,7 @@ basepath = os.path.dirname(os.path.realpath(__file__))
 filepath = os.path.join(basepath, 'example.yaml')
 outpath = os.path.join(basepath, 'example-out.yaml')
 
-cfg = Config(filepath)
+cfg = Config(filepath, writable=True)
 
 print('settings', cfg)
 # print('allowed_roles', cfg.allowed_roles[0])
@@ -36,4 +36,4 @@ print('settings', cfg)
 # assert 'cloudops' in cfg.get('/allowed_roles')
 
 print('post settings', cfg.data)
-cfg.dump(filepath=outpath, writable=True)
+cfg.dump(filepath=outpath)

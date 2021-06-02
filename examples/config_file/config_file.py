@@ -27,7 +27,7 @@ basepath = os.path.dirname(os.path.realpath(__file__))
 filepath = os.path.join(basepath, 'example.yaml')
 outpath = os.path.join(basepath, 'example-out.yaml')
 
-cfg = ConfigFile()
+cfg = ConfigFile(writable=True)
 cfg.load(filepath=filepath)
 
 print('settings', cfg)
@@ -38,7 +38,7 @@ print('settings', cfg)
 # assert 'cloudops' in cfg.get('/allowed_roles')
 
 print('post settings', cfg.data)
-cfg.dump(filepath=outpath, writable=True)
+cfg.dump(filepath=outpath)
 
 # JSON
 json_in = os.path.join(basepath, 'in.json')
@@ -53,25 +53,25 @@ toml_in = os.path.join(basepath, 'in.toml')
 toml_out = os.path.join(basepath, 'out.toml')
 
 # JSON
-json_cfg = ConfigFile(name='json')
+json_cfg = ConfigFile(name='json', writable=True)
 json_cfg.load(filepath=json_in)
-json_cfg.dump(filepath=json_out, writable=True)
-json_cfg.dump(filepath=yaml_out, writable=True)
-json_cfg.dump(filepath=toml_out, writable=True)
+json_cfg.dump(filepath=json_out)
+json_cfg.dump(filepath=yaml_out)
+json_cfg.dump(filepath=toml_out)
 
 # YAML
-yaml_cfg = ConfigFile(name='yaml')
+yaml_cfg = ConfigFile(name='yaml', writable=True)
 yaml_cfg.load(filepath=yaml_in)
-yaml_cfg.dump(filepath=yaml_out, writable=True)
-yaml_cfg.dump(filepath=json_out, writable=True)
-json_cfg.dump(filepath=toml_out, writable=True)
+yaml_cfg.dump(filepath=yaml_out)
+yaml_cfg.dump(filepath=json_out)
+json_cfg.dump(filepath=toml_out)
 
 # TOML
-toml_cfg = ConfigFile(name='toml')
+toml_cfg = ConfigFile(name='toml', writable=True)
 toml_cfg.load(filepath=toml_in)
-toml_cfg.dump(filepath=toml_out, writable=True)
-toml_cfg.dump(filepath=json_out, writable=True)
-toml_cfg.dump(filepath=yaml_out, writable=True)
+toml_cfg.dump(filepath=toml_out)
+toml_cfg.dump(filepath=json_out)
+toml_cfg.dump(filepath=yaml_out)
 
 print(show_types(json_cfg.data))
 

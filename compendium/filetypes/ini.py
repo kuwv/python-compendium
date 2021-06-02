@@ -5,7 +5,6 @@
 
 import errno
 import logging
-from collections import defaultdict
 from configparser import ConfigParser  # ExtendedInterpolation
 from typing import Any, Dict, Tuple
 
@@ -15,11 +14,11 @@ from compendium.filetypes_base import FiletypesBase
 class IniConfig(FiletypesBase):
     '''Manage toml configurations.'''
 
-    def __init__(self, **kwargs: Any) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         '''Initialize toml module.'''
         logging.info('Inializing TomlConfig')
-        self.encoding = kwargs.get('encoding', 'utf-8')
-        self.__config_parser = ConfigParser(dict_type=defaultdict)
+        self.encoding = kwargs.pop('encoding', 'utf-8')
+        self.__config_parser = ConfigParser(*args, **kwargs)
         # self.__config_parser._interpolation = ExtendedInterpolation()
 
     @staticmethod
@@ -31,10 +30,13 @@ class IniConfig(FiletypesBase):
         '''Load settings from toml configuration.'''
         logging.info('loading INI configuration file')
         try:
-            self.__config_parser.read([filepath])
+            self.__config_parser.read([filepath], encoding=self.encoding)
         except Exception:
-            logging.error('Unabled to read file')
-        return self.__config_parser._sections  # type: ignore
+            logging.error('Unable to read file')
+        data = self.__config_parser._sections  # type: ignore
+        for k, v in self.__config_parser._defaults.items():  # type: ignore
+            data[k] = v
+        return data
 
     def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
         '''Save settings to toml configuration.'''

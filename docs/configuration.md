@@ -13,10 +13,6 @@ The `ConfigManager` is a simple configuration manager that loads a single config
 
 `writable: False`
 
-## TreeConfigManager:
-
-The `TreeConfigManager` is a configuration manager for configurations nested within structured directory layout. This can be conceptualized as Maven like nested-pom configurations
-
 ## HierarchyConfigManager:
 
 The `HierarchyConfigManager` is a configuration manager that can be used to manager configurations. It is intended for system using Hierarchical File System (HFS).
@@ -26,3 +22,7 @@ The `HierarchyConfigManager` is a configuration manager that can be used to mana
 `enable_user_paths: False`
 
 `enable_local_paths: True`
+
+## TreeConfigManager:
+
+The `TreeConfigManager` is a configuration manager for configurations nested within structured directory layout. This can be conceptualized as Maven like nested-pom configurations

@@ -25,3 +25,4 @@ environs.load_dotenv()
 environs.load_environs()
 print('environs', environs)  # type: ignore
 print('example to_dict', environs.to_dict(key, value))
+assert {'compend': {'example': {'data': 12}}} == environs.to_dict(key, value)
