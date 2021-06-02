@@ -1,6 +1,7 @@
 [tool]
 [tool.proman]
 name = "mock-project"
+description = "test"
 version = "0.4.0"
 
 [tool.proman.dependencies]

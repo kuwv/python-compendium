@@ -259,7 +259,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         results = r.get(self, namepath)
         return results
 
-    def new_child(self, *args: str, **kwargs: Any) -> 'TreeConfigManager':
+    def new_child(self, *args: Any, **kwargs: Any) -> 'TreeConfigManager':
         '''Get child config node.'''
         if 'name' not in kwargs:
             kwargs['name'] = self.name
@@ -268,29 +268,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         if 'filename' not in kwargs:
             kwargs['filename'] = self.filename
         kwargs['parent'] = self
-        # data = self.data.maps
-        # NOTE: need to determine if any of this has value
-        # filepath = (
-        #     kwargs.pop('filepath', None)
-        #     or self.get_filepath(
-        #         f"{self.separator}{self.name}{self.separator}{name}"
-        #     )
-        # )
-        # if filepath is not None:
-        #     # NOTE: not sure if this
-        #     kwargs['parent'] = self.get_config(
-        #             self.get_namepath(filepath).rsplit(self.separator, 1)[0]
-        #         )
-        #     )
-        #     # or this
-        #     config_file = self.load_config(filepath)
-        #     if config_file is not None:
-        #         data = [config_file] + data  # type: ignore
-        # XXX changed args to take dicts
-        # if 'data' in kwargs and kwargs['data'] not in self.data.maps:
-        #     data = [kwargs.pop('data')] + data
-        # kwargs['data'] = data
-        kwargs['load_children'] = True
+        kwargs['load_children'] = kwargs.get('load_children', True)
         data = (*args, self.data)
         return self.__class__(*data, **kwargs)
 
@@ -301,8 +279,6 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         ):
             if filepath not in self.filepaths:
                 self.add_filepath(filepath)
-            else:
-                print('already there')
 
     def load_config(
         self, filepath: str, update: bool = False, *args: str, **kwargs: Any
@@ -311,7 +287,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         # TODO: need to separate chainmap of defaults from namespace config
         config_file = super().load_config(filepath, update)
         return self.new_child(
-            name=self.get_name(filepath), data=config_file, *args, **kwargs
+            config_file, name=self.get_name(filepath), *args, **kwargs
         )
 
     def load_configs(self) -> None:
@@ -344,8 +320,8 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                     children.append(
                         self.load_config(
                             x,
-                            False,
-                            *child_paths,
+                            update=False,
+                            filepaths=child_paths,
                             basedir=f"{self.basedir}{os.sep}{namepath}",
                         )
                     )
