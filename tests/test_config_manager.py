@@ -13,7 +13,7 @@ settings_filepath = os.path.join(config_filepath, 'config.toml')
 
 def test_filepath():
     '''Test filepath loader.'''
-    cfg = ConfigManager(settings_filepath, name='filepath')
+    cfg = ConfigManager(name='filepath', filepaths=[settings_filepath])
     cfg.load_configs()
     assert cfg.settings['title'] == 'TOML Example'
 
@@ -23,6 +23,14 @@ def test_defaults():
     cfg = ConfigManager(name='defaults', defaults={'default': 'result'})
     assert cfg.defaults == {'default': 'result'}
     result = cfg.settings.retrieve('/default')
+    assert result == 'result'
+
+
+def test_settings():
+    '''Test default settings.'''
+    cfg = ConfigManager({'test': 'result'})
+    assert cfg.settings == {'test': 'result'}
+    result = cfg.settings.retrieve('/test')
     assert result == 'result'
 
 

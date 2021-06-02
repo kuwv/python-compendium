@@ -18,7 +18,7 @@ print('ns', n2)
 assert n2.retrieve('/key1') is None
 assert n2.retrieve('/key2') == 'value2'
 
-n3 = n2.new_child(name='n3', data=data3)
+n3 = n2.new_child(data3, name='n3')
 print('n3', n3)
 print('settings', n3.settings.maps)
 assert n3.settings.maps == [{'key3': 'value3'}, {'key2': 'value2'}]
