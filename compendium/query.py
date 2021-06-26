@@ -18,7 +18,7 @@ class DpathMixin:
         query,
         default: Any = None,
         document: Optional['DpathMixin'] = None,
-    ):
+    ) -> Optional[Any]:
         '''Get value from settings with key.'''
         if not document:
             document = self
@@ -55,6 +55,6 @@ class DpathMixin:
         '''Delete key/value located at keypath.'''
         dpath.delete(self, keypath, DpathMixin.separator)
 
-    def combine(self, document: Optional[Dict[str, Any]] = None):
+    def combine(self, document: Optional[Dict[str, Any]] = None) -> None:
         '''Combine document.'''
         dpath.merge(self, document, flags=2)
