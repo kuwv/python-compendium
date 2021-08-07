@@ -44,8 +44,12 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
         )
 
         if 'separator' in kwargs:
-            self.separator: str = kwargs.pop('separator')
+            DpathMixin.separator = kwargs.pop('separator')
         super().__init__(**kwargs)
+
+    @classmethod
+    def set_separator(cls, separator: str) -> None:
+        '''Set the path separator.'''
 
     @staticmethod
     def modules() -> Tuple[Any, ...]:

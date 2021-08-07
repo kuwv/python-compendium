@@ -6,17 +6,20 @@
 import logging
 import os
 from collections import ChainMap
-from collections.abc import Mapping
-from typing import Any, Dict
+from typing import Any, Dict, Mapping
 
-from .query import DpathMixin
+from compendium.query import DpathMixin
 
 
 class MergeMixin:
     '''Merge dictionaries.'''
 
     @classmethod
-    def merge(self, source, update):
+    def merge(
+        self,
+        source: Dict[str, Any],
+        update: Mapping[str, Any]
+    ) -> Dict[str, Any]:
         '''Perform recursive merge.'''
         for k, v in update.items():
             if isinstance(v, Mapping):
@@ -38,7 +41,7 @@ class EnvironsMixin(MergeMixin):
             return 'COMPEND'
 
     @prefix.setter
-    def prefix(self, prefix) -> None:
+    def prefix(self, prefix: str) -> None:
         '''Set environment prefix.'''
         self._prefix = prefix
 
@@ -79,13 +82,13 @@ class EnvironsMixin(MergeMixin):
 class SettingsMap(ChainMap, DpathMixin, MergeMixin):
     '''Manage settings loaded from confiugrations using dpath.'''
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         '''Initialize settings store.'''
         super().__init__(*args)
         if 'separator' in kwargs:
-            self.separator: str = kwargs.pop('separator')
+            DpathMixin.separator = kwargs.pop('separator')
 
-    def push(self, settings) -> None:
+    def push(self, settings: Dict[str, Any]) -> None:
         '''Push settings untop store.'''
         logging.debug(settings)
         self.maps.insert(0, settings)

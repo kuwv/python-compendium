@@ -131,7 +131,7 @@ class ConfigManager(EnvironsMixin):
             config_file = ConfigFile(filepath=filepath)
             config_file.load()
             if update:
-                self.data.push(config_file)
+                self.data.push(config_file)  # type: ignore
             return config_file
         return None
 
