@@ -43,7 +43,7 @@ class JsonConfig(FiletypesBase):
         try:
             with open(filepath, 'w') as f:
                 json.dump(
-                    content, f, indent=2, sort_keys=True
+                    content, f, indent=2, sort_keys=False
                     # , default=self.encoder
                 )
         except IOError as err:
