@@ -52,18 +52,6 @@ mypy-extensions = "^0.4.3"
 [tool.poetry.extras]
 xml = ["xmltodict"]
 
-[tool.flit.metadata]
-module = "compendium"
-author = "Jesse P. Johnson"
-author-email = "jpj6652@gmail.com"
-home-page = "https://github.com/kuwv/compendium"
-requires = [
-    "anytree",
-    "dpath",
-    "ruamel.yaml",
-    "tomlkit",
-]
-
 [tool.black]
 line-length = 79
 include = '\.pyi?$'
