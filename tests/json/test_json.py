@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Test JSON content management.'''
+"""Test JSON content management."""
 
 import os
 import pytest  # type: ignore
@@ -15,7 +15,7 @@ json_filepath = os.path.join(settings_filepath, 'test.json')
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_empty_filepath(fs):
-#     '''Test empty file.'''
+#     """Test empty file."""
 #     cfg = ConfigPaths(name='empty')
 #     cfg.load_configs(filename='test.json')
 #     assert not cfg.filepaths
@@ -23,7 +23,7 @@ json_filepath = os.path.join(settings_filepath, 'test.json')
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_json_filepath(fs):
-    '''Test JSON filepaths.'''
+    """Test JSON filepaths."""
     fs.add_real_file(json_filepath)
     cfg = ConfigFile(
         name='json',
@@ -34,7 +34,7 @@ def test_json_filepath(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg(fs):
-    '''Test loading JSON configuration.'''
+    """Test loading JSON configuration."""
     fs.add_real_file(json_filepath)
     cfg = ConfigFile(name='tests')
     cfg.load(filepath=json_filepath)
@@ -47,7 +47,7 @@ def test_cfg(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_dump(fs):
-    '''Test saving JSON content.'''
+    """Test saving JSON content."""
     fs.add_real_file(json_filepath, False)
     cfg = ConfigFile(name='tests', writable=True)
     cfg.load(filepath=json_filepath)
@@ -57,7 +57,7 @@ def test_cfg_dump(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
-    '''Test JSON failure.'''
+    """Test JSON failure."""
     fs.add_real_file(json_filepath)
     cfg = ConfigFile(name='tests')
     cfg.load(filepath=json_filepath)

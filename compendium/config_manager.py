@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Provide settings modules.'''
+"""Provide settings modules."""
 
 import glob
 import logging
@@ -20,10 +20,10 @@ log = logging.getLogger(__name__)
 
 
 class ConfigManager(EnvironsMixin):
-    '''Provide config management representation.'''
+    """Provide config management representation."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        '''Initialize single settings management.
+        """Initialize single settings management.
 
         merge_sections: []
         merge_strategy:
@@ -31,7 +31,7 @@ class ConfigManager(EnvironsMixin):
           - partition
           - last
 
-        '''
+        """
         # Setup logging
         if 'log_level' in kwargs:
             log.setLevel(getattr(logging, kwargs.pop('log_level').upper()))
@@ -76,28 +76,28 @@ class ConfigManager(EnvironsMixin):
     def __getattr__(
         self, attr: str
     ) -> Callable[[VarArg(Any), KwArg(Any)], Any]:
-        '''Proxy calls to settings store.'''
+        """Proxy calls to settings store."""
         if hasattr(self.__dict__.get('data'), attr):
 
             def wrapper(*args, **kwargs):
-                '''Call query for data store.'''
+                """Call query for data store."""
                 return getattr(self.data, attr)(*args, **kwargs)
 
             return wrapper
         raise AttributeError(attr)
 
     def __repr__(self) -> str:
-        '''Get string representation of data.'''
+        """Get string representation of data."""
         return repr(self.data)
 
     @property
     def defaults(self):  # type: ignore
-        '''Get configuration defaults.'''
+        """Get configuration defaults."""
         return self.data.maps[0]
 
     @property
     def settings(self) -> SettingsMap:
-        '''Create settings to prototype idea.'''
+        """Create settings to prototype idea."""
         # TODO: maybe returing maps would be better
         if self.environs != {}:
             return SettingsMap(self.environs, *self.data.maps)
@@ -106,17 +106,17 @@ class ConfigManager(EnvironsMixin):
 
     @property
     def filepaths(self) -> Tuple[str, ...]:
-        '''Retrieve filepaths.'''
+        """Retrieve filepaths."""
         # TODO: should this be removed
         return tuple(self._filepaths)
 
     def add_filepath(self, filepath: str) -> None:
-        '''Load settings from configuration in filepath.'''
+        """Load settings from configuration in filepath."""
         logging.debug("searching for {}".format(filepath))
         self._filepaths.append(filepath)
 
     # def dump_config(self, filepath: str, *args: str) -> None:
-    #     '''Dump settings to configuration.'''
+    #     """Dump settings to configuration."""
     #     if os.path.exists(filepath):
     #         config_file = ConfigFile(filepath=filepath)
     #         config_file.dump()
@@ -126,7 +126,7 @@ class ConfigManager(EnvironsMixin):
     def load_config(
         self, filepath: str, update: bool = True
     ) -> Optional[ConfigFile]:
-        '''Load settings from configuration.'''
+        """Load settings from configuration."""
         if os.path.exists(filepath):
             config_file = ConfigFile(filepath=filepath)
             config_file.load()
@@ -136,7 +136,7 @@ class ConfigManager(EnvironsMixin):
         return None
 
     def load_configs(self) -> None:
-        '''Load configuration files from filepaths.'''
+        """Load configuration files from filepaths."""
         for filepath in self._filepaths:
             self.load_config(filepath)
 
@@ -144,10 +144,10 @@ class ConfigManager(EnvironsMixin):
 # TODO: refactor to consume multiple configfile objects
 # TODO: refactor for lazyloading
 class HierarchyConfigManager(ConfigManager):
-    '''Manage settings from hierarchy config_files.'''
+    """Manage settings from hierarchy config_files."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        '''Initialize settings from hirarchy filepaths.
+        """Initialize settings from hirarchy filepaths.
 
         Parameters
         ----------
@@ -167,7 +167,7 @@ class HierarchyConfigManager(ConfigManager):
         enable_local_filepaths: bool, optional
             Enable local filepath lookup for config_files.
 
-        '''
+        """
         self.basedir = kwargs.pop('basedir', os.sep)
         self.filename = kwargs.pop('filename', 'config.toml')
         self.enable_system_filepaths = bool(
@@ -183,7 +183,7 @@ class HierarchyConfigManager(ConfigManager):
         self._prep_filepaths()
 
     def _prep_filepaths(self) -> None:
-        '''Load config_files located in nested directory path.'''
+        """Load config_files located in nested directory path."""
         config_filepaths = ConfigPaths(
             name=self.name,
             filename=self.filename,
@@ -198,10 +198,10 @@ class HierarchyConfigManager(ConfigManager):
 
 # TODO: refactor to consume multiple configfile objects
 class TreeConfigManager(ConfigManager, NodeMixin):
-    '''Manage settings from nested tree config_files.'''
+    """Manage settings from nested tree config_files."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        '''Initialize nested settings management.'''
+        """Initialize nested settings management."""
         self.parent = kwargs.pop('parent', None)
         if 'children' in kwargs:
             self.children = kwargs.pop('children')
@@ -223,11 +223,11 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     @property
     def namepaths(self) -> Tuple[str, ...]:
-        '''Return list of namepaths.'''
+        """Return list of namepaths."""
         return tuple([self.get_namepath(x) for x in self.filepaths])
 
     def get_name(self, filepath: str) -> str:
-        '''Get name from tree path.'''
+        """Get name from tree path."""
         name = os.path.dirname(os.path.relpath(filepath, self.basedir),).split(
             os.sep
         )[-1]
@@ -237,7 +237,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             return self.name
 
     def get_namepath(self, filepath: str) -> str:
-        '''Get name from tree path.'''
+        """Get name from tree path."""
         name = os.path.dirname(
             os.path.relpath(filepath, self.basedir),
         ).replace(os.sep, self.separator)
@@ -247,20 +247,20 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             return f"{self.separator}{self.name}"
 
     def get_filepath(self, name: str) -> Optional[str]:
-        '''Get filepath from namepath.'''
+        """Get filepath from namepath."""
         for x in self.filepaths:
             if name == self.get_namepath(x):
                 return x
         return None
 
     def get_config(self, namepath):
-        '''Get config from store by attribute.'''
+        """Get config from store by attribute."""
         r = Resolver('name')
         results = r.get(self, namepath)
         return results
 
     def new_child(self, *args: Any, **kwargs: Any) -> 'TreeConfigManager':
-        '''Get child config node.'''
+        """Get child config node."""
         if 'name' not in kwargs:
             kwargs['name'] = self.name
         if 'basedir' not in kwargs:
@@ -273,7 +273,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         return self.__class__(*data, **kwargs)
 
     def _prep_filepaths(self) -> None:
-        '''Load config_files located in nested directory path.'''
+        """Load config_files located in nested directory path."""
         for filepath in glob.iglob(
             os.path.join(self.basedir, '**', self.filename), recursive=True
         ):
@@ -283,7 +283,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
     def load_config(
         self, filepath: str, update: bool = False, *args: str, **kwargs: Any
     ) -> Optional[ConfigFile]:
-        '''Load config.'''
+        """Load config."""
         # TODO: need to separate chainmap of defaults from namespace config
         config_file = super().load_config(filepath, update)
         return self.new_child(
@@ -291,10 +291,10 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         )
 
     def load_configs(self) -> None:
-        '''Load configuration files from filepaths.'''
+        """Load configuration files from filepaths."""
 
         def get_child_paths(namepath: str):
-            '''Get relative child paths of namepath.'''
+            """Get relative child paths of namepath."""
             child_paths = []
             for path in self.filepaths[1:]:
                 child_path = os.path.dirname(

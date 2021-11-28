@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Provide query capabilities.'''
+"""Provide query capabilities."""
 
 from typing import Any, Dict, Optional
 
@@ -9,7 +9,7 @@ from dpath import util as dpath  # type: ignore
 
 
 class DpathMixin:
-    '''Provide XPath like query capability.'''
+    """Provide XPath like query capability."""
 
     separator: str = '/'
 
@@ -19,7 +19,7 @@ class DpathMixin:
         default: Any = None,
         document: Optional['DpathMixin'] = None,
     ) -> Optional[Any]:
-        '''Get value from settings with key.'''
+        """Get value from settings with key."""
         if not document:
             document = self
         try:
@@ -28,11 +28,11 @@ class DpathMixin:
             return default
 
     def search(self, query: str) -> Dict[str, Any]:
-        '''Search settings matching query.'''
+        """Search settings matching query."""
         return dpath.values(self, query, DpathMixin.separator)
 
     def append(self, keypath: str, value: Any) -> None:
-        '''Append to a list located at keypath.'''
+        """Append to a list located at keypath."""
         store = [value]
         keypath_dir = keypath.split(DpathMixin.separator)[1:]
         for x in reversed(keypath_dir):
@@ -40,21 +40,21 @@ class DpathMixin:
         dpath.merge(self, store)
 
     def set(self, keypath: str, value: Any) -> None:
-        '''Update value located at keypath.'''
+        """Update value located at keypath."""
         dpath.set(self, keypath, value, DpathMixin.separator)
 
     def add(self, keypath: str, value: Any) -> None:
-        '''Add key/value pair located at keypath.'''
+        """Add key/value pair located at keypath."""
         dpath.new(self, keypath, value, DpathMixin.separator)
 
     def create(self, keypath: str, value: Any) -> None:
-        '''Create new key/value pair located at path.'''
+        """Create new key/value pair located at path."""
         dpath.new(self, keypath, value, DpathMixin.separator)
 
     def delete(self, keypath: str) -> None:
-        '''Delete key/value located at keypath.'''
+        """Delete key/value located at keypath."""
         dpath.delete(self, keypath, DpathMixin.separator)
 
     def combine(self, document: Optional[Dict[str, Any]] = None) -> None:
-        '''Combine document.'''
+        """Combine document."""
         dpath.merge(self, document, flags=2)

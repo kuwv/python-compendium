@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # :copyright: (c) 2020 by Jesse Johnson.
 # :license: Apache 2.0, see LICENSE for more details.
-'''Test settings management.'''
+"""Test settings management."""
 
 import os
 
@@ -12,14 +12,14 @@ settings_filepath = os.path.join(config_filepath, 'config.toml')
 
 
 def test_filepath():
-    '''Test filepath loader.'''
+    """Test filepath loader."""
     cfg = ConfigManager(name='filepath', filepaths=[settings_filepath])
     cfg.load_configs()
     assert cfg.settings['title'] == 'TOML Example'
 
 
 def test_defaults():
-    '''Test default settings.'''
+    """Test default settings."""
     cfg = ConfigManager(name='defaults', defaults={'default': 'result'})
     assert cfg.defaults == {'default': 'result'}
     result = cfg.settings.retrieve('/default')
@@ -27,7 +27,7 @@ def test_defaults():
 
 
 def test_settings():
-    '''Test default settings.'''
+    """Test default settings."""
     cfg = ConfigManager({'test': 'result'})
     assert cfg.settings == {'test': 'result'}
     result = cfg.settings.retrieve('/test')
@@ -35,7 +35,7 @@ def test_settings():
 
 
 def test_environment():
-    '''Test environment variables.'''
+    """Test environment variables."""
     os.environ['TESTS_KEY'] = 'test'
     cfg = ConfigManager(name='environs', prefix='tests')
     assert cfg.environs['key'] == 'test'

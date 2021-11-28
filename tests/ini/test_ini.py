@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Test TOML configuration management.'''
+"""Test TOML configuration management."""
 
 import os
 import pytest  # type: ignore
@@ -14,7 +14,7 @@ ini_filepath = os.path.join(config_filepath, 'test.ini')
 
 
 # def test_empty_filepath():
-#     '''Test empty file.'''
+#     """Test empty file."""
 #     cfg = ConfigFile(name='empty', filename='test.ini')
 #     cfg.load()
 #     assert not cfg.filepath
@@ -22,7 +22,7 @@ ini_filepath = os.path.join(config_filepath, 'test.ini')
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_ini_filepath(fs):
-    '''Test TOML filepaths.'''
+    """Test TOML filepaths."""
     fs.add_real_file(ini_filepath)
     cfg = ConfigFile(
         name='ini',
@@ -33,7 +33,7 @@ def test_ini_filepath(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_ini_content(fs):
-    '''Test TOML content load.'''
+    """Test TOML content load."""
     fs.add_real_file(ini_filepath)
     cfg = ConfigFile(name='tests')
     cfg.load(filepath=ini_filepath)
@@ -46,7 +46,7 @@ def test_ini_content(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_ini_content_dump(fs):
-    '''Test TOML content save.'''
+    """Test TOML content save."""
     fs.add_real_file(ini_filepath, False)
     cfg = ConfigFile(name='tests', writable=True)
     cfg.load(filepath=ini_filepath)
@@ -57,7 +57,7 @@ def test_ini_content_dump(fs):
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
-    '''Test TOML content failure.'''
+    """Test TOML content failure."""
     fs.add_real_file(ini_filepath)
     cfg = ConfigFile(name='tests')
     cfg.load(filepath=ini_filepath)

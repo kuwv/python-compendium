@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Control configuration files.'''
+"""Control configuration files."""
 
 # from weakref import ref
 import logging
@@ -27,11 +27,11 @@ log = logging.getLogger(__name__)
 
 
 class ConfigFile(UserDict, DpathMixin, FilepathMixin):
-    '''Manage settings loaded from confiugrations using dpath.'''
+    """Manage settings loaded from confiugrations using dpath."""
 
     # TODO: switch to dependency injection for filetypes
     def __init__(self, filepath: Optional[str] = None, **kwargs: Any) -> None:
-        '''Initialize single configuration file.'''
+        """Initialize single configuration file."""
         self.filepath: Optional[str] = filepath
         self.filename: str = kwargs.pop('filename', 'config.toml')
         self.filetype: str = kwargs.pop(
@@ -49,25 +49,25 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
 
     # @classmethod
     # def set_separator(cls, separator: str) -> None:
-    #     '''Set the path separator.'''
+    #     """Set the path separator."""
     #     DPathMixin.separator = separator
 
     @staticmethod
     def modules() -> Tuple[Any, ...]:
-        '''Lookup modules inheriting FiletypesBase.'''
+        """Lookup modules inheriting FiletypesBase."""
         return tuple([m for m in FiletypesBase.__subclasses__()])
 
     def __get_class(
         self, filetype: Optional[str] = 'toml'
     ) -> Optional[Type[FiletypesBase]]:
-        '''Get class object from filetype module.'''
+        """Get class object from filetype module."""
         for module in self.modules():
             if filetype in module.filetypes():
                 return module
         return None
 
     def load(self, filepath: Optional[str] = None) -> None:
-        '''Load settings from configuration file.'''
+        """Load settings from configuration file."""
         filepath = filepath or self.filepath
         if filepath:
             # Use discovered module to load configuration.
@@ -95,7 +95,7 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
             )
 
     def dump(self, filepath: Optional[str] = None) -> None:
-        '''Save settings to configuraiton.'''
+        """Save settings to configuraiton."""
         if self.writable:
             filepath = filepath or self.filepath
             if filepath:

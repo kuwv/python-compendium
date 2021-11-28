@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Control toml configuration module.'''
+"""Control toml configuration module."""
 
 import errno
 import logging
@@ -12,10 +12,10 @@ from compendium.filetypes_base import FiletypesBase
 
 
 class IniConfig(FiletypesBase):
-    '''Manage toml configurations.'''
+    """Manage toml configurations."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        '''Initialize toml module.'''
+        """Initialize toml module."""
         logging.info('Inializing TomlConfig')
         self.encoding = kwargs.pop('encoding', 'utf-8')
         self.__config_parser = ConfigParser(*args, **kwargs)
@@ -23,11 +23,11 @@ class IniConfig(FiletypesBase):
 
     @staticmethod
     def filetypes() -> Tuple[str, ...]:
-        '''Return supported filetypes.'''
+        """Return supported filetypes."""
         return ('cfg', 'conf', 'config', 'cnf', 'ini')
 
     def load_config(self, filepath: str) -> Dict[str, Any]:
-        '''Load settings from toml configuration.'''
+        """Load settings from toml configuration."""
         logging.info('loading INI configuration file')
         try:
             self.__config_parser.read([filepath], encoding=self.encoding)
@@ -39,7 +39,7 @@ class IniConfig(FiletypesBase):
         return data
 
     def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
-        '''Save settings to toml configuration.'''
+        """Save settings to toml configuration."""
         logging.info('TomlConfig: saving configuration file')
         try:
             with open(filepath, 'w') as f:

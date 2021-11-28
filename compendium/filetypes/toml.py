@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Control toml module.'''
+"""Control toml module."""
 
 import errno
 import os
@@ -14,25 +14,25 @@ from compendium.filetypes_base import FiletypesBase
 
 
 class TomlConfig(FiletypesBase):
-    '''Manage toml configurations.'''
+    """Manage toml configurations."""
 
     def __init__(self, **kwargs: Any) -> None:
-        '''Initialize toml module.'''
+        """Initialize toml module."""
         logging.info('Inializing TomlConfig')
         self.encoding = kwargs.get('encoding', 'utf-8')
 
     @staticmethod
     def filetypes() -> Tuple[str, ...]:
-        '''Return supported filetypes.'''
+        """Return supported filetypes."""
         return ('toml', 'tml')
 
     @staticmethod
     def _convert(content: Any) -> Any:
-        '''Recursively convert tomlkit to dict.
+        """Recursively convert tomlkit to dict.
 
         See: https://github.com/sdispater/tomlkit/issues/43
 
-        '''
+        """
         # convert associative array
         if isinstance(content, dict):
             content = {
@@ -57,7 +57,7 @@ class TomlConfig(FiletypesBase):
         return content
 
     def load_config(self, filepath: str) -> Dict[str, Any]:
-        '''Load settings from toml configuration.'''
+        """Load settings from toml configuration."""
         logging.info('loading TOML configuration file')
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
@@ -67,7 +67,7 @@ class TomlConfig(FiletypesBase):
         return content
 
     def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
-        '''Save settings to toml configuration.'''
+        """Save settings to toml configuration."""
         logging.info('TomlConfig: saving configuration file')
         try:
             with open(filepath, 'w') as f:

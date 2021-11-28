@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Example YAML config.'''
+"""Example YAML config."""
 
 import os
+
 from compendium.config_manager import ConfigManager
 
 basepath = os.path.dirname(os.path.realpath(__file__))

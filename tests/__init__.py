@@ -1,1 +1,1 @@
-'''Provide tests for compendium package.'''
+"""Provide tests for compendium package."""

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Provide settings modules.'''
+"""Provide settings modules."""
 
 import logging
 import os
@@ -13,21 +13,21 @@ log = logging.getLogger(__name__)
 
 
 class FilepathMixin:
-    '''Provide common filepath methods.'''
+    """Provide common filepath methods."""
 
     @staticmethod
     def split_filepath(filepath: str) -> Tuple[str, ...]:
-        '''Separate filename from filepath.'''
+        """Separate filename from filepath."""
         return tuple(filepath.rsplit('/', 1))
 
     @staticmethod
     def get_filename(filepath: str) -> str:
-        '''Get the name of the file.'''
+        """Get the name of the file."""
         return filepath.rsplit('/', 1)[1]
 
     @staticmethod
     def get_filetype(filepath: str) -> Optional[str]:
-        '''Get filetype from filepath.'''
+        """Get filetype from filepath."""
         if '.' in filepath:
             return os.path.splitext(filepath)[1].strip('.')
         else:
@@ -35,7 +35,7 @@ class FilepathMixin:
 
     @staticmethod
     def _check_filepath(filepath: str) -> bool:
-        '''Check if configuraion exists at path.'''
+        """Check if configuraion exists at path."""
         if os.path.isfile(filepath):
             logging.debug("{} found".format(filepath))
             return True
@@ -44,7 +44,7 @@ class FilepathMixin:
             return False
 
     # def _find_filepaths(self, filepath: str) -> None:  # remove
-    #     '''Get filepaths.'''
+    #     """Get filepaths."""
     #     self._filepaths.append(filepath)
     #     self.basedir, self.filename = self.split_filepath(filepath)
     #     if '.' in self.filename:
@@ -53,7 +53,7 @@ class FilepathMixin:
 
 @dataclass
 class ConfigPaths:
-    r'''Load config paths based on priority.
+    r"""Load config paths based on priority.
 
     First(lowest) to last(highest):
       1. Load config.<FILETYPE> from /etc/<APP>
@@ -74,7 +74,7 @@ class ConfigPaths:
         - .env
         - <CLI>
 
-    '''
+    """
 
     # TODO: Implement pathlib
 
@@ -94,7 +94,7 @@ class ConfigPaths:
     # runtime_filepaths: List[str] = field(init=False)
 
     def __post_init__(self) -> None:
-        '''Perform post path config.'''
+        """Perform post path config."""
         if '.' in self.filename:
             self.filetype = os.path.splitext(self.filename)[1].strip('.')
         else:
@@ -186,7 +186,7 @@ class ConfigPaths:
 
     @property
     def filepaths(self) -> Tuple[str, ...]:
-        '''Return combined list of all paths.'''
+        """Return combined list of all paths."""
         return tuple(
             self.system_filepaths
             + self.global_filepaths
