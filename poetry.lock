@@ -876,7 +876,7 @@ xml = ["xmltodict"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "6d7d98d38ea29a5bd7037418cfaa16eb56db48459048ee422490f51541a7c172"
+content-hash = "a1e85214925a62537b261fde01b94c896acd856a8579c59411653f2e0c189a68"
 
 [metadata.files]
 anytree = [

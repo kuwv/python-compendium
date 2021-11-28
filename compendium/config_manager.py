@@ -6,15 +6,17 @@
 import glob
 import logging
 import os
-from typing import Any, Callable, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple
 
 from anytree import NodeMixin, Resolver  # type: ignore
-from mypy_extensions import KwArg, VarArg
 
 from compendium import exceptions
 from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
 from compendium.settings import EnvironsMixin, SettingsMap
+
+if TYPE_CHECKING:
+    from mypy_extensions import KwArg, VarArg
 
 log = logging.getLogger(__name__)
 
@@ -75,7 +77,7 @@ class ConfigManager(EnvironsMixin):
 
     def __getattr__(
         self, attr: str
-    ) -> Callable[[VarArg(Any), KwArg(Any)], Any]:
+    ) -> 'Callable[[VarArg(Any), KwArg(Any)], Any]':
         """Proxy calls to settings store."""
         if hasattr(self.__dict__.get('data'), attr):
 
