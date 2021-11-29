@@ -80,11 +80,9 @@ class ConfigManager(EnvironsMixin):
     ) -> 'Callable[[VarArg(Any), KwArg(Any)], Any]':
         """Proxy calls to settings store."""
         if hasattr(self.__dict__.get('data'), attr):
-
             def wrapper(*args, **kwargs):
                 """Call query for data store."""
                 return getattr(self.data, attr)(*args, **kwargs)
-
             return wrapper
         raise AttributeError(attr)
 
@@ -302,8 +300,9 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                 child_path = os.path.dirname(
                     os.path.relpath(path, self.basedir)
                 )
-                if len(child_path.split(os.sep)) > 1 and child_path.startswith(
-                    namepath
+                if (
+                    len(child_path.split(os.sep)) > 1
+                    and child_path.startswith(namepath)
                 ):
                     child_paths.append(path)
             return child_paths
