@@ -6,9 +6,9 @@
 import glob
 import logging
 import os
-from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple
 
-from anytree import NodeMixin, Resolver  # type: ignore
+from anytree import NodeMixin, Resolver
 
 from compendium import exceptions
 from compendium.filepaths import ConfigPaths
@@ -39,7 +39,7 @@ class ConfigManager(EnvironsMixin):
             log.setLevel(getattr(logging, kwargs.pop('log_level').upper()))
         if 'log_handler' in kwargs:
             log_handler = kwargs.pop('log_handler')
-            log.addHandler(logging.StreamHandler(log_handler))  # type: ignore
+            log.addHandler(logging.StreamHandler(log_handler))
 
         # Setup filepaths
         self.name = kwargs.pop('name', 'compendium')
@@ -80,7 +80,7 @@ class ConfigManager(EnvironsMixin):
     ) -> 'Callable[[VarArg(Any), KwArg(Any)], Any]':
         """Proxy calls to settings store."""
         if hasattr(self.__dict__.get('data'), attr):
-            def wrapper(*args, **kwargs):
+            def wrapper(*args: Any, **kwargs: Any) -> Any:
                 """Call query for data store."""
                 return getattr(self.data, attr)(*args, **kwargs)
             return wrapper
@@ -124,21 +124,21 @@ class ConfigManager(EnvironsMixin):
     #             self.data.push(config_file)
 
     def load_config(
-        self, filepath: str, update: bool = True
+        self, filepath: str, update: bool = True, **kwargs: Any
     ) -> Optional[ConfigFile]:
         """Load settings from configuration."""
         if os.path.exists(filepath):
-            config_file = ConfigFile(filepath=filepath)
+            config_file = ConfigFile(filepath=filepath, **kwargs)
             config_file.load()
             if update:
                 self.data.push(config_file)  # type: ignore
             return config_file
         return None
 
-    def load_configs(self) -> None:
+    def load_configs(self, **kwargs: Any) -> None:
         """Load configuration files from filepaths."""
         for filepath in self._filepaths:
-            self.load_config(filepath)
+            self.load_config(filepath, **kwargs)
 
 
 # TODO: refactor to consume multiple configfile objects
@@ -253,10 +253,11 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                 return x
         return None
 
-    def get_config(self, namepath):
+    def get_config(self, namepath: str) -> Dict[str, Any]:
         """Get config from store by attribute."""
         r = Resolver('name')
         results = r.get(self, namepath)
+        print(type(results))
         return results
 
     def new_child(self, *args: Any, **kwargs: Any) -> 'TreeConfigManager':
@@ -290,10 +291,10 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             config_file, name=self.get_name(filepath), *args, **kwargs
         )
 
-    def load_configs(self) -> None:
+    def load_configs(self, **kwargs: Any) -> None:
         """Load configuration files from filepaths."""
 
-        def get_child_paths(namepath: str):
+        def get_child_paths(namepath: str) -> List[str]:
             """Get relative child paths of namepath."""
             child_paths = []
             for path in self.filepaths[1:]:
@@ -324,6 +325,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                             update=False,
                             filepaths=child_paths,
                             basedir=f"{self.basedir}{os.sep}{namepath}",
+                            **kwargs
                         )
                     )
                     self.children = children

@@ -9,7 +9,7 @@ import os
 from collections import UserDict
 from typing import Any, Optional, Tuple, Type
 
-import pkg_resources
+import pkg_resources  # type: ignore
 
 from compendium import exceptions
 from compendium.filepaths import FilepathMixin
@@ -20,6 +20,7 @@ from compendium.filetypes.yaml import YamlConfig  # noqa
 from compendium.filetypes_base import FiletypesBase
 from compendium.query import DpathMixin
 
+# TODO: use importlib instead
 if 'xmltodict' in {pkg.key for pkg in pkg_resources.working_set}:
     from compendium.filetypes.xml import XmlConfig  # noqa
 

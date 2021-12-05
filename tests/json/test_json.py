@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
+# type: ignore
 """Test JSON content management."""
 
 import os
-import pytest  # type: ignore
+import pytest
 
 from compendium.loader import ConfigFile
 from compendium.exceptions import CompendiumConfigFileError

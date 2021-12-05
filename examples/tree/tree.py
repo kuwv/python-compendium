@@ -1,7 +1,7 @@
-'''Provide example tree usage.'''
+"""Provide example tree usage."""
 import os
 
-from anytree import RenderTree  # type: ignore
+from anytree import RenderTree
 
 from compendium.config_manager import ConfigManager, TreeConfigManager
 

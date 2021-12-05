@@ -5,8 +5,8 @@
 
 # import datetime
 import errno
-import json  # type: ignore
-# import jsonschema  # type: ignore
+import json
+# import jsonschema
 import logging
 import os
 from typing import Any, Dict, Tuple

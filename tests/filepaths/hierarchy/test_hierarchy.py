@@ -1,8 +1,11 @@
+# type: ignore
+"""Test hierarchial configuration."""
+
 import os
 
 from compendium.config_manager import HierarchyConfigManager
 
-import pytest  # type: ignore
+import pytest
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)

@@ -1,4 +1,6 @@
-'''Provide example for loading dot config file.'''
+# type: ignore
+"""Provide example for loading dot config file."""
+
 import os
 from compendium.loader import ConfigFile
 from compendium.filetypes.ini import IniConfig

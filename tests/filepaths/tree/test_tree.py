@@ -1,5 +1,8 @@
+# type: ignore
+"""Test tree configuration."""
+
 import os
-import pytest  # type: ignore
+import pytest
 
 from compendium.exceptions import CompendiumConfigManagerError
 from compendium.config_manager import TreeConfigManager

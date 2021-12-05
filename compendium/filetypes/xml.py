@@ -8,7 +8,7 @@ import logging
 import os
 from typing import Any, Dict, Tuple
 
-import xmltodict  # type: ignore
+import xmltodict
 
 from compendium.filetypes_base import FiletypesBase
 

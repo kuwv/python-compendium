@@ -9,7 +9,7 @@ import os
 # import textwrap
 from typing import Any, Dict, Tuple
 
-from ruamel.yaml import YAML  # type: ignore
+from ruamel.yaml import YAML
 # from ruamel.yaml.scalarstring import LiteralScalarString
 
 from compendium.filetypes_base import FiletypesBase

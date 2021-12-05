@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Example YAML config.'''
+# type: ignore
+"""Example YAML config."""
 
 import os
 from compendium.loader import ConfigFile
 
 
 def show_types(obj):
-    '''Recursively show dict types.'''
+    """Recursively show dict types."""
     # convert associative array
     if isinstance(obj, dict):
         obj = {

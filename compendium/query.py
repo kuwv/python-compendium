@@ -5,7 +5,7 @@
 
 from typing import Any, Dict, Optional
 
-from dpath import util as dpath  # type: ignore
+from dpath import util as dpath
 
 
 class DpathMixin:
@@ -13,9 +13,27 @@ class DpathMixin:
 
     separator: str = '/'
 
+    # def lookup(
+    #     self,
+    #     *query: str,
+    #     default: Any = None,
+    #     document: Optional['DpathMixin'] = None,
+    # ) -> Optional[Any]:
+    #     """Get value from settings with key."""
+    #     for q in query:
+    #         if not document:
+    #             document = self
+    #         try:
+    #             result = dpath.get(document, q, DpathMixin.separator)
+    #             if result is not None:
+    #                 return result
+    #         except KeyError:
+    #             return default
+    #     return None
+
     def retrieve(
         self,
-        query,
+        query: str,
         default: Any = None,
         document: Optional['DpathMixin'] = None,
     ) -> Optional[Any]:

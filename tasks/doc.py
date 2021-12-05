@@ -5,7 +5,7 @@
 
 from typing import TYPE_CHECKING
 
-from invoke import task  # type: ignore
+from invoke import task
 
 if TYPE_CHECKING:
     from invoke import Context

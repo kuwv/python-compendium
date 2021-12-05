@@ -8,7 +8,7 @@ import os
 import logging
 from typing import Any, Dict, Tuple
 
-import tomlkit  # type: ignore
+import tomlkit
 
 from compendium.filetypes_base import FiletypesBase
 
@@ -71,7 +71,8 @@ class TomlConfig(FiletypesBase):
         logging.info('TomlConfig: saving configuration file')
         try:
             with open(filepath, 'w') as f:
-                f.write(tomlkit.dumps(content))
+                # XXX: tomlkit is missing union of tomldocument and dict
+                f.write(tomlkit.dumps(content))  # type: ignore
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(
