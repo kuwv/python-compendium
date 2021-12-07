@@ -53,7 +53,7 @@ class ConfigManager(EnvironsMixin):
         if 'prefix' in kwargs:
             self.prefix = kwargs.pop('prefix')
         if 'separator' in kwargs:
-            self.separator = kwargs.pop('separator')
+            self.separator = kwargs.get('separator', '/')
         if kwargs.pop('load_dotenv', False):
             self.load_dotenv()
         if kwargs.pop('load_environs', True):
@@ -74,6 +74,7 @@ class ConfigManager(EnvironsMixin):
         else:
             self.data = SettingsMap(defaults)
         # print('- data', self.data)
+        self.load_configs(**kwargs)
 
     def __getattr__(
         self, attr: str
@@ -257,7 +258,6 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         """Get config from store by attribute."""
         r = Resolver('name')
         results = r.get(self, namepath)
-        print(type(results))
         return results
 
     def new_child(self, *args: Any, **kwargs: Any) -> 'TreeConfigManager':

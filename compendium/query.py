@@ -3,9 +3,12 @@
 # license: Apache 2.0, see LICENSE for more details.
 """Provide query capabilities."""
 
+import logging
 from typing import Any, Dict, Optional
 
 from dpath import util as dpath
+
+log = logging.getLogger(__name__)
 
 
 class DpathMixin:
@@ -13,23 +16,24 @@ class DpathMixin:
 
     separator: str = '/'
 
-    # def lookup(
-    #     self,
-    #     *query: str,
-    #     default: Any = None,
-    #     document: Optional['DpathMixin'] = None,
-    # ) -> Optional[Any]:
-    #     """Get value from settings with key."""
-    #     for q in query:
-    #         if not document:
-    #             document = self
-    #         try:
-    #             result = dpath.get(document, q, DpathMixin.separator)
-    #             if result is not None:
-    #                 return result
-    #         except KeyError:
-    #             return default
-    #     return None
+    def lookup(
+        self,
+        *args: str,
+        default: Any = None,
+        document: Optional['DpathMixin'] = None,
+    ) -> Optional[Any]:
+        """Get value from settings from multiple keypaths."""
+        if not document:
+            document = self
+        for query in reversed(args):
+            try:
+                result = dpath.get(document, query, DpathMixin.separator)
+                if result is not None:
+                    log.info(f"lookup found: {result} for {query}")
+                    return result
+            except KeyError:
+                log.debug(f"lookup was unable to query: {query}")
+        return default
 
     def retrieve(
         self,
@@ -41,8 +45,13 @@ class DpathMixin:
         if not document:
             document = self
         try:
-            return dpath.get(document, query, DpathMixin.separator)
+            result = dpath.get(document, query, DpathMixin.separator)
+            log.info(f"retrieve found: {result} for {query}")
+            return result
         except KeyError:
+            log.debug(
+                f"retrieve was unable to query {query} using default{default}"
+            )
             return default
 
     def search(self, query: str) -> Dict[str, Any]:

@@ -43,7 +43,7 @@ def test_toml_content_create(fs):
     cfg = ConfigFile(name='tests')
     cfg.load(filepath=settings_filepath)
     cfg.create('/test', 'test')
-    assert cfg.retrieve('test') == 'test'
+    assert cfg.lookup('test') == 'test'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -53,7 +53,7 @@ def test_toml_content_append(fs):
     cfg = ConfigFile(name='tests')
     cfg.load(filepath=settings_filepath)
     cfg.append('/database/ports', 2345)
-    assert 2345 in cfg.retrieve('/database/ports')
+    assert 2345 in cfg.lookup('/database/ports')
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -63,7 +63,7 @@ def test_toml_content_update(fs):
     cfg = ConfigFile(name='tests', writable=True)
     cfg.load(filepath=settings_filepath)
     cfg.set('/owner/name', 'Tom Waits')
-    assert cfg.retrieve('/owner/name') == 'Tom Waits'
+    assert cfg.lookup('/owner/name') == 'Tom Waits'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)

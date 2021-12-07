@@ -23,7 +23,7 @@ def test_defaults():
     """Test default settings."""
     cfg = ConfigManager(name='defaults', defaults={'default': 'result'})
     assert cfg.defaults == {'default': 'result'}
-    result = cfg.settings.retrieve('/default')
+    result = cfg.settings.lookup('/default')
     assert result == 'result'
 
 
@@ -31,7 +31,7 @@ def test_settings():
     """Test default settings."""
     cfg = ConfigManager({'test': 'result'})
     assert cfg.settings == {'test': 'result'}
-    result = cfg.settings.retrieve('/test')
+    result = cfg.settings.lookup('/test')
     assert result == 'result'
 
 
@@ -40,4 +40,4 @@ def test_environment():
     os.environ['TESTS_KEY'] = 'test'
     cfg = ConfigManager(name='environs', prefix='tests')
     assert cfg.environs['key'] == 'test'
-    assert cfg.settings.retrieve('/key') == 'test'
+    assert cfg.settings.lookup('/key') == 'test'

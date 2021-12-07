@@ -9,13 +9,13 @@ dag:
   default_args:
     owner: admin
   apps:
-    - name: app1
+    app1:
       rules:
         before: app2
-    - name: app2
+    app2:
       rules:
         before: app3
         after: app1
-    - name: app3
+    app3:
       rules:
         after: app2
