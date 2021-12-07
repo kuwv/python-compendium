@@ -34,4 +34,5 @@ filepaths = [
 
 cfg_mgr = ConfigManager(filepaths=filepaths, separator='.')
 version = cfg_mgr.lookup('.proman.version', '.tool.example.version')
-assert version == '1.2.4.dev0'
+assert version == '1.2.3'
+assert version != '1.2.4.dev0'

@@ -25,7 +25,7 @@ class DpathMixin:
         """Get value from settings from multiple keypaths."""
         if not document:
             document = self
-        for query in reversed(args):
+        for query in args:
             try:
                 result = dpath.get(document, query, DpathMixin.separator)
                 if result is not None:
