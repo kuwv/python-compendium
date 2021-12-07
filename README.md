@@ -12,31 +12,53 @@ Compendium is a simple configuration management tool. It has the capability to m
 
 https://kuwv.github.io/python-compendium/
 
-## Install
+### Install
 
 `pip install compendium`
 
-## Manage configuration
+### Manage multiple configurations
+
+Example `afile.toml`:
+```
+[default]
+foo = "bar"
+```
+
+Example `bfile.toml`:
+```
+[example.settings]
+foo = "baz"
+```
 
 ```
 from compendium.config_manager import ConfigManager
 
-cfg = ConfigManager(application='app', path='afile.toml')
-cfg.load()
+cfg = ConfigManager(name='app', filepaths=['afile.toml', 'bfile.toml'])
+
+result = cfg.lookup('/default/foo', '/example/settings/foo')
+assert result == 'baz'
 ```
 
-## Search settings
+### Search settings
 
-`query = cfg.search('/servers/**/ip')`
+```
+result = cfg.search('/servers/**/ip')
+```
 
-## Create settings
+### Create settings
 
-`cfg.create('/test', 'test')`
+```
+cfg.create('/test', 'test')
+```
 
-## Update settings
+### Update settings
 
-`cfg.set('/owner/name', 'Tom Waits')`
+```
+cfg.set('/owner/name', 'Tom Waits')
+```
 
-## Delete settings
+### Delete settings
 
-`cfg.delete('/owner/name')`
+```
+cfg.delete('/owner/name')
+```
