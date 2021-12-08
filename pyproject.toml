@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "compendium"
-version = "0.1.1b1"
+version = "0.1.1b2"
 description = "Simple layered configuraion tool"
 authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
 homepage = "https://github.com/kuwv/python-compendium"
@@ -63,7 +63,7 @@ filepath = "pyproject.toml"
 pattern = "version = \"${version}\""
 
 [[tool.proman.versioning.files]]
-filepath = "compendium/__init__.py"
+filepath = "src/compendium/__init__.py"
 pattern = "__version__ = '${version}'"
 
 [[tool.proman.versioning.files]]
