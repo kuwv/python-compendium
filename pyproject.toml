@@ -18,6 +18,9 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
 ]
+packages = [
+    { include = "compendium", from = "src" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.6.2"
