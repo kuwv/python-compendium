@@ -11,6 +11,8 @@ import pytest
 from compendium.loader import ConfigFile
 from compendium.exceptions import CompendiumConfigFileError
 
+xmltodict = pytest.importorskip('xmltodict')
+
 config_filepath = os.path.dirname(os.path.realpath(__file__))
 xml_filepath = os.path.join(config_filepath, 'test.xml')
 
