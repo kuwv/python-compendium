@@ -32,9 +32,9 @@ class ConfigFile(UserDict, DpathMixin):
     # TODO: switch to dependency injection for filetypes
     def __init__(self, filepath: Optional[str] = None, **kwargs: Any) -> None:
         """Initialize single configuration file."""
-        self.filepath: Optional[str] = filepath
-        self.filename: str = kwargs.pop('filename', 'config.toml')
-        self.filetype: str = kwargs.pop(
+        self.__filepath: Optional[str] = filepath
+        self.__filename: str = kwargs.pop('filename', 'config.toml')
+        self.__filetype: str = kwargs.pop(
             'filetype', self.get_filetype(self.filename)
         )
 
@@ -47,34 +47,29 @@ class ConfigFile(UserDict, DpathMixin):
             DpathMixin.separator = kwargs.pop('separator')
         super().__init__(**kwargs)
 
-    # @classmethod
-    # def set_separator(cls, separator: str) -> None:
-    #     """Set the path separator."""
-    #     DPathMixin.separator = separator
+    @property
+    def filepath(self) -> str:
+        """Return config filepath."""
+        return self.__filepath 
 
-    @staticmethod
-    def modules() -> Tuple[Any, ...]:
-        """Lookup modules inheriting FiletypesBase."""
-        return tuple([m for m in FiletypesBase.__subclasses__()])
+    @property
+    def filename(self) -> str:
+        """Return config filename."""
+        return self.__filename
+
+    @property
+    def filetype(self) -> str:
+        """Return config filetype."""
+        return self.__filetype
 
     def __get_class(
         self, filetype: Optional[str] = 'toml'
     ) -> Optional[Type[FiletypesBase]]:
         """Get class object from filetype module."""
-        for module in self.modules():
+        for module in [m for m in FiletypesBase.__subclasses__()]:
             if filetype in module.filetypes():
                 return module
         return None
-
-    @staticmethod
-    def split_filepath(filepath: str) -> Tuple[str, ...]:
-        """Separate filename from filepath."""
-        return tuple(filepath.rsplit('/', 1))
-
-    @staticmethod
-    def get_filename(filepath: str) -> str:
-        """Get the name of the file."""
-        return filepath.rsplit('/', 1)[1]
 
     @staticmethod
     def get_filetype(filepath: str) -> Optional[str]:
@@ -83,23 +78,6 @@ class ConfigFile(UserDict, DpathMixin):
             return os.path.splitext(filepath)[1].strip('.')
         else:
             return None
-
-    @staticmethod
-    def _check_filepath(filepath: str) -> bool:
-        """Check if configuraion exists at path."""
-        if os.path.isfile(filepath):
-            logging.debug("{} found".format(filepath))
-            return True
-        else:
-            logging.debug("{} not found".format(filepath))
-            return False
-
-    # def _find_filepaths(self, filepath: str) -> None:  # remove
-    #     """Get filepaths."""
-    #     self._filepaths.append(filepath)
-    #     self.basedir, self.filename = self.split_filepath(filepath)
-    #     if '.' in self.filename:
-    #         self.filetype = self.get_filetype(self.filename)
 
     def load(self, filepath: Optional[str] = None) -> None:
         """Load settings from configuration file."""

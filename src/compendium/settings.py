@@ -60,7 +60,6 @@ class EnvironsMixin(MergeMixin):
     def load_dotenv() -> None:
         """Load environs from .env file."""
         env_file = os.path.join(os.getcwd(), '.env')
-        # if self._check_filepath(env_file):
         if os.path.exists(env_file):
             with open(env_file) as env:
                 for line in env:
