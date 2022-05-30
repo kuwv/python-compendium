@@ -12,7 +12,6 @@ from typing import Any, Optional, Tuple, Type
 import pkg_resources  # type: ignore
 
 from compendium import exceptions
-from compendium.filepaths import FilepathMixin
 from compendium.filetypes.ini import IniConfig  # noqa
 from compendium.filetypes.json import JsonConfig  # noqa
 from compendium.filetypes.toml import TomlConfig  # noqa
@@ -27,7 +26,7 @@ if 'xmltodict' in {pkg.key for pkg in pkg_resources.working_set}:
 log = logging.getLogger(__name__)
 
 
-class ConfigFile(UserDict, DpathMixin, FilepathMixin):
+class ConfigFile(UserDict, DpathMixin):
     """Manage settings loaded from confiugrations using dpath."""
 
     # TODO: switch to dependency injection for filetypes
@@ -66,6 +65,41 @@ class ConfigFile(UserDict, DpathMixin, FilepathMixin):
             if filetype in module.filetypes():
                 return module
         return None
+
+    @staticmethod
+    def split_filepath(filepath: str) -> Tuple[str, ...]:
+        """Separate filename from filepath."""
+        return tuple(filepath.rsplit('/', 1))
+
+    @staticmethod
+    def get_filename(filepath: str) -> str:
+        """Get the name of the file."""
+        return filepath.rsplit('/', 1)[1]
+
+    @staticmethod
+    def get_filetype(filepath: str) -> Optional[str]:
+        """Get filetype from filepath."""
+        if '.' in filepath:
+            return os.path.splitext(filepath)[1].strip('.')
+        else:
+            return None
+
+    @staticmethod
+    def _check_filepath(filepath: str) -> bool:
+        """Check if configuraion exists at path."""
+        if os.path.isfile(filepath):
+            logging.debug("{} found".format(filepath))
+            return True
+        else:
+            logging.debug("{} not found".format(filepath))
+            return False
+
+    # def _find_filepaths(self, filepath: str) -> None:  # remove
+    #     """Get filepaths."""
+    #     self._filepaths.append(filepath)
+    #     self.basedir, self.filename = self.split_filepath(filepath)
+    #     if '.' in self.filename:
+    #         self.filetype = self.get_filetype(self.filename)
 
     def load(self, filepath: Optional[str] = None) -> None:
         """Load settings from configuration file."""
