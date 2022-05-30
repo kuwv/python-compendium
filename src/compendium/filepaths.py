@@ -77,7 +77,7 @@ class ConfigPaths:
                         self.basedir,
                         'etc',
                         self.name,
-                        "config.{}".format(self.filetype),
+                        f"config.{self.filetype}",
                     )
                 )
 
@@ -110,14 +110,14 @@ class ConfigPaths:
                 self.global_filepaths.append(
                     os.path.join(
                         os.path.expanduser('~'),
-                        ".{a}.{f}".format(a=self.name, f=self.filetype),
+                        f".{self.name}.{self.filetype}",
                     )
                 )
 
             self.global_filepaths.append(
                 os.path.join(
                     os.path.expanduser('~'),
-                    ".{a}.d".format(a=self.name),
+                    f".{self.name}.d",
                     self.filename,
                 )
             )
@@ -130,7 +130,7 @@ class ConfigPaths:
                 self.local_filepaths.append(
                     os.path.join(
                         os.getcwd(),
-                        "{a}.{f}".format(a=self.name, f=self.filetype),
+                        f"{self.name}.{self.filetype}",
                     )
                 )
 

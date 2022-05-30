@@ -85,7 +85,7 @@ class ConfigFile(UserDict, DpathMixin):
         if filepath:
             # Use discovered module to load configuration.
             if os.path.exists(filepath):
-                logging.info("Retrieving configuration: '{}'".format(filepath))
+                logging.info(f"Retrieving configuration: '{filepath}'")
                 Class = self.__get_class(
                     self.get_filetype(filepath) or self.filetype
                 )
@@ -94,13 +94,11 @@ class ConfigFile(UserDict, DpathMixin):
                     self.update(c.load_config(filepath=filepath))
                 else:
                     raise exceptions.CompendiumDriverError(
-                        "Error: No class found for: '{}'".format(filepath)
+                        f"Error: No class found for: '{filepath}'"
                     )
             else:
                 raise exceptions.CompendiumConfigFileError(
-                    "Skipping: No configuration found at: '{}'".format(
-                        filepath
-                    )
+                    f"Skipping: No configuration found at: '{filepath}'"
                 )
         else:
             raise exceptions.CompendiumConfigFileError(
@@ -113,7 +111,7 @@ class ConfigFile(UserDict, DpathMixin):
             filepath = filepath or self.filepath
             if filepath:
                 # Use discovered module to save configuration
-                logging.info("Saving configuration: '{}'".format(filepath))
+                logging.info(f"Saving configuration: '{filepath}'")
                 Class = self.__get_class(
                     self.get_filetype(filepath) or self.filetype
                 )
@@ -123,7 +121,7 @@ class ConfigFile(UserDict, DpathMixin):
                     c.dump_config(self.data, filepath)
                 else:
                     raise exceptions.CompendiumDriverError(
-                        "Skipping: No class found for: '{}'".format(filepath)
+                        f"Skipping: No class found for: '{filepath}'"
                     )
             else:
                 raise exceptions.CompendiumConfigFileError(

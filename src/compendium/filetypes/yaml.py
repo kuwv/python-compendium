@@ -43,9 +43,7 @@ class YamlConfig(FiletypesBase):
 
     def load_config(self, filepath: str) -> Dict[str, Any]:
         """Load settings from YAML configuration."""
-        logging.info(
-            "loading YAML configuration file {}".format(filepath)
-        )
+        logging.info(f"loading YAML configuration file {filepath}")
         if os.path.isfile(filepath):
             with open(filepath, 'r', encoding=self.encoding) as f:
                 yaml = self.__yaml_parser(self.kind or 'safe')

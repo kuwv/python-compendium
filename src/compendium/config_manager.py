@@ -113,7 +113,7 @@ class ConfigManager(EnvironsMixin):
 
     def add_filepath(self, filepath: str) -> None:
         """Load settings from configuration in filepath."""
-        logging.debug("searching for {}".format(filepath))
+        logging.debug(f"searching for {filepath}")
         self._filepaths.append(filepath)
 
     # def dump_config(self, filepath: str, *args: str) -> None:
