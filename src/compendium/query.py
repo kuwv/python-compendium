@@ -61,9 +61,9 @@ class DpathMixin:
     def append(self, keypath: str, value: Any) -> None:
         """Append to a list located at keypath."""
         store = [value]
-        keypath_dir = keypath.split(DpathMixin.separator)[1:]
-        for x in reversed(keypath_dir):
-            store = {x: store}  # type: ignore
+        for x in reversed(keypath.split(DpathMixin.separator)):
+            if x != '':
+                store = {x: store}  # type: ignore
         dpath.merge(self, store)
 
     def set(self, keypath: str, value: Any) -> None:
