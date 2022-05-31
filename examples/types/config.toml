@@ -1,0 +1,5 @@
+[foo]
+baz = "foo-baz"
+
+[foo.bar]
+baz = "foo-bar-baz"
