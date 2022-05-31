@@ -32,9 +32,9 @@ class ConfigFile(UserDict, DpathMixin):
     # TODO: switch to dependency injection for filetypes
     def __init__(self, filepath: Optional[str] = None, **kwargs: Any) -> None:
         """Initialize single configuration file."""
-        self.__filepath: Optional[str] = filepath
-        self.__filename: str = kwargs.pop('filename', 'config.toml')
-        self.__filetype: str = kwargs.pop(
+        self.filepath: Optional[str] = filepath
+        self.filename: str = kwargs.pop('filename', 'config.toml')
+        self.filetype: str = kwargs.pop(
             'filetype', self.get_filetype(self.filename)
         )
 
@@ -46,21 +46,6 @@ class ConfigFile(UserDict, DpathMixin):
         if 'separator' in kwargs:
             DpathMixin.separator = kwargs.pop('separator')
         super().__init__(**kwargs)
-
-    @property
-    def filepath(self) -> str:
-        """Return config filepath."""
-        return self.__filepath 
-
-    @property
-    def filename(self) -> str:
-        """Return config filename."""
-        return self.__filename
-
-    @property
-    def filetype(self) -> str:
-        """Return config filetype."""
-        return self.__filetype
 
     def __get_class(
         self, filetype: Optional[str] = 'toml'
