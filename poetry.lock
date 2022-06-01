@@ -514,7 +514,7 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "proman-versioning"
-version = "0.1.1b4"
+version = "0.1.1b5"
 description = "Project Manager Versioning tool."
 category = "dev"
 optional = false
@@ -1271,8 +1271,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 proman-versioning = [
-    {file = "proman-versioning-0.1.1b4.tar.gz", hash = "sha256:88cf79a8a4238b06afe0314e3b6ed60299be8be66792f696c11e378d94d5a30d"},
-    {file = "proman_versioning-0.1.1b4-py3-none-any.whl", hash = "sha256:59d95d94016a466a83cc226bf776e863171f03495a8de40ace74ec16d308a062"},
+    {file = "proman-versioning-0.1.1b5.tar.gz", hash = "sha256:fd3a62882fe35eed3b7965ce47467264baa6577b5d982adae4939b3a612d30d9"},
+    {file = "proman_versioning-0.1.1b5-py3-none-any.whl", hash = "sha256:6b92e20c4ec6203260c5f967f3a39a6772f42a34fbc40fb412d71e0226ce83a4"},
 ]
 py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
@@ -1471,6 +1471,10 @@ requests = [
     {file = "ruamel.yaml-0.16.13.tar.gz", hash = "sha256:bb48c514222702878759a05af96f4b7ecdba9b33cd4efcf25c86b882cef3a942"},
 ]
 "ruamel.yaml.clib" = [
+    {file = "ruamel.yaml.clib-0.2.6-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:6e7be2c5bcb297f5b82fee9c665eb2eb7001d1050deaba8471842979293a80b0"},
+    {file = "ruamel.yaml.clib-0.2.6-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:221eca6f35076c6ae472a531afa1c223b9c29377e62936f61bc8e6e8bdc5f9e7"},
+    {file = "ruamel.yaml.clib-0.2.6-cp310-cp310-win32.whl", hash = "sha256:1070ba9dd7f9370d0513d649420c3b362ac2d687fe78c6e888f5b12bf8bc7bee"},
+    {file = "ruamel.yaml.clib-0.2.6-cp310-cp310-win_amd64.whl", hash = "sha256:77df077d32921ad46f34816a9a16e6356d8100374579bc35e15bab5d4e9377de"},
     {file = "ruamel.yaml.clib-0.2.6-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:cfdb9389d888c5b74af297e51ce357b800dd844898af9d4a547ffc143fa56751"},
     {file = "ruamel.yaml.clib-0.2.6-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:7b2927e92feb51d830f531de4ccb11b320255ee95e791022555971c466af4527"},
     {file = "ruamel.yaml.clib-0.2.6-cp35-cp35m-win32.whl", hash = "sha256:ada3f400d9923a190ea8b59c8f60680c4ef8a4b0dfae134d2f2ff68429adfab5"},
