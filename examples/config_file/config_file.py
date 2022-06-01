@@ -28,17 +28,17 @@ filepath = os.path.join(basepath, 'example.yaml')
 outpath = os.path.join(basepath, 'example-out.yaml')
 
 cfg = ConfigFile(writable=True)
-cfg.load(filepath=filepath)
+settings = cfg.load(filepath=filepath)
 
-print('settings', cfg)
-# print('allowed_roles', cfg.allowed_roles[0])
-# print('default_args', cfg.dag.default_args)
-# assert 'sre' in cfg.get('/allowed_roles')
-# assert 'devops' in cfg.get('/allowed_roles')
-# assert 'cloudops' in cfg.get('/allowed_roles')
+print('settings', settings)
+# print('allowed_roles', settings.allowed_roles[0])
+# print('default_args', settings.dag.default_args)
+# assert 'sre' in settings.get('/allowed_roles')
+# assert 'devops' in settings.get('/allowed_roles')
+# assert 'cloudops' in settings.get('/allowed_roles')
 
-print('post settings', cfg.data)
-cfg.dump(filepath=outpath)
+print('post settings', settings.data)
+cfg.dump(settings.data, filepath=outpath)
 
 # JSON
 json_in = os.path.join(basepath, 'in.json')
@@ -54,31 +54,29 @@ toml_out = os.path.join(basepath, 'out.toml')
 
 # JSON
 json_cfg = ConfigFile(name='json', writable=True)
-json_cfg.load(filepath=json_in)
-json_cfg.dump(filepath=json_out)
-json_cfg.dump(filepath=yaml_out)
-json_cfg.dump(filepath=toml_out)
+json_settings = json_cfg.load(filepath=json_in)
+json_cfg.dump(json_settings.data, filepath=json_out)
+json_cfg.dump(json_settings.data, filepath=yaml_out)
+json_cfg.dump(json_settings.data, filepath=toml_out)
 
 # YAML
 yaml_cfg = ConfigFile(name='yaml', writable=True)
-yaml_cfg.load(filepath=yaml_in)
-yaml_cfg.dump(filepath=yaml_out)
-yaml_cfg.dump(filepath=json_out)
-json_cfg.dump(filepath=toml_out)
+yaml_settings = yaml_cfg.load(filepath=yaml_in)
+yaml_cfg.dump(yaml_settings.data, filepath=yaml_out)
+yaml_cfg.dump(yaml_settings.data, filepath=json_out)
+json_cfg.dump(yaml_settings.data, filepath=toml_out)
 
 # TOML
 toml_cfg = ConfigFile(name='toml', writable=True)
-toml_cfg.load(filepath=toml_in)
-toml_cfg.dump(filepath=toml_out)
-toml_cfg.dump(filepath=json_out)
-toml_cfg.dump(filepath=yaml_out)
+toml_settings = toml_cfg.load(filepath=toml_in)
+toml_cfg.dump(toml_settings.data, filepath=toml_out)
+toml_cfg.dump(toml_settings.data, filepath=json_out)
+toml_cfg.dump(toml_settings.data, filepath=yaml_out)
 
-print(show_types(json_cfg.data))
+print(show_types(json_settings.data))
+print(show_types(toml_settings.data))
+print(show_types(yaml_settings.data))
 
-print(show_types(toml_cfg.data))
-
-print(show_types(yaml_cfg.data))
-
-print('compare toml to yaml', toml_cfg.data == yaml_cfg.data)
-print('compare json to toml', json_cfg.data == toml_cfg.data)
-print('compare yaml to json', yaml_cfg.data == json_cfg.data)
+print('compare toml to yaml', toml_settings.data == yaml_settings.data)
+print('compare json to toml', json_settings.data == toml_settings.data)
+print('compare yaml to json', yaml_settings.data == json_settings.data)

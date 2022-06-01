@@ -4,7 +4,7 @@
 
 import logging
 import os
-from collections import ChainMap
+from collections import ChainMap, UserDict
 from typing import Any, Dict, Mapping
 
 from compendium.query import DpathMixin
@@ -76,13 +76,13 @@ class EnvironsMixin(MergeMixin):
 
 
 class SettingsMap(ChainMap, DpathMixin, MergeMixin):
-    """Manage settings loaded from confiugrations using dpath."""
+    """Manage layered settings loaded from confiugrations using dpath."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize settings store."""
-        super().__init__(*args)
         if 'separator' in kwargs:
             DpathMixin.separator = kwargs.pop('separator')
+        super().__init__(*args)
 
     def push(self, settings: Dict[str, Any]) -> None:
         """Push settings untop store."""
@@ -90,3 +90,17 @@ class SettingsMap(ChainMap, DpathMixin, MergeMixin):
         self.maps.insert(0, settings)
 
     # TODO: add capability to recursive search settings
+
+
+class Settings(UserDict, DpathMixin):
+    """Manage settings loaded from confiugrations using dpath."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Initialize settings store."""
+        if 'separator' in kwargs:
+            DpathMixin.separator = kwargs.pop('separator')
+        super().__init__(*args)
+
+    # def __dict__(self) -> dict:
+    #     """Get dictionary represenation."""
+    #     return self.data

@@ -9,7 +9,7 @@ from typing import Any, Dict
 class FiletypesBase(metaclass=ABCMeta):
     """Define required configuration module methods."""
 
-    # @abstractproperty
+    # @abstractmethod
     # def filesystems():
     #     """Retrieve filetypes of filetypes."""
 

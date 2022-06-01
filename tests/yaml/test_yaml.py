@@ -7,60 +7,53 @@ import os
 import pytest
 
 from compendium.loader import ConfigFile
-# from compendium.exceptions import CompendiumConfigFileError
+from compendium.exceptions import ConfigFileError
 
-config_filepath = os.path.dirname(os.path.realpath(__file__))
-yaml_filepath = os.path.join(config_filepath, 'test.yaml')
-
-
-# def test_empty_filepath():
-#     """Test empty file."""
-#     cfg = ConfigFile(name='empty')
-#     cfg.load_configs(filepath=yaml_filepath)
-#     assert not cfg.filepaths
+basedir = os.path.dirname(os.path.realpath(__file__))
+filepath = os.path.join(basedir, 'test.yaml')
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_yaml_filepath(fs):
+def test_filepath(fs):
     """Test YAML paths."""
-    fs.add_real_file(yaml_filepath)
+    fs.add_real_file(filepath)
     cfg = ConfigFile(
         name='yaml',
-        filepath=os.path.join(config_filepath, 'test.yaml')
+        filepath=os.path.join(basedir, 'test.yaml')
     )
-    assert "{}/test.yaml".format(config_filepath) == cfg.filepath
+    assert f"{basedir}/test.yaml" == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_content(fs):
     """Test read YAML content."""
-    fs.add_real_file(yaml_filepath)
+    fs.add_real_file(filepath)
     cfg = ConfigFile(name='tests')
-    cfg.load(filepath=yaml_filepath)
-    assert cfg.retrieve('/stooges/stooge1') == 'Larry'
-    assert cfg.retrieve('/stooges/stooge2') == 'Curly'
-    assert cfg.retrieve('/stooges/stooge3') == 'Moe'
-    assert cfg.retrieve('/fruit') != 'banana'
-    assert cfg.retrieve('/number') == 2
+    settings = cfg.load(filepath=filepath)
+    assert settings.retrieve('/stooges/stooge1') == 'Larry'
+    assert settings.retrieve('/stooges/stooge2') == 'Curly'
+    assert settings.retrieve('/stooges/stooge3') == 'Moe'
+    assert settings.retrieve('/fruit') != 'banana'
+    assert settings.retrieve('/number') == 2
 
 
-# @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-# def test_yaml_content_dump(fs):
-#     """Test YAML content save."""
-#     fs.add_real_file(yaml_filepath, False)
-#     cfg = ConfigFile(name='tests', writable=True)
-#     cfg.load(filepath=yaml_filepath)
-#     cfg.create('/test', 'test')
-#     assert cfg['test'] == 'test'
-#
-#
-# @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-# def test_cfg_save_fail(fs):
-#     """Test YAML content fail."""
-#     fs.add_real_file(yaml_filepath)
-#     cfg = ConfigFile(name='tests')
-#     cfg.load(filepath=yaml_filepath)
-#
-#     with pytest.raises(CompendiumConfigFileError):
-#         cfg.create('/test', 'test')
-#         cfg.dump('./test.yaml')
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
+def test_yaml_content_dump(fs):
+    """Test YAML content save."""
+    fs.add_real_file(filepath, False)
+    cfg = ConfigFile(name='tests', writable=True)
+    settings = cfg.load(filepath=filepath)
+    settings.create('/test', 'test')
+    assert settings['test'] == 'test'
+
+
+@pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
+def test_cfg_save_fail(fs):
+    """Test YAML content fail."""
+    fs.add_real_file(filepath)
+    cfg = ConfigFile(name='tests')
+    settings = cfg.load(filepath=filepath)
+
+    with pytest.raises(ConfigFileError):
+        settings.create('/test', 'test')
+        cfg.dump(settings, './test.yaml')

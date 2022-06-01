@@ -7,17 +7,17 @@ class CompendiumException(Exception):
     """Provide base errors in Compendium."""
 
 
-class CompendiumDriverError(CompendiumException):
+class DriverError(CompendiumException):
     """Provide exceptions for driver errors."""
 
 
-class CompendiumConfigFileError(CompendiumException):
+class ConfigFileError(CompendiumException):
     """Provide exceptions for ConfigFile errors."""
 
 
-class CompendiumConfigManagerError(CompendiumException):
+class ConfigManagerError(CompendiumException):
     """Provide exceptions for Config Manager errors."""
 
 
-class CompendiumSettingsError(CompendiumException):
+class SettingsError(CompendiumException):
     """Provide exceptions for Settings errors."""

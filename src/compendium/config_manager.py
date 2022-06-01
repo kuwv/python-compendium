@@ -72,8 +72,9 @@ class ConfigManager(EnvironsMixin):
             self.data = kwargs.pop('settings')
         else:
             self.data = SettingsMap(defaults)
-        # print('- data', self.data)
-        self.load_configs(**kwargs)
+
+        if kwargs.pop('load_configs', True):
+            self.load_configs(**kwargs)
 
     def __getattr__(
         self, attr: str
@@ -125,14 +126,14 @@ class ConfigManager(EnvironsMixin):
 
     def load_config(
         self, filepath: str, update: bool = True, **kwargs: Any
-    ) -> Optional[ConfigFile]:
+    ) -> Optional[dict]:
         """Load settings from configuration."""
         if os.path.exists(filepath):
             config_file = ConfigFile(filepath=filepath, **kwargs)
-            config_file.load()
+            settings = config_file.load()
             if update:
-                self.data.push(config_file)  # type: ignore
-            return config_file
+                self.data.push(settings)  # type: ignore
+            return settings
         return None
 
     def load_configs(self, **kwargs: Any) -> None:
@@ -211,6 +212,9 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         self.filename = kwargs.pop('filename', 'config.toml')
         self.basedir = kwargs.pop('basedir', os.getcwd())
 
+        # XXX: need to workout config loading
+        if load_children:
+            kwargs['load_configs'] = False
         super().__init__(*args, **kwargs)
 
         if not self.parent and 'filepaths' not in kwargs:
@@ -329,6 +333,6 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                     )
                     self.children = children
         else:
-            raise exceptions.CompendiumConfigManagerError(
+            raise exceptions.ConfigManagerError(
                 'children configurations already loaded'
             )

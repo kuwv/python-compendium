@@ -28,9 +28,9 @@ outpath = os.path.join(basepath, 'example-out.yaml')
 cfg = Config(filepath, writable=True)
 
 print('settings', cfg)
-assert 'sre' in cfg.retrieve('/allowed_roles')  # type: ignore
-assert 'devops' in cfg.retrieve('/allowed_roles')  # type: ignore
-assert 'cloudops' in cfg.retrieve('/allowed_roles')  # type: ignore
+assert 'sre' in cfg.lookup('/allowed_roles')  # type: ignore
+assert 'devops' in cfg.lookup('/allowed_roles')  # type: ignore
+assert 'cloudops' in cfg.lookup('/allowed_roles')  # type: ignore
 
 print('post settings', cfg.data)
 cfg.dump(filepath=outpath)

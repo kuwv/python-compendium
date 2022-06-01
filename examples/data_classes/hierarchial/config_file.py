@@ -60,8 +60,8 @@ basepath = os.path.dirname(os.path.realpath(__file__))
 filepath = os.path.join(basepath, 'config.toml')
 
 config = ConfigFile(filepath, separator='.')
-config.load()
+settings = config.load()
 
-foo = Foo(config)
+foo = Foo(settings)
 print(foo)
 print(type(foo.bar))

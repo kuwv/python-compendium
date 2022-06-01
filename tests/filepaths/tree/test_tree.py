@@ -4,7 +4,7 @@
 import os
 import pytest
 
-from compendium.exceptions import CompendiumConfigManagerError
+from compendium.exceptions import ConfigManagerError
 from compendium.config_manager import TreeConfigManager
 
 
@@ -39,7 +39,7 @@ def test_tree(fs):
         basedir=basedir,
     )
 
-    with pytest.raises(CompendiumConfigManagerError):
+    with pytest.raises(ConfigManagerError):
         # NOTE: either set load_chilren true or call this but not both
         cfg.load_configs()
 

@@ -5,8 +5,7 @@
 # from weakref import ref
 import logging
 import os
-from collections import UserDict
-from typing import Any, Optional, Tuple, Type
+from typing import Any, Dict, Optional, Tuple, Type
 
 import pkg_resources  # type: ignore
 
@@ -16,7 +15,7 @@ from compendium.filetypes.json import JsonConfig  # noqa
 from compendium.filetypes.toml import TomlConfig  # noqa
 from compendium.filetypes.yaml import YamlConfig  # noqa
 from compendium.filetypes_base import FiletypesBase
-from compendium.query import DpathMixin
+from compendium.settings import Settings
 
 # TODO: use importlib instead
 if 'xmltodict' in {pkg.key for pkg in pkg_resources.working_set}:
@@ -25,7 +24,7 @@ if 'xmltodict' in {pkg.key for pkg in pkg_resources.working_set}:
 log = logging.getLogger(__name__)
 
 
-class ConfigFile(UserDict, DpathMixin):
+class ConfigFile:
     """Manage settings loaded from confiugrations using dpath."""
 
     # TODO: switch to dependency injection for filetypes
@@ -41,10 +40,7 @@ class ConfigFile(UserDict, DpathMixin):
         self.autosave: bool = bool(
             kwargs.pop('autosave', True if self.writable else False)
         )
-
-        if 'separator' in kwargs:
-            DpathMixin.separator = kwargs.pop('separator')
-        super().__init__(**kwargs)
+        self.factory: Optional[dict] = kwargs.pop('factory', Settings)
 
     def __get_class(
         self, filetype: Optional[str] = 'toml'
@@ -63,7 +59,7 @@ class ConfigFile(UserDict, DpathMixin):
         else:
             return None
 
-    def load(self, filepath: Optional[str] = None) -> None:
+    def load(self, filepath: Optional[str] = None) -> Dict[str, Any]:
         """Load settings from configuration file."""
         filepath = filepath or self.filepath
         if filepath:
@@ -75,21 +71,27 @@ class ConfigFile(UserDict, DpathMixin):
                 )
                 if Class:
                     c = Class()
-                    self.update(c.load_config(filepath=filepath))
+                    # TODO: combine factory and load_config
+                    data = c.load_config(filepath=filepath)
+                    return self.factory(data) 
                 else:
-                    raise exceptions.CompendiumDriverError(
+                    raise exceptions.DriverError(
                         f"Error: No class found for: '{filepath}'"
                     )
             else:
-                raise exceptions.CompendiumConfigFileError(
+                raise exceptions.ConfigFileError(
                     f"Skipping: No configuration found at: '{filepath}'"
                 )
         else:
-            raise exceptions.CompendiumConfigFileError(
+            raise exceptions.ConfigFileError(
                 'Error: no config file provided'
             )
 
-    def dump(self, filepath: Optional[str] = None) -> None:
+    def dump(
+        self,
+        data: Dict[str, Any],
+        filepath: Optional[str] = None
+    ) -> None:
         """Save settings to configuraiton."""
         if self.writable:
             filepath = filepath or self.filepath
@@ -102,16 +104,16 @@ class ConfigFile(UserDict, DpathMixin):
                 if Class:
                     # TODO: refactor to use respective dict from chainmap
                     c = Class()
-                    c.dump_config(self.data, filepath)
+                    c.dump_config(data, filepath)
                 else:
-                    raise exceptions.CompendiumDriverError(
+                    raise exceptions.DriverError(
                         f"Skipping: No class found for: '{filepath}'"
                     )
             else:
-                raise exceptions.CompendiumConfigFileError(
+                raise exceptions.ConfigFileError(
                     'Error: no config file provided'
                 )
         else:
-            raise exceptions.CompendiumConfigFileError(
+            raise exceptions.ConfigFileError(
                 'Error: file is not writable'
             )

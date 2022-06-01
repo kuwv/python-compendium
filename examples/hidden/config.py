@@ -13,12 +13,12 @@ assert os.path.exists(filepath) is True
 assert os.path.isfile(filepath) is True
 
 cfg = ConfigFile(filepath=filepath, filetype='yaml')
-cfg.load()
-print('settings', cfg)
+settings = cfg.load()
+print('settings', settings)
 
-assert 'sre' in cfg.retrieve('/allowed_roles')
-assert 'devops' in cfg.retrieve('/allowed_roles')
-assert 'cloudops' in cfg.retrieve('/allowed_roles')
+assert 'sre' in settings.retrieve('/allowed_roles')
+assert 'devops' in settings.retrieve('/allowed_roles')
+assert 'cloudops' in settings.retrieve('/allowed_roles')
 
 pypirc_filepath = os.path.join(os.path.expanduser('~'), '.pypirc')
 

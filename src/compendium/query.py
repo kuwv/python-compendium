@@ -10,6 +10,7 @@ from dpath import util as dpath
 log = logging.getLogger(__name__)
 
 
+# TODO: test anytree as replacement
 class DpathMixin:
     """Provide XPath like query capability."""
 

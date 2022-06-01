@@ -7,10 +7,10 @@ import os
 import pytest
 
 from compendium.loader import ConfigFile
-from compendium.exceptions import CompendiumConfigFileError
+from compendium.exceptions import ConfigFileError
 
-settings_filepath = os.path.dirname(os.path.realpath(__file__))
-json_filepath = os.path.join(settings_filepath, 'test.json')
+basedir = os.path.dirname(os.path.realpath(__file__))
+filepath = os.path.join(basedir, 'test.json')
 
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -22,46 +22,46 @@ json_filepath = os.path.join(settings_filepath, 'test.json')
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
-def test_json_filepath(fs):
+def test_filepath(fs):
     """Test JSON filepaths."""
-    fs.add_real_file(json_filepath)
+    fs.add_real_file(filepath)
     cfg = ConfigFile(
         name='json',
-        filepath=os.path.join(settings_filepath, 'test.json'),
+        filepath=os.path.join(basedir, 'test.json'),
     )
-    assert "{}/test.json".format(settings_filepath) == cfg.filepath
+    assert f"{basedir}/test.json" == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg(fs):
     """Test loading JSON configuration."""
-    fs.add_real_file(json_filepath)
+    fs.add_real_file(filepath)
     cfg = ConfigFile(name='tests')
-    cfg.load(filepath=json_filepath)
-    assert cfg.retrieve('/stooges/stooge1') == 'Larry'
-    assert cfg.retrieve('/stooges/stooge2') == 'Curly'
-    assert cfg.retrieve('/stooges/stooge3') == 'Moe'
-    assert cfg.retrieve('/fruit') != 'banana'
-    assert cfg.retrieve('/number') == 2
+    settings = cfg.load(filepath=filepath)
+    assert settings.retrieve('/stooges/stooge1') == 'Larry'
+    assert settings.retrieve('/stooges/stooge2') == 'Curly'
+    assert settings.retrieve('/stooges/stooge3') == 'Moe'
+    assert settings.retrieve('/fruit') != 'banana'
+    assert settings.retrieve('/number') == 2
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_dump(fs):
     """Test saving JSON content."""
-    fs.add_real_file(json_filepath, False)
+    fs.add_real_file(filepath, False)
     cfg = ConfigFile(name='tests', writable=True)
-    cfg.load(filepath=json_filepath)
-    cfg.create('/test', 'test')
-    assert cfg.retrieve('test') == 'test'
+    settings = cfg.load(filepath=filepath)
+    settings.create('/test', 'test')
+    assert settings.retrieve('test') == 'test'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg_save_fail(fs):
     """Test JSON failure."""
-    fs.add_real_file(json_filepath)
+    fs.add_real_file(filepath)
     cfg = ConfigFile(name='tests')
-    cfg.load(filepath=json_filepath)
+    settings = cfg.load(filepath=filepath)
 
-    with pytest.raises(CompendiumConfigFileError):
-        cfg.create('/test', 'test')
-        cfg.dump('./test.json')
+    with pytest.raises(ConfigFileError):
+        settings.create('/test', 'test')
+        cfg.dump(settings, './test.json')
