@@ -10,25 +10,22 @@ from compendium.loader import ConfigFile
 from compendium.exceptions import ConfigFileError
 
 basedir = os.path.dirname(os.path.realpath(__file__))
-filepath = os.path.join(basedir, 'test.toml')
+filepath = os.path.join(basedir, 'config.toml')
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_filepath(fs):
     """Test TOML filepaths."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(
-        name='toml',
-        filepath=os.path.join(basedir, 'test.toml')
-    )
-    assert f"{basedir}/test.toml" == cfg.filepath
+    cfg = ConfigFile(filepath=os.path.join(basedir, 'config.toml'))
+    assert f"{basedir}/config.toml" == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_toml_content(fs):
     """Test TOML content load."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(name='tests')
+    cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
     assert settings.retrieve('/stooges/stooge1') == 'Larry'
     assert settings.retrieve('/stooges/stooge2') == 'Curly'
@@ -41,7 +38,7 @@ def test_toml_content(fs):
 def test_toml_content_dump(fs):
     """Test TOML content save."""
     fs.add_real_file(filepath, False)
-    cfg = ConfigFile(name='tests', writable=True)
+    cfg = ConfigFile(writable=True)
     settings = cfg.load(filepath=filepath)
     settings.create('/test', 'test')
     # TODO where is save happening :/
@@ -52,9 +49,9 @@ def test_toml_content_dump(fs):
 def test_cfg_save_fail(fs):
     """Test TOML content failure."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(name='tests')
+    cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
 
     with pytest.raises(ConfigFileError):
         settings.create('/test', 'test')
-        cfg.dump(settings, './test.toml')
+        cfg.dump(settings, './config.toml')

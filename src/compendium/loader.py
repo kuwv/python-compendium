@@ -26,22 +26,19 @@ log = logging.getLogger(__name__)
 
 class ConfigFile:
     """Manage settings loaded from confiugrations using dpath."""
+    default_filetype = 'toml'
+    default_filename = f"config.{default_filetype}"
 
     # TODO: switch to dependency injection for filetypes
     def __init__(self, filepath: Optional[str] = None, **kwargs: Any) -> None:
         """Initialize single configuration file."""
-        self.filepath: Optional[str] = filepath
-        self.filename: str = kwargs.pop('filename', 'config.toml')
-        self.filetype: str = kwargs.pop(
-            'filetype', self.get_filetype(self.filename)
-        )
-
+        if filepath:
+            self.filepath = filepath
         self.writable: bool = bool(kwargs.pop('writable', False))
         self.autosave: bool = bool(
             kwargs.pop('autosave', True if self.writable else False)
         )
         self.factory: Optional[dict] = kwargs.pop('factory', Settings)
-        self.__loader = None
 
     def __get_class(
         self, filetype: Optional[str] = 'toml'
@@ -52,13 +49,36 @@ class ConfigFile:
                 return module
         return None
 
-    # def loader(self) -> Optional[FiletypesBase]:
-    #     if not self.__loader:
-    #         Class = self.__get_class(
-    #             self.get_filetype(filepath) or self.filetype
-    #         )
-    #         self.__loader = Class() if Class else None
-    #     return self.__loader
+    @property
+    def filename(self) -> str:
+        """Get filename from filepath."""
+        filename = os.path.basename(self.filepath)
+        return filename if filename != '' else ConfigFile.default_filename
+        
+    @property
+    def filetype(self) -> str:
+        """Get filetype from filename."""
+        if '.' in self.filename:
+            return os.path.splitext(self.filename)[1].strip('.')
+        else:
+            return ConfigFile.default_filetype
+
+    @property
+    def context(self) -> Dict[str, FiletypesBase]:
+        return self._context.get(self.filepath, {})
+
+    @property
+    def filepath(self) -> Dict[str, FiletypesBase]:
+        return self._filepath 
+
+    @filepath.setter
+    def filepath(self, filepath: str) -> Optional[FiletypesBase]:
+        self._filepath = filepath
+        if not hasattr(self, '_context'):
+            self._context = {}
+        if filepath not in self._context.keys():
+            Class = self.__get_class(self.filetype)
+            self._context[filepath] = Class() if Class else None
 
     @staticmethod
     def get_filetype(filepath: str) -> Optional[str]:
@@ -70,18 +90,14 @@ class ConfigFile:
 
     def load(self, filepath: Optional[str] = None) -> Dict[str, Any]:
         """Load settings from configuration file."""
-        filepath = filepath or self.filepath
-        if filepath:
+        self.filepath = filepath or self.filepath
+        if self.filepath:
             # Use discovered module to load configuration.
-            if os.path.exists(filepath):
+            if os.path.exists(self.filepath):
                 logging.info(f"Retrieving configuration: '{filepath}'")
-                Class = self.__get_class(
-                    self.get_filetype(filepath) or self.filetype
-                )
-                if Class:
-                    c = Class()
+                if self.context != {}:
                     # TODO: combine factory and load_config
-                    data = c.load_config(filepath=filepath)
+                    data = self.context.load_config(filepath=self.filepath)
                     return self.factory(data) 
                 else:
                     raise exceptions.DriverError(
@@ -101,17 +117,13 @@ class ConfigFile:
     ) -> None:
         """Save settings to configuraiton."""
         if self.writable:
-            filepath = filepath or self.filepath
-            if filepath:
+            self.filepath = filepath or self.filepath
+            if self.filepath:
                 # Use discovered module to save configuration
                 logging.info(f"Saving configuration: '{filepath}'")
-                Class = self.__get_class(
-                    self.get_filetype(filepath) or self.filetype
-                )
-                if Class:
+                if self.context != {}:
                     # TODO: refactor to use respective dict from chainmap
-                    c = Class()
-                    c.dump_config(data, filepath)
+                    self.context.dump_config(data, self.filepath)
                 else:
                     raise exceptions.DriverError(
                         f"Skipping: No class found for: '{filepath}'"

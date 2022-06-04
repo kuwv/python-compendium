@@ -10,14 +10,14 @@ from compendium.loader import ConfigFile
 from compendium.exceptions import ConfigFileError
 
 basedir = os.path.dirname(os.path.realpath(__file__))
-filepath = os.path.join(basedir, 'test.json')
+filepath = os.path.join(basedir, 'config.json')
 
 
 # @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 # def test_empty_filepath(fs):
 #     """Test empty file."""
 #     cfg = ConfigPaths(name='empty')
-#     cfg.load_configs(filename='test.json')
+#     cfg.load_configs(filename='config.json')
 #     assert not cfg.filepaths
 
 
@@ -25,18 +25,15 @@ filepath = os.path.join(basedir, 'test.json')
 def test_filepath(fs):
     """Test JSON filepaths."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(
-        name='json',
-        filepath=os.path.join(basedir, 'test.json'),
-    )
-    assert f"{basedir}/test.json" == cfg.filepath
+    cfg = ConfigFile(filepath=os.path.join(basedir, 'config.json'))
+    assert f"{basedir}/config.json" == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg(fs):
     """Test loading JSON configuration."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(name='tests')
+    cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
     assert settings.retrieve('/stooges/stooge1') == 'Larry'
     assert settings.retrieve('/stooges/stooge2') == 'Curly'
@@ -49,7 +46,7 @@ def test_cfg(fs):
 def test_cfg_dump(fs):
     """Test saving JSON content."""
     fs.add_real_file(filepath, False)
-    cfg = ConfigFile(name='tests', writable=True)
+    cfg = ConfigFile(writable=True)
     settings = cfg.load(filepath=filepath)
     settings.create('/test', 'test')
     assert settings.retrieve('test') == 'test'
@@ -59,9 +56,9 @@ def test_cfg_dump(fs):
 def test_cfg_save_fail(fs):
     """Test JSON failure."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(name='tests')
+    cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
 
     with pytest.raises(ConfigFileError):
         settings.create('/test', 'test')
-        cfg.dump(settings, './test.json')
+        cfg.dump(settings, './config.json')

@@ -10,12 +10,12 @@ from compendium.loader import ConfigFile
 from compendium.exceptions import ConfigFileError
 
 basedir = os.path.dirname(os.path.realpath(__file__))
-filepath = os.path.join(basedir, 'test.ini')
+filepath = os.path.join(basedir, 'config.ini')
 
 
 # def test_empty_filepath():
 #     """Test empty file."""
-#     cfg = ConfigFile(name='empty', filename='test.ini')
+#     cfg = ConfigFile(filename='config.ini')
 #     cfg.load()
 #     assert not cfg.filepath
 
@@ -24,18 +24,15 @@ filepath = os.path.join(basedir, 'test.ini')
 def test_filepath(fs):
     """Test TOML filepaths."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(
-        name='ini',
-        filepath=os.path.join(basedir, 'test.ini')
-    )
-    assert f"{basedir}/test.ini" == cfg.filepath
+    cfg = ConfigFile(filepath=os.path.join(basedir, 'config.ini'))
+    assert f"{basedir}/config.ini" == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_ini_content(fs):
     """Test TOML content load."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(name='tests')
+    cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
     assert settings.retrieve('/stooges/stooge1') == 'Larry'
     assert settings.retrieve('/stooges/stooge2') == 'Curly'
@@ -48,7 +45,7 @@ def test_ini_content(fs):
 def test_ini_content_dump(fs):
     """Test TOML content save."""
     fs.add_real_file(filepath, False)
-    cfg = ConfigFile(name='tests', writable=True)
+    cfg = ConfigFile(writable=True)
     settings = cfg.load(filepath=filepath)
     settings.create('/test', 'test')
     # TODO where is save happening :/
@@ -59,9 +56,9 @@ def test_ini_content_dump(fs):
 def test_cfg_save_fail(fs):
     """Test TOML content failure."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(name='tests')
+    cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
 
     with pytest.raises(ConfigFileError):
         settings.create('/test', 'test')
-        cfg.dump(settings, './test.ini')
+        cfg.dump(settings, './config.ini')
