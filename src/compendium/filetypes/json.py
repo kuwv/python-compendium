@@ -10,7 +10,7 @@ import logging
 import os
 from typing import Any, Dict, Tuple
 
-from compendium.filetypes_base import FiletypesBase
+from compendium.filetypes import FiletypesBase
 
 
 class JsonConfig(FiletypesBase):
@@ -23,8 +23,8 @@ class JsonConfig(FiletypesBase):
         # self.encoder = kwargs.get('encoder', None)
 
     @staticmethod
-    def filetypes() -> Tuple[str, ...]:
-        """Return support JSON filetypes."""
+    def extensions() -> Tuple[str, ...]:
+        """Return support JSON file extensions."""
         return ('json',)
 
     def load_config(self, filepath: str) -> Dict[str, Any]:

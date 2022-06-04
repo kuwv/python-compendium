@@ -7,7 +7,7 @@ import logging
 from configparser import ConfigParser  # ExtendedInterpolation
 from typing import Any, Dict, Tuple
 
-from compendium.filetypes_base import FiletypesBase
+from compendium.filetypes import FiletypesBase
 
 
 class IniConfig(FiletypesBase):
@@ -21,8 +21,8 @@ class IniConfig(FiletypesBase):
         # self.__config_parser._interpolation = ExtendedInterpolation()
 
     @staticmethod
-    def filetypes() -> Tuple[str, ...]:
-        """Return supported filetypes."""
+    def extensions() -> Tuple[str, ...]:
+        """Return supported file extensions."""
         return ('cfg', 'conf', 'config', 'cnf', 'ini')
 
     def load_config(self, filepath: str) -> Dict[str, Any]:

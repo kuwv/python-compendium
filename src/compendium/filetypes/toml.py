@@ -9,7 +9,7 @@ from typing import Any, Dict, Tuple
 
 import tomlkit
 
-from compendium.filetypes_base import FiletypesBase
+from compendium.filetypes import FiletypesBase
 
 
 class TomlConfig(FiletypesBase):
@@ -21,8 +21,8 @@ class TomlConfig(FiletypesBase):
         self.encoding = kwargs.get('encoding', 'utf-8')
 
     @staticmethod
-    def filetypes() -> Tuple[str, ...]:
-        """Return supported filetypes."""
+    def extensions() -> Tuple[str, ...]:
+        """Return supported file extensions."""
         return ('toml', 'tml')
 
     @staticmethod

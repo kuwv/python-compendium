@@ -10,11 +10,11 @@ from typing import Any, Dict, Optional, Tuple, Type
 import pkg_resources  # type: ignore
 
 from compendium import exceptions
+from compendium.filetypes import FiletypesBase
 from compendium.filetypes.ini import IniConfig  # noqa
 from compendium.filetypes.json import JsonConfig  # noqa
 from compendium.filetypes.toml import TomlConfig  # noqa
 from compendium.filetypes.yaml import YamlConfig  # noqa
-from compendium.filetypes_base import FiletypesBase
 from compendium.settings import Settings
 
 # TODO: use importlib instead
@@ -41,15 +41,24 @@ class ConfigFile:
             kwargs.pop('autosave', True if self.writable else False)
         )
         self.factory: Optional[dict] = kwargs.pop('factory', Settings)
+        self.__loader = None
 
     def __get_class(
         self, filetype: Optional[str] = 'toml'
     ) -> Optional[Type[FiletypesBase]]:
         """Get class object from filetype module."""
         for module in [m for m in FiletypesBase.__subclasses__()]:
-            if filetype in module.filetypes():
+            if filetype in module.extensions():
                 return module
         return None
+
+    # def loader(self) -> Optional[FiletypesBase]:
+    #     if not self.__loader:
+    #         Class = self.__get_class(
+    #             self.get_filetype(filepath) or self.filetype
+    #         )
+    #         self.__loader = Class() if Class else None
+    #     return self.__loader
 
     @staticmethod
     def get_filetype(filepath: str) -> Optional[str]:
@@ -83,9 +92,7 @@ class ConfigFile:
                     f"Skipping: No configuration found at: '{filepath}'"
                 )
         else:
-            raise exceptions.ConfigFileError(
-                'Error: no config file provided'
-            )
+            raise exceptions.ConfigFileError('Error: no config file provided')
 
     def dump(
         self,
@@ -114,6 +121,4 @@ class ConfigFile:
                     'Error: no config file provided'
                 )
         else:
-            raise exceptions.ConfigFileError(
-                'Error: file is not writable'
-            )
+            raise exceptions.ConfigFileError('Error: file is not writable')

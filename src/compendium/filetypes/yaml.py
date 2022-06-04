@@ -11,7 +11,7 @@ from typing import Any, Dict, Tuple
 from ruamel.yaml import YAML
 # from ruamel.yaml.scalarstring import LiteralScalarString
 
-from compendium.filetypes_base import FiletypesBase
+from compendium.filetypes import FiletypesBase
 
 # TODO consider strictyaml or poyo
 # def literal_scalar_string(content):
@@ -36,8 +36,8 @@ class YamlConfig(FiletypesBase):
         return yaml
 
     @staticmethod
-    def filetypes() -> Tuple[str, ...]:
-        """Return support YAML filetypes."""
+    def extensions() -> Tuple[str, ...]:
+        """Return support YAML file extensions."""
         return ('yaml', 'yml')
 
     def load_config(self, filepath: str) -> Dict[str, Any]:

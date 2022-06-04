@@ -9,7 +9,7 @@ from typing import Any, Dict, Tuple
 
 import xmltodict
 
-from compendium.filetypes_base import FiletypesBase
+from compendium.filetypes import FiletypesBase
 
 
 class XmlConfig(FiletypesBase):
@@ -24,8 +24,8 @@ class XmlConfig(FiletypesBase):
         self.namespaces = kwargs.get('namespaces', None)
 
     @staticmethod
-    def filetypes() -> Tuple[str, ...]:
-        """Return supported XML configuration filetypes."""
+    def extensions() -> Tuple[str, ...]:
+        """Return supported XML configuration file extensions."""
         return ('xml',)
 
     def load_config(self, filepath: str) -> Dict[str, Any]:
