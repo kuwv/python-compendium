@@ -2,7 +2,6 @@
 import os
 
 from anytree import RenderTree
-
 from compendium.config_manager import ConfigManager, TreeConfigManager
 
 data1 = {'key1': 'value1'}
@@ -56,5 +55,5 @@ print(RenderTree(tree_cfg))
 # check = next(t)
 # print(check)
 # print('parent', check.parent)
-#
+
 # print(RenderTree(t))

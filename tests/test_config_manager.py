@@ -7,13 +7,13 @@ import os
 
 from compendium.config_manager import ConfigManager
 
-config_filepath = os.path.dirname(os.path.realpath(__file__))
-settings_filepath = os.path.join(config_filepath, 'config.toml')
+basedir = os.path.dirname(os.path.realpath(__file__))
+filepath = os.path.join(basedir, 'config.toml')
 
 
 def test_filepath():
     """Test filepath loader."""
-    cfg = ConfigManager(name='filepath', filepaths=[settings_filepath])
+    cfg = ConfigManager(name='filepath', filepaths=[filepath])
     cfg.load_configs()
     assert cfg.settings['title'] == 'TOML Example'
 

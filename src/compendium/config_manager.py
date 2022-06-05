@@ -43,7 +43,10 @@ class ConfigManager(EnvironsMixin):
         # Setup filepaths
         self.name = kwargs.pop('name', 'compendium')
         # self._filepaths: List[str] = list(args)
-        self._filepaths: List[str] = kwargs.pop('filepaths', [])
+        self._filepaths: List[ConfigFile] = [
+            (ConfigFile(f) if type(f) == str else f)
+            for f in kwargs.pop('filepaths', [])
+        ]
 
         # TODO: determine if multiple config files
         # self.config_files: List[Dict[str, Union[str, ConfigFile]]] = []
@@ -106,33 +109,35 @@ class ConfigManager(EnvironsMixin):
             return self.data
 
     @property
-    def filepaths(self) -> Tuple[str, ...]:
+    def filepaths(self) -> Tuple[ConfigFile, ...]:
         """Retrieve filepaths."""
-        # TODO: should this be removed
         return tuple(self._filepaths)
 
     def add_filepath(self, filepath: str) -> None:
         """Load settings from configuration in filepath."""
         logging.debug(f"searching for {filepath}")
-        self._filepaths.append(filepath)
+        self._filepaths.append(ConfigFile(filepath))
 
-    # def dump_config(self, filepath: str, *args: str) -> None:
+    # def dump_config(self, config_file: ConfigFile, *args: str) -> None:
     #     """Dump settings to configuration."""
-    #     if os.path.exists(filepath):
-    #         config_file = ConfigFile(filepath=filepath)
-    #         config_file.dump()
+    #     if os.path.exists(config_file.filepath):
+    #         config_file.dump(self.data)
     #         if update:
     #             self.data.push(config_file)
 
     def load_config(
-        self, filepath: str, update: bool = True, **kwargs: Any
+        self,
+        config_file: ConfigFile,
+        update: bool = True,
+        *args: str,
+        **kwargs: Any,
     ) -> Optional[dict]:
         """Load settings from configuration."""
-        if os.path.exists(filepath):
-            config_file = ConfigFile(filepath=filepath, **kwargs)
+        if os.path.exists(config_file.filepath):
+            # config_file = ConfigFile(filepath=filepath, **kwargs)
             settings = config_file.load()
             if update:
-                self.data.push(settings)  # type: ignore
+                self.data.push(settings)
             return settings
         return None
 
@@ -228,7 +233,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
     @property
     def namepaths(self) -> Tuple[str, ...]:
         """Return list of namepaths."""
-        return tuple([self.get_namepath(x) for x in self.filepaths])
+        return tuple([self.get_namepath(x.filepath) for x in self.filepaths])
 
     def get_name(self, filepath: str) -> str:
         """Get name from tree path."""
@@ -252,9 +257,9 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def get_filepath(self, name: str) -> Optional[str]:
         """Get filepath from namepath."""
-        for x in self.filepaths:
-            if name == self.get_namepath(x):
-                return x
+        for config in self.filepaths:
+            if name == self.get_namepath(config.filepath):
+                return config.filepath
         return None
 
     def get_config(self, namepath: str) -> Dict[str, Any]:
@@ -285,38 +290,44 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                 self.add_filepath(filepath)
 
     def load_config(
-        self, filepath: str, update: bool = False, *args: str, **kwargs: Any
+        self,
+        config_file: ConfigFile,
+        update: bool = False,
+        *args: str,
+        **kwargs: Any,
     ) -> Optional[ConfigFile]:
         """Load config."""
         # TODO: need to separate chainmap of defaults from namespace config
-        config_file = super().load_config(filepath, update)
+        settings = super().load_config(config_file, update)
         return self.new_child(
-            config_file, name=self.get_name(filepath), *args, **kwargs
+            settings, name=self.get_name(config_file.filepath), *args, **kwargs
         )
 
     def load_configs(self, **kwargs: Any) -> None:
         """Load configuration files from filepaths."""
 
-        def get_child_paths(namepath: str) -> List[str]:
+        def get_child_paths(namepath: str) -> List[ConfigFile]:
             """Get relative child paths of namepath."""
             child_paths = []
-            for path in self.filepaths[1:]:
+            for config in self.filepaths[1:]:
                 child_path = os.path.dirname(
-                    os.path.relpath(path, self.basedir)
+                    os.path.relpath(config.filepath, self.basedir)
                 )
                 if (
                     len(child_path.split(os.sep)) > 1
                     and child_path.startswith(namepath)
                 ):
-                    child_paths.append(path)
+                    child_paths.append(config)
             return child_paths
 
         if self.children == ():
             # get children filepaths of parent
             filepaths = self.filepaths if self.parent else self.filepaths[1:]
-            for x in filepaths:
+            for config in filepaths:
                 # get child namepath from filepath
-                namepath = os.path.dirname(os.path.relpath(x, self.basedir))
+                namepath = os.path.dirname(
+                    os.path.relpath(config.filepath, self.basedir)
+                )
                 # print('---', self.name, namepath, self.parent)
                 # populate only direct children
                 if len(namepath.split(os.sep)) == 1:
@@ -324,7 +335,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                     children = list(self.children)
                     children.append(
                         self.load_config(
-                            x,
+                            config,
                             update=False,
                             filepaths=child_paths,
                             basedir=f"{self.basedir}{os.sep}{namepath}",
