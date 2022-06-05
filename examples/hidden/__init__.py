@@ -1,0 +1,1 @@
+"""Demonstrate hidden config."""

@@ -22,8 +22,8 @@ class Item:
 
 @dataclass
 class Bar:
-    baz: str = field(init=False)
     config: InitVar['ConfigFile']
+    baz: str = field(init=False)
 
     def __post_init__(self, config: ConfigFile) -> None:
         self.baz = config.lookup('foo.bar')
@@ -31,9 +31,9 @@ class Bar:
     
 @dataclass
 class Foo:
+    config: InitVar['ConfigFile']
     baz: str = field(init=False)
     bar: Bar = field(init=False)
-    config: InitVar['ConfigFile']
 
     def __post_init__(self, config: ConfigFile) -> None:
         self.bar = Bar(config=config)
@@ -65,3 +65,4 @@ settings = config.load()
 foo = Foo(settings)
 print(foo)
 print(type(foo.bar))
+print(type(foo.bar.baz))

@@ -76,6 +76,7 @@ line_length = 79
 
 [tool.black]
 line-length = 79
+skip-string-normalization = true
 include = '\.pyi?$'
 exclude = '''
 
@@ -100,8 +101,7 @@ ignore_missing_imports = true
 [tool.pydocstyle]
 ignore = [
     "D203",
-    "D213",
-    "D300"
+    "D213"
 ]
 
 [build-system]

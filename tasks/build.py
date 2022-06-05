@@ -2,7 +2,7 @@
 # type: ignore
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Test Task-Runner.'''
+"""Test Task-Runner."""
 
 from typing import Optional, TYPE_CHECKING
 
@@ -26,7 +26,7 @@ else:
 
 @task
 def build(ctx, format=None):  # type: (Context, Optional[bool]) -> None
-    '''Build wheel package.'''
+    """Build wheel package."""
     if format:
         ctx.run(f"flit build --format={format}")
     else:
@@ -35,7 +35,7 @@ def build(ctx, format=None):  # type: (Context, Optional[bool]) -> None
 
 @task(pre=[call(build, format='wheel')])
 def dev(ctx):  # type: (Context) -> None
-    '''Perform development runtime environment setup.'''
+    """Perform development runtime environment setup."""
     ctx.run('flit install --pth-file --python python3')
 
 
@@ -45,7 +45,7 @@ def install(
     symlink=True,
     dev=False,
 ):  # type: (Context, bool, bool) -> None
-    '''Install within environment.'''
+    """Install within environment."""
     args = []
     if symlink:
         args.append('--symlink')
@@ -56,13 +56,13 @@ def install(
 
 @task
 def publish(ctx):  # type: (Context) -> None
-    '''Publish project distribution.'''
+    """Publish project distribution."""
     ctx.run('flit publish')
 
 
 @task
 def clean(ctx):  # type: (Context) -> None
-    '''Clean project dependencies and build.'''
+    """Clean project dependencies and build."""
     paths = ['dist', 'logs']
     paths.append('**/__pycache__')
     paths.append('**/*.pyc')
@@ -79,7 +79,7 @@ def version(
     commit=False,
     message=None,
 ):  # type: (Context, str, bool, bool, Optional[str]) -> None
-    '''Update project version and apply tags.'''
+    """Update project version and apply tags."""
     args = [part]
     if commit:
         args.append('--commit')

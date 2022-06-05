@@ -8,9 +8,9 @@ from compendium.config_manager import ConfigManager
 
 print('------ example write for config_manager ------')
 
-basepath = os.path.dirname(os.path.realpath(__file__))
-filepath = os.path.join(basepath, 'example.yaml')
-outpath = os.path.join(basepath, 'example-out.yaml')
+basedir = os.path.dirname(__file__)
+filepath = os.path.join(basedir, 'example.yaml')
+outpath = os.path.join(basedir, 'example-out.yaml')
 
 cfg = ConfigManager(name='tests', writable=True)
 cfg.load_config(filepath=filepath)
@@ -27,8 +27,8 @@ assert cfg.retrieve('/dag/default_args/owner') == 'admin'
 print('------ example multi-file settings for config_manager ------')
 
 filepaths = [
-  os.path.join(basepath, 'workflow_one.yaml'),
-  os.path.join(basepath, 'workflow_two.yaml'),
+  os.path.join(basedir, 'config1.yaml'),
+  os.path.join(basedir, 'config2.yaml'),
 ]
 
 cfg_mgr = ConfigManager(filepaths=filepaths, separator='.')

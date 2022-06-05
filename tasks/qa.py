@@ -2,7 +2,7 @@
 # type: ignore
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
-'''Test Task-Runner.'''
+"""Test Task-Runner."""
 
 from typing import Optional, TYPE_CHECKING
 
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 @task
 def style(ctx, check=True):  # type: (Context, bool) -> None
-    '''Format project source code to PEP-8 standard.'''
+    """Format project source code to PEP-8 standard."""
     args = ['--skip-string-normalization']
     if check:
         args.append('--check')
@@ -24,19 +24,19 @@ def style(ctx, check=True):  # type: (Context, bool) -> None
 
 @task
 def lint(ctx):  # type: (Context) -> None
-    '''Check project source code for linting errors.'''
+    """Check project source code for linting errors."""
     ctx.run('flake8')
 
 
 @task
 def type_check(ctx, path='.'):  # type: (Context, str) -> None
-    '''Check project source types.'''
+    """Check project source types."""
     ctx.run(f"mypy {path}")
 
 
 @task
 def unit_test(ctx, capture=None):  # type: (Context, Optional[str]) -> None
-    '''Perform unit tests.'''
+    """Perform unit tests."""
     args = []
     if capture:
         args.append(f"--capture={capture}")
@@ -45,14 +45,14 @@ def unit_test(ctx, capture=None):  # type: (Context, Optional[str]) -> None
 
 @task
 def static_analysis(ctx):  # type: (Context) -> None
-    '''Perform static code analysis on imports.'''
+    """Perform static code analysis on imports."""
     ctx.run('safety check')
     ctx.run('bandit -r proman_common')
 
 
 @task
 def coverage(ctx, report=None):  # type: (Context, Optional[str]) -> None
-    '''Perform coverage checks for tests.'''
+    """Perform coverage checks for tests."""
     args = ['--cov=proman_common']
     if report:
         args.append(f"--cov-report={report}")
@@ -61,5 +61,5 @@ def coverage(ctx, report=None):  # type: (Context, Optional[str]) -> None
 
 @task(pre=[style, lint, unit_test, static_analysis, coverage])
 def test(ctx):
-    '''Run all tests.'''
+    """Run all tests."""
     pass

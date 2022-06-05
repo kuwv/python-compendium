@@ -53,21 +53,21 @@ toml_in = os.path.join(basepath, 'in.toml')
 toml_out = os.path.join(basepath, 'out.toml')
 
 # JSON
-json_cfg = ConfigFile(name='json', writable=True)
+json_cfg = ConfigFile(writable=True)
 json_settings = json_cfg.load(filepath=json_in)
 json_cfg.dump(json_settings.data, filepath=json_out)
 json_cfg.dump(json_settings.data, filepath=yaml_out)
 json_cfg.dump(json_settings.data, filepath=toml_out)
 
 # YAML
-yaml_cfg = ConfigFile(name='yaml', writable=True)
+yaml_cfg = ConfigFile(writable=True)
 yaml_settings = yaml_cfg.load(filepath=yaml_in)
 yaml_cfg.dump(yaml_settings.data, filepath=yaml_out)
 yaml_cfg.dump(yaml_settings.data, filepath=json_out)
 json_cfg.dump(yaml_settings.data, filepath=toml_out)
 
 # TOML
-toml_cfg = ConfigFile(name='toml', writable=True)
+toml_cfg = ConfigFile(writable=True)
 toml_settings = toml_cfg.load(filepath=toml_in)
 toml_cfg.dump(toml_settings.data, filepath=toml_out)
 toml_cfg.dump(toml_settings.data, filepath=json_out)
