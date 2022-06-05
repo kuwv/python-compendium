@@ -18,47 +18,67 @@ https://kuwv.github.io/python-compendium/
 
 ### Manage multiple configurations
 
-Example `afile.toml`:
-```
-[default]
-foo = "bar"
-```
+```python
+>>> from tempfile import NamedTemporaryFile
+>>> from textwrap import dedent
 
-Example `bfile.toml`:
-```
-[example.settings]
-foo = "baz"
-```
+>>> from compendium.config_manager import ConfigManager
 
-```
-from compendium.config_manager import ConfigManager
+>>> try:
+...     file1 = NamedTemporaryFile(mode='wt', suffix='.toml')
+...     _ = file1.write(
+...         dedent(
+...             """\
+...             [default]
+...             foo = "bar"
+...             foo2 = "bar2"
+...             """
+...         )
+...     )
+...     _ = file1.seek(0)
+...
+...     file2 = NamedTemporaryFile(mode='wt', suffix='.toml')
+...     _ = file2.write(
+...         dedent(
+...             """\
+...             [example.settings]
+...             foo = "baz"
+...             """
+...         )
+...     )
+...     _ = file2.seek(0)
+...
+...     cfg = ConfigManager(name='app', filepaths=[file1.name, file2.name])
+...     cfg.lookup('/example/settings/foo', '/default/foo')
+...     cfg.lookup('/default/foo2')
+... finally:
+...     file1.close()
+...     file2.close()
+'baz'
+'bar2'
 
-cfg = ConfigManager(name='app', filepaths=['afile.toml', 'bfile.toml'])
-
-result = cfg.lookup('/default/foo', '/example/settings/foo')
-assert result == 'baz'
 ```
 
 ### Search settings
 
-```
+```python
 result = cfg.search('/servers/**/ip')
 ```
 
 ### Create settings
 
-```
+```python
 cfg.create('/test', 'test')
 ```
 
 ### Update settings
 
-```
+```python
 cfg.set('/owner/name', 'Tom Waits')
 ```
 
 ### Delete settings
 
-```
+```python
 cfg.delete('/owner/name')
 ```
