@@ -184,9 +184,12 @@ class Settings(MutableMapping):
                 store = {x: store}  # type: ignore
         dpath.merge(self.data, store)
 
-    def update(self, data: Dict[str, Any]) -> None:
+    # def update(self, other=(), /, **kwds: Any) -> None:
+    def update(  # type: ignore
+        self, other: Dict[str, Any], **kwargs: Any
+    ) -> None:
         """Update settings."""
-        dpath.merge(self.data, data, afilter=None, flags=2)
+        dpath.merge(self.data, other, afilter=None, flags=2)
 
 
 class SettingsMap(ChainMap, DpathMixin, MergeMixin):
