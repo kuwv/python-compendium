@@ -5,9 +5,8 @@
 # from weakref import ref
 import logging
 import os
-from typing import Any, Dict, Optional, Tuple, Type
-
 import pkg_resources  # type: ignore
+from typing import Any, Dict, Optional, Tuple, Type
 
 from compendium import exceptions
 from compendium.filetypes import FiletypesBase
