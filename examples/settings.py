@@ -4,8 +4,6 @@
 
 import logging
 import os
-from collections.abc import MutableMapping
-from typing import Any, Dict, Optional
 
 from compendium.settings import Settings
 
@@ -72,5 +70,6 @@ if __name__ == '__main__':
         print('- value', v)
 
     del settings['/servers']
-    print(settings) 
-    print(settings.clear())
+    print(settings)
+    settings.clear()
+    print(settings)

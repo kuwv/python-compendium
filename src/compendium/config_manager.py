@@ -32,13 +32,6 @@ class ConfigManager(EnvironsMixin):
             log_handler = kwargs.pop('log_handler')
             log.addHandler(logging.StreamHandler(log_handler))
 
-        # Setup filepaths
-        self.name = kwargs.pop('name', 'compendium')
-        # self._filepaths: List[str] = list(args)
-        self._filepaths: List[ConfigFile] = [
-            (ConfigFile(f) if type(f) == str else f) for f in kwargs.pop('filepaths', [])
-        ]
-
         # TODO: determine if multiple config files
         # self.config_files: List[Dict[str, Union[str, ConfigFile]]] = []
 
@@ -55,17 +48,25 @@ class ConfigManager(EnvironsMixin):
         # Load defaults
         defaults = kwargs.pop('defaults', {})
 
+        # Setup filepaths
+        self.name = kwargs.pop('name', 'compendium')
+        # self._filepaths: List[str] = list(args)
+        self._filepaths: List[ConfigFile] = [
+            (ConfigFile(f, factory_kwargs=kwargs) if type(f) == str else f)
+            for f in kwargs.pop('filepaths', [])
+        ]
+
         # Populate settings
         # if 'data' in kwargs:
         if args != ():
             # self.data = SettingsMap(*kwargs.pop('data'))
-            self.data = SettingsMap(*args)
+            self.data = SettingsMap(*args, **kwargs)
             if defaults != {}:
                 self.defaults.update(defaults)
         elif 'settings' in kwargs:
             self.data = kwargs.pop('settings')
         else:
-            self.data = SettingsMap(defaults)
+            self.data = SettingsMap(defaults, **kwargs)
 
         if kwargs.pop('load_configs', True):
             self.load_configs(**kwargs)

@@ -11,8 +11,6 @@ from typing import Any, Dict, Iterator, Mapping, Optional
 from dpath import util as dpath
 from dpath.exceptions import PathNotFound
 
-from compendium.query import DpathMixin
-
 log = logging.getLogger(__name__)
 
 
@@ -99,7 +97,7 @@ class Settings(MutableMapping):
     def __contains__(self, query: object) -> bool:
         """Check if settings contain item using keypath."""
         # try:
-        #     return keypath in self.__getitem__['keypath'] 
+        #     return keypath in self.__getitem__['keypath']
         # except KeyError:
         #     return False
         return query in self.data
@@ -140,6 +138,7 @@ class Settings(MutableMapping):
         """Get item or return default."""
         try:
             value = self.__getitem__(keypath)
+            return value
         except KeyError:
             return default
 
@@ -156,17 +155,18 @@ class Settings(MutableMapping):
     def lookup(
         self,
         *args: str,
-        default: Any = None,
+        default: Optional[Any] = None,
     ) -> Optional[Any]:
         """Get value from settings from multiple keypaths."""
-        for query in args:
+        for keypath in args:
             try:
-                value = self.__getitem__(query)
+                value = self.__getitem__(keypath)
                 if value is not None:
-                    log.info(f"lookup found: {value} for {query}")
+                    log.info(f"lookup found: {value} for {keypath}")
                     return value
             except KeyError:
-                log.debug(f"lookup was unable to query: {query}")
+                log.debug(f"lookup was unable to query: {keypath}")
+        log.debug(f"returning default for: {keypath}")
         return default
 
     def values(self, query: Optional[str] = None) -> Dict[str, Any]:
@@ -189,14 +189,15 @@ class Settings(MutableMapping):
         dpath.merge(self.data, data, afilter=None, flags=2)
 
 
-class SettingsMap(ChainMap, DpathMixin, MergeMixin):
+class SettingsMap(ChainMap, MergeMixin):
     """Manage layered settings loaded from confiugrations using dpath."""
+
+    separator: str = '/'
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize settings store."""
         if 'separator' in kwargs:
-            DpathMixin.separator = kwargs.pop('separator')
-        # super(ChainMap, self).__init__(args)
+            SettingsMap.separator = kwargs.pop('separator')
         super().__init__(*args)
 
     def push(self, data: Dict[str, Any]) -> None:
@@ -205,3 +206,76 @@ class SettingsMap(ChainMap, DpathMixin, MergeMixin):
         self.maps.insert(0, data)
 
     # TODO: add capability to recursive search settings
+
+    def __delitem__(self, keypath: str) -> Any:
+        """Delete item at keypath."""
+        return dpath.delete(self.maps[0], keypath, SettingsMap.separator)
+
+    def __getitem__(self, keypath: str) -> Any:
+        """Get item."""
+        for mapping in self.maps:
+            try:
+                return dpath.get(mapping, keypath, SettingsMap.separator)
+            except KeyError:
+                pass
+        return self.__missing__(keypath)
+
+    def __setitem__(self, keypath: str, value: Any) -> Any:
+        """Set item to new value or create it."""
+        try:
+            self.__getitem__(keypath)
+            dpath.set(self.maps[0], keypath, value, SettingsMap.separator)
+        except KeyError:
+            dpath.new(self.maps[0], keypath, value, SettingsMap.separator)
+
+    def get(self, keypath: str, default: Optional[Any] = None) -> Any:
+        """Get item or return default."""
+        try:
+            value = self.__getitem__(keypath)
+            return value
+        except KeyError:
+            return default
+
+    def pop(self, keypath: str, default: Optional[Any] = None) -> Any:
+        """Get item and remove it from settings or return default."""
+        try:
+            # TODO: need to determine how dpath will handle list element here
+            value = self.__getitem__(keypath)
+            self.__delitem__(keypath)
+            return value
+        except (KeyError, PathNotFound):
+            return default
+
+    def lookup(
+        self,
+        *args: str,
+        default: Optional[Any] = None,
+    ) -> Optional[Any]:
+        """Get value from settings from multiple keypaths."""
+        for keypath in args:
+            try:
+                value = self.__getitem__(keypath)
+                log.info(f"lookup found: {value} for {keypath}")
+                return value
+            except KeyError:
+                log.debug(f"lookup was unable to query: {keypath}")
+        log.debug(f"returning default for: {keypath}")
+        return default
+
+    # def values(self, query: Optional[str] = None) -> Dict[str, Any]:
+    #     """Search settings matching query."""
+    #     if query is None:
+    #         query = f"{SettingsMap.separator}*"
+    #     return dpath.values(self.maps[0], query, SettingsMap.separator)
+
+    # def append(self, keypath: str, value: Any) -> None:
+    #     """Append to a list located at keypath."""
+    #     store = [value]
+    #     for x in reversed(keypath.split(SettingsMap.separator)):
+    #         if x != '':
+    #             store = {x: store}  # type: ignore
+    #     dpath.merge(self.maps[0], store)
+
+    # def update(self, data: Dict[str, Any]) -> None:
+    #     """Update settings."""
+    #     dpath.merge(self.maps[0], data, afilter=None, flags=2)

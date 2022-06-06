@@ -49,17 +49,18 @@ def test_hierarchy(fs):
         os.path.join(global_filepath, '.hierarchy.d', 'config.toml')
     ) in cfg.filepaths
 
-    assert cfg.settings.retrieve('/table/key') != 'first'  # overridden
-    assert cfg.settings.retrieve('/table/subtable/key') == 'third'
-    assert cfg.settings.retrieve(
-        '/table/subtable/second'
-    ) != 'retained'  # overridden
-    assert cfg.settings.retrieve('/table/subtable/third') == 'retained'
-    assert cfg.settings.retrieve('/table/subtable/key') != 'second'
-    assert cfg.settings.retrieve('/list/**/last') == 'third'
+    assert cfg.settings['/table/key'] != 'first'  # overridden
+    assert cfg.settings['/table/subtable/key'] == 'third'
+    assert cfg.settings['/table/subtable/second'] == 'retained'
+    assert cfg.settings['/table/subtable/third'] == 'retained'
+    assert cfg.settings['/table/subtable/key'] != 'second'
+    assert cfg.settings['/list/**/last'] == 'third'
 
-    # Ensure /etc/hierarchy/config.toml is blank
-    # NOTE: Added default
-    # with pytest.raises(KeyError):
-    #     cfg.retrieve('/list/**/overwritten1')
-    #     cfg.retrieve('/list/**/overwritten2')
+    with pytest.raises(KeyError):
+        cfg.settings['/list/**/overwritten1']
+        cfg.settings['/list/**/overwritten2']
+
+    # TODO: test clear
+    # assert cfg.settings is not None
+    # cfg.settings.clear()
+    # assert cfg.settings is None

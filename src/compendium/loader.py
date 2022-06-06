@@ -6,7 +6,7 @@
 import logging
 import os
 import pkg_resources  # type: ignore
-from typing import Any, Dict, Optional, Tuple, Type
+from typing import Any, Dict, Optional, Type
 
 from compendium import exceptions
 from compendium.filetypes import FiletypesBase
@@ -41,12 +41,14 @@ class ConfigFile:
             kwargs.pop('autosave', True if self.writable else False)
         )
         self.factory: dict = kwargs.pop('factory', Settings)
+        self.factory_kwargs: Dict[str, Any] = kwargs.pop('factory_kwargs', {})
 
     def __repr__(self) -> str:
         """Get filepath."""
         return repr(self.filepath)
 
     def __str__(self) -> str:
+        """Return filepath."""
         return self.filepath
 
     def __eq__(self, other: Any) -> bool:
@@ -71,7 +73,7 @@ class ConfigFile:
         """Get filename from filepath."""
         filename = os.path.basename(self.filepath)
         return filename if filename != '' else self.default_filename
-        
+
     @property
     def filetype(self) -> str:
         """Get filetype from filename."""
@@ -87,7 +89,7 @@ class ConfigFile:
     @property
     def filepath(self) -> str:
         """Get filepath."""
-        return self._filepath 
+        return self._filepath
 
     @filepath.setter
     def filepath(self, filepath: str) -> None:
@@ -108,7 +110,9 @@ class ConfigFile:
                 if self.strategy:
                     # TODO: combine factory and load_config
                     data = self.strategy.load_config(filepath=self.filepath)
-                    return self.factory(data)  # type: ignore
+                    return self.factory(
+                        data, **self.factory_kwargs
+                    )  # type: ignore
                 else:
                     raise exceptions.DriverError(
                         f"Error: No class found for: '{filepath}'"

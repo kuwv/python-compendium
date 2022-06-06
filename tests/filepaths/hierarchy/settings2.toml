@@ -1,3 +1,6 @@
+[table]
+key = "second"
+
 [table.subtable]
 key = "second"
 second = "retained"

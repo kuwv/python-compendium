@@ -48,17 +48,17 @@ def test_tree(fs):
     assert cfg3_path in cfg.filepaths
 
     # TODO: filepaths aren't used this way
-    # assert cfg.settings.retrieve('/settings/[0]/filepath') == cfg1_path
-    # assert cfg.settings.retrieve('/settings/[1]/filepath') == cfg2_path
-    # assert cfg.settings.retrieve('/settings/[2]/filepath') == cfg3_path
+    # assert cfg.settings['/settings/[0]/filepath'] == cfg1_path
+    # assert cfg.settings['/settings/[1]/filepath'] == cfg2_path
+    # assert cfg.settings['/settings/[2]/filepath'] == cfg3_path
 
     # TODO add additional depth tests
-    assert cfg.settings.retrieve('/fruit/pome/**/name') == 'apple'
+    assert cfg.settings['/fruit/pome/**/name'] == 'apple'
     # assert cfg.retrieve(
-    #     '/**/name', document=cfg.settings.retrieve('/**/fruit/drupe')
+    #     '/**/name', document=cfg.settings['/**/fruit/drupe']
     # ) == 'peach'
 
     # Ensure vegatable is not in fruits
     # NOTE: Added defaults
     # with pytest.raises(KeyError):
-    #     cfg.retrieve('/settings/**/vegetable')
+    #     cfg['/settings/**/vegetable']
