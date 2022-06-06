@@ -35,11 +35,11 @@ def test_cfg(fs):
     fs.add_real_file(filepath)
     cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
-    assert settings.retrieve('/stooges/stooge1') == 'Larry'
-    assert settings.retrieve('/stooges/stooge2') == 'Curly'
-    assert settings.retrieve('/stooges/stooge3') == 'Moe'
-    assert settings.retrieve('/fruit') != 'banana'
-    assert settings.retrieve('/number') == 2
+    assert settings['/stooges/stooge1'] == 'Larry'
+    assert settings['/stooges/stooge2'] == 'Curly'
+    assert settings['/stooges/stooge3'] == 'Moe'
+    assert settings['/fruit'] != 'banana'
+    assert settings['/number'] == 2
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -48,8 +48,8 @@ def test_cfg_dump(fs):
     fs.add_real_file(filepath, False)
     cfg = ConfigFile(writable=True)
     settings = cfg.load(filepath=filepath)
-    settings.create('/test', 'test')
-    assert settings.retrieve('test') == 'test'
+    settings['/test'] = 'test'
+    assert settings['test'] == 'test'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -60,5 +60,5 @@ def test_cfg_save_fail(fs):
     settings = cfg.load(filepath=filepath)
 
     with pytest.raises(ConfigFileError):
-        settings.create('/test', 'test')
+        settings['/test'] = 'test'
         cfg.dump(settings, './config.json')

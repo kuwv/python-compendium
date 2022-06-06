@@ -24,15 +24,7 @@ class ConfigManager(EnvironsMixin):
     """Provide config management representation."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Initialize single settings management.
-
-        merge_sections: []
-        merge_strategy:
-          - overlay
-          - partition
-          - last
-
-        """
+        """Initialize single settings management."""
         # Setup logging
         if 'log_level' in kwargs:
             log.setLevel(getattr(logging, kwargs.pop('log_level').upper()))
@@ -44,8 +36,7 @@ class ConfigManager(EnvironsMixin):
         self.name = kwargs.pop('name', 'compendium')
         # self._filepaths: List[str] = list(args)
         self._filepaths: List[ConfigFile] = [
-            (ConfigFile(f) if type(f) == str else f)
-            for f in kwargs.pop('filepaths', [])
+            (ConfigFile(f) if type(f) == str else f) for f in kwargs.pop('filepaths', [])
         ]
 
         # TODO: determine if multiple config files
@@ -159,13 +150,6 @@ class HierarchyConfigManager(ConfigManager):
         ----------
         name: str
             Name of name.
-        merge_sections: list, optional
-            Include sections to be merged
-        merge_strategy: list, optional
-            Strategy to used when merging: overlay, parition, and last
-              - overlay will replace exsisting entries
-              - partition will keeps each seettings separate
-              - last will only use the last loaded
         enable_system_filepaths: bool, optional
             Enable system filepath lookup for config_files.
         enable_global_filepaths: bool, optional

@@ -1,6 +1,7 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 """Provide query capabilities."""
+# TODO: merge into settingsmap and remove
 
 import logging
 from typing import Any, Dict, Optional

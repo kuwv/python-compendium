@@ -21,7 +21,7 @@ filepath = os.path.join(basedir, 'config.toml')
 #     return settings
 #
 # def test_result(cfg):
-#     result = settings.search('/servers/**/ip')
+#     result = settings.values('/servers/**/ip')
 #     assert ['10.0.0.1', '10.0.0.2'] == result
 
 
@@ -31,7 +31,7 @@ def test_result(fs):
     fs.add_real_file(filepath, False)
     cfg = ConfigFile()
     settings = cfg.load(filepath)
-    result = settings.search('/servers/**/ip')
+    result = settings.values('/servers/**/ip')
     assert ['10.0.0.1', '10.0.0.2'] == result
 
 
@@ -41,7 +41,7 @@ def test_toml_content_create(fs):
     fs.add_real_file(filepath, False)
     cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
-    settings.create('/test', 'test')
+    settings['/test'] = 'test'
     assert settings.lookup('test') == 'test'
 
 
@@ -61,7 +61,7 @@ def test_toml_content_update(fs):
     fs.add_real_file(filepath, False)
     cfg = ConfigFile(writable=True)
     settings = cfg.load(filepath=filepath)
-    settings.set('/owner/name', 'Tom Waits')
+    settings['/owner/name'] = 'Tom Waits'
     assert settings.lookup('/owner/name') == 'Tom Waits'
 
 
@@ -71,6 +71,6 @@ def test_toml_delete(fs):
     fs.add_real_file(filepath, False)
     cfg = ConfigFile()
     settings = cfg.load(filepath=filepath)
-    assert settings.search('/owner/name') == ['Tom Preston-Werner']
-    settings.delete('/owner/name')
-    assert settings.search('/owner/name') == []
+    assert settings.values('/owner/name') == ['Tom Preston-Werner']
+    del settings['/owner/name']
+    assert settings.values('/owner/name') == []
