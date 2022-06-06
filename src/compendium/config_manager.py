@@ -122,7 +122,7 @@ class ConfigManager(EnvironsMixin):
         update: bool = True,
         *args: str,
         **kwargs: Any,
-    ) -> Optional[dict]:
+    ) -> Optional[Dict[str, Any]]:
         """Load settings from configuration."""
         if os.path.exists(config_file.filepath):
             # config_file = ConfigFile(filepath=filepath, **kwargs)
@@ -279,7 +279,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         update: bool = False,
         *args: str,
         **kwargs: Any,
-    ) -> Optional[ConfigFile]:
+    ) -> Optional[Dict[str, Any]]:
         """Load config."""
         # TODO: need to separate chainmap of defaults from namespace config
         settings = super().load_config(config_file, update)

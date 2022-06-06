@@ -6,7 +6,7 @@ import logging
 import os
 from collections import ChainMap
 from collections.abc import MutableMapping
-from typing import Any, Dict, Mapping, Optional
+from typing import Any, Dict, Iterator, Mapping, Optional
 
 from dpath import util as dpath
 from dpath.exceptions import PathNotFound
@@ -90,13 +90,13 @@ class Settings(MutableMapping):
         """Initialize settings store."""
         if 'separator' in kwargs:
             Settings.separator = kwargs.pop('separator')
-        self.data = {}
+        self.data: Dict[str, Any] = {}
         if data is not None:
             self.update(data)
         if kwargs:
             self.update(kwargs)
 
-    def __contains__(self, query: str) -> bool:
+    def __contains__(self, query: object) -> bool:
         """Check if settings contain item using keypath."""
         # try:
         #     return keypath in self.__getitem__['keypath'] 
@@ -112,7 +112,7 @@ class Settings(MutableMapping):
         """Delete item at keypath."""
         return dpath.delete(self.data, keypath, Settings.separator)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Any]:
         """Iterate settings dictionary."""
         return iter(self.data)
 
@@ -196,6 +196,7 @@ class SettingsMap(ChainMap, DpathMixin, MergeMixin):
         """Initialize settings store."""
         if 'separator' in kwargs:
             DpathMixin.separator = kwargs.pop('separator')
+        # super(ChainMap, self).__init__(args)
         super().__init__(*args)
 
     def push(self, data: Dict[str, Any]) -> None:

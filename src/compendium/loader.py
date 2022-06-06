@@ -29,6 +29,7 @@ class ConfigFile:
     # TODO: switch to dependency injection for filetypes
     def __init__(self, filepath: Optional[str] = None, **kwargs: Any) -> None:
         """Initialize single configuration file."""
+        self.__strategy: Dict[str, FiletypesBase] = {}
         self.default_filetype = kwargs.pop('default_filetype', 'toml')
         self.default_filename = kwargs.pop(
             'default_filename', f"config.{self.default_filetype}"
@@ -81,7 +82,7 @@ class ConfigFile:
     @property
     def strategy(self) -> Optional[FiletypesBase]:
         """Get loader strategy from filetype."""
-        return self._strategy.get(self.filepath)
+        return self.__strategy.get(self.filepath)
 
     @property
     def filepath(self) -> str:
@@ -92,11 +93,10 @@ class ConfigFile:
     def filepath(self, filepath: str) -> None:
         """Set filepath."""
         self._filepath = filepath
-        if not hasattr(self, '_strategy'):
-            self._strategy: Dict[str, FiletypesBase] = {}
-        if filepath not in self._strategy.keys():
+        if filepath not in self.__strategy.keys():
             Class = self.__get_class(self.filetype)
-            self._strategy[filepath] = Class() if Class else None
+            if Class:
+                self.__strategy[filepath] = Class()
 
     def load(self, filepath: Optional[str] = None) -> Dict[str, Any]:
         """Load settings from configuration file."""
@@ -108,7 +108,7 @@ class ConfigFile:
                 if self.strategy:
                     # TODO: combine factory and load_config
                     data = self.strategy.load_config(filepath=self.filepath)
-                    return self.factory(data) 
+                    return self.factory(data)  # type: ignore
                 else:
                     raise exceptions.DriverError(
                         f"Error: No class found for: '{filepath}'"
