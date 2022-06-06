@@ -161,7 +161,7 @@ class Settings(MutableMapping):
         """Get value from settings from multiple keypaths."""
         for query in args:
             try:
-                value = dpath.get(self.data, query, Settings.separator)
+                value = self.__getitem__(query)
                 if value is not None:
                     log.info(f"lookup found: {value} for {query}")
                     return value
