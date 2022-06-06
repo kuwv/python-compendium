@@ -4,7 +4,7 @@
 import os
 from compendium.loader import ConfigFile
 # from compendium.filetypes.ini import IniConfig
-from pprint import pprint
+# from pprint import pprint
 
 basepath = os.path.dirname(__file__)
 filepath = os.path.join(basepath, '.example')
@@ -16,9 +16,9 @@ cfg = ConfigFile(filepath=filepath, default_filetype='yaml')
 settings = cfg.load()
 print('settings', settings)
 
-assert 'sre' in settings.retrieve('/allowed_roles')
-assert 'devops' in settings.retrieve('/allowed_roles')
-assert 'cloudops' in settings.retrieve('/allowed_roles')
+assert 'sre' in settings.get('/allowed_roles')
+assert 'devops' in settings.get('/allowed_roles')
+assert 'cloudops' in settings.get('/allowed_roles')
 
 pypirc_filepath = os.path.join(os.path.expanduser('~'), '.pypirc')
 

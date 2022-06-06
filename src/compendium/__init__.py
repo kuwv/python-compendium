@@ -4,6 +4,14 @@
 
 import logging
 
+from compendium.config_manager import (  # noqa
+    ConfigManager,
+    HierarchyConfigManager,
+    TreeConfigManager,
+)
+from compendium.loader import ConfigFile  # noqa
+from compendium.settings import Settings, SettingsMap  # noqa
+
 __author__ = 'Jesse P. Johnson'
 __author_email__ = 'jpj6652@gmail.com'
 __title__ = 'compendium'
@@ -13,10 +21,11 @@ __license__ = 'Apache-2.0'
 __copyright__ = 'Copyright 2020 Jesse Johnson.'
 __all__ = [
     'ConfigFile',
-    'ConfigPaths',
+    'ConfigManager',
     'HierarchyConfigManager',
     'TreeConfigManager',
     'Settings',
+    'SettingsMap',
 ]
 
 logger = logging.getLogger(__name__)

@@ -17,10 +17,10 @@ cfg = ConfigManager(name='tests', writable=True)
 cfg.load_config(config_file=ConfigFile(filepath))
 
 # print('settings', cfg)
-assert 'sre' in cfg.retrieve('/allowed_roles')
-assert 'devops' in cfg.retrieve('/allowed_roles')
-assert 'cloudops' in cfg.retrieve('/allowed_roles')
-assert cfg.retrieve('/dag/default_args/owner') == 'admin'
+assert 'sre' in cfg.data['/allowed_roles']
+assert 'devops' in cfg.data['/allowed_roles']
+assert 'cloudops' in cfg.data['/allowed_roles']
+assert cfg.data['/dag/default_args/owner'] == 'admin'
 
 # print('post settings', cfg.data)
 # cfg.dump_config(filepath=outpath)

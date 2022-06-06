@@ -14,8 +14,8 @@ print('n1', n1)
 
 n2 = TreeConfigManager(name='n2', defaults=data2, parent=n1)
 print('ns', n2)
-assert n2.retrieve('/key1') is None
-assert n2.retrieve('/key2') == 'value2'
+assert n2.get('/key1') is None
+assert n2.get('/key2') == 'value2'
 
 n3 = n2.new_child(data3, name='n3')
 print('n3', n3)
@@ -25,9 +25,9 @@ n3.push({'another_key3': 'another_value3'})
 assert n3.settings.maps == [
     {'another_key3': 'another_value3'}, {'key3': 'value3'}, {'key2': 'value2'}
 ]
-assert n3.retrieve('/key2') == 'value2'
+assert n3.get('/key2') == 'value2'
 assert isinstance(n3, ConfigManager) is True
-assert n3.retrieve('/key3') == 'value3'
+assert n3.get('/key3') == 'value3'
 
 # print(RenderTree(n1))
 # for pre, _, node in RenderTree(n1):

@@ -17,6 +17,12 @@ from compendium.settings import EnvironsMixin, SettingsMap
 if TYPE_CHECKING:
     from mypy_extensions import KwArg, VarArg
 
+__all__: List[str] = [
+     'ConfigManager',
+     'HierarchyConfigManager',
+     'TreeConfigManager',
+]
+
 log = logging.getLogger(__name__)
 
 
@@ -89,7 +95,7 @@ class ConfigManager(EnvironsMixin):
     @property
     def defaults(self):  # type: ignore
         """Get configuration defaults."""
-        return self.data.maps[0]
+        return self.data.maps[-1]
 
     @property
     def settings(self) -> SettingsMap:
