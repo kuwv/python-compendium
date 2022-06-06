@@ -25,6 +25,7 @@ https://kuwv.github.io/python-compendium/
 >>> from compendium.config_manager import ConfigManager
 
 >>> try:
+...     # Create config files
 ...     file1 = NamedTemporaryFile(mode='wt', suffix='.toml')
 ...     _ = file1.write(
 ...         dedent(
@@ -48,6 +49,7 @@ https://kuwv.github.io/python-compendium/
 ...     )
 ...     _ = file2.seek(0)
 ...
+...     # Retrieve settings from config files
 ...     cfg = ConfigManager(name='app', filepaths=[file1.name, file2.name])
 ...     cfg.lookup('/example/settings/foo', '/default/foo')
 ...     cfg.lookup('/default/foo2')
@@ -59,26 +61,28 @@ https://kuwv.github.io/python-compendium/
 
 ```
 
-### Search settings
+## Settings management using default `Settings` dicitonary.
+
+### Retrieve values within list
 
 ```python
-result = cfg.search('/servers/**/ip')
+result = cfg.values('/servers/**/ip')
 ```
 
 ### Create settings
 
 ```python
-cfg.create('/test', 'test')
+cfg['/test'] = 'test'
 ```
 
 ### Update settings
 
 ```python
-cfg.set('/owner/name', 'Tom Waits')
+cfg['/owner/name'] = 'Tom Waits'
 ```
 
 ### Delete settings
 
 ```python
-cfg.delete('/owner/name')
+del settings['/owner/name']
 ```
