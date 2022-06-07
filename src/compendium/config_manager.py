@@ -12,7 +12,7 @@ from anytree import NodeMixin, Resolver
 from compendium import exceptions
 from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
-from compendium.settings import Environs, EnvironsMixin, SettingsMap
+from compendium.settings import EnvironSettings, EnvironsMixin, SettingsMap
 
 if TYPE_CHECKING:
     from mypy_extensions import KwArg, VarArg
@@ -26,7 +26,7 @@ __all__: List[str] = [
 log = logging.getLogger(__name__)
 
 
-class ConfigManager(Environs):
+class ConfigManager(EnvironSettings):
     """Provide config management representation."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

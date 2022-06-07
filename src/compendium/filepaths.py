@@ -12,6 +12,22 @@ log = logging.getLogger(__name__)
 
 
 @dataclass
+class File:
+    path: str
+    name: str = field(init=False)
+    extension: Optional[str] = field(init=False)
+
+    def __post_init__(self) -> None:
+        """Intialize filepath."""
+        self.name = os.path.basename(self.filepath) or 'config.toml'
+
+        if '.' in self.name and not self.name.startswith('.'):
+            self.extension = os.path.splitext(self.name)[-1].strip('.')
+        else:
+            self.extension = 'toml'
+
+
+@dataclass
 class ConfigPaths:
     r"""Load config paths based on priority.
 

@@ -270,7 +270,8 @@ class SettingsMap(ChainMap):
         dpath.merge(self.maps[0], other, afilter=None, flags=2)
 
 
-class Environs(Settings):
+class EnvironSettings(Settings):
+    """Manage environment settings ontop of other settings."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize settings store."""
@@ -289,12 +290,13 @@ class Environs(Settings):
 
     def __getitem__(self, keypath: str) -> Any:
         """Get item."""
-        for mapping in [self.environs] + self.maps:
+        for data in [self.environs, self.data]:
             try:
-                return dpath.get(mapping, keypath, SettingsMap.separator)
+                value = dpath.get(data, keypath, Settings.separator)
+                return value
             except KeyError:
                 pass
-        return self.__missing__(keypath)
+        raise KeyError
 
     @staticmethod
     def to_dict(key: str, value: Any) -> Dict[str, Any]:
