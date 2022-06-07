@@ -83,11 +83,6 @@ class ConfigManager(EnvironSettings):
         """Get configuration defaults."""
         return self.data.maps[-1]
 
-    # @property
-    # def data(self) -> 'MutableMapping[str, Any]':
-    #     """Return data from map."""
-    #     return self
-
     @property
     def filepaths(self) -> Tuple[ConfigFile, ...]:
         """Retrieve filepaths."""
@@ -98,7 +93,7 @@ class ConfigManager(EnvironSettings):
         logging.debug(f"searching for {filepath}")
         self._filepaths.append(ConfigFile(filepath))
 
-    # def dump_config(self, config_file: ConfigFile, *args: str) -> None:
+    # def dump_config(self, config_file: ConfigFile) -> None:
     #     """Dump settings to configuration."""
     #     if os.path.exists(config_file.filepath):
     #         config_file.dump(self.data)

@@ -15,7 +15,7 @@ def test_filepath():
     """Test filepath loader."""
     cfg = ConfigManager(name='filepath', filepaths=[filepath])
     cfg.load_configs()
-    assert cfg.data['title'] == 'TOML Example'
+    assert cfg['title'] == 'TOML Example'
 
 
 def test_defaults():
@@ -39,6 +39,7 @@ def test_environment():
 
     cfg = ConfigManager(name='environs', prefix='TESTS')
     assert cfg['/key'] == 'test'
+    assert cfg.environs == {'key': 'test'}
     assert cfg.get('/key') == 'test'
     assert cfg.get('/nothing', 'nada') == 'nada'
     assert cfg.lookup('/key') == 'test'
