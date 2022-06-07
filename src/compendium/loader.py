@@ -3,9 +3,9 @@
 """Control configuration files."""
 
 # from weakref import ref
+import importlib
 import logging
 import os
-import pkg_resources  # type: ignore
 from typing import Any, Dict, Optional, Type
 
 from compendium import exceptions
@@ -16,8 +16,7 @@ from compendium.filetypes.toml import TomlConfig  # noqa
 from compendium.filetypes.yaml import YamlConfig  # noqa
 from compendium.settings import Settings
 
-# TODO: use importlib instead
-if 'xmltodict' in {pkg.key for pkg in pkg_resources.working_set}:
+if importlib.util.find_spec('xmltodict'):  # type: ignore
     from compendium.filetypes.xml import XmlConfig  # noqa
 
 log = logging.getLogger(__name__)
@@ -29,7 +28,6 @@ class ConfigFile:
     # TODO: switch to dependency injection for filetypes
     def __init__(self, filepath: Optional[str] = None, **kwargs: Any) -> None:
         """Initialize single configuration file."""
-        self.__strategy: Dict[str, FiletypesBase] = {}
         self.default_filetype = kwargs.pop('default_filetype', 'toml')
         self.default_filename = kwargs.pop(
             'default_filename', f"config.{self.default_filetype}"
@@ -84,7 +82,7 @@ class ConfigFile:
     @property
     def strategy(self) -> Optional[FiletypesBase]:
         """Get loader strategy from filetype."""
-        return self.__strategy.get(self.filepath)
+        return self._strategy.get(self.filepath)
 
     @property
     def filepath(self) -> str:
@@ -95,10 +93,12 @@ class ConfigFile:
     def filepath(self, filepath: str) -> None:
         """Set filepath."""
         self._filepath = filepath
-        if filepath not in self.__strategy.keys():
+        if not hasattr(self, '_strategy'):
+            self._strategy: Dict[str, FiletypesBase] = {}
+        if filepath not in self._strategy.keys():
             Class = self.__get_class(self.filetype)
             if Class:
-                self.__strategy[filepath] = Class()
+                self._strategy[filepath] = Class()
 
     def load(self, filepath: Optional[str] = None) -> Dict[str, Any]:
         """Load settings from configuration file."""

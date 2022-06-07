@@ -4,6 +4,7 @@
 """Test settings management."""
 
 import os
+from collections.abc import ValuesView
 
 import pytest
 
@@ -32,7 +33,8 @@ def test_result(fs):
     cfg = ConfigFile()
     settings = cfg.load(filepath)
     result = settings.values('/servers/**/ip')
-    assert ['10.0.0.1', '10.0.0.2'] == result
+    for x in ['10.0.0.1', '10.0.0.2']:
+        assert x in result
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)

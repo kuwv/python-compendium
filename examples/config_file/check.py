@@ -6,7 +6,6 @@
 import os
 from compendium.loader import ConfigFile
 
-
 basepath = os.path.dirname(os.path.realpath(__file__))
 filepath = os.path.join(basepath, 'example.yaml')
 

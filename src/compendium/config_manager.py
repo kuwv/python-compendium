@@ -12,7 +12,7 @@ from anytree import NodeMixin, Resolver
 from compendium import exceptions
 from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
-from compendium.settings import EnvironsMixin, SettingsMap
+from compendium.settings import Environs, EnvironsMixin, SettingsMap
 
 if TYPE_CHECKING:
     from mypy_extensions import KwArg, VarArg
@@ -26,7 +26,7 @@ __all__: List[str] = [
 log = logging.getLogger(__name__)
 
 
-class ConfigManager(EnvironsMixin):
+class ConfigManager(Environs):
     """Provide config management representation."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -56,7 +56,6 @@ class ConfigManager(EnvironsMixin):
 
         # Setup filepaths
         self.name = kwargs.pop('name', 'compendium')
-        # self._filepaths: List[str] = list(args)
         self._filepaths: List[ConfigFile] = [
             (ConfigFile(f, factory_kwargs=kwargs) if type(f) == str else f)
             for f in kwargs.pop('filepaths', [])
@@ -67,12 +66,14 @@ class ConfigManager(EnvironsMixin):
         if args != ():
             # self.data = SettingsMap(*kwargs.pop('data'))
             self.data = SettingsMap(*args, **kwargs)
-            if defaults != {}:
-                self.defaults.update(defaults)
         elif 'settings' in kwargs:
             self.data = kwargs.pop('settings')
         else:
             self.data = SettingsMap(defaults, **kwargs)
+
+        # Update defaults
+        if defaults != {}:
+            self.defaults.update(defaults)
 
         if kwargs.pop('load_configs', True):
             self.load_configs(**kwargs)

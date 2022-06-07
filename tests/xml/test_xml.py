@@ -29,12 +29,12 @@ def test_xml_content(fs):
     """Test XML content read."""
     fs.add_real_file(filepath)
     cfg = ConfigFile()
-    cfg.load(filepath=filepath)
-    assert settings.retrieve('/root/stooges/stooge1') == 'Larry'
-    assert settings.retrieve('/root/stooges/stooge2') == 'Curly'
-    assert settings.retrieve('/root/stooges/stooge3') == 'Moe'
-    assert settings.retrieve('/root/fruit') != 'banana'
-    assert settings.retrieve('/root/number') == '2'
+    settings = cfg.load(filepath=filepath)
+    assert settings['/root/stooges/stooge1'] == 'Larry'
+    assert settings['/root/stooges/stooge2'] == 'Curly'
+    assert settings['/root/stooges/stooge3'] == 'Moe'
+    assert settings['/root/fruit'] != 'banana'
+    assert settings['/root/number'] == '2'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -43,8 +43,8 @@ def test_xml_content_dump(fs):
     fs.add_real_file(filepath, False)
     cfg = ConfigFile(writable=True)
     settings = cfg.load(filepath=filepath)
-    settings.create('/root/test', 'test')
-    assert settings.retrieve('/root/test') == 'test'
+    settings['/root/test'] = 'test'
+    assert settings['/root/test'] == 'test'
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
@@ -55,5 +55,5 @@ def test_cfg_save_fail(fs):
     settings = cfg.load(filepath=filepath)
 
     with pytest.raises(ConfigFileError):
-        settings.create('/test', 'test')
+        settings['/test'] = 'test'
         cfg.dump(settings, './config.xml')

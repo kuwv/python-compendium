@@ -3,7 +3,7 @@
 """Example YAML config."""
 
 import os
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 from typing import Any, Dict
 
 from compendium.loader import ConfigFile
@@ -14,12 +14,12 @@ class Config(ConfigFile):
     """Manage settings from configuration file."""
 
     filepath: str
-    writable: bool = True
+    writable: InitVar[bool] = True
     settings: Dict[str, Any] = field(init=False)
 
-    def __post_init__(self) -> None:
+    def __post_init__(self, writable: bool) -> None:
         """Initialize settings from configuration."""
-        super().__init__(self.filepath, writable=self.writable)
+        super().__init__(self.filepath, writable=writable)
         self.settings = self.load()
 
 

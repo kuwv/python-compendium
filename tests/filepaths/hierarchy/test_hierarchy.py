@@ -49,18 +49,18 @@ def test_hierarchy(fs):
         os.path.join(global_filepath, '.hierarchy.d', 'config.toml')
     ) in cfg.filepaths
 
-    assert cfg.settings['/table/key'] != 'first'  # overridden
-    assert cfg.settings['/table/subtable/key'] == 'third'
-    assert cfg.settings['/table/subtable/second'] == 'retained'
-    assert cfg.settings['/table/subtable/third'] == 'retained'
-    assert cfg.settings['/table/subtable/key'] != 'second'
-    assert cfg.settings['/list/**/last'] == 'third'
+    assert cfg.data['/table/key'] != 'first'  # overridden
+    assert cfg.data['/table/subtable/key'] == 'third'
+    assert cfg.data['/table/subtable/second'] == 'retained'
+    assert cfg.data['/table/subtable/third'] == 'retained'
+    assert cfg.data['/table/subtable/key'] != 'second'
+    assert cfg.data['/list/**/last'] == 'third'
 
     with pytest.raises(KeyError):
-        cfg.settings['/list/**/overwritten1']
-        cfg.settings['/list/**/overwritten2']
+        cfg.data['/list/**/overwritten1']
+        cfg.data['/list/**/overwritten2']
 
     # TODO: test clear
-    # assert cfg.settings is not None
-    # cfg.settings.clear()
-    # assert cfg.settings is None
+    # assert cfg.data is not None
+    # cfg.data.clear()
+    # assert cfg.data is None
