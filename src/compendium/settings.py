@@ -4,6 +4,7 @@
 
 import logging
 import os
+from ast import literal_eval
 from collections import ChainMap
 from collections.abc import MutableMapping
 from typing import Any, Dict, Iterator, Mapping, Optional
@@ -12,67 +13,6 @@ from dpath import util as dpath
 from dpath.exceptions import PathNotFound
 
 log = logging.getLogger(__name__)
-
-
-class EnvironsMixin:
-    """Manage environment variables."""
-
-    @property
-    def prefix(self) -> str:
-        """Get environment prefix."""
-        if hasattr(self, '_prefix'):
-            return self._prefix.upper()
-        else:
-            return 'COMPEND'
-
-    @prefix.setter
-    def prefix(self, prefix: str) -> None:
-        """Set environment prefix."""
-        self._prefix = prefix
-
-    @staticmethod
-    def to_dict(key: str, value: Any) -> Dict[str, Any]:
-        """Convert environment key to dictionary."""
-        def expand(x: str) -> Dict[str, Any]:
-            """Convert key part to dictionary key."""
-            if '_' not in x:
-                return {x: value}
-            k, v = x.split('_', 1)
-            return {k: expand(v)}
-        return expand(key.lower())
-
-    @staticmethod
-    def load_dotenv() -> None:
-        """Load environs from .env file."""
-        env_file = os.path.join(os.getcwd(), '.env')
-        if os.path.exists(env_file):
-            with open(env_file) as env:
-                for line in env:
-                    k, v = line.partition('=')[::2]
-                    os.environ[k.strip().upper()] = str(v)
-
-    def load_environs(self, force: bool = False) -> Dict[str, Any]:
-        """Load environment variables."""
-        prefix = str(f"{self.prefix}_" if self.prefix != '' else self.prefix)
-        env: Dict[str, Any] = {}
-        for k, v in os.environ.items():
-            if k.startswith(prefix):
-                env = self.merge(env, self.to_dict(k.replace(prefix, ''), v),)
-        return env
-
-    @classmethod
-    def merge(
-        cls,
-        source: Dict[str, Any],
-        update: Mapping[str, Any]
-    ) -> Dict[str, Any]:
-        """Perform recursive merge."""
-        for k, v in update.items():
-            if isinstance(v, Mapping):
-                source[k] = cls.merge(source.get(k, {}), v)
-            else:
-                source[k] = v
-        return source
 
 
 class Settings(MutableMapping):
@@ -270,37 +210,49 @@ class SettingsMap(ChainMap):
         dpath.merge(self.maps[0], other, afilter=None, flags=2)
 
 
-class EnvironSettings(Settings):
+class EnvironSettings(SettingsMap):
     """Manage environment settings ontop of other settings."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize settings store."""
-        if 'separator' in kwargs:
-            Settings.separator = kwargs.pop('separator')
-
-        self.prefix = kwargs.pop('prefix', 'COMPEND')
+        self.prefix = kwargs.pop('prefix', 'COMPEND').lower()
 
         self.environs = {}
         if kwargs.pop('load_dotenv', False):
             self.load_dotenv()
         if kwargs.pop('load_environs', True):
-            self.environs = self.load_environs()
+            self.environs.update(self.load_environs())
 
-        self.data: SettingsMap = SettingsMap(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __getitem__(self, keypath: str) -> Any:
-        """Get item."""
-        for data in [self.environs, self.data]:
-            try:
-                value = dpath.get(data, keypath, Settings.separator)
-                return value
-            except KeyError:
-                pass
-        raise KeyError
+        """Get environment variable then mapped item."""
+        try:
+            value = dpath.get(self.environs, keypath, Settings.separator)
+            return value
+        except KeyError:
+            pass
+
+        value = super().__getitem__(keypath)
+        return value
+
+    @classmethod
+    def combine(
+        cls,
+        source: Dict[str, Any],
+        update: Mapping[str, Any]
+    ) -> Dict[str, Any]:
+        """Perform recursive merge."""
+        for k, v in update.items():
+            if isinstance(v, Mapping):
+                source[k] = cls.combine(source.get(k, {}), v)
+            else:
+                source[k] = v
+        return source
 
     @staticmethod
     def to_dict(key: str, value: Any) -> Dict[str, Any]:
-        """Convert environment key to dictionary."""
+        """Convert environment keypath to nested dictionary."""
         def expand(x: str) -> Dict[str, Any]:
             """Convert key part to dictionary key."""
             if '_' not in x:
@@ -312,6 +264,7 @@ class EnvironSettings(Settings):
     @staticmethod
     def load_dotenv() -> None:
         """Load environs from .env file."""
+        # TODO: key/value should be added from dotenv regardless of prefix
         env_file = os.path.join(os.getcwd(), '.env')
         if os.path.exists(env_file):
             with open(env_file) as env:
@@ -319,25 +272,19 @@ class EnvironSettings(Settings):
                     k, v = line.partition('=')[::2]
                     os.environ[k.strip().upper()] = str(v)
 
-    def load_environs(self, force: bool = False) -> Dict[str, Any]:
+    def load_environs(self) -> Dict[str, Any]:
         """Load environment variables."""
-        prefix = str(f"{self.prefix}_" if self.prefix != '' else self.prefix)
+        prefix = str(
+            f"{self.prefix}_" if self.prefix != '' else self.prefix
+        ).upper()
         env: Dict[str, Any] = {}
         for k, v in os.environ.items():
             if k.startswith(prefix):
-                env = self.merge(env, self.to_dict(k.replace(prefix, ''), v),)
+                env = self.combine(
+                    source=env,
+                    update=self.to_dict(
+                        k.replace(prefix, ''),
+                        literal_eval(v) if v.isnumeric() else v
+                    )
+                )
         return env
-
-    @classmethod
-    def merge(
-        cls,
-        source: Dict[str, Any],
-        update: Mapping[str, Any]
-    ) -> Dict[str, Any]:
-        """Perform recursive merge."""
-        for k, v in update.items():
-            if isinstance(v, Mapping):
-                source[k] = cls.merge(source.get(k, {}), v)
-            else:
-                source[k] = v
-        return source

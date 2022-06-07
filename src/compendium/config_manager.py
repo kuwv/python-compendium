@@ -12,9 +12,10 @@ from anytree import NodeMixin, Resolver
 from compendium import exceptions
 from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
-from compendium.settings import EnvironSettings, EnvironsMixin, SettingsMap
+from compendium.settings import EnvironSettings
 
 if TYPE_CHECKING:
+    from collections.abc import MutableMapping
     from mypy_extensions import KwArg, VarArg
 
 __all__: List[str] = [
@@ -38,22 +39,6 @@ class ConfigManager(EnvironSettings):
             log_handler = kwargs.pop('log_handler')
             log.addHandler(logging.StreamHandler(log_handler))
 
-        # TODO: determine if multiple config files
-        # self.config_files: List[Dict[str, Union[str, ConfigFile]]] = []
-
-        # Load environs
-        if 'prefix' in kwargs:
-            self.prefix = kwargs.pop('prefix')
-        if 'separator' in kwargs:
-            self.separator = kwargs.get('separator', '/')
-        if kwargs.pop('load_dotenv', False):
-            self.load_dotenv()
-        if kwargs.pop('load_environs', True):
-            self.environs = self.load_environs()
-
-        # Load defaults
-        defaults = kwargs.pop('defaults', {})
-
         # Setup filepaths
         self.name = kwargs.pop('name', 'compendium')
         self._filepaths: List[ConfigFile] = [
@@ -61,15 +46,19 @@ class ConfigManager(EnvironSettings):
             for f in kwargs.pop('filepaths', [])
         ]
 
+        # Load defaults
+        defaults = kwargs.pop('defaults', {})
+
         # Populate settings
         # if 'data' in kwargs:
-        if args != ():
-            # self.data = SettingsMap(*kwargs.pop('data'))
-            self.data = SettingsMap(*args, **kwargs)
-        elif 'settings' in kwargs:
-            self.data = kwargs.pop('settings')
-        else:
-            self.data = SettingsMap(defaults, **kwargs)
+        # if args != ():
+        #     # self.data = SettingsMap(*kwargs.pop('data'))
+        #     self.data = SettingsMap(*args, **kwargs)
+        # elif 'settings' in kwargs:
+        #     self.data = kwargs.pop('settings')
+        # else:
+        #     self.data = SettingsMap(defaults, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # Update defaults
         if defaults != {}:
@@ -89,23 +78,15 @@ class ConfigManager(EnvironSettings):
             return wrapper
         raise AttributeError(attr)
 
-    def __repr__(self) -> str:
-        """Get string representation of data."""
-        return repr(self.data)
-
     @property
-    def defaults(self):  # type: ignore
+    def defaults(self) -> Any:
         """Get configuration defaults."""
-        return self.data.maps[-1]
+        return self.maps[-1]
 
     @property
-    def settings(self) -> SettingsMap:
-        """Create settings to prototype idea."""
-        # TODO: maybe returing maps would be better
-        if self.environs != {}:
-            return SettingsMap(self.environs, *self.data.maps)
-        else:
-            return self.data
+    def data(self) -> 'MutableMapping[str, Any]':
+        """Return data from map."""
+        return self
 
     @property
     def filepaths(self) -> Tuple[ConfigFile, ...]:
@@ -136,7 +117,7 @@ class ConfigManager(EnvironSettings):
             # config_file = ConfigFile(filepath=filepath, **kwargs)
             settings = config_file.load()
             if update:
-                self.data.push(settings)
+                self.push(settings)
             return settings
         return None
 

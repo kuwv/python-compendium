@@ -7,7 +7,7 @@ import os
 
 from compendium.config_manager import ConfigManager
 
-basedir = os.path.dirname(os.path.realpath(__file__))
+basedir = os.path.dirname(__file__)
 filepath = os.path.join(basedir, 'config.toml')
 
 
@@ -22,21 +22,24 @@ def test_defaults():
     """Test default settings."""
     cfg = ConfigManager(name='defaults', defaults={'default': 'result'})
     assert cfg.defaults == {'default': 'result'}
-    result = cfg.data.lookup('/default')
-    assert result == 'result'
+    assert cfg.data.get('/default') == 'result'
 
 
 def test_settings():
     """Test default settings."""
     cfg = ConfigManager({'test': 'result'})
     assert cfg.data == {'test': 'result'}
-    result = cfg.data.lookup('/test')
-    assert result == 'result'
+    assert cfg.data.get('/test') == 'result'
 
 
 def test_environment():
     """Test environment variables."""
     os.environ['TESTS_KEY'] = 'test'
-    cfg = ConfigManager(name='environs', prefix='tests')
-    assert cfg.environs['key'] == 'test'
+    assert os.getenv('TESTS_KEY') == 'test'
+
+    cfg = ConfigManager(name='environs', prefix='TESTS')
+    assert cfg.data['/key'] == 'test'
+    assert cfg.data.get('/key') == 'test'
+    assert cfg.data.get('/nothing', 'nada') == 'nada'
     assert cfg.data.lookup('/key') == 'test'
+    assert cfg.data.lookup('/nothing', '/key', default='nada') == 'test'

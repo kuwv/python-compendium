@@ -10,7 +10,7 @@ from compendium.config_manager import TreeConfigManager
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_tree(fs):
-    base_path = os.path.dirname(os.path.realpath(__file__))
+    base_path = os.path.dirname(__file__)
     basedir = os.path.join(os.sep, 'opt', 'test')
     cfg1_path = os.path.join(basedir, 'fruit.toml')
     cfg2_path = os.path.join(basedir, 'example1', 'fruit.toml')

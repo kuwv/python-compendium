@@ -1,3 +1,4 @@
+# typing: ignore
 import os
 
 from compendium.paths import ConfigPaths
@@ -46,7 +47,7 @@ def test_hierarchy(fs):
 
 def test_tree(fs):
     # Setup base paths
-    base_path = os.path.dirname(os.path.realpath(__file__))
+    base_path = os.path.dirname(__file__)
 
     # Current path
     fs.create_file(base_path + '/config.toml')

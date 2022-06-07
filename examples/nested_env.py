@@ -2,11 +2,10 @@
 """Provide example environs usage."""
 
 import os
-from pprint import pprint
 
-from compendium.settings import Environs
+from compendium.settings import EnvironSettings, SettingsMap
 
-key = 'COMPEND_EXAMPLE_DATA'
+key = 'TEST_EXAMPLE_DATA'
 value = 12
 
 config1 = {
@@ -37,10 +36,17 @@ config2 = {
     }
 }
 
-os.environ[key, str(value)]
-print(os.getenv(key))
-environs = Environs(config1, config2)
-pprint(environs.data)
-# pprint(environs.to_dict(key, value))
+# load environment variable
+os.environ[key] = str(value)
+assert int(os.getenv(key)) == value, 'environment variable does not exist'
 
-assert {'compend': {'example': {'data': 12}}} == environs.to_dict(key, value)
+environs = EnvironSettings(SettingsMap(config1, config2), prefix='TEST')
+
+# convert key/value environs into dictionary
+assert environs.to_dict(key, value) == {'test': {'example': {'data': 12}}}
+
+# ensure converted environs do not have prefix
+assert environs.environs == {'example': {'data': 12}}
+
+assert environs['/example/data'] == 12
+assert environs['/tool/proman/enable_feature'] is True
