@@ -22,14 +22,14 @@ def test_defaults():
     """Test default settings."""
     cfg = ConfigManager(name='defaults', defaults={'default': 'result'})
     assert cfg.defaults == {'default': 'result'}
-    assert cfg.data.get('/default') == 'result'
+    assert cfg.get('/default') == 'result'
 
 
 def test_settings():
     """Test default settings."""
     cfg = ConfigManager({'test': 'result'})
     assert cfg.data == {'test': 'result'}
-    assert cfg.data.get('/test') == 'result'
+    assert cfg.get('/test') == 'result'
 
 
 def test_environment():
@@ -38,8 +38,8 @@ def test_environment():
     assert os.getenv('TESTS_KEY') == 'test'
 
     cfg = ConfigManager(name='environs', prefix='TESTS')
-    assert cfg.data['/key'] == 'test'
-    assert cfg.data.get('/key') == 'test'
-    assert cfg.data.get('/nothing', 'nada') == 'nada'
-    assert cfg.data.lookup('/key') == 'test'
-    assert cfg.data.lookup('/nothing', '/key', default='nada') == 'test'
+    assert cfg['/key'] == 'test'
+    assert cfg.get('/key') == 'test'
+    assert cfg.get('/nothing', 'nada') == 'nada'
+    assert cfg.lookup('/key') == 'test'
+    assert cfg.lookup('/nothing', '/key', default='nada') == 'test'

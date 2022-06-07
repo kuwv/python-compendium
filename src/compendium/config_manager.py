@@ -81,12 +81,12 @@ class ConfigManager(EnvironSettings):
     @property
     def defaults(self) -> Any:
         """Get configuration defaults."""
-        return self.maps[-1]
+        return self.data.maps[-1]
 
-    @property
-    def data(self) -> 'MutableMapping[str, Any]':
-        """Return data from map."""
-        return self
+    # @property
+    # def data(self) -> 'MutableMapping[str, Any]':
+    #     """Return data from map."""
+    #     return self
 
     @property
     def filepaths(self) -> Tuple[ConfigFile, ...]:

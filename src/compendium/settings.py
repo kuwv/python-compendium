@@ -210,8 +210,8 @@ class SettingsMap(ChainMap):
         dpath.merge(self.maps[0], other, afilter=None, flags=2)
 
 
-class EnvironSettings(SettingsMap):
-    """Manage environment settings ontop of other settings."""
+class EnvironSettings:
+    """Manage environment settings with proxy to other settings."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize settings store."""
@@ -223,7 +223,12 @@ class EnvironSettings(SettingsMap):
         if kwargs.pop('load_environs', True):
             self.environs.update(self.load_environs())
 
-        super().__init__(*args, **kwargs)
+        # super().__init__(*args, **kwargs)
+        self.data = SettingsMap(*args, **kwargs)
+
+    def __delitem__(self, keypath: str) -> Any:
+        """Delete item at keypath."""
+        self.data.__delitem__(keypath)
 
     def __getitem__(self, keypath: str) -> Any:
         """Get environment variable then mapped item."""
@@ -233,8 +238,48 @@ class EnvironSettings(SettingsMap):
         except KeyError:
             pass
 
-        value = super().__getitem__(keypath)
+        value = self.data.__getitem__(keypath)
         return value
+
+    def __iter__(self) -> Iterator[Any]:
+        """Iterate settings dictionary."""
+        return self.data.__iter__()
+
+    def __len__(self) -> int:
+        """Return number of settings items."""
+        return self.data.__len__()
+
+    def __setitem__(self, keypath: str, value: Any) -> Any:
+        """Set item to new value or create it."""
+        self.data.__setitem__(keypath, value)
+
+    def __repr__(self) -> str:
+        """Retrun readable representation of settings."""
+        return self.data.__repr__()
+
+    def get(self, keypath: str, default: Optional[Any] = None) -> Any:
+        """Get item or return default."""
+        try:
+            value = self.__getitem__(keypath)
+            return value
+        except KeyError:
+            return default
+
+    def lookup(
+        self,
+        *args: str,
+        default: Optional[Any] = None,
+    ) -> Optional[Any]:
+        """Get value from settings from multiple keypaths."""
+        for keypath in args:
+            try:
+                value = self.__getitem__(keypath)
+                log.info(f"lookup found: {value} for {keypath}")
+                return value
+            except KeyError:
+                log.debug(f"lookup was unable to query: {keypath}")
+        log.debug(f"returning default for: {keypath}")
+        return default
 
     @classmethod
     def combine(
