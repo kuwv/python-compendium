@@ -12,25 +12,38 @@ from anytree import NodeMixin, Resolver
 from compendium import exceptions
 from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
-from compendium.settings import EnvironSettings
+from compendium.settings import SettingsProxy
 
 if TYPE_CHECKING:
     from mypy_extensions import KwArg, VarArg
 
 __all__: List[str] = [
-     'ConfigManager',
-     'HierarchyConfigManager',
-     'TreeConfigManager',
+    'ConfigManager',
+    'HierarchyConfigManager',
+    'TreeConfigManager',
 ]
 
 log = logging.getLogger(__name__)
 
 
-class ConfigManager(EnvironSettings):
+class ConfigManager(SettingsProxy):
     """Provide config management representation."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Initialize single settings management."""
+        """Initialize single settings management.
+
+        Parameters
+        ----------
+        name: str
+            Name of application.
+        filepaths: list, optional
+            List of filepaths to load configurations.
+        defaults: dict, optional
+            Default configurations to use when settings cannot be found.
+        load_configs: bool, optional
+            Enable auto-loading of configuration files.
+
+        """
         # Setup logging
         if 'log_level' in kwargs:
             log.setLevel(getattr(logging, kwargs.pop('log_level').upper()))
@@ -68,6 +81,7 @@ class ConfigManager(EnvironSettings):
         if kwargs.pop('load_configs', True):
             self.load_configs(**kwargs)
 
+    # NOTE: proxy method access to data objects
     def __getattr__(
         self, attr: str
     ) -> 'Callable[[VarArg(Any), KwArg(Any)], Any]':
@@ -129,12 +143,12 @@ class HierarchyConfigManager(ConfigManager):
     """Manage settings from hierarchy config_files."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Initialize settings from hirarchy filepaths.
+        """Initialize settings from hierarchy filepaths.
 
         Parameters
         ----------
         name: str
-            Name of name.
+            Name of application.
         enable_system_filepaths: bool, optional
             Enable system filepath lookup for config_files.
         enable_global_filepaths: bool, optional
@@ -176,7 +190,22 @@ class TreeConfigManager(ConfigManager, NodeMixin):
     """Manage settings from nested tree config_files."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Initialize nested settings management."""
+        """Initialize nested tree-like configuration management.
+
+        Parameters
+        ----------
+        name: str
+            Name of node.
+        parent: bool, optional
+            Assign parent to this node (otherwise node is root).
+        children: bool, optional
+            Assign children to this node.
+        load_root: bool, optional
+            Enable auto-loading of parent configuration.
+        load_children: bool, optional
+            Enable auto-loading of children configurations.
+
+        """
         self.parent = kwargs.pop('parent', None)
         if 'children' in kwargs:
             self.children = kwargs.pop('children')

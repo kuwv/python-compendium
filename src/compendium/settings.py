@@ -210,8 +210,8 @@ class SettingsMap(ChainMap):
         dpath.merge(self.maps[0], other, afilter=None, flags=2)
 
 
-class EnvironSettings:
-    """Manage environment settings with proxy to other settings."""
+class SettingsProxy(MutableMapping):
+    """Manage settings with proxy."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize settings store."""
