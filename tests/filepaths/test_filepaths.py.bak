@@ -1,7 +1,7 @@
 # typing: ignore
 import os
 
-from compendium.paths import ConfigPaths
+from compendium.filepaths import ConfigPaths
 
 
 def test_singleton(fs):
@@ -11,6 +11,7 @@ def test_singleton(fs):
     # Test Singleton
     cfg = ConfigPaths(name='test')
     cfg.load_configs('/opt/test/config.toml')
+    print(cfg.filepaths)
 
     assert '/opt/test/config.toml' in cfg.filepaths
 
@@ -41,8 +42,8 @@ def test_hierarchy(fs):
     cfg.load_configs()
 
     assert '/etc/test/config.toml' in cfg.filepaths
-    assert (global_path + '/.test.toml') in cfg.filepaths
-    assert (global_path + '/.test.d/config.toml') in cfg.filepaths
+    assert os.path.join(global_path, '.test.toml') in cfg.filepaths
+    assert os.path.join(global_path, '.test.d', 'config.toml') in cfg.filepaths
 
 
 def test_tree(fs):
@@ -50,14 +51,14 @@ def test_tree(fs):
     base_path = os.path.dirname(__file__)
 
     # Current path
-    fs.create_file(base_path + '/config.toml')
-    fs.create_file(base_path + '/example1/config.toml')
-    fs.create_file(base_path + '/example2/config.toml')
+    fs.create_file(os.path.join(base_path, 'config.toml'))
+    fs.create_file(os.path.join(base_path, 'example1', 'config.toml'))
+    fs.create_file(os.path.join(base_path, 'example2', 'config.toml'))
 
     # Test tree
     cfg = ConfigPaths(name='test', load_strategy='tree')
     cfg.load_configs()
 
-    assert (base_path + '/config.toml') in cfg.filepaths
-    assert (base_path + '/example1/config.toml') in cfg.filepaths
-    assert (base_path + '/example2/config.toml') in cfg.filepaths
+    assert os.path.join(base_path, 'config.toml') in cfg.filepaths
+    assert os.path.join(base_path, 'example1', 'config.toml') in cfg.filepaths
+    assert os.path.join(base_path, 'example2', 'config.toml') in cfg.filepaths
