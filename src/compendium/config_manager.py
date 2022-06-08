@@ -15,7 +15,6 @@ from compendium.loader import ConfigFile
 from compendium.settings import EnvironSettings
 
 if TYPE_CHECKING:
-    from collections.abc import MutableMapping
     from mypy_extensions import KwArg, VarArg
 
 __all__: List[str] = [
@@ -39,6 +38,8 @@ class ConfigManager(EnvironSettings):
             log_handler = kwargs.pop('log_handler')
             log.addHandler(logging.StreamHandler(log_handler))
 
+        self.separator = kwargs.get('separator', '/')
+
         # Setup filepaths
         self.name = kwargs.pop('name', 'compendium')
         self._filepaths: List[ConfigFile] = [
@@ -60,7 +61,7 @@ class ConfigManager(EnvironSettings):
         #     self.data = SettingsMap(defaults, **kwargs)
         super().__init__(*args, **kwargs)
 
-        # Update defaults
+        # Update builtin chainmap defaults
         if defaults != {}:
             self.defaults.update(defaults)
 
@@ -306,7 +307,9 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                             config,
                             update=False,
                             filepaths=child_paths,
-                            basedir=f"{self.basedir}{os.sep}{namepath}",
+                            basedir=os.path.join(
+                                self.basedir, os.sep, namepath
+                            ),
                             **kwargs
                         )
                     )
