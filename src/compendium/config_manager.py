@@ -5,7 +5,7 @@
 import glob
 import logging
 import os
-from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from anytree import NodeMixin, Resolver
 
@@ -13,9 +13,6 @@ from compendium import exceptions
 from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
 from compendium.settings import SettingsProxy
-
-if TYPE_CHECKING:
-    from mypy_extensions import KwArg, VarArg
 
 __all__: List[str] = [
     'ConfigManager',
@@ -80,18 +77,6 @@ class ConfigManager(SettingsProxy):
 
         if kwargs.pop('load_configs', True):
             self.load_configs(**kwargs)
-
-    # NOTE: proxy method access to data objects
-    def __getattr__(
-        self, attr: str
-    ) -> 'Callable[[VarArg(Any), KwArg(Any)], Any]':
-        """Proxy calls to settings store."""
-        if hasattr(self.__dict__.get('data'), attr):
-            def wrapper(*args: Any, **kwargs: Any) -> Any:
-                """Call query for data store."""
-                return getattr(self.data, attr)(*args, **kwargs)
-            return wrapper
-        raise AttributeError(attr)
 
     @property
     def defaults(self) -> Any:
@@ -235,7 +220,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def get_name(self, filepath: str) -> str:
         """Get name from tree path."""
-        name = os.path.dirname(os.path.relpath(filepath, self.basedir),).split(
+        name = os.path.dirname(os.path.relpath(filepath, self.basedir)).split(
             os.sep
         )[-1]
         if name != '':

@@ -7,10 +7,15 @@ import os
 from ast import literal_eval
 from collections import ChainMap
 from collections.abc import MutableMapping
-from typing import Any, Dict, Iterator, Mapping, Optional
+from typing import (
+    TYPE_CHECKING, Any, Callable, Dict, Iterator, Mapping, Optional
+)
 
 from dpath import util as dpath
 from dpath.exceptions import PathNotFound
+
+if TYPE_CHECKING:
+    from mypy_extensions import KwArg, VarArg
 
 log = logging.getLogger(__name__)
 
@@ -211,7 +216,7 @@ class SettingsMap(ChainMap):
 
 
 class SettingsProxy(MutableMapping):
-    """Manage settings with proxy."""
+    """Proxy to manage settings with environment variables."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize settings store."""
@@ -229,6 +234,17 @@ class SettingsProxy(MutableMapping):
     def __delitem__(self, keypath: str) -> Any:
         """Delete item at keypath."""
         self.data.__delitem__(keypath)
+
+    def __getattr__(
+        self, attr: str
+    ) -> 'Callable[[VarArg(Any), KwArg(Any)], Any]':
+        """Proxy calls to settings store."""
+        if hasattr(self.__dict__.get('data'), attr):
+            def wrapper(*args: Any, **kwargs: Any) -> Any:
+                """Call query for data store."""
+                return getattr(self.data, attr)(*args, **kwargs)
+            return wrapper
+        raise AttributeError(attr)
 
     def __getitem__(self, keypath: str) -> Any:
         """Get environment variable then mapped item."""
