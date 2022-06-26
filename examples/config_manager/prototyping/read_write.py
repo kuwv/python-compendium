@@ -7,8 +7,6 @@ import os
 from compendium.config_manager import ConfigManager
 from compendium.loader import ConfigFile
 
-print('------ example write for config_manager ------')
-
 basedir = os.path.dirname(__file__)
 filepath = os.path.join(basedir, 'example.yaml')
 outpath = os.path.join(basedir, 'example-out.yaml')

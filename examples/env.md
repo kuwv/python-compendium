@@ -2,13 +2,13 @@
 ```python
 >>> from collections import UserDict
 
->>> from compendium.settings import EnvironsMixin
+>>> from compendium.settings import SettingsProxy
 
 >>> key = 'COMPEND_EXAMPLE_DATA'
 >>> value = 12
 
 
->>> class Environs(UserDict, EnvironsMixin):
+>>> class Environs(UserDict, SettingsProxy):
 ...     """Provide environs object."""
 ... 
 ...     def __init__(self, *args):

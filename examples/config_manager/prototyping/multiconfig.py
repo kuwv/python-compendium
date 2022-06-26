@@ -2,13 +2,9 @@
 # license: Apache 2.0, see LICENSE for more details.
 """Example YAML config."""
 
-import logging
 import os
 
 from compendium.config_manager import ConfigManager
-
-log = logging.getLogger(__name__)
-
 
 if __name__ == '__main__':
     basedir = os.path.dirname(__file__)
@@ -21,6 +17,6 @@ if __name__ == '__main__':
     assert cfg_mgr.separator == '.'
     assert cfg_mgr.data.separator == '.'
 
-    version = cfg_mgr.lookup('.proman.version', '.tool.example.version')
+    version = cfg_mgr.lookup('project.version', 'tool.example.version')
     assert version == '1.2.3'
     assert version != '1.2.4.dev0'

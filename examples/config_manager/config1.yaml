@@ -1,7 +1,0 @@
----
-proman:
-  name: app1
-  version: 1.2.3
-  description: this is an example
-  defaults:
-    enable_feature: false

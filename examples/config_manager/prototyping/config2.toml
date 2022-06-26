@@ -1,0 +1,10 @@
+[tool.proman]
+enable_feature = true
+
+[tool.proman.settings]
+writable = true
+example = {version = "1.2.4.dev0"}
+
+[[tool.proman.settings.files]]
+path = "/some/path/to/file"
+kind = "yaml"
