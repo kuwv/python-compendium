@@ -57,6 +57,18 @@ class ConfigFile:
             return self == other
         return False
 
+    # def enter(self) -> None:
+    #     ...
+
+    # def exit(self, exc_type, exc_value, exc_tb)) -> None:
+    #     ...
+
+    # async def aenter(self) -> None:
+    #     await ...
+
+    # async def aexit(self, exc_type, exc_value, exc_tb)) -> None:
+    #     await ...
+
     def __get_class(
         self, filetype: Optional[str] = 'toml'
     ) -> Optional[Type[FiletypesBase]]:

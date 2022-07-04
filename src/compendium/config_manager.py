@@ -288,7 +288,6 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def load_configs(self, **kwargs: Any) -> None:
         """Load configuration files from filepaths."""
-
         def get_child_paths(namepath: str) -> List[ConfigFile]:
             """Get relative child paths of namepath."""
             child_paths = []

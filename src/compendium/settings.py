@@ -222,14 +222,19 @@ class SettingsProxy(MutableMapping):
         """Initialize settings store."""
         self.prefix = kwargs.pop('prefix', 'COMPEND').lower()
 
-        self.environs = {}
+        self.__environs = {}
         if kwargs.pop('load_dotenv', False):
             self.load_dotenv()
         if kwargs.pop('load_environs', True):
-            self.environs.update(self.load_environs())
+            self.__environs.update(self.load_environs())
 
         # super().__init__(*args, **kwargs)
         self.data = SettingsMap(*args, **kwargs)
+
+    @property
+    def environs(self) -> Dict[str, Any]:
+        """Get environs."""
+        return self.__environs
 
     def __delitem__(self, keypath: str) -> Any:
         """Delete item at keypath."""
