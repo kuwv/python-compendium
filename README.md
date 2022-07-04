@@ -114,8 +114,6 @@ True
 >>> 'succulant' in cfg['/fruit/children']
 True
 
->>> print(cfg.children)
-
 >>> succulant = cfg.get_config('/fruit/succulant')
 >>> succulant.name
 'succulant'
@@ -164,3 +162,12 @@ True
 # >>> cfg.load_configs()
 #
 # ```
+
+
+### Development
+
+```
+poetry shell
+poetry install
+python -m doctest README.md
+```
