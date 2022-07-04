@@ -27,8 +27,8 @@ pip install compendium
 >>> import os
 >>> from compendium import ConfigFile
 
->>> basepath = os.path.join(os.getcwd(), 'tests')
->>> filepath = os.path.join(basepath, 'config.toml')
+>>> basedir = os.path.join(os.getcwd(), 'tests')
+>>> filepath = os.path.join(basedir, 'config.toml')
 
 >>> cfg = ConfigFile(filepath)
 >>> settings = cfg.load()
@@ -73,9 +73,9 @@ is overlapped in order so that the first setting found will be used.
 >>> from compendium import ConfigManager
 
 Reference config files from examples
->>> basepath = os.path.join(os.getcwd(), 'examples', 'config_manager')
->>> config1 = os.path.join(basepath, 'config1.toml')
->>> config2 = os.path.join(basepath, 'config2.toml')
+>>> basedir = os.path.join(os.getcwd(), 'examples', 'config_manager')
+>>> config1 = os.path.join(basedir, 'config1.toml')
+>>> config2 = os.path.join(basedir, 'config2.toml')
 
 Retrieve settings from config files
 >>> cfg = ConfigManager(name='app', filepaths=[config1, config2])
@@ -89,3 +89,78 @@ Lookup with multi-query
 'baz'
 
 ```
+
+### Manage nested configurations
+
+```python
+>>> import os
+
+>>> from anytree import RenderTree
+>>> from compendium.config_manager import ConfigManager, TreeConfigManager
+
+>>> basedir = os.path.join(os.getcwd(), 'examples', 'tree')
+
+>>> cfg = TreeConfigManager(
+...     name='fruit',
+...     basedir=basedir,
+...     filename='node.toml',
+...     load_root=True,
+...     load_children=True,
+... )
+
+>>> cfg.defaults == {}
+True
+
+>>> 'succulant' in cfg['/fruit/children']
+True
+
+>>> print(cfg.children)
+
+>>> succulant = cfg.get_config('/fruit/succulant')
+>>> succulant.name
+'succulant'
+
+```
+
+### Manage configurations using Hierarchy File System (HFS)
+
+# ```python
+# import os
+#
+# from compendium.config_manager import HierarchyConfigManager
+#
+# import pytest
+#
+# Setup base paths
+# >>> base_filepath = os.path.dirname(__file__)
+# >>> global_filepath = os.path.expanduser('~')
+#
+# System paths
+# >>> fs.add_real_file(
+# ...     source_path=os.path.join(base_filepath, 'settings1.toml'),
+# ...     target_path=os.path.join(os.sep, 'etc', 'hierarchy', 'config.toml')
+# ... )
+#
+# User paths
+# >>> fs.add_real_file(
+# ...     source_path=os.path.join(base_filepath, 'settings2.toml'),
+# ...     target_path=os.path.join(global_filepath, '.hierarchy.toml')
+# ... )
+#
+# >>> fs.add_real_file(
+# ...     source_path=os.path.join(base_filepath, 'settings3.toml'),
+# ...     target_path=os.path.join(
+# ...         global_filepath, '.hierarchy.d', 'config.toml'
+# ...     )
+# ... )
+#
+# >>> cfg = HierarchyConfigManager(
+# ...     name='hierarchy',
+# ...     filename='config.toml',
+# ...     merge_strategy='overlay',
+# ...     enable_system_filepaths=True,
+# ...     enable_global_filepaths=True
+# ... )
+# >>> cfg.load_configs()
+#
+# ```

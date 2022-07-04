@@ -3,9 +3,9 @@
 
 import os
 
-from compendium.settings import EnvironSettings, SettingsMap
+from compendium.settings import SettingsProxy
 
-key = 'TEST_EXAMPLE_DATA'
+key = 'TESTING_EXAMPLE_DATA'
 value = 12
 
 config1 = {
@@ -40,10 +40,10 @@ config2 = {
 os.environ[key] = str(value)
 assert int(os.getenv(key)) == value, 'environment variable does not exist'
 
-environs = EnvironSettings(SettingsMap(config1, config2), prefix='TEST')
+environs = SettingsProxy(config1, config2, prefix='TESTING')
 
 # convert key/value environs into dictionary
-assert environs.to_dict(key, value) == {'test': {'example': {'data': 12}}}
+assert environs.to_dict(key, value) == {'testing': {'example': {'data': 12}}}
 
 # ensure converted environs do not have prefix
 assert environs.environs == {'example': {'data': 12}}

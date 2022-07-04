@@ -1,13 +1,16 @@
-from tempfile import NamedTemporaryFile
-from textwrap import dedent
+import os
 
 from compendium.config_manager import ConfigManager
 
+basepath = os.path.join(os.getcwd(), 'examples', 'config_manager')
+config1 = os.path.join(basepath, 'config1.toml')
+config2 = os.path.join(basepath, 'config2.toml')
+
 # Retrieve settings from config files
-cfg = ConfigManager(name='app', filepaths=[file1.name, file2.name])
+cfg = ConfigManager(name='app', filepaths=[config1, config2])
 
 # Get using dpath
-cfg.get('/default/foo2')
+assert cfg.get('/default/foo2') == 'bar2'
 
 # Lookup with multi-query
-cfg.lookup('/example/settings/foo', '/default/foo')
+assert cfg.lookup('/example/settings/foo', '/default/foo') == 'baz'
