@@ -41,10 +41,11 @@ Query values within list
 >>> settings.values('/servers/**/ip')
 ['10.0.0.1', '10.0.0.2']
 
-Update setting
+Check the current server IP address
 >>> settings['/database/server']
 '192.168.1.1'
 
+Update the server IP address
 >>> settings['/database/server'] = '192.168.1.2'
 >>> settings['/database/server']
 '192.168.1.2'
@@ -53,7 +54,7 @@ Check the database max connections
 >>> settings['/database/connection_max']
 5000
 
-Delete the max connections 
+Delete the max connections
 >>> del settings['/database/connection_max']
 
 Check that the max connections have been removed
