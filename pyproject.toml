@@ -42,7 +42,7 @@ xmltodict = {version = "^0.12.0", optional = true}
 xml = ["xmltodict"]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^5.2"
+pytest = "^6"
 flake8 = "^3.8.2"
 black = "^19.10b0"
 invoke = "^1.4.1"
