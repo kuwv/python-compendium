@@ -73,7 +73,7 @@ class ConfigManager(SettingsProxy):
 
         # Update builtin chainmap defaults
         if defaults != {}:
-            self.defaults.update(defaults)
+            self.data.maps[-1].update(defaults)
 
         if kwargs.pop('load_configs', True):
             self.load_configs(**kwargs)
@@ -288,6 +288,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def load_configs(self, **kwargs: Any) -> None:
         """Load configuration files from filepaths."""
+
         def get_child_paths(namepath: str) -> List[ConfigFile]:
             """Get relative child paths of namepath."""
             child_paths = []
@@ -295,9 +296,8 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                 child_path = os.path.dirname(
                     os.path.relpath(config.filepath, self.basedir)
                 )
-                if (
-                    len(child_path.split(os.sep)) > 1
-                    and child_path.startswith(namepath)
+                if len(child_path.split(os.sep)) > 1 and child_path.startswith(
+                    namepath
                 ):
                     child_paths.append(config)
             return child_paths
@@ -323,7 +323,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                             basedir=os.path.join(
                                 self.basedir, os.sep, namepath
                             ),
-                            **kwargs
+                            **kwargs,
                         )
                     )
                     self.children = children

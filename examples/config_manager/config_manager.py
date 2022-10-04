@@ -4,9 +4,9 @@ import os
 
 from compendium.config_manager import ConfigManager
 
-basepath = os.path.join(os.getcwd(), 'examples', 'config_manager')
-config1 = os.path.join(basepath, 'config1.toml')
-config2 = os.path.join(basepath, 'config2.toml')
+basedir = os.path.dirname(__file__)
+config1 = os.path.join(basedir, 'config1.toml')
+config2 = os.path.join(basedir, 'config2.toml')
 
 # Retrieve settings from config files
 cfg = ConfigManager(filepaths=[config1, config2])

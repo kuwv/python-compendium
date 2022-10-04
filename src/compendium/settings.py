@@ -8,7 +8,13 @@ from ast import literal_eval
 from collections import ChainMap
 from collections.abc import MutableMapping
 from typing import (
-    TYPE_CHECKING, Any, Callable, Dict, Iterator, Mapping, Optional
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Dict,
+    Iterator,
+    Mapping,
+    Optional,
 )
 
 from dpath import util as dpath
@@ -82,9 +88,7 @@ class Settings(MutableMapping):
             return default
 
     def lookup(
-        self,
-        *args: str,
-        default: Optional[Any] = None,
+        self, *args: str, default: Optional[Any] = None,
     ) -> Optional[Any]:
         """Get value from settings from multiple keypaths."""
         for keypath in args:
@@ -179,9 +183,7 @@ class SettingsMap(ChainMap):
             return default
 
     def lookup(
-        self,
-        *args: str,
-        default: Optional[Any] = None,
+        self, *args: str, default: Optional[Any] = None,
     ) -> Optional[Any]:
         """Get value from settings from multiple keypaths."""
         for keypath in args:
@@ -245,9 +247,11 @@ class SettingsProxy(MutableMapping):
     ) -> 'Callable[[VarArg(Any), KwArg(Any)], Any]':
         """Proxy calls to settings store."""
         if hasattr(self.__dict__.get('data'), attr):
+
             def wrapper(*args: Any, **kwargs: Any) -> Any:
                 """Call query for data store."""
                 return getattr(self.data, attr)(*args, **kwargs)
+
             return wrapper
         raise AttributeError(attr)
 
@@ -287,9 +291,7 @@ class SettingsProxy(MutableMapping):
             return default
 
     def lookup(
-        self,
-        *args: str,
-        default: Optional[Any] = None,
+        self, *args: str, default: Optional[Any] = None,
     ) -> Optional[Any]:
         """Get value from settings from multiple keypaths."""
         for keypath in args:
@@ -304,9 +306,7 @@ class SettingsProxy(MutableMapping):
 
     @classmethod
     def combine(
-        cls,
-        source: Dict[str, Any],
-        update: Mapping[str, Any]
+        cls, source: Dict[str, Any], update: Mapping[str, Any]
     ) -> Dict[str, Any]:
         """Perform recursive merge."""
         for k, v in update.items():
@@ -319,17 +319,19 @@ class SettingsProxy(MutableMapping):
     @staticmethod
     def to_dict(key: str, value: Any) -> Dict[str, Any]:
         """Convert environment keypath to nested dictionary."""
+
         def expand(x: str) -> Dict[str, Any]:
             """Convert key part to dictionary key."""
             if '_' not in x:
                 return {x: value}
             k, v = x.split('_', 1)
             return {k: expand(v)}
+
         return expand(key.lower())
 
     @staticmethod
     def load_dotenv() -> None:
-        """Load environs from .env file."""
+        """Load environs from '.env' file."""
         # TODO: key/value should be added from dotenv regardless of prefix
         env_file = os.path.join(os.getcwd(), '.env')
         if os.path.exists(env_file):
@@ -350,7 +352,7 @@ class SettingsProxy(MutableMapping):
                     source=env,
                     update=self.to_dict(
                         k.replace(prefix, ''),
-                        literal_eval(v) if v.isnumeric() else v
-                    )
+                        literal_eval(v) if v.isnumeric() else v,
+                    ),
                 )
         return env
