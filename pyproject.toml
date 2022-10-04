@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "compendium"
-version = "0.1.2.post6"
+version = "0.1.3"
 description = "Simple layered configuraion tool"
 authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
 homepage = "https://github.com/kuwv/python-compendium"
