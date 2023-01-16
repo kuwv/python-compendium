@@ -17,7 +17,7 @@ from typing import (
     Optional,
 )
 
-from dpath import util as dpath
+import dpath
 from dpath.exceptions import PathNotFound
 
 if TYPE_CHECKING:
@@ -88,7 +88,9 @@ class Settings(MutableMapping):
             return default
 
     def lookup(
-        self, *args: str, default: Optional[Any] = None,
+        self,
+        *args: str,
+        default: Optional[Any] = None,
     ) -> Optional[Any]:
         """Get value from settings from multiple keypaths."""
         for keypath in args:
@@ -183,7 +185,9 @@ class SettingsMap(ChainMap):
             return default
 
     def lookup(
-        self, *args: str, default: Optional[Any] = None,
+        self,
+        *args: str,
+        default: Optional[Any] = None,
     ) -> Optional[Any]:
         """Get value from settings from multiple keypaths."""
         for keypath in args:
@@ -291,7 +295,9 @@ class SettingsProxy(MutableMapping):
             return default
 
     def lookup(
-        self, *args: str, default: Optional[Any] = None,
+        self,
+        *args: str,
+        default: Optional[Any] = None,
     ) -> Optional[Any]:
         """Get value from settings from multiple keypaths."""
         for keypath in args:

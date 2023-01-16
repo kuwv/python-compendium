@@ -79,7 +79,7 @@ pattern = "__version__ == '${version}'"
 ignore = [
     "D203",
     "D213",
-    "D300"
+    "D300",
 ]
 
 [tool.isort]
