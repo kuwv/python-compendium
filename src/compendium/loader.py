@@ -41,14 +41,6 @@ class ConfigFile:
         self.factory: dict = kwargs.pop('factory', Settings)
         self.factory_kwargs: Dict[str, Any] = kwargs.pop('factory_kwargs', {})
 
-    def __repr__(self) -> str:
-        """Get filepath."""
-        return repr(self.filepath)
-
-    def __str__(self) -> str:
-        """Return filepath."""
-        return self.filepath
-
     def __eq__(self, other: Any) -> bool:
         """Check if path is equal to config file path."""
         if type(other) == str:
@@ -56,6 +48,14 @@ class ConfigFile:
         if type(other) == type(self):
             return self == other
         return False
+
+    def __repr__(self) -> str:
+        """Get filepath."""
+        return repr(self.filepath)
+
+    def __str__(self) -> str:
+        """Return filepath."""
+        return self.filepath
 
     # def enter(self) -> None:
     #     ...
@@ -107,7 +107,7 @@ class ConfigFile:
         self._filepath = filepath
         if not hasattr(self, '_strategy'):
             self._strategy: Dict[str, FiletypesBase] = {}
-        if filepath not in self._strategy.keys():
+        if filepath not in self._strategy:
             Class = self.__get_class(self.filetype)
             if Class:
                 self._strategy[filepath] = Class()
@@ -118,35 +118,30 @@ class ConfigFile:
         if self.filepath:
             # Use discovered module to load configuration.
             if os.path.exists(self.filepath):
-                logging.info(f"Retrieving configuration: '{filepath}'")
+                logging.info('Retrieving configuration: %s', filepath)
                 if self.strategy:
                     # TODO: combine factory and load_config
                     data = self.strategy.load_config(filepath=self.filepath)
                     return self.factory(
                         data, **self.factory_kwargs
                     )  # type: ignore
-                else:
-                    raise exceptions.DriverError(
-                        f"Error: No class found for: '{filepath}'"
-                    )
-            else:
-                raise exceptions.ConfigFileError(
-                    f"Skipping: No configuration found at: '{filepath}'"
+                raise exceptions.DriverError(
+                    f"Error: No class found for: '{filepath}'"
                 )
-        else:
-            raise exceptions.ConfigFileError('Error: no config file provided')
+            raise exceptions.ConfigFileError(
+                f"Skipping: No configuration found at: '{filepath}'"
+            )
+        raise exceptions.ConfigFileError('Error: no config file provided')
 
     def dump(
-        self,
-        data: Dict[str, Any],
-        filepath: Optional[str] = None
+        self, data: Dict[str, Any], filepath: Optional[str] = None
     ) -> None:
         """Save settings to configuraiton."""
         if self.writable:
             self.filepath = filepath or self.filepath
             if self.filepath:
                 # Use discovered module to save configuration
-                logging.info(f"Saving configuration: '{filepath}'")
+                logging.info('Saving configuration: %s', filepath)
                 if self.strategy:
                     # TODO: refactor to use respective dict from chainmap
                     self.strategy.dump_config(data, self.filepath)

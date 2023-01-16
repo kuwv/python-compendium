@@ -19,7 +19,7 @@ class File:
 
     def __post_init__(self) -> None:
         """Intialize filepath."""
-        self.name = os.path.basename(self.filepath) or 'config.toml'
+        self.name = os.path.basename(self.path) or 'config.toml'
 
         if '.' in self.name and not self.name.startswith('.'):
             self.extension = os.path.splitext(self.name)[-1].strip('.')
@@ -51,9 +51,6 @@ class ConfigPaths:
         - <CLI>
 
     """
-
-    # TODO: Implement pathlib
-
     name: str
     filename: str
     filetype: Optional[str] = field(init=False)
@@ -106,7 +103,8 @@ class ConfigPaths:
 
             if platform.system() == 'Darwin':
                 __global_app_filepath = os.path.join(
-                    'Library', 'Application Support',
+                    'Library',
+                    'Application Support',
                 )
 
             if platform.system() == 'Linux':

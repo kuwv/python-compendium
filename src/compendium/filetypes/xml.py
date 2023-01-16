@@ -1,6 +1,7 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 """Control XML module."""
+
 # import datetime
 import errno
 import logging
@@ -32,12 +33,12 @@ class XmlConfig(FiletypesBase):
         """Load settings from XML configuration."""
         logging.info('loading XML configuration file')
         if os.path.isfile(filepath):
-            with open(filepath, 'r') as f:
+            with open(filepath, 'r', encoding=self.encoding) as file:
                 content = xmltodict.parse(
-                    f.read(),
+                    file.read(),
                     encoding=self.encoding,
                     process_namespaces=self.process_namespaces,
-                    namespaces=self.namespaces
+                    namespaces=self.namespaces,
                 )
         else:
             content = {}
@@ -46,12 +47,10 @@ class XmlConfig(FiletypesBase):
     def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
         """Save settings to XML configuration."""
         try:
-            with open(filepath, 'w') as f:
-                f.write(
+            with open(filepath, 'w', encoding=self.encoding) as file:
+                file.write(
                     xmltodict.unparse(
-                        content,
-                        encoding=self.encoding,
-                        pretty=True
+                        content, encoding=self.encoding, pretty=True
                     )
                 )
         except IOError as err:

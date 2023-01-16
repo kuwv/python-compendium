@@ -35,8 +35,7 @@ class TomlConfig(FiletypesBase):
         # convert associative array
         if isinstance(content, dict):
             content = {
-                str(k): TomlConfig._convert(v)
-                for k, v in content.items()
+                str(k): TomlConfig._convert(v) for k, v in content.items()
             }
 
         # convert list
@@ -59,8 +58,8 @@ class TomlConfig(FiletypesBase):
         """Load settings from toml configuration."""
         logging.info('loading TOML configuration file')
         if os.path.isfile(filepath):
-            with open(filepath, 'r', encoding=self.encoding) as f:
-                content = self._convert(tomlkit.parse(f.read()))
+            with open(filepath, 'r', encoding=self.encoding) as file:
+                content = self._convert(tomlkit.parse(file.read()))
         else:
             content = {}
         return content
@@ -69,9 +68,9 @@ class TomlConfig(FiletypesBase):
         """Save settings to toml configuration."""
         logging.info('TomlConfig: saving configuration file')
         try:
-            with open(filepath, 'w') as f:
+            with open(filepath, 'w') as file:
                 # XXX: tomlkit is missing union of tomldocument and dict
-                f.write(tomlkit.dumps(content))  # type: ignore
+                file.write(tomlkit.dumps(content))
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(

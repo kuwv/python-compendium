@@ -5,6 +5,7 @@
 # import datetime
 import errno
 import json
+
 # import jsonschema
 import logging
 import os
@@ -31,8 +32,8 @@ class JsonConfig(FiletypesBase):
         """Load settings from JSON configuration."""
         logging.info('loading JSON configuration file')
         if os.path.isfile(filepath):
-            with open(filepath, 'r', encoding=self.encoding) as f:
-                content = json.load(f)
+            with open(filepath, 'r', encoding=self.encoding) as file:
+                content = json.load(file)
         else:
             content = {}
         return content
@@ -40,9 +41,12 @@ class JsonConfig(FiletypesBase):
     def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
         """Save settings to JSON configuration."""
         try:
-            with open(filepath, 'w') as f:
+            with open(filepath, 'w', encoding=self.encoding) as file:
                 json.dump(
-                    content, f, indent=2, sort_keys=False
+                    content,
+                    file,
+                    indent=2,
+                    sort_keys=False
                     # , default=self.encoder
                 )
         except IOError as err:

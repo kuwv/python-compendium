@@ -5,10 +5,12 @@
 import errno
 import logging
 import os
+
 # import textwrap
 from typing import Any, Dict, Tuple
 
 from ruamel.yaml import YAML
+
 # from ruamel.yaml.scalarstring import LiteralScalarString
 
 from compendium.filetypes import FiletypesBase
@@ -42,11 +44,11 @@ class YamlConfig(FiletypesBase):
 
     def load_config(self, filepath: str) -> Dict[str, Any]:
         """Load settings from YAML configuration."""
-        logging.info(f"loading YAML configuration file {filepath}")
+        logging.info('loading YAML configuration file %s', filepath)
         if os.path.isfile(filepath):
-            with open(filepath, 'r', encoding=self.encoding) as f:
+            with open(filepath, 'r', encoding=self.encoding) as file:
                 yaml = self.__yaml_parser(self.kind or 'safe')
-                content = yaml.load(f)
+                content = yaml.load(file)
         else:
             content = {}
         return content
@@ -54,9 +56,9 @@ class YamlConfig(FiletypesBase):
     def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
         """Save settings to YAML configuration."""
         try:
-            with open(filepath, 'w') as f:
+            with open(filepath, 'w', encoding=self.encoding) as file:
                 yaml = self.__yaml_parser(self.kind or 'rt')
-                yaml.dump(content, f)
+                yaml.dump(content, file)
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(

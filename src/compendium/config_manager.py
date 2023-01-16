@@ -53,7 +53,7 @@ class ConfigManager(SettingsProxy):
         # Setup filepaths
         self.name = kwargs.pop('name', 'compendium')
         self._filepaths: List[ConfigFile] = [
-            (ConfigFile(f, factory_kwargs=kwargs) if type(f) == str else f)
+            (ConfigFile(f, factory_kwargs=kwargs) if isinstance(f, str) else f)
             for f in kwargs.pop('filepaths', [])
         ]
 
@@ -90,7 +90,7 @@ class ConfigManager(SettingsProxy):
 
     def add_filepath(self, filepath: str) -> None:
         """Load settings from configuration in filepath."""
-        logging.debug(f"searching for {filepath}")
+        logging.debug('searching for %s', filepath)
         self._filepaths.append(ConfigFile(filepath))
 
     # def dump_config(self, config_file: ConfigFile) -> None:
@@ -225,8 +225,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         )[-1]
         if name != '':
             return name
-        else:
-            return self.name
+        return self.name
 
     def get_namepath(self, filepath: str) -> str:
         """Get name from tree path."""
@@ -235,8 +234,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         ).replace(os.sep, self.separator)
         if name != '':
             return f"{self.separator}{self.name}{self.separator}{name}"
-        else:
-            return f"{self.separator}{self.name}"
+        return f"{self.separator}{self.name}"
 
     def get_filepath(self, name: str) -> Optional[str]:
         """Get filepath from namepath."""

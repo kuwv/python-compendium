@@ -97,11 +97,11 @@ class Settings(MutableMapping):
             try:
                 value = self.__getitem__(keypath)
                 if value is not None:
-                    log.info(f"lookup found: {value} for {keypath}")
+                    log.info('lookup found: %s for %s', value, keypath)
                     return value
             except KeyError:
-                log.debug(f"lookup was unable to query: {keypath}")
-        log.debug(f"returning default for: {keypath}")
+                log.debug('lookup was unable to query: %s', keypath)
+            log.debug('returning default for: %s', keypath)
         return default
 
     def values(self, query: Optional[str] = None) -> Any:
@@ -193,11 +193,11 @@ class SettingsMap(ChainMap):
         for keypath in args:
             try:
                 value = self.__getitem__(keypath)
-                log.info(f"lookup found: {value} for {keypath}")
+                log.info('lookup found: %s for %s', value, keypath)
                 return value
             except KeyError:
-                log.debug(f"lookup was unable to query: {keypath}")
-        log.debug(f"returning default for: {keypath}")
+                log.debug('lookup was unable to query: %s', keypath)
+            log.debug('returning default for: %s', keypath)
         return default
 
     # def values(self, query: Optional[str] = None) -> Dict[str, Any]:
@@ -303,11 +303,11 @@ class SettingsProxy(MutableMapping):
         for keypath in args:
             try:
                 value = self.__getitem__(keypath)
-                log.info(f"lookup found: {value} for {keypath}")
+                log.info('lookup found: %s for %s', value, keypath)
                 return value
             except KeyError:
-                log.debug(f"lookup was unable to query: {keypath}")
-        log.debug(f"returning default for: {keypath}")
+                log.debug('lookup was unable to query: %s', keypath)
+            log.debug('returning default for: %s', keypath)
         return default
 
     @classmethod

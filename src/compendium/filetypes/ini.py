@@ -41,8 +41,8 @@ class IniConfig(FiletypesBase):
         """Save settings to toml configuration."""
         logging.info('TomlConfig: saving configuration file')
         try:
-            with open(filepath, 'w') as f:
-                self.__config_parser.write(f)
+            with open(filepath, 'w', encoding=self.encoding) as file:
+                self.__config_parser.write(file)
         except IOError as err:
             if err.errno == errno.EACCES:
                 logging.error(
