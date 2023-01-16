@@ -7,6 +7,7 @@ import os
 from ast import literal_eval
 from collections import ChainMap
 from collections.abc import MutableMapping
+from string import Template
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -41,9 +42,9 @@ class Settings(MutableMapping):
         if kwargs:
             self.update(kwargs)
 
-    def __delitem__(self, keypath: str) -> Any:
-        """Delete item at keypath."""
-        return dpath.delete(self.data, keypath, Settings.separator)
+    def __delitem__(self, key: str) -> Any:
+        """Delete item at key."""
+        return dpath.delete(self.data, key, Settings.separator)
 
     def __iter__(self) -> Iterator[Any]:
         """Iterate settings dictionary."""
@@ -53,36 +54,39 @@ class Settings(MutableMapping):
         """Return number of settings items."""
         return len(self.data)
 
-    def __getitem__(self, keypath: str) -> Any:
+    def __getitem__(self, key: str) -> Any:
         """Get item."""
-        return dpath.get(self.data, keypath, Settings.separator)
+        return dpath.get(self.data, key, Settings.separator)
 
-    def __setitem__(self, keypath: str, value: Any) -> Any:
+    def __setitem__(self, key: str, value: Any) -> Any:
         """Set item to new value or create it."""
         try:
-            self.__getitem__(keypath)
-            dpath.set(self.data, keypath, value, Settings.separator)
+            self.__getitem__(key)
+            dpath.set(self.data, key, value, Settings.separator)
         except KeyError:
-            dpath.new(self.data, keypath, value, Settings.separator)
+            dpath.new(self.data, key, value, Settings.separator)
 
     def __repr__(self) -> str:
         """Retrun readable representation of settings."""
-        return f"{type(self).__name__}({repr(self.data)})"
+        template = Template('<$name: $data>')
+        return repr(
+            template.substitute(name=type(self).__name__, data=self.data)
+        )
 
-    def get(self, keypath: str, default: Optional[Any] = None) -> Any:
+    def get(self, key: str, default: Optional[Any] = None) -> Any:
         """Get item or return default."""
         try:
-            value = self.__getitem__(keypath)
+            value = self.__getitem__(key)
             return value
         except KeyError:
             return default
 
-    def pop(self, keypath: str, default: Optional[Any] = None) -> Any:
+    def pop(self, key: str, default: Optional[Any] = None) -> Any:
         """Get item and remove it from settings or return default."""
         try:
             # TODO: need to determine how dpath will handle list element here
-            value = self.__getitem__(keypath)
-            self.__delitem__(keypath)
+            value = self.__getitem__(key)
+            self.__delitem__(key)
             return value
         except (KeyError, PathNotFound):
             return default
@@ -92,31 +96,32 @@ class Settings(MutableMapping):
         *args: str,
         default: Optional[Any] = None,
     ) -> Optional[Any]:
-        """Get value from settings from multiple keypaths."""
-        for keypath in args:
+        """Get value from settings from multiple keys."""
+        for key in args:
             try:
-                value = self.__getitem__(keypath)
+                value = self.__getitem__(key)
                 if value is not None:
-                    log.info('lookup found: %s for %s', value, keypath)
+                    log.info('lookup found: %s for %s', value, key)
                     return value
             except KeyError:
-                log.debug('lookup was unable to query: %s', keypath)
-            log.debug('returning default for: %s', keypath)
+                log.debug('lookup was unable to query: %s', key)
+            log.debug('returning default for: %s', key)
         return default
 
     def values(self, query: Optional[str] = None) -> Any:
         """Search settings matching query."""
         if query is None:
-            query = f"{Settings.separator}*"
+            template = Template('${separator}*')
+            query = template.substitute(separator=Settings.separator)
         return dpath.values(self.data, query, Settings.separator)
 
     # XXX: not sure if this should stay for dictionary
-    def append(self, keypath: str, value: Any) -> None:
-        """Append to a list located at keypath."""
+    def append(self, key: str, value: Any) -> None:
+        """Append to a list located at key."""
         store = [value]
-        for x in reversed(keypath.split(Settings.separator)):
-            if x != '':
-                store = {x: store}  # type: ignore
+        for subkey in reversed(key.split(Settings.separator)):
+            if subkey != '':
+                store = {subkey: store}  # type: ignore
         dpath.merge(self.data, store)
 
     # def update(self, other=(), /, **kwds: Any) -> None:
@@ -145,41 +150,41 @@ class SettingsMap(ChainMap):
 
     # TODO: add capability to recursive search settings
 
-    def __delitem__(self, keypath: str) -> Any:
-        """Delete item at keypath."""
-        return dpath.delete(self.maps[0], keypath, SettingsMap.separator)
+    def __delitem__(self, key: str) -> Any:
+        """Delete item at key."""
+        return dpath.delete(self.maps[0], key, SettingsMap.separator)
 
-    def __getitem__(self, keypath: str) -> Any:
+    def __getitem__(self, key: str) -> Any:
         """Get item."""
         for mapping in self.maps:
             try:
-                return dpath.get(mapping, keypath, SettingsMap.separator)
+                return dpath.get(mapping, key, SettingsMap.separator)
             except KeyError:
                 pass
-        return self.__missing__(keypath)
+        return self.__missing__(key)
 
-    def __setitem__(self, keypath: str, value: Any) -> Any:
+    def __setitem__(self, key: str, value: Any) -> Any:
         """Set item to new value or create it."""
         try:
-            self.__getitem__(keypath)
-            dpath.set(self.maps[0], keypath, value, SettingsMap.separator)
+            self.__getitem__(key)
+            dpath.set(self.maps[0], key, value, SettingsMap.separator)
         except KeyError:
-            dpath.new(self.maps[0], keypath, value, SettingsMap.separator)
+            dpath.new(self.maps[0], key, value, SettingsMap.separator)
 
-    def get(self, keypath: str, default: Optional[Any] = None) -> Any:
+    def get(self, key: str, default: Optional[Any] = None) -> Any:
         """Get item or return default."""
         try:
-            value = self.__getitem__(keypath)
+            value = self.__getitem__(key)
             return value
         except KeyError:
             return default
 
-    def pop(self, keypath: str, default: Optional[Any] = None) -> Any:
+    def pop(self, key: str, default: Optional[Any] = None) -> Any:
         """Get item and remove it from settings or return default."""
         try:
             # TODO: need to determine how dpath will handle list element here
-            value = self.__getitem__(keypath)
-            self.__delitem__(keypath)
+            value = self.__getitem__(key)
+            self.__delitem__(key)
             return value
         except (KeyError, PathNotFound):
             return default
@@ -189,15 +194,15 @@ class SettingsMap(ChainMap):
         *args: str,
         default: Optional[Any] = None,
     ) -> Optional[Any]:
-        """Get value from settings from multiple keypaths."""
-        for keypath in args:
+        """Get value from settings from multiple keys."""
+        for key in args:
             try:
-                value = self.__getitem__(keypath)
-                log.info('lookup found: %s for %s', value, keypath)
+                value = self.__getitem__(key)
+                log.info('lookup found: %s for %s', value, key)
                 return value
             except KeyError:
-                log.debug('lookup was unable to query: %s', keypath)
-            log.debug('returning default for: %s', keypath)
+                log.debug('lookup was unable to query: %s', key)
+            log.debug('returning default for: %s', key)
         return default
 
     # def values(self, query: Optional[str] = None) -> Dict[str, Any]:
@@ -206,10 +211,10 @@ class SettingsMap(ChainMap):
     #         query = f"{SettingsMap.separator}*"
     #     return dpath.values(self.maps[0], query, SettingsMap.separator)
 
-    # def append(self, keypath: str, value: Any) -> None:
-    #     """Append to a list located at keypath."""
+    # def append(self, key: str, value: Any) -> None:
+    #     """Append to a list located at key."""
     #     store = [value]
-    #     for x in reversed(keypath.split(SettingsMap.separator)):
+    #     for x in reversed(key.split(SettingsMap.separator)):
     #         if x != '':
     #             store = {x: store}  # type: ignore
     #     dpath.merge(self.maps[0], store)
@@ -242,9 +247,9 @@ class SettingsProxy(MutableMapping):
         """Get environs."""
         return self.__environs
 
-    def __delitem__(self, keypath: str) -> Any:
-        """Delete item at keypath."""
-        self.data.__delitem__(keypath)
+    def __delitem__(self, key: str) -> Any:
+        """Delete item at key."""
+        self.data.__delitem__(key)
 
     def __getattr__(
         self, attr: str
@@ -259,15 +264,15 @@ class SettingsProxy(MutableMapping):
             return wrapper
         raise AttributeError(attr)
 
-    def __getitem__(self, keypath: str) -> Any:
+    def __getitem__(self, key: str) -> Any:
         """Get environment variable then mapped item."""
         try:
-            value = dpath.get(self.environs, keypath, Settings.separator)
+            value = dpath.get(self.environs, key, Settings.separator)
             return value
         except KeyError:
             pass
 
-        value = self.data.__getitem__(keypath)
+        value = self.data.__getitem__(key)
         return value
 
     def __iter__(self) -> Iterator[Any]:
@@ -278,18 +283,18 @@ class SettingsProxy(MutableMapping):
         """Return number of settings items."""
         return self.data.__len__()
 
-    def __setitem__(self, keypath: str, value: Any) -> Any:
+    def __setitem__(self, key: str, value: Any) -> Any:
         """Set item to new value or create it."""
-        self.data.__setitem__(keypath, value)
+        self.data.__setitem__(key, value)
 
     def __repr__(self) -> str:
         """Retrun readable representation of settings."""
         return self.data.__repr__()
 
-    def get(self, keypath: str, default: Optional[Any] = None) -> Any:
+    def get(self, key: str, default: Optional[Any] = None) -> Any:
         """Get item or return default."""
         try:
-            value = self.__getitem__(keypath)
+            value = self.__getitem__(key)
             return value
         except KeyError:
             return default
@@ -299,15 +304,15 @@ class SettingsProxy(MutableMapping):
         *args: str,
         default: Optional[Any] = None,
     ) -> Optional[Any]:
-        """Get value from settings from multiple keypaths."""
-        for keypath in args:
+        """Get value from settings from multiple keys."""
+        for key in args:
             try:
-                value = self.__getitem__(keypath)
-                log.info('lookup found: %s for %s', value, keypath)
+                value = self.__getitem__(key)
+                log.info('lookup found: %s for %s', value, key)
                 return value
             except KeyError:
-                log.debug('lookup was unable to query: %s', keypath)
-            log.debug('returning default for: %s', keypath)
+                log.debug('lookup was unable to query: %s', key)
+            log.debug('returning default for: %s', key)
         return default
 
     @classmethod
@@ -324,13 +329,13 @@ class SettingsProxy(MutableMapping):
 
     @staticmethod
     def to_dict(key: str, value: Any) -> Dict[str, Any]:
-        """Convert environment keypath to nested dictionary."""
+        """Convert environment key to nested dictionary."""
 
-        def expand(x: str) -> Dict[str, Any]:
+        def expand(keypath: str) -> Dict[str, Any]:
             """Convert key part to dictionary key."""
-            if '_' not in x:
-                return {x: value}
-            k, v = x.split('_', 1)
+            if '_' not in keypath:
+                return {keypath: value}
+            k, v = keypath.split('_', 1)
             return {k: expand(v)}
 
         return expand(key.lower())
@@ -341,7 +346,7 @@ class SettingsProxy(MutableMapping):
         # TODO: key/value should be added from dotenv regardless of prefix
         env_file = os.path.join(os.getcwd(), '.env')
         if os.path.exists(env_file):
-            with open(env_file) as env:
+            with open(env_file, encoding='utf-8') as env:
                 for line in env:
                     k, v = line.partition('=')[::2]
                     os.environ[k.strip().upper()] = str(v)
