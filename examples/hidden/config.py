@@ -3,6 +3,7 @@
 
 import os
 from compendium.loader import ConfigFile
+
 # from compendium.filetypes.ini import IniConfig
 # from pprint import pprint
 
@@ -22,7 +23,7 @@ assert 'cloudops' in settings.get('/allowed_roles')
 
 pypirc_filepath = os.path.join(os.path.expanduser('~'), '.pypirc')
 
-assert os.path.exists(pypirc_filepath) is True, 'path should exist'
+assert os.path.exists(pypirc_filepath) is True, 'a ".pypirc" path should exist'
 assert os.path.isfile(pypirc_filepath) is True, 'path should be a file'
 
 pypirc = ConfigFile(pypirc_filepath, default_filetype='ini')

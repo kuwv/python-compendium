@@ -22,4 +22,6 @@ Compendium is a configuration management tool.
 
 ## Install
 
-`pip install compendium`
+```
+pip install compendium
+```

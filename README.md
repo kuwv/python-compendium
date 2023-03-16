@@ -170,7 +170,7 @@ TBD
 ### Development
 
 ```
-poetry shell
-poetry install
+python -m venv .vev
+pip install -e .[dev]
 python -m doctest README.md
 ```
