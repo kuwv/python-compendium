@@ -89,7 +89,7 @@ jobs:
       - name: Download versioned files
         uses: actions/download-artifact@v3
         with:
-          name: versioning-${{ github.run_number }}
+          name: "versioning-${{ github.run_number }}"
       - name: Perform build
         run: |
           tar -xzf versioning.tar.gz
@@ -110,7 +110,7 @@ jobs:
       - name: Download versioned files
         uses: actions/download-artifact@v3
         with:
-          name: versioning-${{ github.run_number }}
+          name: "versioning-${{ github.run_number }}"
       - name: Install dependencies
         run: tar -xzf versioning.tar.gz
       - name: Download versioned files
@@ -133,7 +133,7 @@ jobs:
       - name: Download versioned files
         uses: actions/download-artifact@v3
         with:
-          name: versioning-${{ github.run_number }}
+          name: "versioning-${{ github.run_number }}"
       - name: Install dependencies
         run: tar -xzf versioning.tar.gz
       - name: Download versioned files
