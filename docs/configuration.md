@@ -7,21 +7,21 @@
 
 The `ConfigManager` is a simple configuration manager that loads a single configuration at a time.
 
-`merge_strategy: None`
-
-`merge_sections: []`
-
-`writable: False`
+```
+merge_strategy: None
+merge_sections: []
+writable: False
+```
 
 ## HierarchyConfigManager:
 
 The `HierarchyConfigManager` is a configuration manager that can be used to manager configurations. It is intended for system using Hierarchical File System (HFS).
 
-`enable_system_paths: False`
-
-`enable_user_paths: False`
-
-`enable_local_paths: True`
+```
+enable_system_paths: False
+enable_user_paths: False
+enable_local_paths: True
+```
 
 ## TreeConfigManager:
 

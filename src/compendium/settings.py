@@ -61,7 +61,7 @@ class Settings(MutableMapping):
     def __setitem__(self, key: str, value: Any) -> Any:
         """Set item to new value or create it."""
         try:
-            self.__getitem__(key)
+            self[key]
             dpath.set(self.data, key, value, Settings.separator)
         except KeyError:
             dpath.new(self.data, key, value, Settings.separator)
@@ -76,7 +76,7 @@ class Settings(MutableMapping):
     def get(self, key: str, default: Optional[Any] = None) -> Any:
         """Get item or return default."""
         try:
-            value = self.__getitem__(key)
+            value = self[key]
             return value
         except KeyError:
             return default
@@ -85,8 +85,8 @@ class Settings(MutableMapping):
         """Get item and remove it from settings or return default."""
         try:
             # TODO: need to determine how dpath will handle list element here
-            value = self.__getitem__(key)
-            self.__delitem__(key)
+            value = self[key]
+            del self[key]
             return value
         except (KeyError, PathNotFound):
             return default
@@ -99,7 +99,7 @@ class Settings(MutableMapping):
         """Get value from settings from multiple keys."""
         for key in args:
             try:
-                value = self.__getitem__(key)
+                value = self[key]
                 if value is not None:
                     log.info('lookup found: %s for %s', value, key)
                     return value
@@ -166,7 +166,7 @@ class SettingsMap(ChainMap):
     def __setitem__(self, key: str, value: Any) -> Any:
         """Set item to new value or create it."""
         try:
-            self.__getitem__(key)
+            self[key]
             dpath.set(self.maps[0], key, value, SettingsMap.separator)
         except KeyError:
             dpath.new(self.maps[0], key, value, SettingsMap.separator)
@@ -174,7 +174,7 @@ class SettingsMap(ChainMap):
     def get(self, key: str, default: Optional[Any] = None) -> Any:
         """Get item or return default."""
         try:
-            value = self.__getitem__(key)
+            value = self[key]
             return value
         except KeyError:
             return default
@@ -183,8 +183,8 @@ class SettingsMap(ChainMap):
         """Get item and remove it from settings or return default."""
         try:
             # TODO: need to determine how dpath will handle list element here
-            value = self.__getitem__(key)
-            self.__delitem__(key)
+            value = self[key]
+            del self[key]
             return value
         except (KeyError, PathNotFound):
             return default
@@ -197,7 +197,7 @@ class SettingsMap(ChainMap):
         """Get value from settings from multiple keys."""
         for key in args:
             try:
-                value = self.__getitem__(key)
+                value = self[key]
                 log.info('lookup found: %s for %s', value, key)
                 return value
             except KeyError:
@@ -249,7 +249,7 @@ class SettingsProxy(MutableMapping):
 
     def __delitem__(self, key: str) -> Any:
         """Delete item at key."""
-        self.data.__delitem__(key)
+        del self.data[key]
 
     def __getattr__(
         self, attr: str
@@ -272,7 +272,7 @@ class SettingsProxy(MutableMapping):
         except KeyError:
             pass
 
-        value = self.data.__getitem__(key)
+        value = self.data[key]
         return value
 
     def __iter__(self) -> Iterator[Any]:
@@ -285,16 +285,16 @@ class SettingsProxy(MutableMapping):
 
     def __setitem__(self, key: str, value: Any) -> Any:
         """Set item to new value or create it."""
-        self.data.__setitem__(key, value)
+        self.data[key] = value
 
     def __repr__(self) -> str:
         """Retrun readable representation of settings."""
-        return self.data.__repr__()
+        return repr(self.data)
 
     def get(self, key: str, default: Optional[Any] = None) -> Any:
         """Get item or return default."""
         try:
-            value = self.__getitem__(key)
+            value = self[key]
             return value
         except KeyError:
             return default
@@ -307,7 +307,7 @@ class SettingsProxy(MutableMapping):
         """Get value from settings from multiple keys."""
         for key in args:
             try:
-                value = self.__getitem__(key)
+                value = self[key]
                 log.info('lookup found: %s for %s', value, key)
                 return value
             except KeyError:
