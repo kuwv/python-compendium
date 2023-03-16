@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0.0"]
+requires = ["setuptools>=51.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -21,6 +21,8 @@ classifiers = [
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
 dependencies = [
     "ruamel.yaml>=0.16.10,<1",
@@ -63,7 +65,6 @@ docs = [
 homepage = "https://github.com/kuwv/python-compendium"
 documentation = "https://kuwv.github.io/python-compendium"
 
-[tool.proman.versioning]
 [[tool.proman.versioning.files]]
 filepath = "pyproject.toml"
 pattern = "version = \"${version}\""
@@ -82,6 +83,22 @@ ignore = [
     "D213",
     "D300",
 ]
+
+[tool.pylint]
+fail-under = 9.0
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "R0903",
+    "C0103",
+    "W0715",
+]
+
+[tool.pylint."FORMAT"]
+max-line-length = 79
+
+[tool.pylint."MISCELLANEOUS"]
+notes = []
 
 [tool.isort]
 profile = "black"
@@ -110,3 +127,6 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 disallow_untyped_defs = true
 ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
