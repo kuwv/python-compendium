@@ -147,9 +147,11 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install .[dev]
-      # - name: Perform publish
-      #   run: |
-      #     # NOTE: publish to test.pypi if dev
-      #     poetry config repositories.test-pypi 'https://test.pypi.org/legacy/'
-      #     poetry config pypi-token.test-pypi "${{ secrets.TESTPYPI_TOKEN }}"
-      #     workflow-tools dist.package.publish --repository test-pypi
+      - name: Perform publish
+        run: |
+          # NOTE: publish to test.pypi if dev
+          twine upload \
+            --non-interactive \
+            --repository-url "${{ env.TESTPYPI_URL }}" \
+            --username "${{ env.TESTPYPI_USERNAME }}" \
+            --password "${{ secrets.TESTPYPI_TOKEN }}"
