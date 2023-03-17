@@ -152,5 +152,5 @@ jobs:
           twine upload dist/* \
             --non-interactive \
             --repository testpypi \
-            --username "${{ env.TESTPYPI_USERNAME }}" \
+            --username "${{ env.TESTPYPI_USER }}" \
             --password "${{ secrets.TESTPYPI_TOKEN }}"
