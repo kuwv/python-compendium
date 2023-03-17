@@ -150,7 +150,7 @@ jobs:
       - name: Perform publish
         run: |
           # NOTE: publish to test.pypi if dev
-          twine upload \
+          twine upload dist/compendium* \
             --non-interactive \
             --repository-url "${{ env.TESTPYPI_URL }}" \
             --username "${{ env.TESTPYPI_USERNAME }}" \
