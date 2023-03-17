@@ -24,9 +24,9 @@ jobs:
       - name: Install dependencies
         run: |
           whoami
-          pwd
           pip install --upgrade pip
           pip install .
+          pip show proman-versioning
       - name: Bump version
         run: |
           version info
