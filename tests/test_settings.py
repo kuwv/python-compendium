@@ -6,7 +6,6 @@
 import os
 
 import pytest
-
 from compendium.loader import ConfigFile
 
 basedir = os.path.dirname(__file__)
