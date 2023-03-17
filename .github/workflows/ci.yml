@@ -149,7 +149,6 @@ jobs:
           pip install twine==4.0.0
       - name: Perform publish
         run: |
-          # NOTE: publish to test.pypi if dev
           twine upload dist/* \
             --non-interactive \
             --repository-url "${{ env.TESTPYPI_URL }}" \
