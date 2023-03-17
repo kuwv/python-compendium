@@ -16,23 +16,11 @@ if __name__ == '__main__':
 
     settings = Settings(
         {
-            'compend': {
-                 'example': {
-                     'data': 12
-                 }
-            },
+            'compend': {'example': {'data': 12}},
             'servers': [
-                {
-                    'name': 'alpha',
-                    'ip': '10.0.0.1',
-                    'dc': 'eqdc10'
-                },
-                {
-                    'name': 'beta',
-                    'ip': '10.0.0.2',
-                    'dc': 'eqdc10'
-                }
-            ]
+                {'name': 'alpha', 'ip': '10.0.0.1', 'dc': 'eqdc10'},
+                {'name': 'beta', 'ip': '10.0.0.2', 'dc': 'eqdc10'},
+            ],
         }
     )
 

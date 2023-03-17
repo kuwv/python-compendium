@@ -2,9 +2,9 @@
 name: CI Build
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 jobs:
   version:
     runs-on: ubuntu-latest
@@ -14,7 +14,7 @@ jobs:
           ref: "${{ github.event.pull_request.head.sha }}"
           fetch-depth: 0
       - name: 'Set up Python 3.10'
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: '3.10'
       - name: Setup gitconfig
@@ -23,14 +23,12 @@ jobs:
           git config user.email 'an.autonomous.bot@gmail.com'
       - name: Install dependencies
         run: |
-          whoami
-          pwd
           pip install --upgrade pip
-          pip install .
+          pip install .[dev]
       - name: Bump version
         run: |
           version info
-          if [ "${GITHUB_REF##*/}" == "master" ]; then
+          if [ "${GITHUB_REF##*/}" == "main" ]; then
             version bump --commit --tag
             version push --password "${{ secrets.GITHUB_TOKEN }}"
           else
@@ -55,45 +53,45 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: 'Set up Python 3.10'
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: '3.10'
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .
+          pip install .[dev]
       - name: Lint
         run: |
-          workflow-tools style.sort-headers.run --check
-          workflow-tools style.format.run --check
-          workflow-tools sca.lint.run
+          isort --check-only **/*.py
+          black --check **/*.py
+          pylint src
       - name: Type checking
-        run: workflow-tools sca.type-checking.run
-      # - name: Perform security checks
-      #   run: |
-      #     workflow-tools sec.sast.run
-      #     workflow-tools sec.dependency-scan.run
+        run: mypy src
+      - name: Perform security checks
+        run: |
+          bandit -r src
   build:
     runs-on: ubuntu-latest
     needs: [version, sca]
     steps:
       - uses: actions/checkout@v3
       - name: 'Set up Python 3.10'
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          pip install --upgrade pip build
+          pip install --upgrade pip
+          pip install build==0.8.0
           pip install .
       - name: Download versioned files
         uses: actions/download-artifact@v3
         with:
-          name: versioning-${{ github.run_number }}
+          name: "versioning-${{ github.run_number }}"
       - name: Perform build
         run: |
           tar -xzf versioning.tar.gz
-          workflow-tools dist.package.build
+          python -m build
       - name: Store versioned files
         uses: actions/upload-artifact@v3
         with:
@@ -104,13 +102,13 @@ jobs:
     needs: build
     strategy:
       matrix:
-        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10', '3.11']
     steps:
       - uses: actions/checkout@v3
       - name: Download versioned files
         uses: actions/download-artifact@v3
         with:
-          name: versioning-${{ github.run_number }}
+          name: "versioning-${{ github.run_number }}"
       - name: Install dependencies
         run: tar -xzf versioning.tar.gz
       - name: Download versioned files
@@ -121,10 +119,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .
-          pip install ./dist/proman_versioning*whl
+          pip install .[dev]
+          pip install ./dist/compendium*whl
       - name: Perform tests
-        run: workflow-tools qa.unit-test.run
+        run: pytest tests 
   publish:
     runs-on: ubuntu-latest
     needs: ['build', 'test']
@@ -133,7 +131,7 @@ jobs:
       - name: Download versioned files
         uses: actions/download-artifact@v3
         with:
-          name: versioning-${{ github.run_number }}
+          name: "versioning-${{ github.run_number }}"
       - name: Install dependencies
         run: tar -xzf versioning.tar.gz
       - name: Download versioned files
@@ -142,16 +140,17 @@ jobs:
           name: dist
           path: dist
       - name: 'Set up Python 3.10'
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: '3.10'
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .
+          pip install twine==4.0.0
       - name: Perform publish
         run: |
-          # NOTE: publish to test.pypi if dev
-          poetry config repositories.test-pypi 'https://test.pypi.org/legacy/'
-          poetry config pypi-token.test-pypi "${{ secrets.TESTPYPI_TOKEN }}"
-          workflow-tools dist.package.publish --repository test-pypi
+          twine upload dist/* \
+            --non-interactive \
+            --repository testpypi \
+            --username __token__ \
+            --password "${{ secrets.TESTPYPI_TOKEN }}"

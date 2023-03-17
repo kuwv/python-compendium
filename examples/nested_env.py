@@ -13,9 +13,7 @@ config1 = {
         'name': 'app1',
         'version': '1.2.3',
         'description': 'this is an example',
-        'defaults': {
-            'enable_feature': False
-        }
+        'defaults': {'enable_feature': False},
     }
 }
 
@@ -24,15 +22,11 @@ config2 = {
         'proman': {
             'enable_feature': True,
             'settings': {
-                'files': [
-                    {'path': '/some/path/to/file', 'kind': 'yaml'}
-                ],
-                'writable': True
-            }
+                'files': [{'path': '/some/path/to/file', 'kind': 'yaml'}],
+                'writable': True,
+            },
         },
-        'example': {
-             'version': '1.2.4.dev0'
-        }
+        'example': {'version': '1.2.4.dev0'},
     }
 }
 
