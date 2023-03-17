@@ -146,7 +146,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .[dev]
+          pip install twine
       - name: Perform publish
         run: |
           # NOTE: publish to test.pypi if dev
