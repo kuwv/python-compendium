@@ -23,10 +23,8 @@ jobs:
           git config user.email 'an.autonomous.bot@gmail.com'
       - name: Install dependencies
         run: |
-          whoami
           pip install --upgrade pip
           pip install .[dev]
-          pip show proman-versioning
       - name: Bump version
         run: |
           version info
@@ -61,7 +59,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .
+          pip install .[dev]
       - name: Lint
         run: |
           workflow-tools style.sort-headers.run --check
@@ -84,7 +82,8 @@ jobs:
           python-version: '3.10'
       - name: Install dependencies
         run: |
-          pip install --upgrade pip build
+          pip install --upgrade pip
+          pip install build==0.8.0
           pip install .
       - name: Download versioned files
         uses: actions/download-artifact@v3
@@ -121,7 +120,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .
+          pip install .[dev]
           pip install ./dist/proman_versioning*whl
       - name: Perform tests
         run: workflow-tools qa.unit-test.run
@@ -148,10 +147,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .
-      - name: Perform publish
-        run: |
-          # NOTE: publish to test.pypi if dev
-          poetry config repositories.test-pypi 'https://test.pypi.org/legacy/'
-          poetry config pypi-token.test-pypi "${{ secrets.TESTPYPI_TOKEN }}"
-          workflow-tools dist.package.publish --repository test-pypi
+          pip install .[dev]
+      # - name: Perform publish
+      #   run: |
+      #     # NOTE: publish to test.pypi if dev
+      #     poetry config repositories.test-pypi 'https://test.pypi.org/legacy/'
+      #     poetry config pypi-token.test-pypi "${{ secrets.TESTPYPI_TOKEN }}"
+      #     workflow-tools dist.package.publish --repository test-pypi
