@@ -120,7 +120,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install .[dev]
-          pip install ./dist/proman_versioning*whl
+          pip install ./dist/compendium*whl
       - name: Perform tests
         run: pytest tests 
   publish:
