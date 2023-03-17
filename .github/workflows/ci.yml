@@ -25,7 +25,7 @@ jobs:
         run: |
           whoami
           pip install --upgrade pip
-          pip install .
+          pip install .[dev]
           pip show proman-versioning
       - name: Bump version
         run: |
