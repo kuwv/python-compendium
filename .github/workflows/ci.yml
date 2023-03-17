@@ -62,11 +62,11 @@ jobs:
           pip install .[dev]
       - name: Lint
         run: |
-          workflow-tools style.sort-headers.run --check
-          workflow-tools style.format.run --check
-          workflow-tools sca.lint.run
+          isort --check-only **/*.py
+          black --check-only **/*.py
+          pylint src
       - name: Type checking
-        run: workflow-tools sca.type-checking.run
+        run: mypy . 
       # - name: Perform security checks
       #   run: |
       #     workflow-tools sec.sast.run
@@ -92,7 +92,7 @@ jobs:
       - name: Perform build
         run: |
           tar -xzf versioning.tar.gz
-          workflow-tools dist.package.build
+          python -m build
       - name: Store versioned files
         uses: actions/upload-artifact@v3
         with:
@@ -123,7 +123,7 @@ jobs:
           pip install .[dev]
           pip install ./dist/proman_versioning*whl
       - name: Perform tests
-        run: workflow-tools qa.unit-test.run
+        run: pytest tests 
   publish:
     runs-on: ubuntu-latest
     needs: ['build', 'test']

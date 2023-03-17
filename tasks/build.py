@@ -4,11 +4,10 @@
 # license: Apache 2.0, see LICENSE for more details.
 """Test Task-Runner."""
 
-from typing import Optional, TYPE_CHECKING
-
-from invoke import call, task
+from typing import TYPE_CHECKING, Optional
 
 from compendium import __version__
+from invoke import call, task
 
 if TYPE_CHECKING:
     from invoke import Context
