@@ -66,7 +66,7 @@ jobs:
           black --check **/*.py
           pylint src
       - name: Type checking
-        run: mypy . 
+        run: mypy src
       - name: Perform security checks
         run: |
           bandit -r src
