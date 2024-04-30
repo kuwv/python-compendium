@@ -61,7 +61,7 @@ class Settings(MutableMapping):
     def __setitem__(self, key: str, value: Any) -> Any:
         """Set item to new value or create it."""
         try:
-            self[key]
+            self[key]  # pylint: disable=pointless-statement
             dpath.set(self.data, key, value, Settings.separator)
         except KeyError:
             dpath.new(self.data, key, value, Settings.separator)
@@ -125,11 +125,9 @@ class Settings(MutableMapping):
         dpath.merge(self.data, store)
 
     # def update(self, other=(), /, **kwds: Any) -> None:
-    def update(  # type: ignore
-        self, other: Dict[str, Any], **kwargs: Any
-    ) -> None:
+    def update(self, other: Dict[str, Any]) -> None:
         """Update settings."""
-        dpath.merge(self.data, other, afilter=None, flags=2)
+        dpath.merge(self.data, other, flags=2)
 
 
 class SettingsMap(ChainMap):

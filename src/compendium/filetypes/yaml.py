@@ -33,8 +33,8 @@ class YamlConfig(FiletypesBase):
     def __yaml_parser(self, kind: str) -> YAML:
         """Get yaml parser."""
         yaml = YAML(typ=kind)
-        yaml.explicit_start = True  # type: ignore
-        yaml.preserve_quotes = True  # type: ignore
+        yaml.explicit_start = True
+        yaml.preserve_quotes = True
         return yaml
 
     @staticmethod
