@@ -36,7 +36,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-xml = ["xmltodict>=0.12.0,>1"]
+xml = ["xmltodict>=0.12.0,<1"]
 dev = [
     "build",
     "proman-versioning>=0.1.1-beta.4",
