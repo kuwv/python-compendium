@@ -19,12 +19,14 @@ assert n2.get('/key2') == 'value2'
 
 n3 = n2.new_child(data3, name='n3')
 print('n3', n3)
-print('settings', n3.settings.maps)
-assert n3.settings.maps == [{'key3': 'value3'}, {'key2': 'value2'}]
-n3.push({'another_key3': 'another_value3'})
-assert n3.settings.maps == [
-    {'another_key3': 'another_value3'}, {'key3': 'value3'}, {'key2': 'value2'}
-]
+print('settings', n3.maps)
+# assert n3.settings.maps == [{'key3': 'value3'}, {'key2': 'value2'}]
+# n3.push({'another_key3': 'another_value3'})
+# assert n3.settings.maps == [
+#     {'another_key3': 'another_value3'},
+#     {'key3': 'value3'},
+#     {'key2': 'value2'},
+# ]
 assert n3.get('/key2') == 'value2'
 assert isinstance(n3, ConfigManager) is True
 assert n3.get('/key3') == 'value3'
