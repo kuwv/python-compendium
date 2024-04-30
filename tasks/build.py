@@ -6,8 +6,9 @@
 
 from typing import TYPE_CHECKING, Optional
 
-from compendium import __version__
 from invoke import call, task
+
+from compendium import __version__
 
 if TYPE_CHECKING:
     from invoke import Context
