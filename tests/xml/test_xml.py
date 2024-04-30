@@ -7,8 +7,8 @@ import os
 
 import pytest
 
-from compendium.loader import ConfigFile
 from compendium.exceptions import ConfigFileError
+from compendium.loader import ConfigFile
 
 xmltodict = pytest.importorskip('xmltodict')
 

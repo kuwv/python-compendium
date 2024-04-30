@@ -4,10 +4,11 @@
 """Test TOML configuration management."""
 
 import os
+
 import pytest
 
-from compendium.loader import ConfigFile
 from compendium.exceptions import ConfigFileError
+from compendium.loader import ConfigFile
 
 basedir = os.path.dirname(__file__)
 filepath = os.path.join(basedir, 'config.toml')
