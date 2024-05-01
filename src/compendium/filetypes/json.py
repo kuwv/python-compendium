@@ -46,7 +46,7 @@ class JsonConfig(FiletypesBase):
                     content,
                     file,
                     indent=2,
-                    sort_keys=False
+                    sort_keys=False,
                     # , default=self.encoder
                 )
         except IOError as err:

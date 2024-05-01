@@ -4,7 +4,7 @@
 
 import errno
 import logging
-from configparser import ConfigParser  # ExtendedInterpolation
+from configparser import ConfigParser, Error  # ExtendedInterpolation
 from typing import Any, Dict, Tuple
 
 from compendium.filetypes import FiletypesBase
@@ -30,9 +30,13 @@ class IniConfig(FiletypesBase):
         logging.info('loading INI configuration file')
         try:
             self.__config_parser.read([filepath], encoding=self.encoding)
-        except Exception:
+        except Error:
             logging.error('Unable to read file')
+
+        # pylint: disable-next=protected-access
         data = self.__config_parser._sections  # type: ignore
+
+        # pylint: disable-next=protected-access
         for k, v in self.__config_parser._defaults.items():  # type: ignore
             data[k] = v
         return data
