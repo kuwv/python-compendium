@@ -13,15 +13,19 @@ from typing import (
     Any,
     Callable,
     Dict,
+    Iterable,
     Iterator,
     Mapping,
     Optional,
+    Tuple,
+    Union,
 )
 
 import dpath
 from dpath.exceptions import PathNotFound
 
 if TYPE_CHECKING:
+    from _typeshed import SupportsKeysAndGetItem
     from mypy_extensions import KwArg, VarArg
 
 log = logging.getLogger(__name__)
@@ -81,7 +85,7 @@ class Settings(MutableMapping):
         except KeyError:
             return default
 
-    def pop(self, key: str, default: Optional[Any] = None) -> Any:
+    def pop(self, key: str, *default: Any) -> Any:
         """Get item and remove it from settings or return default."""
         try:
             # TODO: need to determine how dpath will handle list element here
@@ -89,7 +93,7 @@ class Settings(MutableMapping):
             del self[key]
             return value
         except (KeyError, PathNotFound):
-            return default
+            return default[0]
 
     def lookup(
         self,
@@ -122,12 +126,21 @@ class Settings(MutableMapping):
         for subkey in reversed(key.split(Settings.separator)):
             if subkey != '':
                 store = {subkey: store}  # type: ignore
-        dpath.merge(self.data, store)
+        dpath.merge(self.data, store)  # type: ignore
 
     # def update(self, other=(), /, **kwds: Any) -> None:
-    def update(self, other: Dict[str, Any]) -> None:
+    def update(
+        self,
+        other: Union['SupportsKeysAndGetItem', Iterable[Tuple[Any, Any]]] = (),
+        /,
+        **kwargs: Any,
+    ) -> None:
         """Update settings."""
-        dpath.merge(self.data, other, flags=2)
+        dpath.merge(
+            self.data,
+            other or kwargs,  # type: ignore
+            flags=2,
+        )
 
 
 class SettingsMap(ChainMap):
@@ -164,7 +177,7 @@ class SettingsMap(ChainMap):
     def __setitem__(self, key: str, value: Any) -> Any:
         """Set item to new value or create it."""
         try:
-            self[key]
+            self[key]  # pylint: disable=pointless-statement
             dpath.set(self.maps[0], key, value, SettingsMap.separator)
         except KeyError:
             dpath.new(self.maps[0], key, value, SettingsMap.separator)
@@ -177,7 +190,7 @@ class SettingsMap(ChainMap):
         except KeyError:
             return default
 
-    def pop(self, key: str, default: Optional[Any] = None) -> Any:
+    def pop(self, key: str, *default: Any) -> Any:
         """Get item and remove it from settings or return default."""
         try:
             # TODO: need to determine how dpath will handle list element here
@@ -185,7 +198,8 @@ class SettingsMap(ChainMap):
             del self[key]
             return value
         except (KeyError, PathNotFound):
-            return default
+            # self.maps[0].pop(key, *args)
+            return default[0]
 
     def lookup(
         self,
@@ -217,11 +231,19 @@ class SettingsMap(ChainMap):
     #             store = {x: store}  # type: ignore
     #     dpath.merge(self.maps[0], store)
 
-    def update(  # type: ignore
-        self, other: Dict[str, Any], **kwargs: Any
+    def update(
+        self,
+        other: Union['SupportsKeysAndGetItem', Iterable[Tuple[Any, Any]]] = (),
+        /,
+        **kwargs: Any,
     ) -> None:
         """Update settings."""
-        dpath.merge(self.maps[0], other, afilter=None, flags=2)
+        dpath.merge(
+            self.maps[0],
+            other or kwargs,  # type: ignore
+            afilter=None,  # type: ignore
+            flags=2,
+        )
 
 
 class SettingsProxy(MutableMapping):
