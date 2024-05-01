@@ -1,5 +1,6 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
+# pylint: disable=unused-import
 """Control configuration files."""
 
 # from weakref import ref
@@ -10,19 +11,19 @@ from typing import Any, Dict, Optional, Type
 
 from compendium import exceptions
 from compendium.filetypes import FiletypesBase
-from compendium.filetypes.ini import IniConfig  # noqa
-from compendium.filetypes.json import JsonConfig  # noqa
-from compendium.filetypes.toml import TomlConfig  # noqa
-from compendium.filetypes.yaml import YamlConfig  # noqa
+from compendium.filetypes.ini import IniConfig
+from compendium.filetypes.json import JsonConfig
+from compendium.filetypes.toml import TomlConfig
+from compendium.filetypes.yaml import YamlConfig
 from compendium.settings import Settings
 
 if importlib.util.find_spec('xmltodict'):  # type: ignore
-    from compendium.filetypes.xml import XmlConfig  # noqa
+    from compendium.filetypes.xml import XmlConfig
 
 log = logging.getLogger(__name__)
 
 
-class ConfigFile:
+class ConfigFile:  # pylint: disable=too-many-instance-attributes
     """Manage settings loaded from confiugrations using dpath."""
 
     # TODO: switch to dependency injection for filetypes
@@ -35,17 +36,15 @@ class ConfigFile:
         if filepath:
             self.filepath = filepath
         self.writable = bool(kwargs.pop('writable', False))
-        self.autosave = bool(
-            kwargs.pop('autosave', True if self.writable else False)
-        )
+        self.autosave = bool(kwargs.pop('autosave', self.writable))
         self.factory: dict = kwargs.pop('factory', Settings)
         self.factory_kwargs: Dict[str, Any] = kwargs.pop('factory_kwargs', {})
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         """Check if path is equal to config file path."""
-        if type(other) == str:
+        if isinstance(other, str):
             return self.filepath == other
-        if type(other) == type(self):
+        if isinstance(other, self.__class__):
             return self == other
         return False
 
@@ -73,7 +72,7 @@ class ConfigFile:
         self, filetype: Optional[str] = 'toml'
     ) -> Optional[Type[FiletypesBase]]:
         """Get class object from filetype module."""
-        for module in [m for m in FiletypesBase.__subclasses__()]:
+        for module in list(FiletypesBase.__subclasses__()):
             if filetype in module.extensions():
                 return module
         return None
