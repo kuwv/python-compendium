@@ -8,7 +8,7 @@ import logging
 import os
 from typing import Any, Dict, Tuple
 
-import xmltodict
+import xmltodict  # pylint: disable=import-error
 
 from compendium.filetypes import FiletypesBase
 

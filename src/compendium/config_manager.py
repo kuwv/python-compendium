@@ -104,8 +104,8 @@ class ConfigManager(SettingsProxy):
         self,
         config_file: ConfigFile,
         update: bool = True,
-        *args: str,
-        **kwargs: Any,
+        # *args: str,
+        # **kwargs: Any,
     ) -> Optional[Dict[str, Any]]:
         """Load settings from configuration."""
         if os.path.exists(config_file.filepath):
@@ -216,7 +216,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
     @property
     def namepaths(self) -> Tuple[str, ...]:
         """Return list of namepaths."""
-        return tuple([self.get_namepath(x.filepath) for x in self.filepaths])
+        return tuple(self.get_namepath(x.filepath) for x in self.filepaths)
 
     def get_name(self, filepath: str) -> str:
         """Get name from tree path."""
@@ -273,13 +273,14 @@ class TreeConfigManager(ConfigManager, NodeMixin):
     def load_config(
         self,
         config_file: ConfigFile,
-        update: bool = False,
         *args: str,
         **kwargs: Any,
     ) -> Optional[Dict[str, Any]]:
         """Load config."""
         # TODO: need to separate chainmap of defaults from namespace config
-        settings = super().load_config(config_file, update)
+        settings = super().load_config(
+            config_file, bool(kwargs.pop('update', False))
+        )
         return self.new_child(
             settings, name=self.get_name(config_file.filepath), *args, **kwargs
         )

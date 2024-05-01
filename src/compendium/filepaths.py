@@ -13,6 +13,8 @@ log = logging.getLogger(__name__)
 
 @dataclass
 class File:
+    """Provider file data."""
+
     path: str
     name: str = field(init=False)
     extension: Optional[str] = field(init=False)
@@ -28,7 +30,7 @@ class File:
 
 
 @dataclass
-class ConfigPaths:
+class ConfigPaths:  # pylint: disable=too-many-instance-attributes
     r"""Load config paths based on priority.
 
     First(lowest) to last(highest):
@@ -51,6 +53,7 @@ class ConfigPaths:
         - <CLI>
 
     """
+
     name: str
     filename: str
     filetype: Optional[str] = field(init=False)
