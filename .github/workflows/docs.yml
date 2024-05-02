@@ -20,8 +20,8 @@ jobs:
           pip install .[build,docs]
       - name: Lint documentation
         run: |
-          invoke doc.lint
-          invoke doc.test
+          python -m invoke doc.lint
+          python -m invoke doc.test
   build:
     runs-on: ubuntu-latest
     needs: lint
@@ -37,8 +37,8 @@ jobs:
           pip install .[build,docs]
       - name: Perform documentation tests
         run: |
-          invoke doc.coverage
-          invoke doc.build
+          python -m invoke doc.coverage
+          python -m invoke doc.build
   test:
     runs-on: ubuntu-latest
     steps:
