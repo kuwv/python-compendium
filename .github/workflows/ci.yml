@@ -10,21 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: 'Set up Python 3.10'
+      - name: 'Set up Python 3.11'
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install .[dev]
-      - name: Lint
-        run: |
-          isort --check-only **/*.py
-          black --check **/*.py
-          pylint src
-      - name: Type checking
-        run: mypy src
+      - name: Check headers
+        run: isort --check-only **/*.py
+      - name: Check code style
+        run: black --check **/*.py
+      - name: Lint source code
+        run: pylint src/**/*.py
+      - name: Type check source code
+        run: mypy src/**/*.py
       - name: Perform security checks
         run: bandit -r src
   version:
@@ -34,10 +35,10 @@ jobs:
         with:
           ref: "${{ github.event.pull_request.head.sha }}"
           fetch-depth: 0
-      - name: 'Set up Python 3.10'
+      - name: 'Set up Python 3.11'
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - name: Setup gitconfig
         run: |
           git config user.name 'autonomous-bot'
@@ -45,7 +46,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .[dev]
+          pip install .[build]
       - name: Bump version
         run: |
           version info
@@ -65,33 +66,34 @@ jobs:
       #   id: versioned-files
       #   uses: actions/cache@v3
       #   with:
-      #     key: ${{ runner.os }}-versioning-${{ hashFiles('versioning.tar.gz') }}
+      #     key: "${{
+      #       runner.os
+      #     }}-versioning-${{
+      #       hashFiles('versioning.tar.gz')
+      #     }}"
       #     path: versioning.tar.gz
-      #
-  #   outputs:
-  #     version: "${{ steps.version.info }}"
   build:
     runs-on: ubuntu-latest
     needs: [version, sca]
     steps:
       - uses: actions/checkout@v4
-      - name: 'Set up Python 3.10'
+      - name: 'Set up Python 3.11'
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install build==0.8.0
+          pip install build==1.0.3
           pip install .
       - name: Download versioned files
         uses: actions/download-artifact@v4
         with:
           name: "versioning-${{ github.run_number }}"
+      - name: Apply versioning changes
+        run: tar -xzf versioning.tar.gz
       - name: Perform build
-        run: |
-          tar -xzf versioning.tar.gz
-          python -m build
+        run: python -m build
       - name: Store versioned files
         uses: actions/upload-artifact@v4
         with:
@@ -102,7 +104,14 @@ jobs:
     needs: build
     strategy:
       matrix:
-        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
+        python-version:
+          - '3.6'
+          - '3.7'
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12'
     steps:
       - uses: actions/checkout@v4
       - name: Download versioned files
@@ -120,10 +129,11 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install .[dev]
-          pip install ./dist/compendium*whl
+          pip install ./dist/*whl
       - name: Perform tests
         run: pytest --cov=compendium --cov-report=xml tests
   publish:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: ['build', 'test']
     steps:
@@ -139,10 +149,10 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: 'Set up Python 3.10'
+      - name: 'Set up Python 3.11'
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
       - name: Install dependencies
         run: |
           pip install --upgrade pip
@@ -151,6 +161,6 @@ jobs:
         run: |
           twine upload dist/* \
             --non-interactive \
-            --repository testpypi \
+            --repository pypi \
             --username __token__ \
-            --password "${{ secrets.TESTPYPI_TOKEN }}"
+            --password "${{ secrets.TWINE_PASSWORD }}"

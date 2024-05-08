@@ -17,11 +17,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .[build,docs]
+          pip install .[docs]
       - name: Lint documentation
         run: |
-          python -m invoke doc.lint
-          python -m invoke doc.test
+          pydocstyle **/*.py --verbose
+          docstr-coverage **/*.py
   build:
     runs-on: ubuntu-latest
     needs: lint
@@ -34,11 +34,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install .[build,docs]
+          pip install .[docs]
       - name: Perform documentation tests
-        run: |
-          python -m invoke doc.coverage
-          python -m invoke doc.build
+        run: mkdocs build
   test:
     runs-on: ubuntu-latest
     steps:
