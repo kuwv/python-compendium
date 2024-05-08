@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=51.0.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.11.0"]
+build-backend = "hatchling.build"
 
 [project]
 name = "compendium"
@@ -13,10 +13,11 @@ license = {file = "LICENSE"}
 readme = "README.md"
 keywords = ["configuration", "configuration management"]
 classifiers = [
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
@@ -24,11 +25,12 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries"
 ]
 dependencies = [
     "ruamel.yaml>=0.16.10,<1",
     "anytree>=2.8.0",
-    # "dataclasses>=0.8,<1;python_version<3.7",
+    # "dataclasses>=0.8;python_version<3.7",
     "dpath>=2.0.1",
     "tomlkit>=0.7.0,<1",
     # "jsonschema>=3.2.0",
@@ -113,15 +115,16 @@ line-length = 79
 skip-string-normalization = true
 include = '\.pyi?$'
 exclude = '''
-
 (
   /(
     | \.git
+    | \.github
     | \.mypy_cache
     | \.pytest_cache
-    | _build
     | build
     | dist
+    | docs
+    | site
   )
 )
 '''
