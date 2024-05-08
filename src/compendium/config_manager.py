@@ -103,15 +103,14 @@ class ConfigManager(SettingsProxy):
     def load_config(
         self,
         config_file: ConfigFile,
-        update: bool = True,
         # *args: str,
-        # **kwargs: Any,
+        **kwargs: Any,
     ) -> Optional[Dict[str, Any]]:
         """Load settings from configuration."""
         if os.path.exists(config_file.filepath):
             # config_file = ConfigFile(filepath=filepath, **kwargs)
             settings = config_file.load()
-            if update:
+            if kwargs.pop('update', True):
                 self.push(settings)
             return settings
         return None
@@ -278,9 +277,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
     ) -> Optional[Dict[str, Any]]:
         """Load config."""
         # TODO: need to separate chainmap of defaults from namespace config
-        settings = super().load_config(
-            config_file, bool(kwargs.pop('update', False))
-        )
+        settings = super().load_config(config_file, **kwargs)
         return self.new_child(
             settings, name=self.get_name(config_file.filepath), *args, **kwargs
         )
