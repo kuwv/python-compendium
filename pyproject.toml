@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "compendium"
-version = "0.1.3.post5"
+version = "0.1.3.post6"
 description = "Simple layered configuraion tool"
 authors = [{name="Jesse P. Johnson", email="jpj6652@gmail.com"}]
 maintainers = [{name="Jesse P. Johnson", email="jpj6652@gmail.com"}]
