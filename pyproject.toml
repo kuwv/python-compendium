@@ -60,11 +60,11 @@ dev = [
     "mypy-extensions>=0.4.3"
 ]
 docs = [
-    "mkdocs>=1.1.2,<2",
-    "pydocstyle[toml]>=6.1.1,<7",
-    "mkdocstrings[python]>=0.12.1,<1",
-    "mkdocs-material>=7.1.2,<8",
-    "docstr-coverage>=1.2.0,<2"
+    "docstr-coverage>=1.2.0<2",
+    "mkdocs>=1.2.2,<2",
+    "mkdocs-material>=9,<10",
+    "mkdocstrings[python]>=1,<2",
+    "pydocstyle[toml]>=6.1.1"
 ]
 
 [project.urls]

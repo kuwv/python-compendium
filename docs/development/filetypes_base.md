@@ -1,1 +1,0 @@
-::: compendium.filetypes_base

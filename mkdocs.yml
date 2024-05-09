@@ -47,7 +47,7 @@ nav:
     - Paths: development/paths.md
     - Settings: development/settings.md
     - Loader: development/loader.md
-    - Filetypes Base: development/filetypes_base.md
+    - Filetypes Base: development/filetypes.md
     - Filetypes:
       - Json: development/filetypes/json.md
       - Toml: development/filetypes/toml.md
