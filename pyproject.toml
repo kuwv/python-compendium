@@ -63,7 +63,7 @@ docs = [
     "docstr-coverage>=1.2.0,<2",
     "mkdocs>=1.2.2,<2",
     "mkdocs-material>=9,<10",
-    "mkdocstrings[python]>=1,<2",
+    "mkdocstrings[python]>=0.16.2",
     "pydocstyle[toml]>=6.1.1"
 ]
 
