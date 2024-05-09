@@ -28,12 +28,12 @@ classifiers = [
     "Topic :: Software Development :: Libraries"
 ]
 dependencies = [
-    "ruamel.yaml>=0.16.10,<1",
     "anytree>=2.8.0",
     # "dataclasses>=0.8;python_version<3.7",
     "dpath>=2.0.1",
-    "tomlkit>=0.7.0,<1",
     # "jsonschema>=3.2.0",
+    "ruamel.yaml>=0.16.10,<1",
+    "tomlkit>=0.7.0,<1"
     # "xmlschema>=1.2.3",
     # "yamale>=3.0.2"
 ]
@@ -87,7 +87,7 @@ pattern = "__version__ == '${version}'"
 ignore = [
     "D203",
     "D213",
-    "D300",
+    "D300"
 ]
 
 [tool.pylint]
