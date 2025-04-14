@@ -1,12 +1,13 @@
 # copyright: (c) 2020 by Jesse Johnson.
 # license: Apache 2.0, see LICENSE for more details.
 # pylint: disable=unused-import
+# noqa: F401
 """Control configuration files."""
 
 # from weakref import ref
-import importlib
 import logging
 import os
+from importlib.util import find_spec
 from typing import Any, Dict, Optional, Type
 
 from compendium import exceptions
@@ -17,7 +18,7 @@ from compendium.filetypes.toml import TomlConfig
 from compendium.filetypes.yaml import YamlConfig
 from compendium.settings import Settings
 
-if importlib.util.find_spec('xmltodict'):  # type: ignore
+if find_spec('xmltodict'):
     from compendium.filetypes.xml import XmlConfig
 
 log = logging.getLogger(__name__)
