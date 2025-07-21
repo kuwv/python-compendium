@@ -2,10 +2,12 @@
 # license: Apache 2.0, see LICENSE for more details.
 """Provide settings modules."""
 
+from __future__ import annotations
+
 import glob
 import logging
 import os
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Optional
 
 from anytree import NodeMixin, Resolver
 
@@ -14,7 +16,7 @@ from compendium.filepaths import ConfigPaths
 from compendium.loader import ConfigFile
 from compendium.settings import SettingsProxy
 
-__all__: List[str] = [
+__all__: list[str] = [
     'ConfigManager',
     'HierarchyConfigManager',
     'TreeConfigManager',
@@ -34,7 +36,7 @@ class ConfigManager(SettingsProxy):
         name: str
             Name of application.
         filepaths: list, optional
-            List of filepaths to load configurations.
+            list of filepaths to load configurations.
         defaults: dict, optional
             Default configurations to use when settings cannot be found.
         load_configs: bool, optional
@@ -52,7 +54,7 @@ class ConfigManager(SettingsProxy):
 
         # Setup filepaths
         self.name = kwargs.pop('name', 'compendium')
-        self._filepaths: List[ConfigFile] = [
+        self._filepaths: list[ConfigFile] = [
             (ConfigFile(f, factory_kwargs=kwargs) if isinstance(f, str) else f)
             for f in kwargs.pop('filepaths', [])
         ]
@@ -84,7 +86,7 @@ class ConfigManager(SettingsProxy):
         return self.data.maps[-1]
 
     @property
-    def filepaths(self) -> Tuple[ConfigFile, ...]:
+    def filepaths(self) -> tuple[ConfigFile, ...]:
         """Retrieve filepaths."""
         return tuple(self._filepaths)
 
@@ -105,7 +107,7 @@ class ConfigManager(SettingsProxy):
         config_file: ConfigFile,
         # *args: str,
         **kwargs: Any,
-    ) -> Optional[Dict[str, Any]]:
+    ) -> Optional[dict[str, Any]]:
         """Load settings from configuration."""
         if os.path.exists(config_file.filepath):
             # config_file = ConfigFile(filepath=filepath, **kwargs)
@@ -213,7 +215,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             self.load_configs()
 
     @property
-    def namepaths(self) -> Tuple[str, ...]:
+    def namepaths(self) -> tuple[str, ...]:
         """Return list of namepaths."""
         return tuple(self.get_namepath(x.filepath) for x in self.filepaths)
 
@@ -242,13 +244,13 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                 return config.filepath
         return None
 
-    def get_config(self, namepath: str) -> Dict[str, Any]:
+    def get_config(self, namepath: str) -> dict[str, Any]:
         """Get config from store by attribute."""
         r = Resolver('name')
         results = r.get(self, namepath)
         return results
 
-    def new_child(self, *args: Any, **kwargs: Any) -> 'TreeConfigManager':
+    def new_child(self, *args: Any, **kwargs: Any) -> TreeConfigManager:
         """Get child config node."""
         if 'name' not in kwargs:
             kwargs['name'] = self.name
@@ -274,7 +276,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         config_file: ConfigFile,
         *args: str,
         **kwargs: Any,
-    ) -> Optional[Dict[str, Any]]:
+    ) -> Optional[dict[str, Any]]:
         """Load config."""
         # TODO: need to separate chainmap of defaults from namespace config
         settings = super().load_config(config_file, **kwargs)
@@ -285,7 +287,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
     def load_configs(self, **kwargs: Any) -> None:
         """Load configuration files from filepaths."""
 
-        def get_child_paths(namepath: str) -> List[ConfigFile]:
+        def get_child_paths(namepath: str) -> list[ConfigFile]:
             """Get relative child paths of namepath."""
             child_paths = []
             for config in self.filepaths[1:]:

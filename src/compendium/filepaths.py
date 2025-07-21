@@ -6,7 +6,7 @@ import logging
 import os
 import platform
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from typing import Optional
 
 log = logging.getLogger(__name__)
 
@@ -64,10 +64,10 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
     enable_local_filepaths: bool = True
     # enable_runtime_filepaths: bool = True
 
-    system_filepaths: List[str] = field(init=False)
-    global_filepaths: List[str] = field(init=False)
-    local_filepaths: List[str] = field(init=False)
-    # runtime_filepaths: List[str] = field(init=False)
+    system_filepaths: list[str] = field(init=False)
+    global_filepaths: list[str] = field(init=False)
+    local_filepaths: list[str] = field(init=False)
+    # runtime_filepaths: list[str] = field(init=False)
 
     def __post_init__(self) -> None:
         """Perform post path config."""
@@ -162,7 +162,7 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
         #     )
 
     @property
-    def filepaths(self) -> Tuple[str, ...]:
+    def filepaths(self) -> tuple[str, ...]:
         """Return combined list of all paths."""
         return tuple(
             self.system_filepaths

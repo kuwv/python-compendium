@@ -4,15 +4,14 @@
 
 import errno
 import logging
-import os
-
-# import textwrap
-from typing import Any, Dict, Tuple
+from os import path
+from typing import Any
 
 from ruamel.yaml import YAML
 
 # from ruamel.yaml.scalarstring import LiteralScalarString
 
+from compendium.exceptions import LoaderError
 from compendium.filetypes import FiletypesBase
 
 # TODO consider strictyaml or poyo
@@ -38,22 +37,25 @@ class YamlConfig(FiletypesBase):
         return yaml
 
     @staticmethod
-    def extensions() -> Tuple[str, ...]:
+    def extensions() -> tuple[str, ...]:
         """Return support YAML file extensions."""
         return ('yaml', 'yml')
 
-    def load_config(self, filepath: str) -> Dict[str, Any]:
+    def load_config(self, filepath: str) -> dict[str, Any]:
         """Load settings from YAML configuration."""
         logging.info('loading YAML configuration file %s', filepath)
-        if os.path.isfile(filepath):
-            with open(filepath, 'r', encoding=self.encoding) as file:
-                yaml = self.__yaml_parser(self.kind or 'safe')
-                content = yaml.load(file)
+        if path.exists(filepath):
+            if path.isfile(filepath):
+                with open(filepath, 'r', encoding=self.encoding) as file:
+                    yaml = self.__yaml_parser(self.kind or 'safe')
+                    content = yaml.load(file)
+            else:
+                raise LoaderError(f"filepath '{filepath!r}' is not a file")
         else:
-            content = {}
+            raise LoaderError(f"filepath '{filepath}' does not exist")
         return content
 
-    def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
+    def dump_config(self, content: dict[str, Any], filepath: str) -> None:
         """Save settings to YAML configuration."""
         try:
             with open(filepath, 'w', encoding=self.encoding) as file:

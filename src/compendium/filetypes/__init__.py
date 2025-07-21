@@ -3,7 +3,7 @@
 """Provide plugin base for configuration modules."""
 
 from abc import ABCMeta, abstractmethod
-from typing import Any, Dict, Tuple
+from typing import Any
 
 
 class FiletypesBase(metaclass=ABCMeta):
@@ -11,13 +11,13 @@ class FiletypesBase(metaclass=ABCMeta):
 
     @staticmethod
     @abstractmethod
-    def extensions() -> Tuple[str, ...]:
+    def extensions() -> tuple[str, ...]:
         """Retrieve filetypes of file extensions."""
 
     @abstractmethod
-    def load_config(self, filepath: str) -> Dict[str, Any]:
+    def load_config(self, filepath: str) -> dict[str, Any]:
         """Load configuration from file."""
 
     @abstractmethod
-    def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
+    def dump_config(self, content: dict[str, Any], filepath: str) -> None:
         """Save confgration to file."""

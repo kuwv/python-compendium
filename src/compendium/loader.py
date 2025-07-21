@@ -4,11 +4,10 @@
 # noqa: F401
 """Control configuration files."""
 
-# from weakref import ref
 import logging
 import os
 from importlib.util import find_spec
-from typing import Any, Dict, Optional, Type
+from typing import Any, Optional
 
 from compendium import exceptions
 from compendium.filetypes import FiletypesBase
@@ -39,7 +38,7 @@ class ConfigFile:  # pylint: disable=too-many-instance-attributes
         self.writable = bool(kwargs.pop('writable', False))
         self.autosave = bool(kwargs.pop('autosave', self.writable))
         self.factory: dict = kwargs.pop('factory', Settings)
-        self.factory_kwargs: Dict[str, Any] = kwargs.pop('factory_kwargs', {})
+        self.factory_kwargs: dict[str, Any] = kwargs.pop('factory_kwargs', {})
 
     def __eq__(self, other: object) -> bool:
         """Check if path is equal to config file path."""
@@ -63,15 +62,15 @@ class ConfigFile:  # pylint: disable=too-many-instance-attributes
     # def exit(self, exc_type, exc_value, exc_tb)) -> None:
     #     ...
 
-    # async def aenter(self) -> None:
+    # async def __aenter__(self) -> None:
     #     await ...
 
-    # async def aexit(self, exc_type, exc_value, exc_tb)) -> None:
+    # async def __aexit__(self, exc_type, exc_value, exc_tb)) -> None:
     #     await ...
 
     def __get_class(
         self, filetype: Optional[str] = 'toml'
-    ) -> Optional[Type[FiletypesBase]]:
+    ) -> Optional[type[FiletypesBase]]:
         """Get class object from filetype module."""
         for module in list(FiletypesBase.__subclasses__()):
             if filetype in module.extensions():
@@ -106,13 +105,13 @@ class ConfigFile:  # pylint: disable=too-many-instance-attributes
         """Set filepath."""
         self._filepath = filepath
         if not hasattr(self, '_strategy'):
-            self._strategy: Dict[str, FiletypesBase] = {}
+            self._strategy: dict[str, FiletypesBase] = {}
         if filepath not in self._strategy:
             Class = self.__get_class(self.filetype)
             if Class:
                 self._strategy[filepath] = Class()
 
-    def load(self, filepath: Optional[str] = None) -> Dict[str, Any]:
+    def load(self, filepath: Optional[str] = None) -> dict[str, Any]:
         """Load settings from configuration file."""
         self.filepath = filepath or self.filepath
         if self.filepath:
@@ -125,7 +124,7 @@ class ConfigFile:  # pylint: disable=too-many-instance-attributes
                     return self.factory(
                         data, **self.factory_kwargs
                     )  # type: ignore
-                raise exceptions.DriverError(
+                raise exceptions.LoaderError(
                     f"Error: No class found for: '{filepath}'"
                 )
             raise exceptions.ConfigFileError(
@@ -134,7 +133,7 @@ class ConfigFile:  # pylint: disable=too-many-instance-attributes
         raise exceptions.ConfigFileError('Error: no config file provided')
 
     def dump(
-        self, data: Dict[str, Any], filepath: Optional[str] = None
+        self, data: dict[str, Any], filepath: Optional[str] = None
     ) -> None:
         """Save settings to configuraiton."""
         if self.writable:
@@ -146,7 +145,7 @@ class ConfigFile:  # pylint: disable=too-many-instance-attributes
                     # TODO: refactor to use respective dict from chainmap
                     self.strategy.dump_config(data, self.filepath)
                 else:
-                    raise exceptions.DriverError(
+                    raise exceptions.LoaderError(
                         f"Skipping: No class found for: '{filepath}'"
                     )
             else:

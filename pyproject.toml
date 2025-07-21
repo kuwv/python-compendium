@@ -28,6 +28,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries"
 ]
 dependencies = [
+    "aiofiles>=0.6.0",
     "anytree>=2.8.0",
     # "dataclasses>=0.8;python_version<3.7",
     "dpath>=2.0.1",

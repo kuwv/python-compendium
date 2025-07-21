@@ -7,8 +7,8 @@ class CompendiumException(Exception):
     """Provide base errors in Compendium."""
 
 
-class DriverError(CompendiumException):
-    """Provide exceptions for driver errors."""
+class LoaderError(CompendiumException):
+    """Provide exceptions for loader errors."""
 
 
 class ConfigFileError(CompendiumException):

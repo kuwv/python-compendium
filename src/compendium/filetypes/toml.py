@@ -3,12 +3,13 @@
 """Control toml module."""
 
 import errno
-import os
 import logging
-from typing import Any, Dict, Tuple
+from os import path
+from typing import Any
 
 import tomlkit
 
+from compendium.exceptions import LoaderError
 from compendium.filetypes import FiletypesBase
 
 
@@ -21,7 +22,7 @@ class TomlConfig(FiletypesBase):
         self.encoding = kwargs.get('encoding', 'utf-8')
 
     @staticmethod
-    def extensions() -> Tuple[str, ...]:
+    def extensions() -> tuple[str, ...]:
         """Return supported file extensions."""
         return ('toml', 'tml')
 
@@ -54,17 +55,20 @@ class TomlConfig(FiletypesBase):
 
         return content
 
-    def load_config(self, filepath: str) -> Dict[str, Any]:
+    def load_config(self, filepath: str) -> dict[str, Any]:
         """Load settings from toml configuration."""
         logging.info('loading TOML configuration file')
-        if os.path.isfile(filepath):
-            with open(filepath, 'r', encoding=self.encoding) as file:
-                content = self._convert(tomlkit.parse(file.read()))
+        if path.exists(filepath):
+            if path.isfile(filepath):
+                with open(filepath, 'r', encoding=self.encoding) as file:
+                    content = self._convert(tomlkit.parse(file.read()))
+            else:
+                raise LoaderError(f"filepath '{filepath!r}' is not a file")
         else:
-            content = {}
+            raise LoaderError(f"filepath '{filepath!r}' does not exist")
         return content
 
-    def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
+    def dump_config(self, content: dict[str, Any], filepath: str) -> None:
         """Save settings to toml configuration."""
         logging.info('TomlConfig: saving configuration file')
         try:

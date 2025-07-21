@@ -5,11 +5,12 @@
 # import datetime
 import errno
 import logging
-import os
-from typing import Any, Dict, Tuple
+from os import path
+from typing import Any
 
 import xmltodict
 
+from compendium.exceptions import LoaderError
 from compendium.filetypes import FiletypesBase
 
 
@@ -25,26 +26,29 @@ class XmlConfig(FiletypesBase):
         self.namespaces = kwargs.get('namespaces', None)
 
     @staticmethod
-    def extensions() -> Tuple[str, ...]:
+    def extensions() -> tuple[str, ...]:
         """Return supported XML configuration file extensions."""
         return ('xml',)
 
-    def load_config(self, filepath: str) -> Dict[str, Any]:
+    def load_config(self, filepath: str) -> dict[str, Any]:
         """Load settings from XML configuration."""
         logging.info('loading XML configuration file')
-        if os.path.isfile(filepath):
-            with open(filepath, 'r', encoding=self.encoding) as file:
-                content = xmltodict.parse(
-                    file.read(),
-                    encoding=self.encoding,
-                    process_namespaces=self.process_namespaces,
-                    namespaces=self.namespaces,
-                )
+        if path.exists(filepath):
+            if path.isfile(filepath):
+                with open(filepath, 'r', encoding=self.encoding) as file:
+                    content = xmltodict.parse(
+                        file.read(),
+                        encoding=self.encoding,
+                        process_namespaces=self.process_namespaces,
+                        namespaces=self.namespaces,
+                    )
+            else:
+                raise LoaderError(f"filepath {filepath!r} is not a file")
         else:
-            content = {}
+            raise LoaderError(f"filepath '{filepath!r}' does not exist")
         return content
 
-    def dump_config(self, content: Dict[str, Any], filepath: str) -> None:
+    def dump_config(self, content: dict[str, Any], filepath: str) -> None:
         """Save settings to XML configuration."""
         try:
             with open(filepath, 'w', encoding=self.encoding) as file:

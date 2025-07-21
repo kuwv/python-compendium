@@ -2,24 +2,17 @@
 # license: Apache 2.0, see LICENSE for more details.
 """Provide settings modules."""
 
+from __future__ import annotations
+
 import logging
 import os
 from ast import literal_eval
 from collections import ChainMap
-from collections.abc import MutableMapping
-from string import Template
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Dict,
-    Iterable,
-    Iterator,
-    Mapping,
-    Optional,
-    Tuple,
-    Union,
+from collections.abc import (
+    Callable, Iterable, Iterator, Mapping, MutableMapping
 )
+from string import Template
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 import dpath
 from dpath.exceptions import PathNotFound
@@ -36,11 +29,11 @@ class Settings(MutableMapping):
 
     separator: str = '/'
 
-    def __init__(self, data: Dict[str, Any], **kwargs: Any) -> None:
+    def __init__(self, data: dict[str, Any], **kwargs: Any) -> None:
         """Initialize settings store."""
         if 'separator' in kwargs:
             Settings.separator = kwargs.pop('separator')
-        self.data: Dict[str, Any] = {}
+        self.data: dict[str, Any] = {}
         if data is not None:
             self.update(data)
         if kwargs:
@@ -131,7 +124,7 @@ class Settings(MutableMapping):
     # def update(self, other=(), /, **kwds: Any) -> None:
     def update(
         self,
-        other: Union['SupportsKeysAndGetItem', Iterable[Tuple[Any, Any]]] = (),
+        other: Union[SupportsKeysAndGetItem, Iterable[tuple[Any, Any]]] = (),
         /,
         **kwargs: Any,
     ) -> None:
@@ -154,7 +147,7 @@ class SettingsMap(ChainMap):
             SettingsMap.separator = kwargs.pop('separator')
         super().__init__(*args)
 
-    def push(self, data: Dict[str, Any]) -> None:
+    def push(self, data: dict[str, Any]) -> None:
         """Push settings untop store."""
         logging.debug(data)
         self.maps.insert(0, data)
@@ -217,7 +210,7 @@ class SettingsMap(ChainMap):
             log.debug('returning default for: %s', key)
         return default
 
-    # def values(self, query: Optional[str] = None) -> Dict[str, Any]:
+    # def values(self, query: Optional[str] = None) -> dict[str, Any]:
     #     """Search settings matching query."""
     #     if query is None:
     #         query = f"{SettingsMap.separator}*"
@@ -233,7 +226,7 @@ class SettingsMap(ChainMap):
 
     def update(
         self,
-        other: Union['SupportsKeysAndGetItem', Iterable[Tuple[Any, Any]]] = (),
+        other: Union[SupportsKeysAndGetItem, Iterable[tuple[Any, Any]]] = (),
         /,
         **kwargs: Any,
     ) -> None:
@@ -263,7 +256,7 @@ class SettingsProxy(MutableMapping):
         self.data = SettingsMap(*args, **kwargs)
 
     @property
-    def environs(self) -> Dict[str, Any]:
+    def environs(self) -> dict[str, Any]:
         """Get environs."""
         return self.__environs
 
@@ -273,7 +266,7 @@ class SettingsProxy(MutableMapping):
 
     def __getattr__(
         self, attr: str
-    ) -> 'Callable[[VarArg(Any), KwArg(Any)], Any]':
+    ) -> Callable[[VarArg(Any), KwArg(Any)], Any]:
         """Proxy calls to settings store."""
         if hasattr(self.__dict__.get('data'), attr):
 
@@ -337,8 +330,8 @@ class SettingsProxy(MutableMapping):
 
     @classmethod
     def combine(
-        cls, source: Dict[str, Any], update: Mapping[str, Any]
-    ) -> Dict[str, Any]:
+        cls, source: dict[str, Any], update: Mapping[str, Any]
+    ) -> dict[str, Any]:
         """Perform recursive merge."""
         for k, v in update.items():
             if isinstance(v, Mapping):
@@ -348,10 +341,10 @@ class SettingsProxy(MutableMapping):
         return source
 
     @staticmethod
-    def to_dict(key: str, value: Any) -> Dict[str, Any]:
+    def to_dict(key: str, value: Any) -> dict[str, Any]:
         """Convert environment key to nested dictionary."""
 
-        def expand(keypath: str) -> Dict[str, Any]:
+        def expand(keypath: str) -> dict[str, Any]:
             """Convert key part to dictionary key."""
             if '_' not in keypath:
                 return {keypath: value}
@@ -371,12 +364,12 @@ class SettingsProxy(MutableMapping):
                     k, v = line.partition('=')[::2]
                     os.environ[k.strip().upper()] = str(v)
 
-    def load_environs(self) -> Dict[str, Any]:
+    def load_environs(self) -> dict[str, Any]:
         """Load environment variables."""
         prefix = str(
             f"{self.prefix}_" if self.prefix != '' else self.prefix
         ).upper()
-        env: Dict[str, Any] = {}
+        env: dict[str, Any] = {}
         for k, v in os.environ.items():
             if k.startswith(prefix):
                 env = self.combine(
