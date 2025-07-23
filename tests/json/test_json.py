@@ -26,16 +26,16 @@ filepath = os.path.join(basedir, 'config.json')
 def test_filepath(fs):
     """Test JSON filepaths."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(filepath=os.path.join(basedir, 'config.json'))
-    assert f"{basedir}/config.json" == cfg.filepath
+    cfg = ConfigFile(os.path.join(basedir, 'config.json'))
+    assert os.path.join(basedir, 'config.json') == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_cfg(fs):
     """Test loading JSON configuration."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile()
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath)
+    settings = cfg.load()
     assert settings['/stooges/stooge1'] == 'Larry'
     assert settings['/stooges/stooge2'] == 'Curly'
     assert settings['/stooges/stooge3'] == 'Moe'
@@ -47,8 +47,8 @@ def test_cfg(fs):
 def test_cfg_dump(fs):
     """Test saving JSON content."""
     fs.add_real_file(filepath, False)
-    cfg = ConfigFile(writable=True)
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath, writable=True)
+    settings = cfg.load()
     settings['/test'] = 'test'
     assert settings['test'] == 'test'
 
@@ -57,8 +57,8 @@ def test_cfg_dump(fs):
 def test_cfg_save_fail(fs):
     """Test JSON failure."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile()
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath)
+    settings = cfg.load()
 
     with pytest.raises(ConfigFileError):
         settings['/test'] = 'test'

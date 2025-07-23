@@ -20,16 +20,16 @@ filepath = os.path.join(basedir, 'config.xml')
 def test_filepath(fs):
     """Test XML path."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(filepath=os.path.join(basedir, 'config.xml'))
-    assert f"{basedir}/config.xml" == cfg.filepath
+    cfg = ConfigFile(os.path.join(basedir, 'config.xml'))
+    assert os.path.join(basedir, 'config.xml') == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_xml_content(fs):
     """Test XML content read."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile()
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath)
+    settings = cfg.load()
     assert settings['/root/stooges/stooge1'] == 'Larry'
     assert settings['/root/stooges/stooge2'] == 'Curly'
     assert settings['/root/stooges/stooge3'] == 'Moe'
@@ -41,8 +41,8 @@ def test_xml_content(fs):
 def test_xml_content_dump(fs):
     """Test XML content save."""
     fs.add_real_file(filepath, False)
-    cfg = ConfigFile(writable=True)
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath, writable=True)
+    settings = cfg.load()
     settings['/root/test'] = 'test'
     assert settings['/root/test'] == 'test'
 
@@ -51,8 +51,8 @@ def test_xml_content_dump(fs):
 def test_cfg_save_fail(fs):
     """Test XML failure."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile()
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath)
+    settings = cfg.load()
 
     with pytest.raises(ConfigFileError):
         settings['/test'] = 'test'

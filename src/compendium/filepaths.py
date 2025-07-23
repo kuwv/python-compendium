@@ -6,6 +6,7 @@ import logging
 import os
 import platform
 from dataclasses import dataclass, field
+from os import path
 from typing import Optional
 
 log = logging.getLogger(__name__)
@@ -21,10 +22,10 @@ class File:
 
     def __post_init__(self) -> None:
         """Intialize filepath."""
-        self.name = os.path.basename(self.path) or 'config.toml'
+        self.name = path.basename(self.path) or 'config.toml'
 
         if '.' in self.name and not self.name.startswith('.'):
-            self.extension = os.path.splitext(self.name)[-1].strip('.')
+            self.extension = path.splitext(self.name)[-1].strip('.')
         else:
             self.extension = 'toml'
 
@@ -72,7 +73,7 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
     def __post_init__(self) -> None:
         """Perform post path config."""
         if '.' in self.filename:
-            self.filetype = os.path.splitext(self.filename)[1].strip('.')
+            self.filetype = path.splitext(self.filename)[1].strip('.')
         else:
             self.filetype = None
         self.system_filepaths = []
@@ -83,12 +84,12 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
         if self.enable_system_filepaths and os.name == 'posix':
             # TODO: Add windows/linux compliant service path config option
             # self.system_filepaths.append(
-            #     os.path.join(self.basedir, 'etc', self.filename)
+            #     path.join(self.basedir, 'etc', self.filename)
             # )
 
             if self.filetype:
                 self.system_filepaths.append(
-                    os.path.join(
+                    path.join(
                         self.basedir,
                         'etc',
                         self.name,
@@ -97,15 +98,15 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
                 )
 
             self.system_filepaths.append(
-                os.path.join(self.basedir, 'etc', self.name, self.filename)
+                path.join(self.basedir, 'etc', self.name, self.filename)
             )
 
         if self.enable_global_filepaths:
             if platform.system() == 'Windows':
-                __global_app_filepath = os.path.join('AppData', 'Local')
+                __global_app_filepath = path.join('AppData', 'Local')
 
             if platform.system() == 'Darwin':
-                __global_app_filepath = os.path.join(
+                __global_app_filepath = path.join(
                     'Library',
                     'Application Support',
                 )
@@ -114,8 +115,8 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
                 __global_app_filepath = '.config'
 
             self.global_filepaths.append(
-                os.path.join(
-                    os.path.expanduser('~'),
+                path.join(
+                    path.expanduser('~'),
                     __global_app_filepath,
                     self.name,
                     self.filename,
@@ -124,15 +125,15 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
 
             if self.filetype:
                 self.global_filepaths.append(
-                    os.path.join(
-                        os.path.expanduser('~'),
+                    path.join(
+                        path.expanduser('~'),
                         f".{self.name}.{self.filetype}",
                     )
                 )
 
             self.global_filepaths.append(
-                os.path.join(
-                    os.path.expanduser('~'),
+                path.join(
+                    path.expanduser('~'),
                     f".{self.name}.d",
                     self.filename,
                 )
@@ -140,11 +141,11 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
 
         if self.enable_local_filepaths:
             self.local_filepaths.append(
-                os.path.join(os.getcwd(), self.filename)
+                path.join(os.getcwd(), self.filename)
             )
             if self.filetype:
                 self.local_filepaths.append(
-                    os.path.join(
+                    path.join(
                         os.getcwd(),
                         f"{self.name}.{self.filetype}",
                     )
@@ -153,12 +154,12 @@ class ConfigPaths:  # pylint: disable=too-many-instance-attributes
         # if self.enable_runtime_filepaths:
         #     if self.enable_system_filepaths:
         #         self.runtime_filepaths.append(
-        #             os.path.join(
+        #             path.join(
         #                 self.basedir, 'etc', 'sysconfig', self.filename
         #             )
         #         )
         #     self.runtime_filepaths.append(
-        #         os.path.join(os.getcwd(), '.env')
+        #         path.join(os.getcwd(), '.env')
         #     )
 
     @property

@@ -7,6 +7,8 @@ from __future__ import annotations
 import glob
 import logging
 import os
+from collections.abc import MutableMapping
+from os import path
 from typing import Any, Optional
 
 from anytree import NodeMixin, Resolver
@@ -55,7 +57,7 @@ class ConfigManager(SettingsProxy):
         # Setup filepaths
         self.name = kwargs.pop('name', 'compendium')
         self._filepaths: list[ConfigFile] = [
-            (ConfigFile(f, factory_kwargs=kwargs) if isinstance(f, str) else f)
+            ConfigFile(f, factory_kwargs=kwargs) if isinstance(f, str) else f
             for f in kwargs.pop('filepaths', [])
         ]
 
@@ -97,7 +99,7 @@ class ConfigManager(SettingsProxy):
 
     # def dump_config(self, config_file: ConfigFile) -> None:
     #     """Dump settings to configuration."""
-    #     if os.path.exists(config_file.filepath):
+    #     if path.exists(config_file.filepath):
     #         config_file.dump(self.data)
     #         if update:
     #             self.data.push(config_file)
@@ -107,10 +109,10 @@ class ConfigManager(SettingsProxy):
         config_file: ConfigFile,
         # *args: str,
         **kwargs: Any,
-    ) -> Optional[dict[str, Any]]:
+    ) -> Optional[MutableMapping]:
         """Load settings from configuration."""
-        if os.path.exists(config_file.filepath):
-            # config_file = ConfigFile(filepath=filepath, **kwargs)
+        if path.exists(config_file.filepath):
+            # config_file = ConfigFile(filepath, **kwargs)
             settings = config_file.load()
             if kwargs.pop('update', True):
                 self.push(settings)
@@ -221,7 +223,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def get_name(self, filepath: str) -> str:
         """Get name from tree path."""
-        name = os.path.dirname(os.path.relpath(filepath, self.basedir)).split(
+        name = path.dirname(path.relpath(filepath, self.basedir)).split(
             os.sep
         )[-1]
         if name != '':
@@ -230,8 +232,8 @@ class TreeConfigManager(ConfigManager, NodeMixin):
 
     def get_namepath(self, filepath: str) -> str:
         """Get name from tree path."""
-        name = os.path.dirname(
-            os.path.relpath(filepath, self.basedir),
+        name = path.dirname(
+            path.relpath(filepath, self.basedir),
         ).replace(os.sep, self.separator)
         if name != '':
             return f"{self.separator}{self.name}{self.separator}{name}"
@@ -244,7 +246,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                 return config.filepath
         return None
 
-    def get_config(self, namepath: str) -> dict[str, Any]:
+    def get_config(self, namepath: str) -> MutableMapping:
         """Get config from store by attribute."""
         r = Resolver('name')
         results = r.get(self, namepath)
@@ -266,17 +268,14 @@ class TreeConfigManager(ConfigManager, NodeMixin):
     def _prep_filepaths(self) -> None:
         """Load config_files located in nested directory path."""
         for filepath in glob.iglob(
-            os.path.join(self.basedir, '**', self.filename), recursive=True
+            path.join(self.basedir, '**', self.filename), recursive=True
         ):
             if filepath not in self.filepaths:
                 self.add_filepath(filepath)
 
     def load_config(
-        self,
-        config_file: ConfigFile,
-        *args: str,
-        **kwargs: Any,
-    ) -> Optional[dict[str, Any]]:
+        self, config_file: ConfigFile, *args: str, **kwargs: Any
+    ) -> Optional[MutableMapping]:
         """Load config."""
         # TODO: need to separate chainmap of defaults from namespace config
         settings = super().load_config(config_file, **kwargs)
@@ -291,8 +290,8 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             """Get relative child paths of namepath."""
             child_paths = []
             for config in self.filepaths[1:]:
-                child_path = os.path.dirname(
-                    os.path.relpath(config.filepath, self.basedir)
+                child_path = path.dirname(
+                    path.relpath(config.filepath, self.basedir)
                 )
                 if len(child_path.split(os.sep)) > 1 and child_path.startswith(
                     namepath
@@ -305,8 +304,8 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             filepaths = self.filepaths if self.parent else self.filepaths[1:]
             for config in filepaths:
                 # get child namepath from filepath
-                namepath = os.path.dirname(
-                    os.path.relpath(config.filepath, self.basedir)
+                namepath = path.dirname(
+                    path.relpath(config.filepath, self.basedir)
                 )
                 # print('---', self.name, namepath, self.parent)
                 # populate only direct children
@@ -318,7 +317,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
                             config,
                             update=False,
                             filepaths=child_paths,
-                            basedir=os.path.join(
+                            basedir=path.join(
                                 self.basedir, os.sep, namepath
                             ),
                             **kwargs,

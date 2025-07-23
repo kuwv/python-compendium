@@ -16,7 +16,7 @@ filepath = os.path.join(basedir, 'config.ini')
 
 # def test_empty_filepath():
 #     """Test empty file."""
-#     cfg = ConfigFile(filename='config.ini')
+#     cfg = ConfigFile('config.ini')
 #     cfg.load()
 #     assert not cfg.filepath
 
@@ -25,16 +25,16 @@ filepath = os.path.join(basedir, 'config.ini')
 def test_filepath(fs):
     """Test TOML filepaths."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(filepath=os.path.join(basedir, 'config.ini'))
-    assert f"{basedir}/config.ini" == cfg.filepath
+    cfg = ConfigFile(os.path.join(basedir, 'config.ini'))
+    assert os.path.join(basedir, 'config.ini') == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_ini_content(fs):
     """Test TOML content load."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile()
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath)
+    settings = cfg.load()
     assert settings['/stooges/stooge1'] == 'Larry'
     assert settings['/stooges/stooge2'] == 'Curly'
     assert settings['/stooges/stooge3'] == 'Moe'
@@ -46,8 +46,8 @@ def test_ini_content(fs):
 def test_ini_content_dump(fs):
     """Test TOML content save."""
     fs.add_real_file(filepath, False)
-    cfg = ConfigFile(writable=True)
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath, writable=True)
+    settings = cfg.load()
     settings['/test'] = 'test'
     # TODO where is save happening :/
     assert settings['test'] == 'test'
@@ -57,8 +57,8 @@ def test_ini_content_dump(fs):
 def test_cfg_save_fail(fs):
     """Test TOML content failure."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile()
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath)
+    settings = cfg.load()
 
     with pytest.raises(ConfigFileError):
         settings['/test'] = 'test'

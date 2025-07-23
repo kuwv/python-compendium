@@ -2,9 +2,12 @@
 # license: Apache 2.0, see LICENSE for more details.
 """Example YAML config."""
 
+from __future__ import annotations
+
 import os
+from collections.abc import MutableMapping
 from dataclasses import InitVar, dataclass, field
-from typing import Any, Dict
+from typing import Any
 
 from compendium.loader import ConfigFile
 
@@ -15,7 +18,7 @@ class Config(ConfigFile):
 
     filepath: str
     writable: InitVar[bool] = True
-    settings: Dict[str, Any] = field(init=False)
+    settings: MutableMapping = field(init=False)
 
     def __post_init__(self, writable: bool) -> None:
         """Initialize settings from configuration."""
@@ -23,17 +26,23 @@ class Config(ConfigFile):
         self.settings = self.load()
 
 
-basepath = os.path.dirname(os.path.realpath(__file__))
-filepath = os.path.join(basepath, 'example.yaml')
-outpath = os.path.join(basepath, 'example-out.yaml')
+BASEPATH = os.path.dirname(os.path.realpath(__file__))
+INPATH = os.path.join(BASEPATH, 'example.yaml')
+OUTPATH = os.path.join(BASEPATH, 'example-out.yaml')
 
-cfg = Config(filepath, writable=True)
+cfg = Config(INPATH, writable=True)
 
 print('settings', cfg.settings)
-print('allowed_roles', cfg.settings.lookup('allowed_roles'))
-assert 'sre' in cfg.settings.lookup('/allowed_roles')  # type: ignore
-assert 'devops' in cfg.settings.lookup('/allowed_roles')  # type: ignore
-assert 'cloudops' in cfg.settings.lookup('/allowed_roles')  # type: ignore
+print('allowed_roles', cfg.settings.get('allowed_roles'))
+assert 'sre' in cfg.settings.get('/allowed_roles', [])
+assert 'devops' in cfg.settings.get('/allowed_roles', [])
+assert 'cloudops' in cfg.settings.get('/allowed_roles', [])
 
+# XXX: need generic compendium.Settings[K, V]
 print('post settings', cfg.settings)
-cfg.dump(cfg.settings.data, filepath=outpath)  # type: ignore
+if hasattr(cfg.settings, 'data'):
+    cfg.dump(cfg.settings.data, filepath=OUTPATH)
+else:
+    raise AttributeError(
+        'provided factory type of Config does not support data attribute'
+    )

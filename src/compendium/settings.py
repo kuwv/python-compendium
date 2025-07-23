@@ -12,7 +12,7 @@ from collections.abc import (
     Callable, Iterable, Iterator, Mapping, MutableMapping
 )
 from string import Template
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional, Union, overload
 
 import dpath
 from dpath.exceptions import PathNotFound
@@ -39,10 +39,6 @@ class Settings(MutableMapping):
         if kwargs:
             self.update(kwargs)
 
-    def __delitem__(self, key: str) -> Any:
-        """Delete item at key."""
-        return dpath.delete(self.data, key, Settings.separator)
-
     def __iter__(self) -> Iterator[Any]:
         """Iterate settings dictionary."""
         return iter(self.data)
@@ -50,6 +46,10 @@ class Settings(MutableMapping):
     def __len__(self) -> int:
         """Return number of settings items."""
         return len(self.data)
+
+    def __delitem__(self, key: str) -> Any:
+        """Delete item at key."""
+        return dpath.delete(self.data, key, Settings.separator)
 
     def __getitem__(self, key: str) -> Any:
         """Get item."""
@@ -89,9 +89,7 @@ class Settings(MutableMapping):
             return default[0]
 
     def lookup(
-        self,
-        *args: str,
-        default: Optional[Any] = None,
+        self, *args: str, default: Optional[Any] = None
     ) -> Optional[Any]:
         """Get value from settings from multiple keys."""
         for key in args:
@@ -120,6 +118,22 @@ class Settings(MutableMapping):
             if subkey != '':
                 store = {subkey: store}  # type: ignore
         dpath.merge(self.data, store)  # type: ignore
+
+    @overload
+    def update(
+        self, arg: SupportsKeysAndGetItem[Any, Any], /, **kwargs: Any
+    ) -> None:
+        ...
+
+    @overload
+    def update(
+        self, arg: Iterable[tuple[Any, Any]], /, **kwargs: Any
+    ) -> None:
+        ...
+
+    @overload
+    def update(self, /, **kwargs: Any) -> None:
+        ...
 
     # def update(self, other=(), /, **kwds: Any) -> None:
     def update(
@@ -195,9 +209,7 @@ class SettingsMap(ChainMap):
             return default[0]
 
     def lookup(
-        self,
-        *args: str,
-        default: Optional[Any] = None,
+        self, *args: str, default: Optional[Any] = None
     ) -> Optional[Any]:
         """Get value from settings from multiple keys."""
         for key in args:
@@ -224,6 +236,22 @@ class SettingsMap(ChainMap):
     #             store = {x: store}  # type: ignore
     #     dpath.merge(self.maps[0], store)
 
+    @overload
+    def update(
+        self, arg: SupportsKeysAndGetItem[Any, Any], /, **kwargs: Any
+    ) -> None:
+        ...
+
+    @overload
+    def update(
+        self, arg: Iterable[tuple[Any, Any]], /, **kwargs: Any
+    ) -> None:
+        ...
+
+    @overload
+    def update(self, /, **kwargs: Any) -> None:
+        ...
+
     def update(
         self,
         other: Union[SupportsKeysAndGetItem, Iterable[tuple[Any, Any]]] = (),
@@ -234,7 +262,7 @@ class SettingsMap(ChainMap):
         dpath.merge(
             self.maps[0],
             other or kwargs,  # type: ignore
-            afilter=None,  # type: ignore
+            afilter=None,
             flags=2,
         )
 
@@ -281,11 +309,8 @@ class SettingsProxy(MutableMapping):
         """Get environment variable then mapped item."""
         try:
             value = dpath.get(self.environs, key, Settings.separator)
-            return value
         except KeyError:
-            pass
-
-        value = self.data[key]
+            value = self.data[key]
         return value
 
     def __iter__(self) -> Iterator[Any]:
@@ -313,9 +338,7 @@ class SettingsProxy(MutableMapping):
             return default
 
     def lookup(
-        self,
-        *args: str,
-        default: Optional[Any] = None,
+        self, *args: str, default: Optional[Any] = None
     ) -> Optional[Any]:
         """Get value from settings from multiple keys."""
         for key in args:

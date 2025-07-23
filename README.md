@@ -170,7 +170,8 @@ TBD
 ### Development
 
 ```
-python -m venv .vev
-pip install -e .[dev]
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
 python -m doctest README.md
 ```

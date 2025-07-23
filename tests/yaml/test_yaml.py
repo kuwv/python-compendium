@@ -18,16 +18,16 @@ filepath = os.path.join(basedir, 'config.yaml')
 def test_filepath(fs):
     """Test YAML paths."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile(filepath=os.path.join(basedir, 'config.yaml'))
-    assert f"{basedir}/config.yaml" == cfg.filepath
+    cfg = ConfigFile(os.path.join(basedir, 'config.yaml'))
+    assert os.path.join(basedir, 'config.yaml') == cfg.filepath
 
 
 @pytest.mark.parametrize('fs', [[['pkgutil']]], indirect=True)
 def test_yaml_content(fs):
     """Test read YAML content."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile()
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath)
+    settings = cfg.load()
     assert settings['/stooges/stooge1'] == 'Larry'
     assert settings['/stooges/stooge2'] == 'Curly'
     assert settings['/stooges/stooge3'] == 'Moe'
@@ -39,8 +39,8 @@ def test_yaml_content(fs):
 def test_yaml_content_dump(fs):
     """Test YAML content save."""
     fs.add_real_file(filepath, False)
-    cfg = ConfigFile(writable=True)
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath, writable=True)
+    settings = cfg.load()
     settings['/test'] = 'test'
     assert settings['test'] == 'test'
 
@@ -49,8 +49,8 @@ def test_yaml_content_dump(fs):
 def test_cfg_save_fail(fs):
     """Test YAML content fail."""
     fs.add_real_file(filepath)
-    cfg = ConfigFile()
-    settings = cfg.load(filepath=filepath)
+    cfg = ConfigFile(filepath)
+    settings = cfg.load()
 
     with pytest.raises(ConfigFileError):
         settings['/test'] = 'test'
