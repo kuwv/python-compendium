@@ -8,8 +8,8 @@ import glob
 import logging
 import os
 from collections.abc import MutableMapping
-from os import path
-from typing import Any, Optional
+from os import PathLike, path
+from typing import Any, Awaitable, Optional, Union
 
 from anytree import NodeMixin, Resolver
 
@@ -92,7 +92,7 @@ class ConfigManager(SettingsProxy):
         """Retrieve filepaths."""
         return tuple(self._filepaths)
 
-    def add_filepath(self, filepath: str) -> None:
+    def add_filepath(self, filepath: Union[PathLike, str]) -> None:
         """Load settings from configuration in filepath."""
         logging.debug('searching for %s', filepath)
         self._filepaths.append(ConfigFile(filepath))
@@ -109,7 +109,7 @@ class ConfigManager(SettingsProxy):
         config_file: ConfigFile,
         # *args: str,
         **kwargs: Any,
-    ) -> Optional[MutableMapping]:
+    ) -> Optional[Union[Awaitable[MutableMapping], MutableMapping]]:
         """Load settings from configuration."""
         if path.exists(config_file.filepath):
             # config_file = ConfigFile(filepath, **kwargs)
@@ -221,7 +221,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
         """Return list of namepaths."""
         return tuple(self.get_namepath(x.filepath) for x in self.filepaths)
 
-    def get_name(self, filepath: str) -> str:
+    def get_name(self, filepath: Union[PathLike, str]) -> str:
         """Get name from tree path."""
         name = path.dirname(path.relpath(filepath, self.basedir)).split(
             os.sep
@@ -230,7 +230,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             return name
         return self.name
 
-    def get_namepath(self, filepath: str) -> str:
+    def get_namepath(self, filepath: Union[PathLike, str]) -> str:
         """Get name from tree path."""
         name = path.dirname(
             path.relpath(filepath, self.basedir),
@@ -239,7 +239,7 @@ class TreeConfigManager(ConfigManager, NodeMixin):
             return f"{self.separator}{self.name}{self.separator}{name}"
         return f"{self.separator}{self.name}"
 
-    def get_filepath(self, name: str) -> Optional[str]:
+    def get_filepath(self, name: str) -> Optional[Union[PathLike, str]]:
         """Get filepath from namepath."""
         for config in self.filepaths:
             if name == self.get_namepath(config.filepath):

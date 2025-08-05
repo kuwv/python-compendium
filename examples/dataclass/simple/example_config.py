@@ -28,7 +28,7 @@ class Config(ConfigFile):
 
 BASEPATH = os.path.dirname(os.path.realpath(__file__))
 INPATH = os.path.join(BASEPATH, 'example.yaml')
-OUTPATH = os.path.join(BASEPATH, 'example-out.yaml')
+# OUTPATH = os.path.join(BASEPATH, 'example-out.yaml')
 
 cfg = Config(INPATH, writable=True)
 
@@ -41,7 +41,7 @@ assert 'cloudops' in cfg.settings.get('/allowed_roles', [])
 # XXX: need generic compendium.Settings[K, V]
 print('post settings', cfg.settings)
 if hasattr(cfg.settings, 'data'):
-    cfg.dump(cfg.settings.data, filepath=OUTPATH)
+    cfg.dump(cfg.settings.data)
 else:
     raise AttributeError(
         'provided factory type of Config does not support data attribute'

@@ -27,8 +27,8 @@ basepath = os.path.dirname(os.path.realpath(__file__))
 filepath = os.path.join(basepath, 'example.yaml')
 outpath = os.path.join(basepath, 'example-out.yaml')
 
-cfg = ConfigFile(writable=True)
-settings = cfg.load(filepath=filepath)
+cfg = ConfigFile(filepath, writable=True)
+settings = cfg.load()
 
 print('settings', settings)
 # print('allowed_roles', settings.allowed_roles[0])
@@ -53,22 +53,22 @@ toml_in = os.path.join(basepath, 'in.toml')
 toml_out = os.path.join(basepath, 'out.toml')
 
 # JSON
-json_cfg = ConfigFile(writable=True)
-json_settings = json_cfg.load(filepath=json_in)
+json_cfg = ConfigFile(json_in, writable=True)
+json_settings = json_cfg.load()
 json_cfg.dump(json_settings.data, filepath=json_out)
 json_cfg.dump(json_settings.data, filepath=yaml_out)
 json_cfg.dump(json_settings.data, filepath=toml_out)
 
 # YAML
-yaml_cfg = ConfigFile(writable=True)
-yaml_settings = yaml_cfg.load(filepath=yaml_in)
+yaml_cfg = ConfigFile(yaml_in, writable=True)
+yaml_settings = yaml_cfg.load()
 yaml_cfg.dump(yaml_settings.data, filepath=yaml_out)
 yaml_cfg.dump(yaml_settings.data, filepath=json_out)
 json_cfg.dump(yaml_settings.data, filepath=toml_out)
 
 # TOML
-toml_cfg = ConfigFile(writable=True)
-toml_settings = toml_cfg.load(filepath=toml_in)
+toml_cfg = ConfigFile(toml_in, writable=True)
+toml_settings = toml_cfg.load()
 toml_cfg.dump(toml_settings.data, filepath=toml_out)
 toml_cfg.dump(toml_settings.data, filepath=json_out)
 toml_cfg.dump(toml_settings.data, filepath=yaml_out)

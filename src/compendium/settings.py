@@ -64,10 +64,13 @@ class Settings(MutableMapping):
             dpath.new(self.data, key, value, Settings.separator)
 
     def __repr__(self) -> str:
-        """Retrun readable representation of settings."""
-        template = Template('<$name: $data>')
-        return repr(
-            template.substitute(name=type(self).__name__, data=self.data)
+        """Return readable representation of settings."""
+        return repr(self.data)
+
+    def __str__(self) -> str:
+        """Return readable representation of settings."""
+        return Template('<$name: $data>').substitute(
+            name=type(self).__name__, data=self.data
         )
 
     def get(self, key: str, default: Optional[Any] = None) -> Any:
@@ -100,7 +103,7 @@ class Settings(MutableMapping):
                     return value
             except KeyError:
                 log.debug('lookup was unable to query: %s', key)
-            log.debug('returning default for: %s', key)
+        log.debug('returning default for: %s', key)
         return default
 
     def values(self, query: Optional[str] = None) -> Any:
